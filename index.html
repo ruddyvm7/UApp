@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#8b0c0c">
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="UApp">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<link rel="icon" type="image/png" href="./icon-192.png">
+<title>UApp · Centro de Estudiantes Derecho</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --wine:#8b0c0c;--wine2:#6c0909;--gold:#c79a3e;--gold2:#a8821f;--navy:#2c080a;--cream:#f1d9b0;
+  --bg:#f6f5f2;--card:#ffffff;--cb:#c7d0de;--cb2:#aeb9cc;
+  --lockbg:#eef1f8;--ink:#2a2b2e;--muted:#8b8b88;
+  --ok:#2c7a4d;--okbg:#e5f3ea;--okb:#a6d3b8;--no:#bd3a2c;--nobg:#fbe9e6;--nob:#e3b3ab;
+  --civil:#2f6fd0;--proc:#7a3fd6;--penal:#d23b3b;
+  --fgbg:#e6effb;--fgtx:#2f6fd0;--spbg:#fbeede;--sptx:#b5701f;--hebg:#ecd9a0;--hetx:#7a5e11;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom)}
+.serif{font-family:"Fraunces",serif}
+.tabbar{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid #e7e4dd;display:flex;justify-content:center;gap:4px;padding:0 8px;overflow-x:auto}
+.brandbar{display:flex;align-items:center;gap:12px;padding:11px 16px;background:var(--wine);color:#fff}
+.brandlogo{width:48px;height:48px;flex:0 0 48px;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:3px}
+.brandlogo img{width:100%;height:100%;object-fit:contain}
+.brandtxt{display:flex;flex-direction:column;line-height:1.25}
+.brandtxt b{font-size:15px;font-weight:700}
+.brandtxt span{font-size:11px;color:var(--cream);font-weight:600}
+.tab{background:none;border:0;padding:13px 12px 11px;font-family:inherit;font-size:13.5px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2.5px solid transparent;white-space:nowrap}
+.tab.active{color:var(--wine);border-color:var(--gold)}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+.toprule{height:3px;background:var(--wine);border-radius:2px;max-width:760px;margin:18px auto 0}
+.h1{text-align:center;color:var(--wine);font-size:34px;font-weight:800;margin:14px 0 8px;letter-spacing:.3px}
+.lead{text-align:center;color:#555;font-size:15px;max-width:600px;margin:0 auto 4px}
+.cycle{text-align:center;color:#444;font-size:15px;margin-top:6px}
+.cycle b{color:#222}
+
+.pbar{height:46px;background:#e9e7e2;border-radius:99px;margin:20px 0 10px;overflow:hidden}
+.pfill{height:100%;background:linear-gradient(90deg,#7a2333,var(--wine));width:0;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.pct{text-align:center;color:var(--wine);font-weight:700;font-size:17px;margin-bottom:18px}
+.legend{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;padding:12px 0;border-top:1px solid #e7e4dd;border-bottom:1px solid #e7e4dd}
+.legend span{font-size:12.5px;font-weight:600;color:#666;letter-spacing:.5px;display:flex;align-items:center;gap:7px}
+.lg{width:17px;height:17px;border-radius:5px;border:1.5px solid var(--cb2)}
+.areas{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;padding:16px 0 4px}
+.areas span{font-size:13px;font-weight:700;color:#333;letter-spacing:.4px;display:flex;align-items:center;gap:8px}
+.adot{width:14px;height:14px;border-radius:50%}
+
+.yearcard{background:#fff;border:1px solid #ece9e2;border-radius:18px;padding:20px 18px;margin:22px 0;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.yhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.yhead .yn{color:var(--wine);font-size:30px;font-weight:800}
+.yapr{background:#e7f4ea;color:#2c7a4d;border:1px solid #b6dcc3;border-radius:9px;padding:8px 13px;font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap}
+.yapr.on{background:#2c7a4d;color:#fff;border-color:#2c7a4d}
+.yrule{height:2px;background:var(--gold);margin:12px 0 0;border-radius:2px}
+.tcont{background:#f3f2ef;border-radius:14px;padding:14px 12px;margin-top:14px}
+.th{text-align:center;color:#3a2530;font-size:15px;font-weight:700;letter-spacing:1px;margin:14px 0 11px}
+.th:first-child{margin-top:4px}
+
+.course{background:#fff;border:1.5px solid var(--cb);border-radius:13px;padding:13px 14px;margin-bottom:11px;cursor:pointer;position:relative;transition:transform .08s,box-shadow .15s}
+.course:active{transform:scale(.994)}
+.course.tagged{margin-top:20px}
+.cname{font-size:16px;font-weight:700;color:#222;line-height:1.3;display:flex;align-items:center;gap:8px}
+.dot{width:13px;height:13px;border-radius:50%;flex:0 0 auto}
+.pre{margin-top:7px;font-size:13px}
+.pre.none{color:var(--muted)}
+.pre b{display:block;color:#3a3a3a;font-size:12.5px;margin-bottom:3px}
+.pitem{color:#555;margin-left:2px;line-height:1.5}
+.yes{color:var(--ok);font-weight:700}.nok{color:var(--no);font-weight:700}
+.optlabel{color:var(--gold2);font-weight:700;font-size:12px;letter-spacing:.6px;margin-top:3px}
+.course.lock{background:var(--lockbg);border-color:#c4cfe6;cursor:not-allowed}
+.course.open{background:#fff;border-color:var(--cb2)}
+.course.ok{background:var(--okbg);border-color:var(--okb)}.course.ok .cname{color:#1f6440}
+.course.no{background:var(--nobg);border-color:var(--nob)}.course.no .cname{color:#8f2b20}
+.ctag{position:absolute;top:-12px;left:14px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:.3px;display:flex;align-items:center;gap:5px}
+.ctag.fg{background:var(--fgbg);color:var(--fgtx);border:1px solid #c5dcf6}
+.ctag.sp{background:var(--spbg);color:var(--sptx);border:1px solid #ecd2a8}
+.ctag.he{background:var(--hebg);color:var(--hetx);border:1px solid #d9c277}
+
+.resetbtn{display:block;width:100%;max-width:420px;margin:8px auto 30px;background:#fbe9e6;color:var(--no);border:1px solid #e3b3ab;border-radius:11px;padding:13px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.cta{display:block;width:100%;background:var(--gold);color:#3a2e08;border:0;border-radius:12px;padding:15px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;margin:18px 0;letter-spacing:.3px;text-align:center}
+
+/* Simulador */
+.seg{display:flex;border:1.5px solid var(--cb);border-radius:11px;overflow:hidden;max-width:560px;margin:16px auto 18px}
+.seg button{flex:1;background:#fff;border:0;padding:11px 8px;font-family:inherit;font-size:12.5px;font-weight:700;color:#777;cursor:pointer;border-right:1.5px solid var(--cb)}
+.seg button:last-child{border-right:0}.seg button.on{background:var(--wine);color:#fff}
+.tablehead{display:grid;grid-template-columns:1fr 96px 108px;gap:10px;padding:0 4px 10px;max-width:760px;margin:6px auto 0}
+.tablehead span{color:var(--wine);font-weight:700;font-size:13px;letter-spacing:.6px}
+.tablehead .c{text-align:center}
+.erow{display:grid;grid-template-columns:1fr 96px 108px;gap:10px;margin-bottom:11px;align-items:center}
+.erow input{font-family:inherit;font-size:15px;padding:13px 12px;border:1px solid #ddd;border-radius:11px;background:#fff;width:100%;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.erow input.c{text-align:center}
+.del{background:#fbe9e6;border:0;border-radius:10px;height:46px;color:var(--no);font-size:20px;cursor:pointer}
+.simbtns{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:6px 0 0}
+.addn{background:#f0eefb;color:var(--wine);border:1.5px dashed #c9c2e6;border-radius:11px;padding:14px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:.3px}
+.calcn{background:var(--wine);color:#fff;border:0;border-radius:11px;padding:14px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.3px}
+.result{background:#fdf8e9;border:1px solid #f0e4bf;border-radius:16px;padding:22px;margin:18px 0;text-align:center}
+.result .lab{color:#777;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.result .big{color:var(--wine);font-family:"Fraunces",serif;font-size:60px;font-weight:800;line-height:1.05;margin:4px 0}
+.result .vt{font-size:18px;font-weight:700;margin:8px 0 6px}
+.result .vd{color:#666;font-size:14.5px;line-height:1.55;max-width:520px;margin:0 auto}
+.sumw{text-align:center;color:#888;font-size:12.5px;margin:2px 0 0}
+.vg{color:var(--ok)}.vy{color:var(--sptx)}.vr{color:var(--no)}
+.note{background:#fdf8e9;border:1px solid #ecdcaf;border-radius:11px;padding:12px 14px;font-size:12.5px;color:#7c6213;margin:0 auto 14px;line-height:1.5;max-width:600px}
+
+/* módulos */
+.mh{text-align:center;color:var(--wine);font-family:"Fraunces",serif;font-size:28px;font-weight:800;margin:10px 0 4px}
+.msub{text-align:center;color:#666;font-size:14px;margin-bottom:16px}
+.day{color:var(--gold2);font-weight:700;font-size:14px;letter-spacing:.4px;margin:16px 0 8px}
+.slot{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--cb);border-radius:11px;padding:12px 14px;margin-bottom:8px}
+.slot .tm{font-size:13px;font-weight:700;color:var(--wine);min-width:104px}
+.slot .rm{font-size:15px;font-weight:600;flex:1}.slot .sl{font-size:12px;color:#888}
+.test{display:flex;gap:14px;align-items:center;background:#fff;border:1px solid var(--cb);border-radius:11px;padding:12px 14px;margin-bottom:8px}
+.test .dt{text-align:center;min-width:50px}.test .dt b{display:block;font-family:"Fraunces",serif;font-size:22px;color:var(--wine);line-height:1}.test .dt span{font-size:10px;text-transform:uppercase;color:#999}
+.test .in{flex:1}.test .in b{font-size:15px}.test .in span{display:block;font-size:12px;color:#888}
+.test .ty{font-size:11px;font-weight:700;color:var(--gold2);text-transform:uppercase}
+.icard{background:#fff;border:1px solid var(--cb);border-radius:12px;padding:15px;margin-bottom:11px}
+.icard a{color:var(--wine);font-weight:700;font-size:15px;text-decoration:none}
+.icard p{color:#777;font-size:13px;margin-top:3px}
+.example{background:#fdf8e9;border:1px solid #ecdcaf;border-radius:9px;padding:8px 12px;font-size:12px;color:#7c6213;margin-bottom:14px;text-align:center}
+.sel2{width:100%;font-family:inherit;font-size:14.5px;font-weight:600;padding:12px;border:1px solid var(--cb2);border-radius:11px;background:#fff;color:var(--wine);margin-bottom:16px}
+.hwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px;border:1px solid var(--cb2)}
+.hgrp{font-size:15px;color:var(--wine);font-weight:700;margin:24px 0 9px;padding-bottom:5px;border-bottom:2px solid var(--gold)}
+.hgrp:first-child{margin-top:4px}
+.pctrls{display:flex;gap:12px;margin:4px 0 14px;flex-wrap:wrap}
+.pctrls label{flex:1;min-width:150px;font-size:12px;color:var(--muted);font-weight:600;display:flex;flex-direction:column;gap:5px}
+.pctrls select{font-family:inherit;font-size:14px;padding:9px;border:1px solid var(--cb2);border-radius:9px;background:#fff;color:var(--ink)}
+.presum{background:#fbf6ea;border:1px solid #ecdcaf;border-radius:10px;padding:10px 13px;font-size:13px;color:#5a4a1a;margin-bottom:4px}
+.pcard{background:#fff;border:1px solid var(--cb2);border-left:4px solid var(--gold);border-radius:10px;padding:11px 13px;margin-bottom:9px}
+.pcard .pn{font-weight:700;color:var(--wine);font-size:14.5px}
+.pcard .pm{font-size:12.5px;color:#666;margin-top:3px}
+.pcard .pt{font-size:12px;color:#7a6a3a;margin-top:5px}
+.pflag{background:#b3445a;color:#fff;font-size:10px;padding:1px 7px;border-radius:8px;vertical-align:middle;font-weight:600}
+.pflag2{background:var(--gold);color:#fff;font-size:10px;padding:1px 7px;border-radius:8px;vertical-align:middle;font-weight:600}
+.pexc{font-size:12.5px;color:#777;margin:5px 0;padding-left:2px}
+.pinfo{background:#eef3fb;border:1px solid #cdd9ee;border-radius:10px;padding:9px 12px;font-size:12.5px;color:#2f3f63;margin:6px 0}
+.hortbl{border-collapse:collapse;width:100%;min-width:680px;font-size:11.5px}
+.hortbl th{background:var(--wine);color:#fff;font-weight:700;padding:9px 6px;font-size:11px;letter-spacing:.4px;text-align:center;border:1px solid #7d3340}
+.hortbl th.th-h{background:var(--navy);width:58px}
+.hortbl td{border:1px solid var(--cb2);padding:5px;vertical-align:middle;text-align:center;height:34px}
+.hortbl td.tm2{background:#f4f1ee;color:#777;font-weight:700;font-size:10px;white-space:nowrap;width:58px}
+.hortbl td.cell{background:#fbf6ea;border-color:#ecdcaf;position:relative}
+.hortbl .cr{display:block;font-weight:700;color:var(--wine);line-height:1.2}
+.hortbl .cs{display:block;color:#8a7a4a;font-size:10px;margin-top:3px}
+.hortbl .cp{display:block;color:#9a6b72;font-size:9.5px;margin-top:2px;font-style:italic;line-height:1.15}
+footer{background:var(--navy);color:#cdd5e3;text-align:center;padding:26px 18px 30px;margin-top:10px}
+.fbk{display:inline-block;margin:6px 0 14px;background:var(--cream);color:var(--wine);font-weight:700;font-size:14px;padding:11px 22px;border-radius:24px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+footer .fn{font-family:"Fraunces",serif;color:var(--gold);font-size:24px;font-weight:700}
+footer p{font-size:13px;margin-top:6px}footer .sm{color:#8794ab;font-size:12px}
+footer a{color:var(--gold);text-decoration:none}
+footer .motto{font-style:italic;color:var(--gold);font-size:15px;margin-top:4px;opacity:.95;letter-spacing:.3px}
+/* ===== Rediseño UApp: malla horizontal + medidor de notas ===== */
+.h1{letter-spacing:-.4px}
+.cycle{font-size:12.5px}
+.seal{position:relative;width:158px;height:158px;margin:18px auto 8px}
+.ringsvg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring-track{fill:none;stroke:#ece3d2;stroke-width:9}
+.ring-prog{fill:none;stroke:var(--wine);stroke-width:9;stroke-linecap:round;stroke-dasharray:339.292;stroke-dashoffset:339.292;transition:stroke-dashoffset .7s cubic-bezier(.2,.8,.2,1)}
+.ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-pct{font-family:"Fraunces",serif;font-size:36px;font-weight:800;color:var(--wine);line-height:1}
+.ring-sub{font-size:10.5px;color:var(--muted);font-weight:700;margin-top:3px;text-transform:uppercase;letter-spacing:.6px}
+.boardhint{text-align:center;color:var(--muted);font-size:12px;font-weight:600;margin:8px 0 0}
+.board{display:flex;gap:11px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 2px 18px;scroll-snap-type:x proximity}
+.lvl{flex:0 0 156px;scroll-snap-align:start}
+.lvl.ystart{border-left:2px dashed #e7d9bf;padding-left:11px}
+.lvl-h{padding:2px 2px 9px}
+.lvl-eyebrow{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--gold2)}
+.lvl-num{font-family:"Fraunces",serif;font-size:17px;font-weight:700;color:var(--ink);line-height:1.15}
+.lvl-tiles{display:flex;flex-direction:column;gap:9px}
+.yrbtn{margin-top:8px;width:100%;background:#fff;border:1.5px solid var(--gold);color:var(--wine);border-radius:9px;padding:6px 8px;font-family:inherit;font-size:10.5px;font-weight:800;letter-spacing:.3px;cursor:pointer;text-transform:uppercase}
+.yrbtn.on{background:var(--wine);color:#fff;border-color:var(--wine)}
+.tile{position:relative;border:1.5px solid #e7ddcc;border-radius:12px;padding:10px 11px 10px 15px;background:#fffdf8;cursor:pointer;overflow:hidden;transition:transform .08s,box-shadow .15s}
+.tile:active{transform:scale(.985)}
+.tile .abar{position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--muted)}
+.tname{font-size:12.6px;font-weight:600;color:#2a2118;line-height:1.27}
+.tfoot{margin-top:7px;font-size:10.5px;font-weight:800;letter-spacing:.3px;text-transform:uppercase}
+.tstat{color:#9a7b3a}
+.tbadge{position:absolute;top:6px;right:8px;font-size:11px;line-height:1}
+.tpre{display:none;margin-top:8px;font-size:11px;line-height:1.4;color:#6b5b3f;border-top:1px solid #eadfca;padding-top:6px}
+.treq{margin-top:7px;font-size:10px;line-height:1.35;color:#8a7b5e;font-weight:600;border-top:1px solid #eadfca;padding-top:6px}
+.tile.ok .treq{color:#cfe8d6;border-top-color:rgba(255,255,255,.22)}
+.tile.no .treq{color:#edc3bd;border-top-color:rgba(255,255,255,.22)}
+.tile.lock .treq{color:#9a8f7c}
+.tile.showpre{cursor:default}
+.tile.showpre .tpre{display:block}
+.tile.ok{background:#1f6b3a;border-color:#175a30}
+.tile.ok .tname{color:#eff8f1}.tile.ok .tstat{color:#bfe6cc}.tile.ok .abar{background:#bfe6cc}
+.tile.no{background:var(--wine);border-color:var(--wine2)}
+.tile.no .tname{color:#f8e7e5}.tile.no .tstat{color:#eab8b2}.tile.no .abar{background:#e7b3ad}
+.tile.lock{background:#f3efe6;border-color:#e4dbc9;opacity:.78;cursor:default}
+.tile.lock .tname{color:#8a8170}.tile.lock .tstat{color:#a59a86}
+.gaugewrap{position:relative;width:240px;max-width:88%;margin:10px auto 0}
+.gauge{width:100%;height:auto;display:block;overflow:visible}
+.gz{fill:none;stroke-width:13}
+.gz-r{stroke:#cf4a3a}.gz-a{stroke:#e0a23a}.gz-g{stroke:#2f9152}
+.needle{stroke:var(--ink);stroke-width:3.5;stroke-linecap:round;transition:all .6s cubic-bezier(.2,.8,.2,1)}
+.hub{fill:var(--ink)}
+.gtick{font-family:"IBM Plex Mono",monospace;font-size:11px;fill:#9a8a6f;font-weight:600}
+.result{background:#fffdf8;border:1px solid #ece0c6}
+.result .big{font-size:42px;margin:4px 0 0}
+.seg{border-color:#dac9aa}
+.seg button{color:#9a7b3a}
+.tablehead span{color:var(--wine)}
+.erow input{border:1px solid #e2d6bd;background:#fffdf8;border-radius:10px}
+.erow input.c{font-family:"IBM Plex Mono",monospace;font-weight:600}
+.resetbtn{background:transparent;color:var(--wine);border:1px solid #e3b3ab}
+.inscbox{display:flex;flex-wrap:wrap;gap:7px;margin:2px 0 14px;padding:12px;background:#fffdf8;border:1px solid #ece0c6;border-radius:14px}
+.inscbox .ititle{flex-basis:100%;font-size:12px;font-weight:700;color:var(--wine);margin-bottom:3px}
+.chip{font-family:inherit;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;border:1.5px solid #d8c9ab;background:#fff;color:#6b5b3f;cursor:pointer}
+.chip.on{background:var(--wine);border-color:var(--wine);color:#fff}
+.ecard{background:#fffdf8;border:1px solid #ece0c6;border-left:4px solid var(--gold);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.ehead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:6px}
+.ehead b{font-size:14px;color:var(--wine);font-weight:700;line-height:1.2}
+.eniv{font-size:11px;color:var(--muted);font-weight:600;white-space:nowrap}
+.erow2{display:flex;gap:12px;font-size:12.5px;padding:6px 0;border-top:1px solid #f0e7d4;align-items:baseline}
+.elab{flex:0 0 88px;color:#8a7b5e;font-weight:700}
+.edates{color:#2a2118;display:flex;flex-direction:column;gap:2px}
+.ecols{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:9px}
+.ecol{background:#fbf6ec;border:1px solid #f0e7d4;border-radius:9px;padding:8px 9px;min-width:0}
+.ecl{font-size:9.5px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;color:var(--gold2);margin-bottom:4px}
+.ecv{font-size:13.5px;color:#2a2118;line-height:1.3}
+.edbig{font-weight:600}
+.ecv .edseg{display:block;font-size:11.5px;margin-bottom:1px}
+.ecv .edsec{font-weight:700;color:var(--gold2);font-size:10px}
+.edseg{display:block}
+.edsec{font-weight:700;color:var(--gold2);font-size:11px}
+.ednone{color:var(--muted);font-style:italic}
+td.cell.selc{cursor:pointer}
+td.cell.selon{background:#eaf6ee !important;outline:2px solid #1f6b3a;outline-offset:-2px}
+.selck{position:absolute;top:2px;right:3px;color:#1f6b3a;font-weight:800;font-size:11px}
+.enote{margin-top:7px;font-size:11.5px;color:#8a6d3a;font-style:italic}
+.ihd{font-family:"Fraunces",serif;font-size:17px;font-weight:700;color:var(--wine);margin:22px 0 10px;padding-bottom:6px;border-bottom:2px solid #ece0c6}
+.ihd:first-of-type{margin-top:8px}
+.icard{background:#fffdf8;border:1px solid #ece0c6;border-left:4px solid var(--gold);border-radius:12px;padding:13px 15px;margin-bottom:10px}
+.iname{font-size:15px;font-weight:700;color:#2a2118}
+.irole{font-size:12.5px;color:var(--muted);font-weight:600;margin:2px 0 7px}
+.iinfo{font-size:13px;color:#3a3026;line-height:1.45;margin:3px 0}
+.iinfo b{color:var(--wine)}
+.imail{display:block;font-size:12.5px;color:var(--wine);font-weight:600;margin-top:5px;word-break:break-word;text-decoration:none}
+.imail:active{opacity:.7}
+.ilink{display:block;background:#fffdf8;border:1.5px solid var(--gold);border-radius:12px;padding:13px 15px;margin-bottom:9px;color:var(--wine);font-weight:700;font-size:14px;text-decoration:none}
+.ilink:active{background:#f7efdc}
+.svcrow{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid #f0e7d4;font-size:12.5px}
+.svcrow:first-child{border-top:none}
+.svcn{font-weight:700;color:#2a2118;flex:0 0 36%}
+.svch{color:#3a3026;text-align:right;line-height:1.4}
+/* ===== Chatbox ===== */
+#chatFab{position:fixed;right:16px;bottom:16px;width:58px;height:58px;border:none;border-radius:50%;background:var(--wine);color:#fff;font-size:26px;box-shadow:0 6px 18px rgba(0,0,0,.28);cursor:pointer;z-index:9999;display:flex;align-items:center;justify-content:center}
+#chatFab:active{transform:scale(.94)}
+.chatpanel{position:fixed;right:14px;bottom:14px;width:min(380px,calc(100vw - 28px));height:min(560px,calc(100vh - 90px));background:#fff;border-radius:18px;box-shadow:0 12px 40px rgba(0,0,0,.32);display:flex;flex-direction:column;overflow:hidden;z-index:9999;border:1px solid #e7d9bf}
+.chathead{background:linear-gradient(135deg,var(--wine),var(--wine2));color:#fff;padding:13px 16px;position:relative;flex-shrink:0}
+.chatname{font-size:21px;font-weight:700;line-height:1}
+.chatname .ia{color:var(--gold)}
+.chatsub{font-size:11.5px;opacity:.88;margin-top:3px}
+#chatClose{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.16);border:none;color:#fff;width:28px;height:28px;border-radius:50%;font-size:14px;cursor:pointer}
+.chatmsgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:9px;background:#faf6ee}
+.cmsg{max-width:84%;padding:9px 12px;border-radius:14px;font-size:13px;line-height:1.45;word-wrap:break-word}
+.cmsg.bot{align-self:flex-start;background:#fff;border:1px solid #ece0c6;color:#2a2118;border-bottom-left-radius:4px}
+.cmsg.user{align-self:flex-end;background:var(--wine);color:#fff;border-bottom-right-radius:4px}
+.cmsg.bot b{color:var(--wine)}
+.cmsg a{color:inherit}
+.chatchips{display:flex;flex-wrap:wrap;gap:6px;padding:8px 12px;border-top:1px solid #eee;max-height:128px;overflow-y:auto;background:#fff;flex-shrink:0}
+.cchip{background:#fff;border:1.5px solid var(--gold);color:var(--wine);border-radius:999px;padding:6px 11px;font-size:11.5px;font-weight:600;cursor:pointer;text-align:left;line-height:1.25}
+.cchip:active{background:#f7efdc}
+.cchip.back{border-color:#ccc;color:#777}
+.chatinput{display:flex;gap:8px;padding:10px 12px;border-top:1px solid #eee;background:#fff;flex-shrink:0}
+.chatinput input{flex:1;border:1.5px solid #ddd;border-radius:999px;padding:9px 14px;font-size:14px;outline:none}
+.chatinput input:focus{border-color:var(--wine)}
+.chatinput button{background:var(--wine);color:#fff;border:none;border-radius:50%;width:40px;height:40px;font-size:16px;cursor:pointer;flex-shrink:0}
+.muralempty{text-align:center;color:var(--muted);padding:42px 12px;font-size:14px}
+.mcard{background:#fffdf8;border:1px solid #ece0c6;border-left:4px solid var(--wine);border-radius:14px;padding:14px 16px;margin-bottom:12px}
+.mtop{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.mtag{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:3px 9px;border-radius:999px}
+.mcount{font-size:12.5px;font-weight:700;white-space:nowrap}
+.mtitle{font-family:"Fraunces",serif;font-size:17px;font-weight:700;color:#2a2118;margin-bottom:4px;line-height:1.25}
+.mtext{font-size:13.5px;color:#3a3026;line-height:1.5}
+.mtext b{color:var(--wine)}
+.mcta{display:inline-block;margin-top:11px;color:#fff;font-weight:700;font-size:13px;padding:9px 16px;border-radius:999px;text-decoration:none}
+.mcta:active{opacity:.85}
+.disc{background:#fff7e6;border:1px solid #f0d9a6;border-radius:10px;padding:9px 12px;font-size:12.5px;color:#6a5320;line-height:1.45;margin:8px 0 4px}
+.disc b{color:#8a6d1a}
+.solbox{background:#fffdf8;border:1.5px solid var(--gold);border-radius:16px;padding:20px 18px;text-align:center;margin-top:6px}
+.soltitle{font-size:18px;font-weight:700;color:var(--wine);margin-bottom:6px}
+.soltext{font-size:13.5px;color:#3a3026;line-height:1.5;margin-bottom:15px}
+.solbtn{display:inline-block;background:var(--wine);color:#fff;font-weight:700;font-size:15px;padding:13px 26px;border-radius:999px;text-decoration:none}
+.solbtn:active{background:var(--wine2)}
+.bkrow{display:flex;gap:9px;margin:14px 0 4px}
+.bkbtn{flex:1;background:#fffdf8;border:1.5px solid var(--gold);color:var(--wine);font-weight:700;font-size:13px;padding:11px;border-radius:12px;cursor:pointer}
+.bkbtn:active{background:#f7efdc}
+.bknote{font-size:11.5px;color:var(--muted);line-height:1.4;margin:2px 0 10px;text-align:center}
+.legal-ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:10000;display:flex;align-items:center;justify-content:center;padding:18px}
+.legal-box{background:#fff;border-radius:16px;max-width:440px;width:100%;max-height:80vh;overflow-y:auto;padding:24px 22px;position:relative}
+.legal-box h3{color:var(--wine);font-size:17px;margin:16px 0 6px}
+.legal-box h3:first-of-type{margin-top:0}
+.legal-box p{font-size:13px;color:#3a3026;line-height:1.55;margin:0 0 6px}
+.legal-x{position:absolute;top:12px;right:12px;background:#f0e7d4;border:none;width:30px;height:30px;border-radius:50%;font-size:15px;cursor:pointer;color:var(--wine)}
+/* ===== Accesibilidad: panel ===== */
+#a11yFab{position:fixed;left:16px;bottom:16px;width:52px;height:52px;border:none;border-radius:50%;background:var(--wine);color:#fff;font-size:23px;box-shadow:0 6px 18px rgba(0,0,0,.28);cursor:pointer;z-index:9999;display:flex;align-items:center;justify-content:center}
+#a11yFab:active{transform:scale(.94)}
+.a11y-ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:10001;display:flex;align-items:flex-end;justify-content:center}
+.a11y-box{background:var(--card);color:var(--ink);width:100%;max-width:480px;border-radius:20px 20px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom));position:relative;box-shadow:0 -8px 30px rgba(0,0,0,.35)}
+.a11y-x{position:absolute;top:14px;right:14px;background:rgba(127,127,127,.2);border:none;width:30px;height:30px;border-radius:50%;font-size:15px;cursor:pointer;color:var(--ink)}
+.a11y-title{color:var(--wine);font-size:21px;font-weight:800;margin-bottom:16px}
+.a11y-grp{margin-bottom:18px}
+.a11y-lab{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.a11y-hint{font-size:11.5px;color:var(--muted);font-weight:500}
+.a11y-seg{display:flex;gap:6px}
+.a11y-seg button{flex:1;background:transparent;border:1.5px solid var(--cb2);color:var(--ink);border-radius:11px;padding:11px 6px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.a11y-seg button.on{background:var(--wine);border-color:var(--wine);color:#fff}
+.a11y-row{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:2px}
+.a11y-tog{width:50px;height:30px;border-radius:99px;border:none;background:#b9b3a6;position:relative;cursor:pointer;flex-shrink:0;transition:background .2s}
+.a11y-tog span{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .2s}
+.a11y-tog.on{background:var(--wine)}
+.a11y-tog.on span{left:23px}
+body.reduce-motion *,body.reduce-motion *::before,body.reduce-motion *::after{transition:none !important;animation:none !important;scroll-behavior:auto !important}
+/* ===== Modo oscuro ===== */
+body.dark{--wine:#cf463b;--wine2:#b23529;--gold:#d8b25e;--gold2:#caa24a;--bg:#17120f;--card:#241d17;--ink:#ece4d8;--muted:#a39a8c;--cb:#3c332a;--cb2:#4d4338;--lockbg:#201a14;--navy:#0e0506;--cream:#f1d9b0;--ok:#52b06e;--okbg:#16301f;--okb:#2c5a3a;--no:#e0726a;--nobg:#3a1f1c;--nob:#5a332e;background:var(--bg);color:var(--ink)}
+body.dark .tabbar,body.dark .course,body.dark .course.open,body.dark .seg button,body.dark .slot,body.dark .test,body.dark .icard,body.dark .pcard,body.dark .yearcard,body.dark .yrbtn,body.dark .chip,body.dark .bkbtn,body.dark .ilink,body.dark .solbox,body.dark .mcard,body.dark .ecard,body.dark .inscbox,body.dark .tile,body.dark .cmsg.bot,body.dark .chatpanel,body.dark .chatchips,body.dark .chatinput,body.dark .legal-box,body.dark .sel2,body.dark .pctrls select,body.dark .erow input,body.dark .chatinput input{background:var(--card)}
+body.dark .tabbar,body.dark .legend,body.dark .yearcard,body.dark .erow input,body.dark .tile,body.dark .ihd,body.dark .icard,body.dark .ecard,body.dark .mcard,body.dark .inscbox,body.dark .solbox,body.dark .ilink,body.dark .bkbtn,body.dark .chatpanel,body.dark .cmsg.bot,body.dark .chatinput input,body.dark .legal-box,body.dark .chatchips,body.dark .chatinput,body.dark .erow2,body.dark .svcrow,body.dark .tpre,body.dark .treq,body.dark .hwrap{border-color:var(--cb)}
+body.dark .cname,body.dark .tname,body.dark .mtitle,body.dark .iname,body.dark .svcn,body.dark .edates,body.dark .ecv,body.dark .iinfo,body.dark .soltext,body.dark .mtext,body.dark .svch,body.dark .th,body.dark .cycle b,body.dark .areas span,body.dark .cmsg.bot,body.dark .legal-box p,body.dark .edbig{color:var(--ink)}
+body.dark .lead,body.dark .msub,body.dark .pitem,body.dark .pre b,body.dark .icard p,body.dark .result .lab,body.dark .result .vd,body.dark .pcard .pm,body.dark .slot .sl,body.dark .test .in span,body.dark .test .dt span,body.dark .sumw,body.dark .legend span,body.dark .irole,body.dark .eniv,body.dark .boardhint,body.dark .elab{color:var(--muted)}
+body.dark .result,body.dark .note,body.dark .example,body.dark .presum,body.dark .disc,body.dark .ecol,body.dark .hortbl td.cell{background:#2c2314;border-color:#473a1e}
+body.dark .note,body.dark .example,body.dark .presum,body.dark .disc,body.dark .disc b,body.dark .enote,body.dark .pcard .pt{color:#e3cd91}
+body.dark .pinfo{background:#16243a;border-color:#284268;color:#a8c3ea}
+body.dark .tcont,body.dark .hortbl{background:#1f1913}
+body.dark .hortbl td.tm2{background:#241d17;color:var(--muted)}
+body.dark .chatmsgs{background:#1d1813}
+body.dark .pbar{background:#2c2820}
+body.dark .chip{color:#d4c6a6}
+body.dark .seg button{color:var(--gold2)}
+body.dark .tile.lock{background:#211b15;border-color:#352c20}
+body.dark .erow input,body.dark .chatinput input,body.dark .sel2,body.dark .pctrls select{color:var(--ink)}
+body.dark .resetbtn{border-color:#5a332e}
+body.dark .lvl.ystart{border-left-color:#3c332a}
+body.dark .legal-x{background:rgba(127,127,127,.2);color:var(--ink)}
+body.dark .cchip.back{border-color:#4d4338;color:var(--muted)}
+body.dark .mallaSwitch .mSwBtn{border-color:#4d4338;color:var(--muted)}
+body.dark .mallaSwitch .mSwBtn:hover{background:rgba(127,127,127,.12)}
+body.dark .mallaSwitch .mSwBtn.na{background:rgba(199,154,62,.14);border-color:#6b5726;color:#e0c88f}
+body.dark .mallaNote{background:rgba(199,154,62,.12);border-color:#5a4a2a;color:#dcc48a}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.tile:focus-visible{outline-offset:-1px}
+
+/* selector de malla (Avance Curricular) */
+.mallaSwitch{display:flex;justify-content:flex-end;margin:10px 0 2px}
+.mallaSwitch .mSwBtn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid #d8cfba;color:#7a6f57;font:inherit;font-weight:600;font-size:.78rem;padding:6px 12px;border-radius:999px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s,border-color .15s,color .15s}
+.mallaSwitch .mSwBtn:hover{background:#f3efe6}
+.mallaSwitch .mSwBtn.na{background:#fbf4e9;border-color:var(--gold,#c79a3e);color:#8a6d1f;font-weight:700}
+.mallaNote{font-size:.78rem;color:#8a6d1f;background:#fbf4e9;border:1px solid #efe0c4;border-radius:10px;padding:8px 11px;margin:6px 0 12px;line-height:1.4}
+</style>
+</head>
+<body>
+<div class="brandbar">
+  <div class="brandlogo" id="brandLogo"><img src="data:image/png;base64,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" alt="Centro de Estudiantes Derecho"></div>
+  <div class="brandtxt"><b id="brandName">UApp</b><span>Centro de Estudiantes · Derecho · UA Temuco</span></div>
+</div>
+<div class="tabbar">
+  <button class="tab active" data-tab="mural">Mural</button>
+  <button class="tab" data-tab="malla">Avance Curricular</button>
+  <button class="tab" data-tab="calc">Simulador de Notas</button>
+  <button class="tab" data-tab="hor">Horarios</button>
+  <button class="tab" data-tab="plan">Planificador</button>
+  <button class="tab" data-tab="pru">Pruebas</button>
+  <button class="tab" data-tab="info">Info</button>
+  <button class="tab" data-tab="solic">Solicitudes</button>
+</div>
+
+<section id="mural"><div class="wrap">
+  <div class="mh serif">Mural</div>
+  <div class="msub">Avisos y fechas importantes del momento.</div>
+  <div id="muralList"></div>
+</div></section>
+<section id="malla" style="display:none">
+  <div class="wrap">
+    <h1 class="h1 serif">Mi Avance Curricular</h1>
+    <p class="lead">Toda tu carrera en un tablero, nivel por nivel. Tu progreso se guarda en este dispositivo.</p>
+    <div class="mallaSwitch">
+      <button type="button" class="mSwBtn" id="mallaToggle" aria-label="Cambiar de malla"></button>
+    </div>
+    <p class="mallaNote" id="mallaNote"></p>
+    <p class="cycle"><b>Toca un ramo:</b> Disponible → Aprobado → Reprobado. Los bloqueados muestran qué les falta.</p>
+    <div class="seal">
+      <svg class="ringsvg" viewBox="0 0 120 120"><circle class="ring-track" cx="60" cy="60" r="54"/><circle class="ring-prog" id="ring" cx="60" cy="60" r="54"/></svg>
+      <div class="ring-center"><div class="ring-pct" id="pct">0%</div><div class="ring-sub" id="pcsub">0 de 55 ramos</div></div>
+    </div>
+    <div class="legend">
+      <span><i class="lg" style="background:#f3efe6;border-color:#d8cfba"></i>BLOQUEADO</span>
+      <span><i class="lg" style="background:#fffdf8;border-color:#d8c9ab"></i>DISPONIBLE</span>
+      <span><i class="lg" style="background:#1f6b3a;border-color:#175a30"></i>APROBADO</span>
+      <span><i class="lg" style="background:#8b0c0c;border-color:#6c0909"></i>REPROBADO</span>
+    </div>
+    <div class="areas">
+      <span><i class="adot" style="background:var(--civil)"></i>DERECHO CIVIL</span>
+      <span><i class="adot" style="background:var(--proc)"></i>DERECHO PROCESAL</span>
+      <span><i class="adot" style="background:var(--penal)"></i>DERECHO PENAL</span>
+    </div>
+    <p class="boardhint">Desliza para recorrer los niveles →</p>
+    <div id="years" class="board"></div>
+    <div class="bkrow">
+      <button class="bkbtn" id="bkExp">⬇️ Respaldar mi avance</button>
+      <button class="bkbtn" id="bkImp">⬆️ Restaurar respaldo</button>
+    </div>
+    <p class="bknote">Tu avance se guarda solo en este dispositivo. Respáldalo para no perderlo si cambias de teléfono o limpias el navegador.</p>
+    <input type="file" id="bkFile" accept="application/json,.json" style="display:none">
+    <button class="resetbtn" id="reset">🔄 Reiniciar todo mi progreso</button>
+  </div>
+</section>
+
+<section id="calc" style="display:none">
+  <div class="toprule"></div>
+  <div class="wrap">
+    <h1 class="h1 serif">Simulador de Notas</h1>
+    <p class="lead">Calcula tu promedio con los estándares de la carrera de Derecho.</p>
+    <div class="disc">⚠️ Herramienta de apoyo <b>referencial</b>, no oficial. Confirma tus notas y ponderaciones con tu profesor, el syllabus y Registro Curricular.</div>
+    <div class="note">Escribe las notas en formato <b>10 a 70</b> (10 = 1,0 · 55 = 5,5 · 70 = 7,0). Aprobar: 40 · Examen: 35. El promedio se muestra en escala <b>1,0 a 7,0</b>. No aplica a talleres. Elige el tipo de ramo:</div>
+    <div class="seg" id="yearSeg"><button data-m="first" class="on">1er año · 70/30</button><button data-m="upper">2º año en adelante · 90/10</button></div>
+    <div class="tablehead"><span>EVALUACIÓN</span><span class="c">PORCENTAJE</span><span class="c">NOTA (10–70)</span></div>
+    <div id="evals"></div>
+    <button class="calcn" id="calcBtn" style="width:100%;margin-top:2px">CALCULAR RESULTADO</button>
+    <div class="result">
+      <div class="lab">Tu promedio final estimado es:</div>
+      <div class="gaugewrap">
+        <svg class="gauge" viewBox="0 0 200 118">
+          <path class="gz gz-r" d="M20,100 A80,80 0 0 1 79.3,22.7"/>
+          <path class="gz gz-a" d="M79.3,22.7 A80,80 0 0 1 100,20"/>
+          <path class="gz gz-g" d="M100,20 A80,80 0 0 1 180,100"/>
+          <line class="needle" id="needle" x1="100" y1="100" x2="20" y2="100"/>
+          <circle class="hub" cx="100" cy="100" r="6"/>
+          <text class="gtick" x="16" y="114">1,0</text>
+          <text class="gtick" x="100" y="13" text-anchor="middle">4,0</text>
+          <text class="gtick" x="184" y="114" text-anchor="end">7,0</text>
+        </svg>
+        <div class="big" id="rBig">—</div>
+      </div>
+      <div class="vt" id="rVt"></div>
+      <div class="vd" id="rVd">Ingresa tus evaluaciones para calcular.</div>
+      <div class="sumw" id="sumW"></div>
+    </div>
+    <button class="cta" id="toMalla">Revisa tu avance curricular aquí 📊</button>
+  </div>
+</section>
+
+<section id="hor" style="display:none"><div class="wrap">
+  <div class="mh serif">Horario del trimestre</div><div class="msub">Otoño 2026 · 2º trimestre.</div>
+  <div class="seg" id="horSeg" style="max-width:560px">
+    <button class="on" data-h="all">Todos los horarios</button>
+    <button data-h="mine">Mi horario</button>
+  </div>
+  <p class="boardhint" id="horHint">Toca los ramos que inscribiste para marcarlos. Luego revisa "Mi horario" y se reflejarán en Mis pruebas.</p>
+  <div id="horList"></div>
+</div></section>
+
+<section id="plan" style="display:none"><div class="wrap">
+  <div class="mh serif">Planificador de carga</div>
+  <div class="msub">Cruza tu avance con la oferta del trimestre y propone qué tomar, sin choques de horario.</div>
+  <div class="disc">⚠️ Propuesta <b>referencial</b>, no es una inscripción oficial. Confirma siempre con tu malla y con Registro Curricular antes de inscribir.</div>
+  <div class="note">Según el <b>Reglamento (Art. 17/19)</b> y la <b>Circular N°04/2026</b>: primero los ramos <b>pendientes del nivel más bajo</b> y los <b>reprobados</b> ofertados (obligatorios) · cumplir <b>prerrequisitos</b> · <b>sin exceso de niveles</b> (hasta 4 consecutivos) · <b>sin coincidencia horaria</b> · máx. <b>30 créditos</b>. El Seminario de Investigación lo inscribe la Carrera. Los ramos de semestre alterno (Plan No Ajustado) solo aparecen si los reprobaste. Marca tu avance en <b>Avance Curricular</b>.</div>
+  <button class="calcn" id="planBtn" style="width:100%">PROPONER MI CARGA</button>
+  <div id="planOut" style="margin-top:6px"></div>
+</div></section>
+
+<section id="pru" style="display:none"><div class="wrap">
+  <div class="mh serif">Calendario de pruebas</div>
+  <div class="msub">Otoño 2026 · 2º trimestre · solemnes y exámenes finales.</div>
+  <div class="seg" id="pruSeg" style="max-width:560px">
+    <button class="on" data-m="all">Todas las pruebas</button>
+    <button data-m="mine">Mis ramos inscritos</button>
+  </div>
+  <div id="inscBox" class="inscbox" style="display:none"></div>
+  <div id="pruList"></div>
+  <div class="pinfo" style="margin-top:14px"><b>Fechas relevantes del trimestre.</b> Inicio de clases: 1 jun · Fin del período lectivo: 28 ago · Receso: 13–17 jul · Feriados: 29 jun, 16 jul, 15 ago · Evaluaciones finales: 31 ago – 2 sep.</div>
+  <p class="note">Fechas oficiales de la Carrera (TECH · 2º trimestre 2026). Algunas asignaturas tienen distinta fecha según sección (S1/S2/S3); revisa la tuya. La actividad acumulativa no tiene fecha fija.</p>
+</div></section>
+
+<section id="info" style="display:none"><div class="wrap">
+  <div class="mh serif">Información</div>
+  <div class="msub">Autoridades, servicios y enlaces de la Facultad de Derecho · Sede Temuco.</div>
+
+  <div class="ihd">Tu Centro de Estudiantes</div>
+  <a class="ilink" href="https://www.instagram.com/ccee.derechouatco" target="_blank" rel="noopener">📸 Síguenos en Instagram · @ccee.derechouatco</a>
+  <a class="ilink" href="mailto:cceedereua@gmail.com">✉️ Escríbenos · cceedereua@gmail.com</a>
+
+  <div class="ihd">Apoyo y bienestar</div>
+  <a class="ilink" href="https://www.uautonoma.cl/equidad-de-genero-e-inclusion/" target="_blank" rel="noopener">🛡️ Equidad de Género e Inclusión — reportar una situación</a>
+  <a class="ilink" href="https://forms.office.com/r/GbFXbBqkV0" target="_blank" rel="noopener">🧠 Apoyo psicopedagógico — solicitar (formulario)</a>
+
+  <div class="ihd">Autoridades y contacto</div>
+  <div class="icard">
+    <div class="iname">Valeska Rivas Arias</div>
+    <div class="irole">Vicedecana de la Facultad de Derecho · Directora Sede Temuco</div>
+    <a class="imail" href="mailto:valeska.rivas@uautonoma.cl">valeska.rivas@uautonoma.cl</a>
+  </div>
+  <div class="icard">
+    <div class="iname">Francisca Game Musante</div>
+    <div class="irole">Secretaria académica</div>
+    <a class="imail" href="mailto:francisca.game@uautonoma.cl">francisca.game@uautonoma.cl</a>
+  </div>
+  <div class="icard">
+    <div class="iname">Fernando Bravo Alarcón</div>
+    <div class="irole">Coordinador vespertino</div>
+    <a class="imail" href="mailto:fernando.bravo@uautonoma.cl">fernando.bravo@uautonoma.cl</a>
+  </div>
+  <div class="icard">
+    <div class="iname">Daniela Mella Tapia</div>
+    <div class="irole">Secretaria Administrativa</div>
+    <a class="imail" href="mailto:derecho.temuco01@cloud.uautonoma.cl">derecho.temuco01@cloud.uautonoma.cl</a>
+    <a class="imail" href="tel:+56452895078">+56 45 289 5078</a>
+  </div>
+
+  <div class="ihd">Enlaces útiles</div>
+  <a class="ilink" href="https://www.uautonoma.cl/content/uploads/2025/11/Calendario-Academico-2026.pdf" target="_blank" rel="noopener">📅 Calendario académico 2026</a>
+  <a class="ilink" href="https://www.uautonoma.cl/experiencia-ua/beneficios-y-apoyo-estudiantil/" target="_blank" rel="noopener">🎓 Beneficios y apoyo estudiantil</a>
+
+  <div class="ihd">Servicios</div>
+  <div class="icard">
+    <div class="iname">Registro Curricular</div>
+    <div class="iinfo"><b>Ubicación:</b> Edificio Registro Curricular, Sector Sur.</div>
+    <div class="iinfo"><b>Horario:</b> Lun a Jue 08:30–13:30 y 15:00–18:30 · Vie 08:30–13:30 y 15:00–18:00</div>
+    <a class="imail" href="mailto:registrocurriculartco@uautonoma.cl">registrocurriculartco@uautonoma.cl</a>
+  </div>
+  <div class="icard">
+    <div class="iname">Sala de Primeros Auxilios</div>
+    <div class="iinfo"><b>Ubicación:</b> Edificio L, piso 1.</div>
+    <div class="iinfo"><b>Horario:</b> Lun a Vie 08:30–22:00 · Sáb 08:30–16:00</div>
+    <a class="imail" href="mailto:primerosauxilios.temuco@cloud.uautonoma.cl">primerosauxilios.temuco@cloud.uautonoma.cl</a>
+    <a class="imail" href="tel:+56452891242">+56 45 289 1242</a>
+  </div>
+  <div class="icard">
+    <div class="iname">Finanzas</div>
+    <div class="iinfo"><b>Horario:</b> Lun a Jue 08:00–13:15 y 15:00–18:15 · Vie 08:00–13:15 y 15:00–17:45 · Miércoles hasta las 20:00</div>
+    <a class="imail" href="mailto:finanzas.temuco@uautonoma.cl">finanzas.temuco@uautonoma.cl</a>
+    <a class="imail" href="tel:+56452895244">+56 45 289 5244</a>
+    <a class="imail" href="tel:+56452895245">+56 45 289 5245</a>
+    <a class="imail" href="tel:+56452895051">+56 45 289 5051</a>
+  </div>
+
+  <div class="ihd">Horarios de servicios · Sede Temuco</div>
+  <div class="icard">
+    <div class="svcrow"><span class="svcn">Registro Curricular</span><span class="svch">L–J 08:30–13:30 y 15:00–18:30<br>Vie 08:30–13:30 y 15:00–18:00</span></div>
+    <div class="svcrow"><span class="svcn">Biblioteca</span><span class="svch">08:00–22:00 · Sáb 09:00–16:00</span></div>
+    <div class="svcrow"><span class="svcn">Coliseo</span><span class="svch">07:00–21:00 (*)</span></div>
+    <div class="svcrow"><span class="svcn">Experiencia UA</span><span class="svch">08:30–21:00</span></div>
+    <div class="svcrow"><span class="svcn">Finanzas</span><span class="svch">L–J 08:00–13:15 y 15:00–18:15<br>Vie 08:00–13:15 y 15:00–17:45 · Mié hasta 20:00</span></div>
+    <div class="svcrow"><span class="svcn">Fotocopiadora</span><span class="svch">09:00–13:30 y 15:00–20:30</span></div>
+    <div class="svcrow"><span class="svcn">Cafetería CIS</span><span class="svch">08:00–20:00 · Sáb 08:00–17:00</span></div>
+    <div class="svcrow"><span class="svcn">Cafetería Gaudí</span><span class="svch">09:00–22:00 (*)</span></div>
+    <div class="svcrow"><span class="svcn">Cafetería Snack</span><span class="svch">08:00–17:00 (*)</span></div>
+    <div class="svcrow"><span class="svcn">Casino</span><span class="svch">08:00–21:30 (*)</span></div>
+  </div>
+  <p class="note">(*) Horario provisorio o sujeto a ajuste. Fuente: Horarios de Servicios UA · Sede Temuco.</p>
+</div></section>
+
+<section id="solic" style="display:none"><div class="wrap">
+  <div class="mh serif">Solicitudes</div>
+  <div class="msub">¿Necesitas hacer una petición, consulta o presentar un caso al Centro de Estudiantes? Este es el canal.</div>
+  <div class="solbox">
+    <div class="soltitle serif">📨 Formulario de solicitudes</div>
+    <p class="soltext">Envía aquí tus peticiones, consultas o casos al Centro de Estudiantes de Derecho. Lo revisamos y te respondemos lo antes posible.</p>
+    <a class="solbtn" href="https://forms.office.com/r/FXArxG0RTW" target="_blank" rel="noopener">Hacer una solicitud →</a>
+  </div>
+  <p class="note">También puedes escribirnos por Instagram <b>@ccee.derechouatco</b> o al correo <b>cceedereua@gmail.com</b>.</p>
+</div></section>
+
+<div id="legalModal" class="legal-ov" style="display:none">
+  <div class="legal-box">
+    <button class="legal-x" id="legalX" aria-label="Cerrar">✕</button>
+    <h3 class="serif">Privacidad</h3>
+    <p>UApp es una herramienta gratuita creada por el Centro de Estudiantes de Derecho. Tu avance, notas y ramos inscritos se guardan <b>únicamente en este dispositivo</b> (en el navegador): no se envían a ningún servidor ni los vemos nosotros, y no recopilamos datos personales. Los formularios externos (opinión y solicitudes) son de Google y Microsoft y se rigen por sus propias políticas.</p>
+    <h3 class="serif">Términos de uso</h3>
+    <p>UApp es una <b>herramienta de apoyo referencial</b> hecha por estudiantes; no es un sistema oficial de la Universidad. La información (fechas, horarios, calendario, oferta de ramos y reglamento) puede cambiar: confirma siempre con las fuentes oficiales (Registro Curricular y la Dirección de Carrera) antes de tomar decisiones. El uso de la app es de tu responsabilidad.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="fn serif">Derecho · Universidad Autónoma de Chile</div>
+  <p class="motto serif">«Tu voz, nuestra causa»</p>
+  <a class="fbk" href="https://forms.gle/Zo5XL1Pmmv2sGMtm8" target="_blank" rel="noopener">💬 Danos tu opinión</a>
+  <p class="sm">Una herramienta del <b>Centro de Estudiantes de Derecho</b> · UA Temuco</p>
+  <p class="sm" style="margin-top:8px"><a href="javascript:void(0)" id="openLegal">Términos y Privacidad</a></p>
+</footer>
+
+<button id="chatFab" aria-label="Abrir preguntas frecuentes">💬</button>
+<div id="chatPanel" class="chatpanel" style="display:none">
+  <div class="chathead">
+    <div class="chatname serif">Dona <span class="ia">Tech</span></div>
+    <div class="chatsub">Asistente de preguntas frecuentes</div>
+    <button id="chatClose" aria-label="Cerrar">✕</button>
+  </div>
+  <div id="chatMsgs" class="chatmsgs"></div>
+  <div id="chatChips" class="chatchips"></div>
+  <div class="chatinput">
+    <input id="chatIn" type="text" placeholder="Escribe tu pregunta…" autocomplete="off">
+    <button id="chatSend" aria-label="Enviar">➤</button>
+  </div>
+</div>
+
+<button id="a11yFab" aria-label="Accesibilidad"><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="3.7" r="1.7" fill="#fff" stroke="none"/><path d="M12 6.5v6.5M5.5 9h13M12 13l-3 7.3M12 13l3 7.3"/></svg></button>
+<div id="a11yPanel" class="a11y-ov" style="display:none">
+  <div class="a11y-box">
+    <button class="a11y-x" id="a11yX" aria-label="Cerrar">✕</button>
+    <div class="a11y-title serif">Accesibilidad</div>
+    <div class="a11y-grp">
+      <div class="a11y-lab">Tema</div>
+      <div class="a11y-seg" id="segTheme">
+        <button data-v="light">Claro</button>
+        <button data-v="dark">Oscuro</button>
+        <button data-v="auto">Automático</button>
+      </div>
+    </div>
+    <div class="a11y-grp">
+      <div class="a11y-lab">Tamaño de letra</div>
+      <div class="a11y-seg" id="segFont">
+        <button data-v="0.9">A−</button>
+        <button data-v="1">A</button>
+        <button data-v="1.15">A+</button>
+        <button data-v="1.3">A++</button>
+      </div>
+    </div>
+    <div class="a11y-grp a11y-row">
+      <div><div class="a11y-lab" style="margin-bottom:2px">Reducir animaciones</div><div class="a11y-hint">Menos movimiento en la app</div></div>
+      <button class="a11y-tog" id="togMotion" role="switch" aria-checked="false"><span></span></button>
+    </div>
+  </div>
+</div>
+
+<script>
+const COURSES=[
+ {id:1,n:"Historia del Derecho",t:1,a:"Histórico",p:[]},{id:2,n:"Derecho Político",t:1,a:"Constitucional",p:[]},
+ {id:3,n:"Introducción al Derecho",t:1,a:"Fundamentos",p:[]},{id:4,n:"Electivo de Comunicación",t:1,a:"Electivo",p:[],tag:"fg"},
+ {id:5,n:"Historia Institucional de Chile",t:2,a:"Histórico",p:[1]},{id:6,n:"Historia y Ev. de las Instituciones Civiles",t:2,a:"Civil",p:[]},
+ {id:7,n:"Teoría de la Ley y las Personas",t:2,a:"Civil",p:[]},{id:8,n:"Electivo de Comunicación II",t:2,a:"Electivo",p:[],tag:"fg"},
+ {id:9,n:"Fundamentos Filosóficos del Derecho",t:3,a:"Histórico",p:[]},{id:10,n:"Introducción a la Economía",t:3,a:"Económico",p:[]},
+ {id:11,n:"Teoría Constitucional",t:3,a:"Constitucional",p:[2]},{id:12,n:"Argumentación Jurídica y Debate",t:3,a:"Taller",p:[],tag:"sp"},
+ {id:13,n:"Acto Jurídico",t:4,a:"Civil",p:[6]},{id:14,n:"Organización y Atribuciones de los Tribunales",t:4,a:"Procesal",p:[3]},
+ {id:15,n:"Teoría del Delito",t:4,a:"Penal",p:[3]},{id:16,n:"Negociación, Ética y Profesional",t:4,a:"Taller",p:[],tag:"sp"},
+ {id:17,n:"Teoría del Proceso",t:5,a:"Procesal",p:[]},{id:18,n:"Derecho Constitucional Orgánico",t:5,a:"Constitucional",p:[2]},
+ {id:19,n:"Teoría de la Reacción Penal",t:5,a:"Penal",p:[]},{id:20,n:"Electivo de Desarrollo del Pensamiento",t:5,a:"Electivo",p:[],tag:"fg"},
+ {id:21,n:"Bienes",t:6,a:"Civil",p:[6,7]},{id:22,n:"Derechos y Garantías Constitucionales",t:6,a:"Constitucional",p:[2,11]},
+ {id:23,n:"Derecho Internacional Público",t:6,a:"Constitucional",p:[11]},{id:24,n:"Taller de Integración I (Ev. Ciclo)",t:6,a:"Taller",p:[13,14],tag:"he"},
+ {id:25,n:"Teoría de las Obligaciones",t:7,a:"Civil",p:[13]},{id:26,n:"Procedimientos Civiles de Cognición",t:7,a:"Procesal",p:[17]},
+ {id:27,n:"Delitos en Particular I",t:7,a:"Penal",p:[19]},{id:28,n:"Fuentes de las Obligaciones",t:8,a:"Civil",p:[13]},
+ {id:29,n:"Derecho Individual del Trabajo",t:8,a:"Laboral",p:[22]},{id:30,n:"Delitos en Particular II",t:8,a:"Penal",p:[]},
+ {id:31,n:"Electivo de Desarrollo Personal",t:8,a:"Electivo",p:[],tag:"fg"},{id:32,n:"Procedimientos de Ejecución y Cautela",t:9,a:"Procesal",p:[17]},
+ {id:33,n:"Derecho Mercantil",t:9,a:"Comercial",p:[13,21]},{id:34,n:"Derecho Colectivo del Trabajo y Seg. Social",t:9,a:"Laboral",p:[]},
+ {id:35,n:"Electivo de Responsabilidad Social",t:9,a:"Electivo",p:[],tag:"fg"},{id:36,n:"Derecho de Familia",t:10,a:"Civil",p:[7]},
+ {id:37,n:"Responsabilidad Civil",t:10,a:"Civil",p:[25]},{id:38,n:"Derecho Societario",t:10,a:"Comercial",p:[25]},
+ {id:39,n:"Taller de Litigación",t:10,a:"Taller",p:[26],tag:"sp"},{id:40,n:"Derecho Sucesorio",t:11,a:"Civil",p:[7,8,13]},
+ {id:41,n:"Contratación Mercantil",t:11,a:"Comercial",p:[28]},{id:42,n:"Derecho Administrativo I",t:11,a:"Administrativo",p:[22]},
+ {id:43,n:"Derecho Procesal Penal",t:11,a:"Procesal",p:[26]},{id:44,n:"Procedimientos Especiales Orales",t:12,a:"Procesal",p:[20,26]},
+ {id:45,n:"Derecho Administrativo II",t:12,a:"Administrativo",p:[22]},{id:46,n:"Derecho Tributario I",t:12,a:"Tributario",p:[]},
+ {id:47,n:"Taller de Integración II (Ev. Ciclo)",t:12,a:"Taller",p:[24,37,39],tag:"he"},{id:48,n:"Optativo de Especialidad I",t:12,a:"Electivo",p:[],tag:"opt"},
+ {id:49,n:"Reorg. y Liquidación Patrimonial",t:13,a:"Procesal",p:[28,38]},{id:50,n:"Recursos",t:13,a:"Procesal",p:[26]},
+ {id:51,n:"Seminario de Investigación Jurídica",t:13,a:"Taller",p:{upTo:35},tag:"he"},{id:52,n:"Derecho Tributario II",t:13,a:"Tributario",p:[]},
+ {id:53,n:"Optativo de Especialidad II",t:13,a:"Electivo",p:[],tag:"opt"},{id:54,n:"Taller de Integración III (Ev. Ciclo)",t:14,a:"Taller",p:{upTo:53},tag:"he"},
+ {id:55,n:"Clínica Jurídica (A+S)",t:14,a:"Taller",p:{upTo:45},tag:"he"}
+];
+const YEARS=[{y:1,t:[1,2,3]},{y:2,t:[4,5,6]},{y:3,t:[7,8,9]},{y:4,t:[10,11,12]},{y:5,t:[13,14]}];
+const byId=Object.fromEntries(COURSES.map(c=>[c.id,c]));
+const KEY="malla_derecho_v4";
+let state={};try{const s=localStorage.getItem(KEY);if(s)state=JSON.parse(s);}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+let insc={};try{const v=JSON.parse(localStorage.getItem("insc_sec_v1")||"{}");if(v&&typeof v==="object"&&!Array.isArray(v))insc=v;}catch(e){}
+function saveInsc(){try{localStorage.setItem("insc_sec_v1",JSON.stringify(insc));}catch(e){}}
+function keySec(k){const m=/s(\d)/.exec(k||"");return m?+m[1]:0;}
+function prereqIds(c){if(c.p&&c.p.upTo)return COURSES.filter(x=>x.t<=byId[c.p.upTo].t&&x.id!==c.id).map(x=>x.id);return c.p||[];}
+function isUnlocked(c){return prereqIds(c).every(id=>state[id]==="ok");}
+function statusOf(c){const s=state[c.id];if(s==="ok")return"ok";if(s==="no")return"no";return isUnlocked(c)?"open":"lock";}
+function cycle(c){const s=statusOf(c);if(s==="lock")return;if(s==="open")state[c.id]="ok";else if(s==="ok")state[c.id]="no";else delete state[c.id];save();render();}
+
+const ADOT={Civil:"var(--civil)",Procesal:"var(--proc)",Penal:"var(--penal)"};
+const TAGS={fg:'<span class="ctag fg">🌐 Formación General</span>',sp:'<span class="ctag sp">🔨 Simulación Práctica</span>',he:'<span class="ctag he">⭐ Hito de Egreso</span>'};
+function mark(ok){return ok?'<span class="yes">✓</span>':'<span class="nok">✗</span>';}
+function preHTML(c){
+  if(c.p&&c.p.upTo){const all=prereqIds(c).every(id=>state[id]==="ok");return `<div class="pre"><b>Prerrequisitos:</b><div class="pitem">• Todos los ramos hasta <i>${byId[c.p.upTo].n}</i> ${mark(all)}</div></div>`;}
+  const pre=c.p||[];
+  if(!pre.length)return `<div class="pre none">Sin pre-requisitos</div>`;
+  const items=pre.map(id=>`<div class="pitem">• ${byId[id].n} ${mark(state[id]==="ok")}</div>`).join("");
+  return `<div class="pre"><b>Prerrequisitos:</b>${items}</div>`;
+}
+const yearsEl=document.getElementById("years");
+function yearDone(Y){return COURSES.filter(c=>Y.t.includes(c.t)).every(c=>state[c.id]==="ok");}
+function toggleYear(Y){const ids=COURSES.filter(c=>Y.t.includes(c.t)).map(c=>c.id);const d=yearDone(Y);ids.forEach(id=>d?delete state[id]:state[id]="ok");save();render();}
+
+function preShort(c){
+  if(c.p&&c.p.upTo)return "Requiere: todo hasta "+byId[c.p.upTo].n;
+  const pre=c.p||[];if(!pre.length)return "Sin requisitos";
+  return "Requiere: "+pre.map(id=>byId[id].n).join(", ");
+}
+function render(){
+  yearsEl.innerHTML="";
+  YEARS.forEach((Y,yi)=>{
+    Y.t.forEach((t,ti)=>{
+      const col=document.createElement("div");
+      col.className="lvl"+(ti===0&&yi>0?" ystart":"");
+      const yb=ti===Y.t.length-1?`<button class="yrbtn${yearDone(Y)?' on':''}" data-y="${Y.y}">${yearDone(Y)?'↺ Quitar año':'✓ Aprobar año'}</button>`:"";
+      let h=`<div class="lvl-h"><div class="lvl-eyebrow">Año ${Y.y}</div><div class="lvl-num">Nivel ${t}</div>${yb}</div><div class="lvl-tiles">`;
+      COURSES.filter(c=>c.t===t).forEach(c=>{
+        const s=statusOf(c);
+        const area=ADOT[c.a]||"var(--muted)";
+        const lab=s==="ok"?"✓ Aprobado":s==="no"?"✗ Reprobado":s==="lock"?"🔒 Bloqueado":"○ Pendiente";
+        const aSt=s==="ok"?"aprobado":s==="no"?"reprobado":s==="lock"?("bloqueado. "+preShort(c)):"disponible";
+        const badge=c.tag==="he"?'<span class="tbadge" aria-hidden="true">⭐</span>':c.tag==="fg"?'<span class="tbadge" aria-hidden="true">🌐</span>':c.tag==="sp"?'<span class="tbadge" aria-hidden="true">🔨</span>':c.tag==="opt"?'<span class="tbadge" aria-hidden="true">＋</span>':"";
+        h+=`<div class="tile ${s}" data-id="${c.id}" role="button" tabindex="0" aria-label="${c.n}, ${aSt}"><span class="abar" style="background:${area}" aria-hidden="true"></span>${badge}<div class="tname">${c.n}</div><div class="tfoot"><span class="tstat">${lab}</span></div><div class="treq">${preShort(c)}</div></div>`;
+      });
+      h+=`</div>`;
+      col.innerHTML=h;
+      yearsEl.appendChild(col);
+    });
+  });
+  yearsEl.querySelectorAll(".tile").forEach(el=>{const c=byId[+el.dataset.id];const act=()=>{if(statusOf(c)!=="lock")cycle(c);};el.onclick=act;el.onkeydown=(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();act();}};});
+  yearsEl.querySelectorAll(".yrbtn").forEach(b=>{const Y=YEARS.find(y=>y.y==+b.dataset.y);b.onclick=(e)=>{e.stopPropagation();toggleYear(Y);};});
+  const total=COURSES.length, ap=COURSES.filter(c=>state[c.id]==="ok").length, pct=Math.round(ap/total*100);
+  const ring=document.getElementById("ring");if(ring)ring.style.strokeDashoffset=(2*Math.PI*54*(1-pct/100)).toFixed(2);
+  document.getElementById("pct").textContent=pct+"%";
+  document.getElementById("pcsub").textContent=ap+" de "+total+" ramos";
+}
+
+/* ===== Malla NO AJUSTADA (Plan 2017 · Res. 135/2017) — módulo aislado ===== */
+const COURSES_NA=[
+ {id:1,n:"Historia del Derecho",t:1,a:"Histórico",p:[]}, {id:2,n:"Historia y Ev. de las Instituciones Civiles",t:1,a:"Civil",p:[]},
+ {id:3,n:"Derecho Político",t:1,a:"Constitucional",p:[]}, {id:4,n:"Introducción a la Economía",t:1,a:"Económico",p:[]},
+ {id:5,n:"Introducción al Derecho",t:2,a:"Fundamentos",p:[]}, {id:6,n:"Electivo de Comunicación",t:2,a:"Electivo",p:[],tag:"fg"},
+ {id:7,n:"Historia Institucional de Chile",t:2,a:"Histórico",p:[]}, {id:8,n:"Fundamentos Filosóficos del Derecho",t:2,a:"Histórico",p:[]},
+ {id:9,n:"Teoría de la Ley y las Personas",t:3,a:"Civil",p:[5]}, {id:10,n:"Teoría Constitucional",t:3,a:"Constitucional",p:[3]},
+ {id:11,n:"Argumentación Jurídica y Debate",t:3,a:"Taller",p:[],tag:"sp"}, {id:12,n:"Electivo de Comunicación II",t:3,a:"Electivo",p:[],tag:"fg"},
+ {id:13,n:"Acto Jurídico",t:4,a:"Civil",p:[2,9]}, {id:14,n:"Organización y Atribuciones de los Tribunales",t:4,a:"Procesal",p:[9]},
+ {id:15,n:"Derecho Constitucional Orgánico",t:4,a:"Constitucional",p:[10]}, {id:16,n:"Teoría del Delito",t:4,a:"Penal",p:[9]},
+ {id:17,n:"Negociación y Ética Profesional",t:5,a:"Taller",p:[],tag:"sp"}, {id:18,n:"Electivo de Desarrollo del Pensamiento",t:5,a:"Electivo",p:[],tag:"fg"},
+ {id:19,n:"Bienes",t:5,a:"Civil",p:[13]}, {id:20,n:"Teoría del Proceso",t:5,a:"Procesal",p:[14]},
+ {id:21,n:"Derechos y Garantías Constitucionales (Ev. Ciclo)",t:6,a:"Constitucional",p:[13,14,15],tag:"he"}, {id:22,n:"Derecho Internacional Público",t:6,a:"Constitucional",p:[13,15]},
+ {id:23,n:"Teoría de la Reacción Penal",t:6,a:"Penal",p:[16]}, {id:24,n:"Electivo de Desarrollo Personal",t:6,a:"Electivo",p:[],tag:"fg"},
+ {id:25,n:"Teoría de las Obligaciones",t:7,a:"Civil",p:[19,21]}, {id:26,n:"Procedimientos Civiles de Cognición",t:7,a:"Procesal",p:[20,21]},
+ {id:27,n:"Derecho Individual del Trabajo",t:7,a:"Laboral",p:[19,21]}, {id:28,n:"Delitos en Particular I",t:7,a:"Penal",p:[23]},
+ {id:29,n:"Redacción Forense",t:8,a:"Taller",p:[19,20],tag:"sp"}, {id:30,n:"Electivo de Ética",t:8,a:"Electivo",p:[],tag:"fg"},
+ {id:31,n:"Fuentes de las Obligaciones",t:8,a:"Civil",p:[25]}, {id:32,n:"Procedimientos de Ejecución y Cautela",t:8,a:"Procesal",p:[26]},
+ {id:33,n:"Derecho Económico",t:9,a:"Económico",p:[4,21]}, {id:34,n:"Derecho Colectivo del Trabajo y Seg. Social",t:9,a:"Laboral",p:[27]},
+ {id:35,n:"Delitos en Particular II",t:9,a:"Penal",p:[28]}, {id:36,n:"Derecho de Familia",t:10,a:"Civil",p:[31]},
+ {id:37,n:"Responsabilidad Civil",t:10,a:"Civil",p:[31]}, {id:38,n:"Introducción al Derecho Comercial",t:10,a:"Comercial",p:[25]},
+ {id:39,n:"Derecho Administrativo I",t:10,a:"Administrativo",p:[21]}, {id:40,n:"Derecho Procesal Penal",t:11,a:"Procesal",p:[32,35]},
+ {id:41,n:"Solución Alternativa de Conflictos",t:11,a:"Taller",p:[17],tag:"sp"}, {id:42,n:"Derecho Sucesorio",t:11,a:"Civil",p:[36]},
+ {id:43,n:"Procedimientos Especiales Orales (Ev. Ciclo)",t:12,a:"Procesal",p:[36,37,40,41],tag:"he"}, {id:44,n:"Derecho de Sociedades",t:11,a:"Comercial",p:[31,38]},
+ {id:45,n:"Derecho Administrativo II",t:12,a:"Administrativo",p:[39]}, {id:46,n:"Taller de Litigación",t:12,a:"Taller",p:[40],tag:"sp"},
+ {id:47,n:"Electivo de Responsabilidad Social",t:12,a:"Electivo",p:[],tag:"fg"}, {id:48,n:"Recursos",t:13,a:"Procesal",p:[43]},
+ {id:49,n:"Metodología de la Investigación Jurídica",t:13,a:"Taller",p:[43]}, {id:50,n:"Contratación Mercantil",t:13,a:"Comercial",p:[43,44]},
+ {id:51,n:"Derecho Tributario I",t:13,a:"Tributario",p:[33,43]}, {id:52,n:"Clínica Jurídica (A+S)",t:13,a:"Taller",p:[42,43],tag:"he"},
+ {id:53,n:"Optativo de Especialidad I",t:14,a:"Electivo",p:[42,43],tag:"opt"}, {id:54,n:"Optativo de Especialidad II",t:14,a:"Electivo",p:[43],tag:"opt"},
+ {id:55,n:"Seminario de Tesis",t:14,a:"Taller",p:[49],tag:"he"}, {id:56,n:"Reorganización y Liquidación Patrimonial",t:14,a:"Procesal",p:[43,50]},
+ {id:57,n:"Derecho Tributario II",t:14,a:"Tributario",p:[51]}, {id:58,n:"Taller de Litigación Avanzada (Ev. Ciclo)",t:14,a:"Taller",p:[43,46],tag:"he"}
+];
+const YEARS_NA=[{y:1,t:[1,2,3]},{y:2,t:[4,5,6]},{y:3,t:[7,8,9]},{y:4,t:[10,11,12]},{y:5,t:[13,14]}];
+const byId_NA=Object.fromEntries(COURSES_NA.map(c=>[c.id,c]));
+const KEY_NA="malla_noajustada_v1";
+let stateNA={};try{const s=localStorage.getItem(KEY_NA);if(s)stateNA=JSON.parse(s);}catch(e){}
+function saveNA(){try{localStorage.setItem(KEY_NA,JSON.stringify(stateNA));}catch(e){}}
+function isUnlockedNA(c){return (c.p||[]).every(id=>stateNA[id]==="ok");}
+function statusOfNA(c){const s=stateNA[c.id];if(s==="ok")return"ok";if(s==="no")return"no";return isUnlockedNA(c)?"open":"lock";}
+function cycleNA(c){const s=statusOfNA(c);if(s==="lock")return;if(s==="open")stateNA[c.id]="ok";else if(s==="ok")stateNA[c.id]="no";else delete stateNA[c.id];saveNA();renderNA();}
+function preShortNA(c){const pre=c.p||[];if(!pre.length)return "Sin requisitos";return "Requiere: "+pre.map(id=>byId_NA[id].n).join(", ");}
+function yearDoneNA(Y){return COURSES_NA.filter(c=>Y.t.includes(c.t)).every(c=>stateNA[c.id]==="ok");}
+function toggleYearNA(Y){const ids=COURSES_NA.filter(c=>Y.t.includes(c.t)).map(c=>c.id);const d=yearDoneNA(Y);ids.forEach(id=>d?delete stateNA[id]:stateNA[id]="ok");saveNA();renderNA();}
+function renderNA(){
+  yearsEl.innerHTML="";
+  YEARS_NA.forEach((Y,yi)=>{
+    Y.t.forEach((t,ti)=>{
+      const col=document.createElement("div");
+      col.className="lvl"+(ti===0&&yi>0?" ystart":"");
+      const yb=ti===Y.t.length-1?`<button class="yrbtn${yearDoneNA(Y)?' on':''}" data-y="${Y.y}">${yearDoneNA(Y)?'↺ Quitar año':'✓ Aprobar año'}</button>`:"";
+      let h=`<div class="lvl-h"><div class="lvl-eyebrow">Año ${Y.y}</div><div class="lvl-num">Nivel ${t}</div>${yb}</div><div class="lvl-tiles">`;
+      COURSES_NA.filter(c=>c.t===t).forEach(c=>{
+        const s=statusOfNA(c);
+        const area=ADOT[c.a]||"var(--muted)";
+        const lab=s==="ok"?"✓ Aprobado":s==="no"?"✗ Reprobado":s==="lock"?"🔒 Bloqueado":"○ Pendiente";
+        const aSt=s==="ok"?"aprobado":s==="no"?"reprobado":s==="lock"?("bloqueado. "+preShortNA(c)):"disponible";
+        const badge=c.tag==="he"?'<span class="tbadge" aria-hidden="true">⭐</span>':c.tag==="fg"?'<span class="tbadge" aria-hidden="true">🌐</span>':c.tag==="sp"?'<span class="tbadge" aria-hidden="true">🔨</span>':c.tag==="opt"?'<span class="tbadge" aria-hidden="true">＋</span>':"";
+        h+=`<div class="tile ${s}" data-id="${c.id}" role="button" tabindex="0" aria-label="${c.n}, ${aSt}"><span class="abar" style="background:${area}" aria-hidden="true"></span>${badge}<div class="tname">${c.n}</div><div class="tfoot"><span class="tstat">${lab}</span></div><div class="treq">${preShortNA(c)}</div></div>`;
+      });
+      h+=`</div>`;
+      col.innerHTML=h;
+      yearsEl.appendChild(col);
+    });
+  });
+  yearsEl.querySelectorAll(".tile").forEach(el=>{const c=byId_NA[+el.dataset.id];const act=()=>{if(statusOfNA(c)!=="lock")cycleNA(c);};el.onclick=act;el.onkeydown=(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();act();}};});
+  yearsEl.querySelectorAll(".yrbtn").forEach(b=>{const Y=YEARS_NA.find(y=>y.y==+b.dataset.y);b.onclick=(e)=>{e.stopPropagation();toggleYearNA(Y);};});
+  const total=COURSES_NA.length, ap=COURSES_NA.filter(c=>stateNA[c.id]==="ok").length, pct=Math.round(ap/total*100);
+  const ring=document.getElementById("ring");if(ring)ring.style.strokeDashoffset=(2*Math.PI*54*(1-pct/100)).toFixed(2);
+  document.getElementById("pct").textContent=pct+"%";
+  document.getElementById("pcsub").textContent=ap+" de "+total+" ramos";
+}
+let curMalla=(function(){try{return localStorage.getItem("malla_sel_v1")||"ajustada";}catch(e){return "ajustada";}})();
+function showMalla(sel){
+  curMalla=(sel==="noajustada")?"noajustada":"ajustada";
+  try{localStorage.setItem("malla_sel_v1",curMalla);}catch(e){}
+  const tgl=document.getElementById("mallaToggle");
+  if(tgl){
+    tgl.textContent=curMalla==="noajustada"?"← Volver a la malla vigente (2023)":"Ver malla no ajustada (2017)";
+    tgl.classList.toggle("na",curMalla==="noajustada");
+  }
+  const note=document.getElementById("mallaNote");
+  if(note){
+    if(curMalla==="noajustada"){note.style.display="";note.innerHTML="<b>Malla no ajustada · Plan 2017 (Res. 135/2017).</b> Solo para estudiantes de ese plan. Los <b>prerrequisitos son exactos</b>; la ubicación por trimestre es <b>referencial</b>.";}
+    else{note.style.display="none";note.innerHTML="";}
+  }
+  if(curMalla==="noajustada")renderNA();else render();
+}
+
+document.getElementById("reset").onclick=()=>{if(confirm("¿Reiniciar todo tu progreso?")){if(curMalla==="noajustada"){stateNA={};saveNA();renderNA();}else{state={};save();render();}}};
+
+const SECS=["mural","malla","calc","hor","plan","pru","info","solic"];
+function go(tab){document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===tab));SECS.forEach(s=>document.getElementById(s).style.display=s===tab?"":"none");if(tab==="plan")planPropose();if(tab==="hor")renderHorView(horMode);if(tab==="pru")renderPru(pruMode);if(tab==="mural")renderMural();window.scrollTo(0,0);}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>go(b.dataset.tab));
+document.getElementById("toMalla").onclick=()=>go("malla");
+
+/* Simulador */
+let yearMode="first";
+function tmpl(m){return m==="first"?[["Primera Solemne",35],["Segunda Solemne",35],["Trabajos en clases",30]]:[["Primera Solemne",45],["Segunda Solemne",45],["Trabajos en clases",10]];}
+let evals=tmpl("first").map(r=>({name:r[0],w:r[1],g:""}));
+const evalsEl=document.getElementById("evals"), yearSeg=document.getElementById("yearSeg");
+yearSeg.querySelectorAll("button").forEach(b=>b.onclick=()=>{yearMode=b.dataset.m;yearSeg.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));evals=tmpl(yearMode).map((r,i)=>({name:r[0],w:r[1],g:evals[i]?evals[i].g:""}));renderEvals();calc();});
+function badG(v){return v!==""&&!isNaN(v)&&(v<10||v>70);}
+function renderEvals(){evalsEl.innerHTML="";evals.forEach((e,i)=>{const r=document.createElement("div");r.className="erow";r.innerHTML=`<input value="${e.name}"><input class="c" type="number" step="1" value="${e.w}"><input class="c" type="text" inputmode="numeric" value="${e.g}" placeholder="10-70">`;const[n,w,g]=r.querySelectorAll("input");if(badG(e.g))g.style.borderColor="var(--no)";n.oninput=()=>e.name=n.value;w.oninput=()=>{e.w=parseFloat(w.value)||0;calc();};g.oninput=()=>{const v=g.value.trim().replace(",",".");e.g=(v===""||isNaN(parseFloat(v)))?"":parseFloat(v);g.style.borderColor=badG(e.g)?"var(--no)":"";calc();};evalsEl.appendChild(r);});}
+document.getElementById("calcBtn").onclick=calc;
+function setNeedle(v){const n=document.getElementById("needle");if(!n)return;if(v==null){n.setAttribute("x2","20");n.setAttribute("y2","100");return;}const f=Math.max(0,Math.min(1,(v-1)/6)),a=Math.PI*(1-f),r=68;n.setAttribute("x2",(100+r*Math.cos(a)).toFixed(1));n.setAttribute("y2",(100-r*Math.sin(a)).toFixed(1));}
+function calc(){
+  const sumW=evals.reduce((s,e)=>s+(e.w||0),0);
+  const g=evals.filter(e=>e.g!==""&&!isNaN(e.g)&&e.w>0), wg=g.reduce((s,e)=>s+e.w,0);
+  const big=document.getElementById("rBig"),vt=document.getElementById("rVt"),vd=document.getElementById("rVd"),sw=document.getElementById("sumW");
+  sw.textContent="Ponderación total: "+sumW+"%"+(sumW===100?" ✓":" (debería ser 100%)");
+  if(!g.length||!wg){big.textContent="—";vt.textContent="";vt.className="vt";vd.textContent="Ingresa tus notas para calcular.";setNeedle(null);return;}
+  if(evals.some(e=>badG(e.g))){big.textContent="—";vt.className="vt vr";vt.textContent="⚠️ Nota fuera de rango";vd.innerHTML="Las notas van de <b>10 a 70</b> (10 = 1,0 · 70 = 7,0). Corrige los valores marcados en rojo.";setNeedle(null);return;}
+  const pts=g.reduce((s,e)=>s+e.g*e.w,0), avg=pts/wg, rem=sumW-wg;
+  const avgR=Math.round(avg), to7=v=>(v/10).toFixed(1).replace(".",",");
+  big.textContent=to7(avgR)+(rem>0?" *":"");setNeedle(avgR/10);
+  if(rem>0){
+    const need=tg=>{const v=(tg*sumW-pts)/rem;return v<=10?"cualquier nota (asegurado)":v>70?"más de 70 (no alcanza)":String(Math.ceil(v));};
+    vt.className="vt";vt.textContent="🧮 Promedio parcial";
+    vd.innerHTML=`Llevas <b>${to7(avgR)}</b> con lo ingresado. En el ${rem}% que falta necesitas <b>${need(40)}</b> para aprobar (40) y <b>${need(35)}</b> para ir a examen de repetición (35).<br><span style="color:var(--sptx)">La nota que falta va en formato 10–70.</span>`;
+    return;
+  }
+  let t,d,cls;
+  if(avgR>=60){cls="vg";t="🏆 Excelencia jurídica";d="Alegato impecable. Esta nota habla por sí sola.";}
+  else if(avgR>=50){cls="vg";t="⚖️ Argumentos firmes";d="Buen resultado. Un paso seguro hacia la toga.";}
+  else if(avgR>=40){cls="vg";t="✅ Primer fallo a favor";d="Pasaste. Hay margen para crecer, pero el ramo ya es tuyo.";}
+  else if(avgR>=35){cls="vy";t="📝 Segunda instancia";d="La asignatura admite recurso: el examen. Llega listo a defender tu nota.";}
+  else{cls="vr";t="🔁 A reintentar";d="No es el final, es un nuevo juicio. La próxima, con mejores pruebas.";}
+  vt.className="vt "+cls;vt.textContent=t;vd.innerHTML=d;
+}
+
+/* Horarios Otoño 2026 · 2º trimestre (por nivel y sección) */
+const DIAS={L:"Lunes",M:"Martes",X:"Miércoles",J:"Jueves",V:"Viernes"};
+const BL=[["19:10","19:50"],["19:50","20:30"],["20:40","21:20"],["21:20","22:00"],["22:10","22:50"]];
+const HOR={
+ n2s1:{l:"1er año (Nivel 2) · Sección 1",s:[["L","19:10","21:20","Teoría de la Ley y las Personas","SH-32","Hernán Parada Sotomayor"],["M","19:10","20:30","Historia Institucional de Chile","SH-32","Mauricio Silva Kachele"],["M","20:40","22:00","Historia y Evolución de las Instituciones","SH-32","Jorge Reinoso Elgueda"],["X","19:10","21:20","Teoría de la Ley y las Personas","SH-32","Hernán Parada Sotomayor"],["J","19:10","20:30","Historia y Evolución de las Instituciones","SH-32","Jorge Reinoso Elgueda"],["J","20:40","22:00","Historia Institucional de Chile","SH-32","Mauricio Silva Kachele"],["V","19:10","21:20","Comunicación y Argumentación","—","—"]]},
+ n2s2:{l:"1er año (Nivel 2) · Sección 2",s:[["L","19:10","20:30","Historia Institucional de Chile","SH-33","Mauricio Silva Kachele"],["L","20:40","22:00","Teoría de la Ley y las Personas","SH-33","Carlos Manque Pérez"],["M","19:10","20:30","Historia y Evolución de las Instituciones","SH-33","Eliada Cid Sandoval"],["M","20:40","22:00","Teoría de la Ley y las Personas","SH-33","Carlos Manque Pérez"],["X","19:10","20:30","Historia y Evolución de las Instituciones","SH-33","Eliada Cid Sandoval"],["X","20:40","22:00","Teoría de la Ley y las Personas","SH-33","Carlos Manque Pérez"],["J","19:10","20:30","Historia Institucional de Chile","SH-33","Mauricio Silva Kachele"],["V","19:10","21:20","Comunicación y Argumentación","—","—"]]},
+ n2s3:{l:"1er año (Nivel 2) · Sección 3",s:[["L","19:10","22:00","Historia y Evolución de las Instituciones","SH-34","Jorge Roa Rioseco"],["M","19:10","22:00","Teoría de la Ley y las Personas","SH-34","Daniel Sánchez Carrasco"],["X","19:10","20:30","Teoría de la Ley y las Personas","SH-34","Daniel Sánchez Carrasco"],["J","19:10","22:00","Historia Institucional de Chile","SC-27","Jorge Reinoso Méndez"],["V","19:10","20:30","Comunicación y Argumentación","SC-27","—"]]},
+ n5s1:{l:"2º año (Nivel 5) · Sección 1",s:[["L","19:10","20:30","Teoría del Proceso","SH-41","Andrés Celedón Baeza"],["L","20:40","22:00","Teoría de la Reacción Penal","SH-41","Klaus Contreras Sierra"],["M","19:10","20:30","Teoría del Proceso","SH-41","Andrés Celedón Baeza"],["M","20:40","22:00","Derecho Constitucional Orgánico","SH-41","Sahady Espinoza Soto"],["X","19:50","22:00","Teoría de la Reacción Penal","SH-41","Klaus Contreras Sierra"],["J","19:10","20:30","Teoría del Proceso","—","Andrés Celedón Baeza"],["J","20:40","22:00","Derecho Constitucional Orgánico","—","Sahady Espinoza Soto"],["V","19:10","21:20","Aprendizaje Activo","—","—"]]},
+ n5s2:{l:"2º año (Nivel 5) · Sección 2",s:[["L","19:10","22:00","Teoría del Proceso","SH-42","Francisca Game Musante"],["M","19:10","20:30","Teoría del Proceso","SH-42","Francisca Game Musante"],["M","20:40","22:00","Teoría de la Reacción Penal","SH-42","Camila Fernández Rodríguez"],["X","19:10","22:00","Derecho Constitucional Orgánico","SH-42","Sergio Arévalo Waddington"],["J","19:10","21:20","Teoría de la Reacción Penal","—","Camila Fernández Rodríguez"],["V","19:10","21:20","Aprendizaje Activo","—","—"]]},
+ n8s1:{l:"3er año (Nivel 8) · Sección 1",s:[["L","19:10","22:00","Fuentes de las Obligaciones","SH-43","Daniel Sánchez Carrasco"],["M","19:10","22:00","Delitos en Particular II","SH-43","Fernando Cartes Sepúlveda"],["X","19:10","22:00","Derecho Individual del Trabajo","SH-43","Genoveva Gutiérrez Sepúlveda"],["J","19:10","20:30","Delitos en Particular II","—","Fernando Cartes Sepúlveda"],["J","20:40","22:00","Fuentes de las Obligaciones","—","Daniel Sánchez Carrasco"],["V","19:10","21:20","Desarrollo Personal y Plan de Vida","—","—"]]},
+ n8s2:{l:"3er año (Nivel 8) · Sección 2",s:[["L","19:10","22:00","Fuentes de las Obligaciones","TEC SH-22","Marcelo Neculmán Muñoz"],["M","19:10","22:00","Delitos en Particular II","mismo Sec 1","Fernando Cartes Sepúlveda"],["X","19:10","22:00","Derecho Individual del Trabajo","TEC SH-22","Cristián Larraguibel Aravena"],["J","19:10","20:30","Delitos en Particular II","mismo Sec 1","Fernando Cartes Sepúlveda"],["J","20:40","22:00","Fuentes de las Obligaciones","—","Marcelo Neculmán Muñoz"]]},
+ n8pna:{l:"3er año (Nivel 8) · Plan No Ajustado",s:[["V","19:10","21:20","Redacción Forense","—","Orlando Alarcón Iturriaga"]]},
+ n11s1:{l:"4º año (Nivel 11) · Plan Ajustado · Sec 1",s:[["L","19:10","22:00","Contratación Mercantil","SH-45","Jean Paul Thiers Thiers"],["M","19:10","20:30","Derecho Procesal Penal","SH-45","Reinaldo Osorio Ulloa"],["M","20:40","22:00","Derecho Administrativo I","SH-45","Roberto Contreras Eddinger"],["X","19:10","20:30","Derecho Sucesorio","TEC SH-23","Marcia Molina Pezoa"],["X","20:40","22:00","Derecho Administrativo I","TEC SH-23","Roberto Contreras Eddinger"],["J","19:10","21:20","Derecho Sucesorio","—","Marcia Molina Pezoa"],["V","19:10","22:00","Derecho Procesal Penal","—","Reinaldo Osorio Ulloa"]]},
+ n11pna:{l:"4º año (Nivel 11) · Plan No Ajustado",s:[["L","19:10","22:00","Derecho Sociedades","TEE SH-42","Felipe Maturana Ortiz"],["J","21:20","22:00","Derecho Sociedades","—","Felipe Maturana Ortiz"],["V","19:10","21:20","Responsabilidad Social e Innovación","—","—"]]},
+ n14pna:{l:"5º año (Nivel 14) · Plan No Ajustado",s:[["L","19:10","22:00","Recursos","SH-44","Francisco Ljubetic Romero"],["M","19:10","22:00","Optativo de Especialidad I","SH-44","Marcelo Neculmán Muñoz"],["X","19:10","20:30","Reorganización y Liquidación Patrimonial","SH-44","Gonzalo Meza Osses"],["X","20:40","22:00","Derecho Tributario I","SH-44","Roxana Obreque Espinoza"],["J","19:10","21:20","Derecho Tributario I","—","Roxana Obreque Espinoza"],["J","21:20","22:00","Recursos","SH-32","Francisco Ljubetic Romero"],["V","19:10","20:30","Reorganización y Liquidación Patrimonial","—","Gonzalo Meza Osses"]]},
+ n14s1:{l:"5º año (Nivel 14) · Plan Ajustado · Sec 1",s:[["L","19:10","22:00","Taller de Integración III","SC-35","Carlos Durán y Juan Castro"],["M","19:10","22:00","Taller de Integración III","TEC SH-22","Carlos Durán y Juan Castro"],["J","19:10","22:50","Seminario de Investigación Jurídica","—","Valeska Rivas Arias"],["V","19:10","22:00","Taller de Integración III","—","Carlos Durán y Juan Castro"]]},
+ n14s2:{l:"5º año (Nivel 14) · Plan Ajustado · Sec 2",s:[["J","19:10","22:50","Seminario de Investigación Jurídica","—","Francisca Game Musante"]]},
+ n1alt:{l:"1er año (Nivel 1) · Alterno · Sección 1",s:[["L","19:10","20:30","Introducción al Derecho","TEE SC-24","Carlos Manque Pérez"],["M","19:10","20:30","Introducción al Derecho","TEE SC-24","Carlos Manque Pérez"],["J","19:10","20:30","Introducción al Derecho","—","Carlos Manque Pérez"],["L","20:40","22:00","Historia del Derecho","TEE SH-11","Mauricio Silva Kachele"],["V","19:10","20:30","Historia del Derecho","—","Mauricio Silva Kachele"],["M","20:40","22:00","Derecho Político","TEE SC-24","Cristián Brito Valdebenito"],["X","20:40","22:00","Derecho Político","TEE SH-43","Cristián Brito Valdebenito"]]},
+ n7alt:{l:"3er año (Nivel 7) · Alterno · Sección 1",s:[["L","19:10","21:20","Procedimientos Civiles de Cognición","TEE SH-33","Felipe Núñez Méndez"],["X","19:10","21:20","Procedimientos Civiles de Cognición","TEA SH-34","Felipe Núñez Méndez"]]}
+};
+const horList=document.getElementById("horList");
+function buildTable(data,key,sel){
+  const idx=t=>BL.findIndex(b=>b[0]===t);
+  const endIdx=t=>{let e=0;BL.forEach((b,i)=>{if(b[0]<t)e=i;});return e;};
+  let maxRow=0;
+  const grid={};Object.keys(DIAS).forEach(d=>grid[d]=Array(BL.length).fill(null));
+  data.forEach(([d,ini,fin,ramo,sala,profe])=>{const a=idx(ini),b=endIdx(fin);if(a<0)return;maxRow=Math.max(maxRow,b);grid[d][a]={ramo,sala,profe,span:b-a+1};for(let k=a+1;k<=b;k++)grid[d][k]={cont:true};});
+  let h='<div class="hwrap"><table class="hortbl"><thead><tr><th class="th-h">Hora</th>';
+  Object.values(DIAS).forEach(n=>h+=`<th>${n}</th>`);
+  h+='</tr></thead><tbody>';
+  for(let i=0;i<=maxRow;i++){
+    h+=`<tr><td class="th-h tm2">${BL[i][0]}<br>${BL[i][1]}</td>`;
+    Object.keys(DIAS).forEach(d=>{const c=grid[d][i];if(c&&c.cont)return;if(c){const id=sel?OFER[c.ramo]:undefined;const selc=sel&&id!=null;const on=selc&&insc[id]===key;h+=`<td rowspan="${c.span}" class="cell${selc?' selc':''}${on?' selon':''}"${selc?` data-id="${id}" data-key="${key}"`:''}>${on?'<span class="selck">✓</span>':''}<span class="cr">${c.ramo}</span>${c.sala&&c.sala!=="—"?`<span class="cs">${c.sala}</span>`:""}${c.profe&&c.profe!=="—"?`<span class="cp">${c.profe}</span>`:""}</td>`;}else h+="<td></td>";});
+    h+="</tr>";
+  }
+  return h+"</tbody></table></div>";
+}
+let horMode="all";
+function renderAllHor(){
+  let h="";Object.keys(HOR).forEach(k=>{h+=`<div class="hgrp serif">${HOR[k].l}</div>`+buildTable(HOR[k].s,k,true);});
+  horList.innerHTML=h;
+  horList.querySelectorAll("td.selc").forEach(td=>td.onclick=()=>{const id=+td.dataset.id,key=td.dataset.key;if(insc[id]===key)delete insc[id];else insc[id]=key;saveInsc();renderAllHor();});
+}
+function renderMineHor(){
+  const ids=Object.keys(insc).map(Number);
+  if(!ids.length){horList.innerHTML=`<div class="pcard">Aún no marcas ramos. En <b>"Todos los horarios"</b> toca los ramos que inscribiste y aquí verás solo tu horario.</div>`;return;}
+  let ses=[];ids.forEach(id=>{const blk=HOR[insc[id]];if(!blk)return;blk.s.forEach(se=>{if(OFER[se[3]]===id)ses.push(se);});});
+  horList.innerHTML=`<div class="hgrp serif">Mi horario</div>`+buildTable(ses,null,false);
+}
+function renderHorView(mode){
+  horMode=mode;
+  document.querySelectorAll("#horSeg button").forEach(b=>b.classList.toggle("on",b.dataset.h===mode));
+  const hint=document.getElementById("horHint");if(hint)hint.style.display=mode==="all"?"":"none";
+  if(mode==="all")renderAllHor();else renderMineHor();
+}
+document.querySelectorAll("#horSeg button").forEach(b=>b.onclick=()=>renderHorView(b.dataset.h));
+
+/* Planificador de carga */
+const OFER={"Teoría de la Ley y las Personas":7,"Historia Institucional de Chile":5,"Historia y Evolución de las Instituciones":6,"Comunicación y Argumentación":8,"Teoría del Proceso":17,"Teoría de la Reacción Penal":19,"Derecho Constitucional Orgánico":18,"Aprendizaje Activo":20,"Fuentes de las Obligaciones":28,"Delitos en Particular II":30,"Derecho Individual del Trabajo":29,"Desarrollo Personal y Plan de Vida":31,"Contratación Mercantil":41,"Derecho Procesal Penal":43,"Derecho Sucesorio":40,"Derecho Administrativo I":42,"Derecho Sociedades":38,"Responsabilidad Social e Innovación":35,"Recursos":50,"Optativo de Especialidad I":48,"Reorganización y Liquidación Patrimonial":49,"Derecho Tributario I":46,"Taller de Integración III":54,"Seminario de Investigación Jurídica":51,"Redacción Forense":null,"Introducción al Derecho":3,"Historia del Derecho":1,"Derecho Político":2,"Procedimientos Civiles de Cognición":26};
+function planPropose(){
+  const out=document.getElementById("planOut");if(!out)return;
+  const maxDif=3, maxR=6;
+  const offById={};
+  Object.keys(HOR).forEach(k=>{const alterno=/alterno|no ajustado/i.test(HOR[k].l);const g={};HOR[k].s.forEach(se=>{(g[se[3]]=g[se[3]]||[]).push(se);});Object.keys(g).forEach(name=>{const id=OFER[name];if(id==null)return;if(alterno&&state[id]!=="no")return;(offById[id]=offById[id]||[]).push({label:HOR[k].l,sessions:g[name]});});});
+  const offIds=Object.keys(offById).map(Number);
+  const pend=COURSES.filter(c=>state[c.id]!=="ok");
+  const anchor=pend.length?Math.min(...pend.map(c=>c.t)):1;
+  const idxOf=t=>BL.findIndex(b=>b[0]===t), endOf=t=>{let e=0;BL.forEach((b,i)=>{if(b[0]<t)e=i;});return e;};
+  const cellsOf=ss=>{const cs=[];ss.forEach(se=>{const a=idxOf(se[1]),b=endOf(se[2]);for(let i=a;i<=b;i++)cs.push(se[0]+i);});return cs;};
+  let cand=offIds.map(id=>byId[id]).filter(c=>c.id!==51&&state[c.id]!=="ok"&&isUnlocked(c)&&(c.t-anchor)<=maxDif);
+  cand.sort((a,b)=>{const ma=(state[a.id]==="no"||a.t===anchor)?0:1,mb=(state[b.id]==="no"||b.t===anchor)?0:1;return ma-mb||a.t-b.t||a.id-b.id;});
+  const occ=new Set(),chosen=[],conf=[];
+  for(const c of cand){if(chosen.length>=maxR)break;let placed=false;for(const o of offById[c.id]){const cs=cellsOf(o.sessions);if(cs.some(x=>occ.has(x)))continue;cs.forEach(x=>occ.add(x));chosen.push({c,o});placed=true;break;}if(!placed)conf.push(c);}
+  const chosenIds=new Set(chosen.map(x=>x.c.id));
+  const excl=[];
+  offIds.map(id=>byId[id]).forEach(c=>{if(c.id===51||state[c.id]==="ok"||chosenIds.has(c.id))return;let r;if(!isUnlocked(c))r="faltan prerrequisitos";else if(c.t-anchor>maxDif)r="supera el tope de niveles";else if(conf.includes(c))r="choca de horario con un ramo más antiguo";else r="quedó fuera por el máximo de ramos";excl.push({c,r});});
+  excl.sort((a,b)=>a.c.t-b.c.t);
+  const apCount=COURSES.filter(c=>state[c.id]==="ok").length;
+  let h="";
+  if(chosen.length){
+    h+=`<div class="hgrp serif">Ramos propuestos (${chosen.length})</div>`;
+    chosen.forEach(({c,o})=>{const horas=o.sessions.map(se=>`${DIAS[se[0]].slice(0,3)} ${se[1]}–${se[2]}`).join(" · ");const sala=o.sessions[0][4],profe=o.sessions[0][5];const rep=state[c.id]==="no"?' <span class="pflag">repite · obligatorio</span>':(c.t===anchor?' <span class="pflag2">nivel obligatorio</span>':'');h+=`<div class="pcard"><div class="pn">${c.n}${rep}</div><div class="pm">Nivel ${c.t} · ${o.label.split(" · ").slice(-1)[0]}</div><div class="pt">${horas}${sala&&sala!=="—"?" · "+sala:""}${profe&&profe!=="—"?" · "+profe:""}</div></div>`;});
+    h+=`<div class="hgrp serif">Horario propuesto</div>`+buildTable([].concat(...chosen.map(x=>x.o.sessions)));
+  }else h+=`<div class="pcard">No hay ramos para proponer con las reglas actuales. Marca tu avance en Avance Curricular.</div>`;
+  if(excl.length){h+=`<div class="hgrp serif">No incluidos</div>`;excl.forEach(({c,r})=>h+=`<div class="pexc">• <b>${c.n}</b> (nivel ${c.t}) — ${r}</div>`);}
+  h+=`<div class="hgrp serif">A tener en cuenta</div>`;
+  h+=`<div class="presum">Tu nivel más bajo pendiente es <b>nivel ${anchor}</b>. El reglamento permite cursar hasta 4 niveles consecutivos, es decir hasta <b>nivel ${anchor+maxDif}</b> (máx. 30 créditos).${apCount===0?'<br><span style="color:#b3445a">Aún no marcas ramos aprobados — hazlo en Avance Curricular para una propuesta real.</span>':''}</div>`;
+  if(offById[51]&&state[51]!=="ok")h+=`<div class="pinfo">ℹ️ El <b>Seminario de Investigación Jurídica</b> está en la oferta, pero <b>lo inscribe la Carrera</b> mediante formulario — no lo eliges tú.</div>`;
+  h+=`<div class="pinfo">Excepción (Circular N°04/2026, punto 7): en ciclo avanzado podría autorizarse <b>una sola</b> coincidencia horaria, si ninguno de los dos ramos está en repetición. El planificador no la aplica automáticamente; debe pedirse vía formulario.</div>`;
+  out.innerHTML=h;
+}
+document.getElementById("planBtn").onclick=planPropose;
+/* Pruebas ejemplo */
+const MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const MESC=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const EVALS=[
+ {id:5,asig:"Historia Institucional de Chile",niv:2,act:"30%",p1:[["07-07",1],["07-06",2],["07-09",3]],p2:[["08-04",1],["08-03",2],["08-06",3]],fin:"08-31"},
+ {id:6,asig:"Historia y Evolución de las Instituciones Civiles",niv:2,act:"30%",p1:[["07-21",1],["07-21",2],["07-20",3]],p2:[["08-11",1],["08-11",2],["08-10",3]],fin:"09-01"},
+ {id:7,asig:"Teoría de la Ley y las Personas",niv:2,act:"30%",p1:[["07-27",1],["07-28",2],["07-28",3]],p2:[["08-17",1],["08-18",2],["08-18",3]],fin:"09-02"},
+ {id:19,asig:"Teoría de la Reacción Penal",niv:5,act:"10%",p1:[["07-08",1],["07-09",2]],p2:[["08-05",1],["08-06",2]],fin:"08-31"},
+ {id:18,asig:"Derecho Constitucional Orgánico",niv:5,act:"10%",p1:[["07-21",1],["07-22",2]],p2:[["08-11",1],["08-12",2]],fin:"09-01"},
+ {id:17,asig:"Teoría del Proceso",niv:5,act:"10%",p1:[["07-27",1],["07-27",2]],p2:[["08-18",1],["08-18",2]],fin:"09-02"},
+ {id:30,asig:"Delitos en Particular II",niv:8,act:"10%",p1:[["07-07","1-2"]],p2:[["08-11","1-2"]],fin:"08-31"},
+ {id:29,asig:"Derecho Individual del Trabajo",niv:8,act:"10%",p1:[["07-22","1-2"]],p2:[["08-19","1-2"]],fin:"09-01"},
+ {id:28,asig:"Fuentes de las Obligaciones",niv:8,act:"10%",p1:[["07-30","1-2"]],p2:[["08-27","1-2"]],fin:"09-02"},
+ {id:null,asig:"Redacción Forense",niv:8,act:null,p1:[],p2:[],fin:null,note:"Fechas a determinar por el docente."},
+ {id:41,asig:"Contratación Mercantil",niv:11,act:"10%",p1:[["07-02",null]],p2:[["08-05",null]],fin:"08-31"},
+ {id:38,asig:"Derecho Sociedades",niv:11,act:"10%",p1:[["07-02",null]],p2:[["08-05",null]],fin:"08-31"},
+ {id:42,asig:"Derecho Administrativo I",niv:11,act:"10%",p1:[["07-07",null]],p2:[["08-11",null]],fin:"09-01"},
+ {id:43,asig:"Derecho Procesal Penal",niv:11,act:"10%",p1:[["07-24",null]],p2:[["08-17",null]],fin:"09-02"},
+ {id:40,asig:"Derecho Sucesorio",niv:11,act:"10%",p1:[["07-30",null]],p2:[["08-21",null]],fin:"09-03",note:"2ª prueba coordinada con SENA."},
+ {id:46,asig:"Derecho Tributario I",niv:14,act:"10%",p1:[["07-02",null]],p2:[["08-06",null]],fin:"08-30"},
+ {id:49,asig:"Reorganización y Liquidación Patrimonial",niv:14,act:"10%",p1:[["07-08",null]],p2:[["08-12",null]],fin:"08-31"},
+ {id:48,asig:"Optativo de Especialidad I",niv:14,act:"10%",p1:[["07-21",null]],p2:[["08-18",null]],fin:"09-01"},
+ {id:50,asig:"Recursos",niv:14,act:"10%",p1:[["07-27",null]],p2:[["08-24",null]],fin:"09-02"},
+ {id:3,asig:"Introducción al Derecho",niv:1,act:"30%",alt:true,p1:[["07-06",null]],p2:[["08-17",null]],fin:"08-31"},
+ {id:1,asig:"Historia del Derecho",niv:1,act:"30%",alt:true,p1:[["07-10",null]],p2:[["08-21",null]],fin:"09-02"},
+ {id:2,asig:"Derecho Político",niv:1,act:"30%",alt:true,p1:[["07-03",null]],p2:[["08-14",null]],fin:"09-01"},
+ {id:26,asig:"Procedimientos Civiles de Cognición",niv:7,act:"10%",alt:true,p1:[["07-06",null]],p2:[["08-17",null]],fin:"08-31"}
+];
+let pruMode="all";
+const DOW=["dom","lun","mar","mié","jue","vie","sáb"];
+function fmtOne(md){if(!md)return "—";const mm=+md.slice(0,2),dd=+md.slice(3);return `${DOW[new Date(2026,mm-1,dd).getDay()]} ${dd} ${MESC[mm-1]}`;}
+function fmtEval(arr){
+  if(!arr||!arr.length)return '<span class="ednone">Por confirmar</span>';
+  if(arr.length===1){const [md,s]=arr[0];return fmtOne(md)+(s!=null?` <span class="edsec">(S${s})</span>`:"");}
+  return arr.map(([md,s])=>`<span class="edseg"><span class="edsec">S${s}</span> ${fmtOne(md)}</span>`).join("");
+}
+function pruEarliest(e){const ds=[...(e.p1||[]),...(e.p2||[])].map(x=>x[0]).filter(Boolean);return ds.length?ds.slice().sort()[0]:"99-99";}
+function fmtEvalCol(arr,sec){
+  if(!arr||!arr.length)return '<span class="ednone">Por confirmar</span>';
+  if(sec){const f=arr.find(x=>String(x[1])===String(sec));if(f)return `<span class="edbig">${fmtOne(f[0])}</span>`;}
+  if(arr.length===1){const [md,s]=arr[0];return `<span class="edbig">${fmtOne(md)}</span>`+(s!=null?`<span class="edsec"> (S${s})</span>`:"");}
+  return arr.map(([md,s])=>`<span class="edseg"><span class="edsec">S${s}</span> ${fmtOne(md)}</span>`).join("");
+}
+function renderPru(mode){
+  pruMode=mode;
+  document.querySelectorAll("#pruSeg button").forEach(b=>b.classList.toggle("on",b.dataset.m===mode));
+  const ib=document.getElementById("inscBox"), el=document.getElementById("pruList");
+  const ids=Object.keys(insc).map(Number);
+  if(mode==="mine"){
+    ib.style.display="";
+    ib.innerHTML=ids.length?`<div class="ititle">Mostrando tus ramos inscritos. Para cambiarlos, ve a <b>Horarios</b> y toca tus ramos.</div>`:`<div class="ititle">Aún no marcas ramos. Ve a <b>Horarios</b>, toca los que inscribiste y vuelve aquí.</div>`;
+  } else {ib.style.display="none";ib.innerHTML="";}
+  let list=EVALS.slice().sort((a,b)=>(a.alt?1:0)-(b.alt?1:0)||a.niv-b.niv||pruEarliest(a).localeCompare(pruEarliest(b)));
+  if(mode==="mine")list=list.filter(e=>ids.includes(e.id));
+  if(mode==="mine"&&!list.length){el.innerHTML="";return;}
+  el.innerHTML=list.map(e=>{
+    const sec=(mode==="mine"&&insc[e.id])?keySec(insc[e.id]):0;
+    const secTxt=sec?` · S${sec}`:"";
+    return `<div class="ecard"><div class="ehead"><b>${e.asig}</b><span class="eniv">Nivel ${e.niv}${e.alt?" · alterno":""}${secTxt}</span></div><div class="ecols"><div class="ecol"><div class="ecl">1ª prueba</div><div class="ecv">${fmtEvalCol(e.p1,sec)}</div></div><div class="ecol"><div class="ecl">2ª prueba</div><div class="ecv">${fmtEvalCol(e.p2,sec)}</div></div><div class="ecol"><div class="ecl">Examen final</div><div class="ecv">${e.fin?`<span class="edbig">${fmtOne(e.fin)}</span>`:"No aplica"}</div></div></div>${e.note?`<div class="enote">${e.note}</div>`:""}</div>`;
+  }).join("");
+}
+document.querySelectorAll("#pruSeg button").forEach(b=>b.onclick=()=>renderPru(b.dataset.m));
+renderPru("all");
+renderHorView("all");
+
+/* ===== Mural de avisos (editar esta lista para publicar/quitar avisos) ===== */
+const AVISOS=[
+  {tipo:"Evaluaciones", nivel:"importante",
+   titulo:"Calendario de evaluaciones · 6 al 9 de julio",
+   texto:"La universidad publicó las <b>fechas, docentes y modalidad</b> de las próximas pruebas (jornada TECH):<br><br><b>Lun 6 jul</b><br>· Introducción al Derecho — Carlos Manque<br>· Historia Institucional de Chile (S2) — Mauricio Silva Kachele<br>· Procedimientos Civiles de Cognición — Felipe Núñez · <b>17:30 · Oral</b><br><br><b>Mar 7 jul</b><br>· Historia Institucional de Chile (S1) — Mauricio Silva Kachele<br>· Derecho Administrativo I — Roberto Contreras<br><br><b>Mié 8 jul</b><br>· Teoría de la Reacción Penal (S1) — Evelyn Contreras<br>· Reorganización y Liquidación Patrimonial — Gonzalo Meza<br><br><b>Jue 9 jul</b><br>· Historia Institucional de Chile (S3) — Jorge Reinoso Méndez<br>· Teoría de la Reacción Penal (S2) — Camila Fernández<br><br><span style='opacity:.72'>Salas por confirmar. Ante cualquier cambio, revisa la información oficial en Teams.</span>",
+   hasta:"2026-07-09"},
+  {tipo:"Encuesta", nivel:"importante",
+   titulo:"Encuesta de Evaluación de la Docencia",
+   texto:"Muy pronto estará disponible. <b>Atento/a:</b> es importante responderla, porque si no la completas podrías quedar con <b>bloqueo para la toma de carga</b> de asignaturas del próximo período.",
+   badge:"🔜 Próximamente"},
+  {tipo:"Centro de Estudiantes", nivel:"evento",
+   titulo:"Asamblea del Centro de Estudiantes",
+   texto:"📅 <b>Hoy · 18:30 hrs</b> · 📍 <b>Sala C38</b>. ¡Tu voz, nuestra causa! Te esperamos.",
+   hasta:"2026-06-24"},
+  {tipo:"Receso", nivel:"info",
+   titulo:"Semana de receso",
+   texto:"Se viene la semana de receso del trimestre: <b>13 al 17 de julio</b>. ¡Aprovecha para descansar y ponerte al día!",
+   hasta:"2026-07-13"},
+  {tipo:"Inscripción", nivel:"info",
+   titulo:"Inscripción de ramos · 3er trimestre",
+   texto:"La inscripción de asignaturas del 3er trimestre es el <b>4 de septiembre</b>. Aprovecha de revisar tu Avance y el Planificador para llegar listo.",
+   hasta:"2026-09-04"}
+];
+function renderMural(){
+  const box=document.getElementById("muralList"); if(!box) return;
+  const today=new Date(); today.setHours(0,0,0,0);
+  const NIV={importante:{c:"#8b0c0c",bg:"#fdeaea"},info:{c:"#1d4ed8",bg:"#e9f0fd"},evento:{c:"#9a6b00",bg:"#fbf3df"},normal:{c:"#6c0909",bg:"#fffdf8"}};
+  const items=AVISOS.map(a=>{
+    let dleft=null;
+    if(a.hasta){const d=new Date(a.hasta+"T00:00:00");dleft=Math.round((d-today)/86400000);}
+    let okDesde=true;
+    if(a.desde){const ds=new Date(a.desde+"T00:00:00");okDesde=today>=ds;}
+    return Object.assign({},a,{dleft:dleft,okDesde:okDesde});
+  }).filter(a=> a.okDesde && (a.dleft===null || a.dleft>=0));
+  items.sort((x,y)=>{ if(x.dleft===null)return 1; if(y.dleft===null)return -1; return x.dleft-y.dleft; });
+  if(!items.length){ box.innerHTML='<div class="muralempty">No hay avisos por ahora 🎉</div>'; return; }
+  box.innerHTML=items.map(a=>{
+    const n=NIV[a.nivel]||NIV.normal;
+    let cd="";
+    if(a.dleft!==null){
+      const t=a.dleft===0?"Último día":a.dleft===1?"Queda 1 día":"Quedan "+a.dleft+" días";
+      cd='<span class="mcount" style="color:'+n.c+'">⏳ '+t+'</span>';
+    } else if(a.badge){
+      cd='<span class="mcount" style="color:'+n.c+'">'+a.badge+'</span>';
+    }
+    const cta=a.cta?'<a class="mcta" style="background:'+n.c+'" href="'+a.cta.url+'"'+(a.cta.url&&a.cta.url!=="#"?' target="_blank" rel="noopener"':'')+'>'+a.cta.label+'</a>':"";
+    return '<div class="mcard" style="border-left-color:'+n.c+'"><div class="mtop"><span class="mtag" style="color:'+n.c+';background:'+n.bg+'">'+a.tipo+'</span>'+cd+'</div><div class="mtitle">'+a.titulo+'</div><div class="mtext">'+a.texto+'</div>'+cta+'</div>';
+  }).join("");
+}
+renderEvals();calc();document.getElementById("mallaToggle").onclick=()=>showMalla(curMalla==="noajustada"?"ajustada":"noajustada");showMalla(curMalla);renderMural();
+
+/* ===== Respaldo de avance + legales ===== */
+function exportData(){
+  try{
+    const data={}; for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);data[k]=localStorage.getItem(k);}
+    const blob=new Blob([JSON.stringify({app:"UApp",fecha:new Date().toISOString(),data:data},null,2)],{type:"application/json"});
+    const url=URL.createObjectURL(blob), a=document.createElement("a");
+    a.href=url; a.download="uapp-respaldo-"+new Date().toISOString().slice(0,10)+".json"; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  }catch(e){ alert("No pude generar el respaldo."); }
+}
+function importData(file){
+  const r=new FileReader();
+  r.onload=function(){
+    try{
+      const obj=JSON.parse(r.result), d=(obj&&obj.data)?obj.data:obj;
+      if(!d||typeof d!=="object") throw 0;
+      if(!confirm("Esto reemplazará tu avance actual con el del respaldo. ¿Continuar?")) return;
+      Object.keys(d).forEach(function(k){ localStorage.setItem(k,d[k]); });
+      alert("¡Avance restaurado! La app se recargará."); location.reload();
+    }catch(e){ alert("No pude leer el archivo. Asegúrate de que sea un respaldo de UApp (.json)."); }
+  };
+  r.readAsText(file);
+}
+(function(){
+  var e=document.getElementById("bkExp"); if(e) e.onclick=exportData;
+  var im=document.getElementById("bkImp"), f=document.getElementById("bkFile");
+  if(im&&f){ im.onclick=function(){ f.click(); }; f.onchange=function(){ if(f.files[0]) importData(f.files[0]); f.value=""; }; }
+  var ol=document.getElementById("openLegal"), lm=document.getElementById("legalModal"), lx=document.getElementById("legalX");
+  if(ol&&lm) ol.onclick=function(){ lm.style.display="flex"; };
+  if(lx&&lm) lx.onclick=function(){ lm.style.display="none"; };
+  if(lm) lm.onclick=function(ev){ if(ev.target===lm) lm.style.display="none"; };
+})();
+
+/* ===== Chatbox VenIA — banco de preguntas frecuentes ===== */
+(function(){
+  const FAQ=[
+   // Calendario académico (régimen trimestral · TECH)
+   {c:"📅 Calendario",q:"¿Cuándo empiezan las clases?",k:"empiezan inician comienzan empieza inicio clases partida partir comienzo cuando empiezan",a:"Inicio de clases de cada trimestre 2026 (Derecho vespertino TECH):<br>• <b>1er trimestre:</b> lunes 2 de marzo<br>• <b>2º trimestre:</b> lunes 1 de junio<br>• <b>3er trimestre:</b> lunes 7 de septiembre"},
+   {c:"📅 Calendario",q:"¿Cuándo termina cada trimestre?",k:"termina termino fin final acaba periodo lectivo cuando termina cierre",a:"Fin del período lectivo 2026:<br>• <b>1er trimestre:</b> viernes 22 de mayo<br>• <b>2º trimestre:</b> viernes 28 de agosto<br>• <b>3er trimestre:</b> viernes 4 de diciembre"},
+   {c:"📅 Calendario",q:"¿Cuándo es el receso?",k:"receso vacaciones descanso intertrimestral semana libre feriado largo",a:"Recesos 2026:<br>• <b>1er trimestre:</b> 25 al 29 de mayo<br>• <b>2º trimestre:</b> 13 al 17 de julio<br>• <b>Fiestas Patrias (3er trim.):</b> 14 al 17 de septiembre"},
+   {c:"📅 Calendario",q:"¿Qué feriados hay en 2026?",k:"feriado feriados festivo festivos asueto no hay clases dias libres",a:"Feriados 2026: Viernes Santo 3 abr · Día del Trabajo 1 may · Glorias Navales 21 may · San Pedro y San Pablo 29 jun · Virgen del Carmen 16 jul · Asunción 15 ago · Fiestas Patrias 18 sep · Encuentro de Dos Mundos 12 oct · Inmaculada Concepción 8 dic · Navidad 25 dic."},
+   // Inscripción de ramos
+   {c:"📝 Inscripción",q:"¿Hasta cuándo puedo inscribir ramos?",k:"inscribir inscripcion ramos asignaturas tomar inscribo carga academica cuando inscribo escribir ramo",a:"Inscripción de asignaturas 2026 (TECH):<br>• <b>1er trimestre:</b> 9 y 10 de enero<br>• <b>2º trimestre:</b> viernes 29 de mayo<br>• <b>3er trimestre:</b> viernes 4 de septiembre"},
+   {c:"📝 Inscripción",q:"¿Hasta cuándo puedo modificar mi malla / inscripción?",k:"modificar modificacion cambiar malla inscripcion ajustar agregar botar eliminar ramo plazo",a:"Modificación de la inscripción de asignaturas 2026 (TECH):<br>• <b>1er trimestre:</b> 24 al 27 de febrero<br>• <b>2º trimestre:</b> 1 al 5 de junio<br>• <b>3er trimestre:</b> 7 al 11 de septiembre"},
+   {c:"📝 Inscripción",q:"¿Cuándo son las pruebas y exámenes?",k:"prueba pruebas evaluacion evaluaciones examen examenes solemne certamen fechas notas repeticion",a:"Cada trimestre tiene evaluaciones regulares y un examen de repetición. Las <b>fechas exactas de cada ramo</b> (1ª, 2ª y examen) están en la pestaña <b>Pruebas</b> de esta app. Examen de repetición: 1er trim 25–27 may · 2º trim 31 ago–2 sep · 3er trim 9–11 dic."},
+   // Centro de Estudiantes
+   {c:"⚖️ Centro de Estudiantes",q:"¿Cómo contacto al Centro de Estudiantes?",k:"centro estudiantes contacto contactar ccee instagram correo redes hablar ustedes",a:"Escríbenos por Instagram <b>@ccee.derechouatco</b> o al correo <b>cceedereua@gmail.com</b>. ¡Estamos para ayudarte!"},
+   // Autoridades
+   {c:"👤 Autoridades",q:"¿Quién es la Directora de Sede / Vicedecana?",k:"directora vicedecana decana valeska rivas autoridad jefa direccion sede",a:"<b>Valeska Rivas Arias</b> — Vicedecana de la Facultad de Derecho y Directora Sede Temuco.<br>📧 valeska.rivas@uautonoma.cl"},
+   {c:"👤 Autoridades",q:"¿Quién es la Secretaria académica?",k:"secretaria academica francisca game",a:"<b>Francisca Game Musante</b> — Secretaria académica.<br>📧 francisca.game@uautonoma.cl"},
+   {c:"👤 Autoridades",q:"¿Quién es el Coordinador vespertino?",k:"coordinador vespertino fernando bravo coordinacion jornada",a:"<b>Fernando Bravo Alarcón</b> — Coordinador vespertino.<br>📧 fernando.bravo@uautonoma.cl"},
+   {c:"👤 Autoridades",q:"¿Cómo contacto a secretaría de Derecho?",k:"secretaria administrativa daniela mella administracion telefono carrera contacto derecho",a:"<b>Daniela Mella Tapia</b> — Secretaria Administrativa.<br>📧 derecho.temuco01@cloud.uautonoma.cl · 📞 +56 45 289 5078"},
+   // Servicios
+   {c:"🏛️ Servicios",q:"¿Dónde queda Registro Curricular?",k:"registro curricular certificado certificados horario ubicacion donde queda tramite actas concentracion",a:"<b>Registro Curricular</b> — Edificio Registro Curricular, Sector Sur.<br>🕗 Lun a Jue 08:30–13:30 y 15:00–18:30 · Vie 08:30–13:30 y 15:00–18:00<br>📧 registrocurriculartco@uautonoma.cl"},
+   {c:"🏛️ Servicios",q:"¿Dónde está la Sala de Primeros Auxilios?",k:"primeros auxilios enfermeria salud emergencia accidente sala medico",a:"<b>Sala de Primeros Auxilios</b> — Edificio L, piso 1.<br>🕗 Lun a Vie 08:30–22:00 · Sáb 08:30–16:00<br>📧 primerosauxilios.temuco@cloud.uautonoma.cl · 📞 +56 45 289 1242"},
+   {c:"🏛️ Servicios",q:"¿Cómo contacto a Finanzas?",k:"finanzas pago pagos arancel cuota deuda matricula cobranza dinero plata",a:"<b>Finanzas</b><br>🕗 Lun a Jue 08:00–13:15 y 15:00–18:15 · Vie 08:00–13:15 y 15:00–17:45 · Mié hasta 20:00<br>📧 finanzas.temuco@uautonoma.cl · 📞 +56 45 289 5244 / 5245 / 5051"},
+   {c:"🏛️ Servicios",q:"¿Cuál es el horario de la Biblioteca?",k:"biblioteca libros estudiar sala estudio horario",a:"<b>Biblioteca:</b> 08:00–22:00 · Sábado 09:00–16:00."},
+   {c:"🏛️ Servicios",q:"¿Hasta qué hora están el casino y las cafeterías?",k:"casino cafeteria comida almuerzo colacion snack gaudi cis comer kiosco",a:"Casino 08:00–21:30 · Cafetería CIS 08:00–20:00 (Sáb 08:00–17:00) · Cafetería Gaudí 09:00–22:00 · Cafetería Snack 08:00–17:00. <i>(Horarios provisorios)</i>"},
+   // Enlaces
+   {c:"🔗 Enlaces",q:"¿Dónde veo el calendario académico?",k:"calendario academico fechas oficiales pdf documento ver calendario",a:"Tienes el calendario académico 2026 completo en la pestaña <b>Info → Enlaces útiles</b>."},
+   {c:"🔗 Enlaces",q:"¿Dónde veo becas y beneficios?",k:"beca becas beneficio beneficios apoyo gratuidad ayuda economica financiamiento",a:"En la pestaña <b>Info → Enlaces útiles</b> está el enlace a <b>Beneficios y apoyo estudiantil</b> de la Universidad."},
+   // Apoyo y bienestar
+   {c:"🫶 Apoyo y bienestar",q:"¿Dónde reporto una situación de acoso, violencia o discriminación de género?",k:"acoso violencia discriminacion genero reportar denuncia denunciar situacion abuso hostigamiento equidad caso vulneracion sexual",a:"A través de la <b>Dirección de Equidad de Género e Inclusión</b> de la Universidad, que es el canal oficial para reportar acoso sexual, violencia o discriminación de género. La encuentras en la pestaña <b>Info → Apoyo y bienestar</b>. Si necesitas acompañamiento, también puedes acercarte al Centro de Estudiantes."},
+   {c:"🫶 Apoyo y bienestar",q:"¿Cómo pido apoyo psicopedagógico?",k:"apoyo psicopedagogico psicopedagogia acompañamiento ayuda estudio aprendizaje rendimiento concentracion organizarme tecnicas",a:"Puedes solicitarlo con el <b>formulario de apoyo psicopedagógico</b> de la Universidad, disponible en la pestaña <b>Info → Apoyo y bienestar</b>. Ahí te orientan con técnicas de estudio, organización y acompañamiento académico."},
+   // Reglamento General del Estudiante de Pregrado
+   {c:"📖 Reglamento",q:"¿Con qué nota apruebo un ramo?",k:"nota aprobar aprobacion minima cuatro paso aprueba calificacion aprobar ramo",a:"La nota mínima de aprobación es <b>4,0</b> (las notas van de 1,0 a 7,0). Para obtener un 4,0 se exige un nivel de logro mínimo del <b>60%</b>. El syllabus puede pedir una nota de aprobación más alta."},
+   {c:"📖 Reglamento",q:"¿Qué es el examen de repetición y cuándo lo puedo dar?",k:"examen repeticion recuperativo segunda oportunidad reprobado 3.5 promedio recuperar",a:"Si en un ramo <b>teórico</b> tu promedio final queda <b>entre 3,5 y 3,9</b> y cumpliste la asistencia, puedes rendir el <b>examen de repetición</b> (en las fechas del calendario). Si obtienes 4,0 o más, tu nota final será 4,0; si no, mantienes la nota que tenías."},
+   {c:"📖 Reglamento",q:"¿Cuánta asistencia necesito?",k:"asistencia minima faltar inasistencia porcentaje asistir cuanta falta",a:"Asistencia mínima: <b>70% en primer año</b> y <b>60% en cursos superiores</b>. En componentes prácticos (talleres, laboratorios) es 100%. En vespertino TECH cuenta tu participación remota sincrónica o presencial."},
+   {c:"📖 Reglamento",q:"¿Cómo se calcula la nota final del ramo?",k:"nota final calculo ponderacion porcentaje acumulativa evaluaciones promedio ponderado como se calcula",a:"En ramos trimestrales: <b>2 evaluaciones regulares = 70%</b> y <b>1 evaluación acumulativa</b> (foros, quiz, trabajos) <b>= 30%</b>. La nota final es ese promedio ponderado, salvo que el syllabus indique otro sistema."},
+   {c:"📖 Reglamento",q:"¿Qué pasa si falto a una prueba?",k:"falto falte no asisti prueba evaluacion ausente justificar uno ausencia",a:"Si no asistes a una evaluación, se califica con <b>1,0</b> (lo mismo si hay copia o fraude). Si tuviste una causa justificada, debes presentar la solicitud de excepción en la Dirección de Carrera dentro de los plazos."},
+   {c:"📖 Reglamento",q:"¿Cuándo me entregan las notas y cómo pido recorrección?",k:"notas plazo entrega recorreccion revision recorregir reclamar dias publican",a:"El docente informa la nota en un máximo de <b>10 días corridos</b> tras la evaluación. Desde que se publica, tienes <b>3 días corridos</b> para pedirle la revisión de tu evaluación."},
+   {c:"📖 Reglamento",q:"¿Cuántas veces puedo reprobar un ramo antes de que me eliminen?",k:"reprobar reprobado eliminacion eliminado cuantas veces repetir eliminan tres",a:"Puedes cursar una asignatura hasta <b>3 veces</b>. Te eliminan de la carrera si: (a) repruebas <b>3 veces la misma asignatura</b>, o (b) repruebas el <b>50% de las asignaturas</b> cursadas al término del <b>8º nivel</b> (régimen trimestral)."},
+   {c:"📖 Reglamento",q:"Si repruebo un ramo, ¿qué tengo que hacer?",k:"reprobe reprobado ramo repetir volver cursar siguiente obligatorio inscribir arrastro",a:"El ramo reprobado debes cursarlo en el <b>período siguiente en que se dicte</b>, y la carrera lo inscribe <b>obligatoriamente</b> (sin derecho a sacarlo de tu carga)."},
+   {c:"📖 Reglamento",q:"¿Cuántos niveles puedo tomar al mismo tiempo?",k:"niveles cuantos ramos tomar inscribir adelantar consecutivos carga cruzar",a:"En régimen trimestral puedes inscribir asignaturas de <b>hasta 4 niveles distintos y consecutivos</b>, partiendo del nivel más bajo que tengas pendiente y cumpliendo los prerrequisitos. Casos excepcionales (más niveles o hasta 24 créditos) se solicitan a la Dirección de Carrera."},
+   {c:"📖 Reglamento",q:"¿Puedo bajar mi carga académica si me enfermo?",k:"bajar rebajar disminuir carga academica enfermedad enfermo reducir rebaja",a:"Sí. Por enfermedad certificada u otra causa grave puedes pedir disminuir tu carga <b>hasta en un 50%</b> a la Dirección de Carrera, a más tardar <b>4 semanas antes del término del trimestre</b>."},
+   {c:"📖 Reglamento",q:"¿Qué son la suspensión, anulación y retiro?",k:"suspension anulacion retiro abandono interrupcion congelar pausar dejar estudios",a:"<b>Suspensión:</b> pausar tus estudios un tiempo (antes de tomar carga). <b>Anulación:</b> dejar sin efecto todos los ramos inscritos (en la fecha del calendario). <b>Retiro:</b> dejar la carrera; no borra notas ni carga. Suspensión y anulación: hasta 2 veces cada una, máx. 1 año por vez."},
+   {c:"📖 Reglamento",q:"Si me eliminan, ¿puedo seguir estudiando?",k:"eliminado eliminacion continuidad seguir continuar gracia apelar solicitud comision",a:"El estudiante eliminado puede pedir <b>continuidad de estudios</b> por causa grave justificada, dentro de los plazos del calendario. Lo resuelve la <b>Comisión de Gracia</b> de Sede y su decisión es inapelable."},
+   {c:"📖 Reglamento",q:"¿Qué necesito para titularme?",k:"titulo titular titulacion egreso licenciado examen grado practica requisitos egresar",a:"Para el título profesional debes: aprobar todas las asignaturas del plan, realizar y aprobar la(s) práctica(s), rendir y aprobar el examen de título/grado (hasta 3 oportunidades) y estar al día con la Universidad. Tras egresar tienes hasta 2 años para completar las actividades de titulación."},
+   {c:"📖 Reglamento",q:"¿Qué es el Ius Postulandi?",k:"ius postulandi certificado tercer año postular tribunales iuspostulandi",a:"Para que te emitan el certificado de <b>Ius Postulandi</b>, debes tener inscritas <b>todas las asignaturas del 3er año</b> de la carrera de Derecho."},
+   {c:"📖 Reglamento",q:"¿Qué requisitos hay para ser parte del Centro de Estudiantes?",k:"centro estudiantes requisitos postular directiva ser miembro candidato promedio elegible",a:"Para integrar la directiva del Centro de Estudiantes necesitas: ser <b>estudiante regular</b> de la carrera, no estar sancionado, y tener <b>promedio igual o superior a 5,0</b> en los dos semestres anteriores (salvo estudiantes de primer año)."},
+   {c:"🏛️ Servicios",q:"¿Cómo saco un certificado (alumno regular, notas, etc.)?",k:"certificado certificados alumno regular concentracion notas tramite documento solicitar registro curricular",a:"Los certificados los gestiona <b>Registro Curricular</b> (Edificio Sector Sur). Escríbeles a <b>registrocurriculartco@uautonoma.cl</b> o acércate: Lun a Jue 08:30–13:30 y 15:00–18:30, Vie hasta 18:00.<br>💡 <b>Tip:</b> los de <b>concentración de notas</b> y <b>estudiante regular</b> puedes descargarlos al toque <b>online por Banner</b> (mira «¿Cómo saco un certificado online?»)."},
+   {c:"🏛️ Servicios",q:"¿Cómo saco un certificado online (notas o estudiante regular)?",k:"certificado online on line en linea banner autoservicio portal concentracion notas alumno estudiante regular descargar pdf solicitud de servicio sacar tramite menu de servicio",a:"Puedes descargarlo tú mismo desde <b>Banner</b> (Portal de Autoservicio), sin pasar por Registro Curricular:<br>1️⃣ Entra a la <b>Intranet de Alumnos</b> y abre <b>Banner</b> (en el menú de íconos de servicios).<br>2️⃣ Ve a la pestaña <b>Menú de Servicio</b> y pincha <b>Solicitud de servicio</b>.<br>3️⃣ En <b>Categoría</b> elige <b>Certificados On-Line</b>, y en <b>Servicio</b> elige <b>Certificado Concentración de Notas</b> o <b>Certificado Estudiante Regular</b>. Pincha <b>Continuar</b>.<br>4️⃣ Selecciona tu <b>Programa</b> y el <b>Período</b> (siempre el más reciente en año y bloque) y toca <b>Guardar</b>.<br>5️⃣ En <b>Ver status de solicitud</b>, pincha <b>Documento</b> y el certificado se descarga en <b>PDF</b> automáticamente."},
+   {c:"🏛️ Servicios",q:"¿Dónde pago el arancel o veo mi situación financiera?",k:"pago arancel pagar cuota mensualidad finanzas deuda situacion financiera dinero plata cobranza",a:"En <b>Finanzas</b>: <b>finanzas.temuco@uautonoma.cl</b> · +56 45 289 5244 / 5245 / 5051. Atención Lun a Jue 08:00–13:15 y 15:00–18:15."},
+   {c:"🏛️ Servicios",q:"¿Hay gimnasio o dónde puedo hacer deporte?",k:"deporte deportes gimnasio gym coliseo ramas deportivas actividad fisica entrenar futbol",a:"La Universidad cuenta con <b>Coliseo deportivo</b> y actividades a través de <b>Experiencia UA</b>. Revisa los horarios en <b>Info → Horarios de servicios</b>."},
+   {c:"🏛️ Servicios",q:"¿Dónde está la fotocopiadora y en qué horario?",k:"fotocopia fotocopiadora imprimir impresion copias anillado",a:"Encuentras el horario de la <b>Fotocopiadora</b> en la pestaña <b>Info → Horarios de servicios</b>."},
+   {c:"🏛️ Servicios",q:"¿Qué es Experiencia UA?",k:"experiencia ua dae bienestar vida estudiantil deporte cultura actividades",a:"<b>Experiencia UA</b> reúne los servicios de vida estudiantil: bienestar, deporte, cultura y actividades. Mira sus horarios en <b>Info → Horarios de servicios</b> y los beneficios en <b>Info → Enlaces útiles</b>."},
+   {c:"📱 La app",q:"¿Cómo instalo UApp en mi teléfono?",k:"instalar app aplicacion descargar pantalla inicio agregar telefono celular",a:"En <b>Android</b>: ábrela en Chrome → menú (los tres puntos) → 'Agregar a pantalla de inicio'. En <b>iPhone</b>: ábrela en Safari → botón Compartir → 'Agregar a inicio'. ¡Es gratis!"},
+   {c:"📱 La app",q:"¿Cómo respaldo mi avance para no perderlo?",k:"respaldo respaldar guardar backup avance perder cambiar telefono restaurar copia",a:"En la pestaña <b>Avance Curricular</b>, abajo, toca <b>Respaldar mi avance</b> para descargar una copia, y <b>Restaurar respaldo</b> para recuperarla en otro dispositivo."},
+   {c:"📱 La app",q:"¿Mis datos están seguros? ¿Quién los ve?",k:"datos privacidad seguro seguridad personales ven guardan informacion",a:"Tu avance, notas y ramos se guardan <b>solo en tu dispositivo</b>: no se envían a ningún servidor ni los vemos nosotros. Lee más en <b>Términos y Privacidad</b>, en el pie de la app."},
+   {c:"📱 La app",q:"¿Cómo hago una solicitud al Centro de Estudiantes?",k:"solicitud solicitudes peticion pedir tramite formulario consulta caso",a:"Ve a la pestaña <b>Solicitudes</b> y toca <b>Hacer una solicitud</b>: completas el formulario y nosotros lo revisamos. También por Instagram @ccee.derechouatco."},
+   {c:"📱 La app",q:"¿Puedo usar modo oscuro o agrandar la letra?",k:"modo oscuro tema noche letra grande tamaño accesibilidad contraste animaciones",a:"Sí. Toca el botón de <b>accesibilidad</b> (abajo a la izquierda): ahí eliges <b>tema claro/oscuro/automático</b>, <b>tamaño de letra</b> y <b>reducir animaciones</b>."},
+   {c:"📝 Inscripción",q:"¿Cómo convalido ramos o hago un traslado de carrera?",k:"convalidar convalidacion homologar homologacion traslado cambio carrera reconocimiento ramos validacion estudios traspaso",a:"Las convalidaciones y traslados se rigen por el <b>Reglamento de Validación de Estudios y Traslados</b> y los gestiona la <b>Dirección de Carrera</b> junto con Registro Curricular. Acércate a secretaría de Derecho (derecho.temuco01@cloud.uautonoma.cl) para iniciar el trámite dentro de los plazos."},
+   {c:"📖 Reglamento",q:"¿Cómo justifico una inasistencia o falta médica?",k:"justificar justificacion inasistencia falta medica certificado licencia ausencia enfermo no fui",a:"Presenta el <b>certificado o documento que respalde</b> tu inasistencia a la <b>Dirección de Carrera</b> dentro de los plazos del reglamento. Es clave hacerlo si faltaste a una evaluación, para no quedar con nota 1,0."},
+   {c:"👤 Autoridades",q:"Tengo un problema con un profesor o un ramo, ¿a quién acudo?",k:"problema profesor docente conflicto ramo reclamo queja a quien acudir ayuda academica situacion clase",a:"Puedes hablar con el <b>Coordinador vespertino, Fernando Bravo</b> (fernando.bravo@uautonoma.cl) o con la <b>Secretaría académica</b>. Y si necesitas apoyo o que te acompañen, cuenta con tu <b>Centro de Estudiantes</b> (@ccee.derechouatco)."},
+   {c:"📝 Inscripción",q:"¿Qué es la encuesta de evaluación docente y por qué importa?",k:"encuesta evaluacion docente docencia responder obligatoria bloqueo importante opinar profesores",a:"Es la encuesta donde evalúas a tus docentes cada período. <b>Es muy importante responderla:</b> si no la completas, puedes quedar con <b>bloqueo para la toma de carga</b> de asignaturas del período siguiente. Cuando se abra, lo avisamos en el <b>Mural</b>."},
+   {c:"🏛️ Servicios",q:"¿Cómo accedo a mi correo institucional o recupero mi clave?",k:"correo institucional clave contraseña acceso credenciales usuario plataforma recuperar email cuenta intranet",a:"Para tu <b>correo institucional, clave o credenciales de acceso</b>, contacta a la <b>Secretaría Administrativa de Derecho</b> (derecho.temuco01@cloud.uautonoma.cl · +56 45 289 5078), que te orientará con el soporte de la Universidad."}
+  ];
+
+  const fab=document.getElementById('chatFab'), panel=document.getElementById('chatPanel'),
+        msgs=document.getElementById('chatMsgs'), chips=document.getElementById('chatChips'),
+        inp=document.getElementById('chatIn'), sendb=document.getElementById('chatSend'),
+        closeb=document.getElementById('chatClose');
+  let greeted=false;
+  const cats=[...new Set(FAQ.map(f=>f.c))];
+  function norm(s){return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9ñ\s]/g," ").replace(/\s+/g," ").trim();}
+  function bestFaq(q){
+    const words=norm(q).split(" ").filter(w=>w.length>2);
+    if(!words.length) return null;
+    let best=null,bs=0;
+    FAQ.forEach(f=>{
+      const keys=norm(f.k).split(" "), qn=norm(f.q);
+      let sc=0;
+      words.forEach(w=>{ if(keys.some(k=>k===w||k.indexOf(w)===0||w.indexOf(k)===0)) sc++; if(qn.indexOf(w)>=0) sc+=0.4; });
+      if(sc>bs){bs=sc;best=f;}
+    });
+    return bs>=1?best:null;
+  }
+  function addMsg(html,who){const d=document.createElement('div');d.className='cmsg '+who;d.innerHTML=html;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;}
+  function showCats(){chips.innerHTML='';cats.forEach(c=>{const b=document.createElement('button');b.className='cchip';b.textContent=c;b.onclick=()=>showQs(c);chips.appendChild(b);});}
+  function showQs(c){chips.innerHTML='';const back=document.createElement('button');back.className='cchip back';back.textContent='‹ Temas';back.onclick=showCats;chips.appendChild(back);FAQ.filter(f=>f.c===c).forEach(f=>{const b=document.createElement('button');b.className='cchip';b.textContent=f.q;b.onclick=()=>{addMsg(f.q,'user');setTimeout(()=>addMsg(f.a,'bot'),260);};chips.appendChild(b);});}
+  function ask(t){t=(t||"").trim();if(!t)return;addMsg(t,'user');inp.value='';const f=bestFaq(t);setTimeout(()=>{ if(f) addMsg(f.a,'bot'); else addMsg("No encontré una respuesta exacta 🙈. Prueba tocando un tema aquí abajo, o escríbenos al Instagram <b>@ccee.derechouatco</b> o al correo <b>cceedereua@gmail.com</b>.",'bot'); },300);}
+  function openChat(){panel.style.display='flex';fab.style.display='none';if(!greeted){greeted=true;addMsg("¡Hola! 👋 Soy <b>Dona Tech</b>, el asistente del Centro de Estudiantes de Derecho. Pregúntame sobre fechas, inscripción de ramos, reglamento, apoyo, servicios o contactos. Toca un tema o escribe tu duda.",'bot');showCats();}setTimeout(()=>inp.focus(),100);}
+  function closeChat(){panel.style.display='none';fab.style.display='flex';}
+  fab.onclick=openChat; closeb.onclick=closeChat;
+  sendb.onclick=()=>ask(inp.value);
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();ask(inp.value);}});
+})();
+</script>
+<script>
+if('serviceWorker' in navigator){
+  var __refreshing=false;
+  navigator.serviceWorker.addEventListener('controllerchange',function(){
+    if(__refreshing)return;__refreshing=true;window.location.reload();
+  });
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('./sw.js').then(function(reg){
+      reg.update();
+      setInterval(function(){reg.update();},60*60*1000);
+    }).catch(function(){});
+  });
+}
+</script>
+<script>
+/* ===== Accesibilidad ===== */
+(function(){
+  var KEYA="uapp_a11y_v1";
+  var prefs={theme:"auto",font:"1",motion:false};
+  try{var s=JSON.parse(localStorage.getItem(KEYA));if(s)prefs=Object.assign(prefs,s);}catch(e){}
+  var mq=window.matchMedia('(prefers-color-scheme: dark)');
+  function applyTheme(){var dark=prefs.theme==="dark"||(prefs.theme==="auto"&&mq.matches);document.body.classList.toggle("dark",dark);}
+  function applyFont(){document.body.style.zoom=prefs.font;}
+  function applyMotion(){document.body.classList.toggle("reduce-motion",!!prefs.motion);}
+  function save(){try{localStorage.setItem(KEYA,JSON.stringify(prefs));}catch(e){}}
+  function mark(){
+    var t=document.querySelectorAll('#segTheme button');for(var i=0;i<t.length;i++)t[i].classList.toggle('on',t[i].dataset.v===prefs.theme);
+    var f=document.querySelectorAll('#segFont button');for(var j=0;j<f.length;j++)f[j].classList.toggle('on',f[j].dataset.v===String(prefs.font));
+    var tg=document.getElementById('togMotion');if(tg){tg.classList.toggle('on',!!prefs.motion);tg.setAttribute('aria-checked',prefs.motion?'true':'false');}
+  }
+  applyTheme();applyFont();applyMotion();
+  var fab=document.getElementById('a11yFab'),panel=document.getElementById('a11yPanel'),x=document.getElementById('a11yX');
+  if(fab&&panel)fab.onclick=function(){mark();panel.style.display='flex';};
+  if(x&&panel)x.onclick=function(){panel.style.display='none';};
+  if(panel)panel.onclick=function(e){if(e.target===panel)panel.style.display='none';};
+  var tb=document.querySelectorAll('#segTheme button');for(var i=0;i<tb.length;i++)tb[i].onclick=function(){prefs.theme=this.dataset.v;applyTheme();mark();save();};
+  var fb=document.querySelectorAll('#segFont button');for(var k=0;k<fb.length;k++)fb[k].onclick=function(){prefs.font=this.dataset.v;applyFont();mark();save();};
+  var tg=document.getElementById('togMotion');if(tg)tg.onclick=function(){prefs.motion=!prefs.motion;applyMotion();mark();save();};
+  if(mq.addEventListener)mq.addEventListener('change',function(){if(prefs.theme==='auto')applyTheme();});
+})();
+</script>
+</body>
+</html>
