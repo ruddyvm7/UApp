@@ -300,6 +300,59 @@ td.cell.selon{background:#eaf6ee !important;outline:2px solid #1f6b3a;outline-of
 .legal-box h3:first-of-type{margin-top:0}
 .legal-box p{font-size:13px;color:#3a3026;line-height:1.55;margin:0 0 6px}
 .legal-x{position:absolute;top:12px;right:12px;background:#f0e7d4;border:none;width:30px;height:30px;border-radius:50%;font-size:15px;cursor:pointer;color:var(--wine)}
+/* ===== Accesibilidad: panel ===== */
+#a11yFab{position:fixed;left:16px;bottom:16px;width:52px;height:52px;border:none;border-radius:50%;background:var(--wine);color:#fff;font-size:23px;box-shadow:0 6px 18px rgba(0,0,0,.28);cursor:pointer;z-index:9999;display:flex;align-items:center;justify-content:center}
+#a11yFab:active{transform:scale(.94)}
+.a11y-ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:10001;display:flex;align-items:flex-end;justify-content:center}
+.a11y-box{background:var(--card);color:var(--ink);width:100%;max-width:480px;border-radius:20px 20px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom));position:relative;box-shadow:0 -8px 30px rgba(0,0,0,.35)}
+.a11y-x{position:absolute;top:14px;right:14px;background:rgba(127,127,127,.2);border:none;width:30px;height:30px;border-radius:50%;font-size:15px;cursor:pointer;color:var(--ink)}
+.a11y-title{color:var(--wine);font-size:21px;font-weight:800;margin-bottom:16px}
+.a11y-grp{margin-bottom:18px}
+.a11y-lab{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.a11y-hint{font-size:11.5px;color:var(--muted);font-weight:500}
+.a11y-seg{display:flex;gap:6px}
+.a11y-seg button{flex:1;background:transparent;border:1.5px solid var(--cb2);color:var(--ink);border-radius:11px;padding:11px 6px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.a11y-seg button.on{background:var(--wine);border-color:var(--wine);color:#fff}
+.a11y-row{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:2px}
+.a11y-tog{width:50px;height:30px;border-radius:99px;border:none;background:#b9b3a6;position:relative;cursor:pointer;flex-shrink:0;transition:background .2s}
+.a11y-tog span{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .2s}
+.a11y-tog.on{background:var(--wine)}
+.a11y-tog.on span{left:23px}
+body.reduce-motion *,body.reduce-motion *::before,body.reduce-motion *::after{transition:none !important;animation:none !important;scroll-behavior:auto !important}
+/* ===== Modo oscuro ===== */
+body.dark{--wine:#cf463b;--wine2:#b23529;--gold:#d8b25e;--gold2:#caa24a;--bg:#17120f;--card:#241d17;--ink:#ece4d8;--muted:#a39a8c;--cb:#3c332a;--cb2:#4d4338;--lockbg:#201a14;--navy:#0e0506;--cream:#f1d9b0;--ok:#52b06e;--okbg:#16301f;--okb:#2c5a3a;--no:#e0726a;--nobg:#3a1f1c;--nob:#5a332e;background:var(--bg);color:var(--ink)}
+body.dark .tabbar,body.dark .course,body.dark .course.open,body.dark .seg button,body.dark .slot,body.dark .test,body.dark .icard,body.dark .pcard,body.dark .yearcard,body.dark .yrbtn,body.dark .chip,body.dark .bkbtn,body.dark .ilink,body.dark .solbox,body.dark .mcard,body.dark .ecard,body.dark .inscbox,body.dark .tile,body.dark .cmsg.bot,body.dark .chatpanel,body.dark .chatchips,body.dark .chatinput,body.dark .legal-box,body.dark .sel2,body.dark .pctrls select,body.dark .erow input,body.dark .chatinput input{background:var(--card)}
+body.dark .tabbar,body.dark .legend,body.dark .yearcard,body.dark .erow input,body.dark .tile,body.dark .ihd,body.dark .icard,body.dark .ecard,body.dark .mcard,body.dark .inscbox,body.dark .solbox,body.dark .ilink,body.dark .bkbtn,body.dark .chatpanel,body.dark .cmsg.bot,body.dark .chatinput input,body.dark .legal-box,body.dark .chatchips,body.dark .chatinput,body.dark .erow2,body.dark .svcrow,body.dark .tpre,body.dark .treq,body.dark .hwrap{border-color:var(--cb)}
+body.dark .cname,body.dark .tname,body.dark .mtitle,body.dark .iname,body.dark .svcn,body.dark .edates,body.dark .ecv,body.dark .iinfo,body.dark .soltext,body.dark .mtext,body.dark .svch,body.dark .th,body.dark .cycle b,body.dark .areas span,body.dark .cmsg.bot,body.dark .legal-box p,body.dark .edbig{color:var(--ink)}
+body.dark .lead,body.dark .msub,body.dark .pitem,body.dark .pre b,body.dark .icard p,body.dark .result .lab,body.dark .result .vd,body.dark .pcard .pm,body.dark .slot .sl,body.dark .test .in span,body.dark .test .dt span,body.dark .sumw,body.dark .legend span,body.dark .irole,body.dark .eniv,body.dark .boardhint,body.dark .elab{color:var(--muted)}
+body.dark .result,body.dark .note,body.dark .example,body.dark .presum,body.dark .disc,body.dark .ecol,body.dark .hortbl td.cell{background:#2c2314;border-color:#473a1e}
+body.dark .note,body.dark .example,body.dark .presum,body.dark .disc,body.dark .disc b,body.dark .enote,body.dark .pcard .pt{color:#e3cd91}
+body.dark .pinfo{background:#16243a;border-color:#284268;color:#a8c3ea}
+body.dark .tcont,body.dark .hortbl{background:#1f1913}
+body.dark .hortbl td.tm2{background:#241d17;color:var(--muted)}
+body.dark .chatmsgs{background:#1d1813}
+body.dark .pbar{background:#2c2820}
+body.dark .chip{color:#d4c6a6}
+body.dark .seg button{color:var(--gold2)}
+body.dark .tile.lock{background:#211b15;border-color:#352c20}
+body.dark .erow input,body.dark .chatinput input,body.dark .sel2,body.dark .pctrls select{color:var(--ink)}
+body.dark .resetbtn{border-color:#5a332e}
+body.dark .lvl.ystart{border-left-color:#3c332a}
+body.dark .legal-x{background:rgba(127,127,127,.2);color:var(--ink)}
+body.dark .cchip.back{border-color:#4d4338;color:var(--muted)}
+body.dark .mallaSwitch .mSwBtn{border-color:#4d4338;color:var(--muted)}
+body.dark .mallaSwitch .mSwBtn:hover{background:rgba(127,127,127,.12)}
+body.dark .mallaSwitch .mSwBtn.na{background:rgba(199,154,62,.14);border-color:#6b5726;color:#e0c88f}
+body.dark .mallaNote{background:rgba(199,154,62,.12);border-color:#5a4a2a;color:#dcc48a}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.tile:focus-visible{outline-offset:-1px}
+
+/* selector de malla (Avance Curricular) */
+.mallaSwitch{display:flex;justify-content:flex-end;margin:10px 0 2px}
+.mallaSwitch .mSwBtn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid #d8cfba;color:#7a6f57;font:inherit;font-weight:600;font-size:.78rem;padding:6px 12px;border-radius:999px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s,border-color .15s,color .15s}
+.mallaSwitch .mSwBtn:hover{background:#f3efe6}
+.mallaSwitch .mSwBtn.na{background:#fbf4e9;border-color:var(--gold,#c79a3e);color:#8a6d1f;font-weight:700}
+.mallaNote{font-size:.78rem;color:#8a6d1f;background:#fbf4e9;border:1px solid #efe0c4;border-radius:10px;padding:8px 11px;margin:6px 0 12px;line-height:1.4}
 </style>
 </head>
 <body>
@@ -327,6 +380,10 @@ td.cell.selon{background:#eaf6ee !important;outline:2px solid #1f6b3a;outline-of
   <div class="wrap">
     <h1 class="h1 serif">Mi Avance Curricular</h1>
     <p class="lead">Toda tu carrera en un tablero, nivel por nivel. Tu progreso se guarda en este dispositivo.</p>
+    <div class="mallaSwitch">
+      <button type="button" class="mSwBtn" id="mallaToggle" aria-label="Cambiar de malla"></button>
+    </div>
+    <p class="mallaNote" id="mallaNote"></p>
     <p class="cycle"><b>Toca un ramo:</b> Disponible → Aprobado → Reprobado. Los bloqueados muestran qué les falta.</p>
     <div class="seal">
       <svg class="ringsvg" viewBox="0 0 120 120"><circle class="ring-track" cx="60" cy="60" r="54"/><circle class="ring-prog" id="ring" cx="60" cy="60" r="54"/></svg>
@@ -543,6 +600,35 @@ td.cell.selon{background:#eaf6ee !important;outline:2px solid #1f6b3a;outline-of
   </div>
 </div>
 
+<button id="a11yFab" aria-label="Accesibilidad"><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="3.7" r="1.7" fill="#fff" stroke="none"/><path d="M12 6.5v6.5M5.5 9h13M12 13l-3 7.3M12 13l3 7.3"/></svg></button>
+<div id="a11yPanel" class="a11y-ov" style="display:none">
+  <div class="a11y-box">
+    <button class="a11y-x" id="a11yX" aria-label="Cerrar">✕</button>
+    <div class="a11y-title serif">Accesibilidad</div>
+    <div class="a11y-grp">
+      <div class="a11y-lab">Tema</div>
+      <div class="a11y-seg" id="segTheme">
+        <button data-v="light">Claro</button>
+        <button data-v="dark">Oscuro</button>
+        <button data-v="auto">Automático</button>
+      </div>
+    </div>
+    <div class="a11y-grp">
+      <div class="a11y-lab">Tamaño de letra</div>
+      <div class="a11y-seg" id="segFont">
+        <button data-v="0.9">A−</button>
+        <button data-v="1">A</button>
+        <button data-v="1.15">A+</button>
+        <button data-v="1.3">A++</button>
+      </div>
+    </div>
+    <div class="a11y-grp a11y-row">
+      <div><div class="a11y-lab" style="margin-bottom:2px">Reducir animaciones</div><div class="a11y-hint">Menos movimiento en la app</div></div>
+      <button class="a11y-tog" id="togMotion" role="switch" aria-checked="false"><span></span></button>
+    </div>
+  </div>
+</div>
+
 <script>
 const COURSES=[
  {id:1,n:"Historia del Derecho",t:1,a:"Histórico",p:[]},{id:2,n:"Derecho Político",t:1,a:"Constitucional",p:[]},
@@ -617,23 +703,113 @@ function render(){
       COURSES.filter(c=>c.t===t).forEach(c=>{
         const s=statusOf(c);
         const area=ADOT[c.a]||"var(--muted)";
-        const lab=s==="ok"?"✓ Aprobado":s==="no"?"✗ Reprobado":s==="lock"?"🔒 Bloqueado":"Pendiente";
-        const badge=c.tag==="he"?'<span class="tbadge">⭐</span>':c.tag==="fg"?'<span class="tbadge">🌐</span>':c.tag==="sp"?'<span class="tbadge">🔨</span>':c.tag==="opt"?'<span class="tbadge">＋</span>':"";
-        h+=`<div class="tile ${s}" data-id="${c.id}"><span class="abar" style="background:${area}"></span>${badge}<div class="tname">${c.n}</div><div class="tfoot"><span class="tstat">${lab}</span></div><div class="treq">${preShort(c)}</div></div>`;
+        const lab=s==="ok"?"✓ Aprobado":s==="no"?"✗ Reprobado":s==="lock"?"🔒 Bloqueado":"○ Pendiente";
+        const aSt=s==="ok"?"aprobado":s==="no"?"reprobado":s==="lock"?("bloqueado. "+preShort(c)):"disponible";
+        const badge=c.tag==="he"?'<span class="tbadge" aria-hidden="true">⭐</span>':c.tag==="fg"?'<span class="tbadge" aria-hidden="true">🌐</span>':c.tag==="sp"?'<span class="tbadge" aria-hidden="true">🔨</span>':c.tag==="opt"?'<span class="tbadge" aria-hidden="true">＋</span>':"";
+        h+=`<div class="tile ${s}" data-id="${c.id}" role="button" tabindex="0" aria-label="${c.n}, ${aSt}"><span class="abar" style="background:${area}" aria-hidden="true"></span>${badge}<div class="tname">${c.n}</div><div class="tfoot"><span class="tstat">${lab}</span></div><div class="treq">${preShort(c)}</div></div>`;
       });
       h+=`</div>`;
       col.innerHTML=h;
       yearsEl.appendChild(col);
     });
   });
-  yearsEl.querySelectorAll(".tile").forEach(el=>{const c=byId[+el.dataset.id];el.onclick=()=>{if(statusOf(c)!=="lock")cycle(c);};});
+  yearsEl.querySelectorAll(".tile").forEach(el=>{const c=byId[+el.dataset.id];const act=()=>{if(statusOf(c)!=="lock")cycle(c);};el.onclick=act;el.onkeydown=(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();act();}};});
   yearsEl.querySelectorAll(".yrbtn").forEach(b=>{const Y=YEARS.find(y=>y.y==+b.dataset.y);b.onclick=(e)=>{e.stopPropagation();toggleYear(Y);};});
   const total=COURSES.length, ap=COURSES.filter(c=>state[c.id]==="ok").length, pct=Math.round(ap/total*100);
   const ring=document.getElementById("ring");if(ring)ring.style.strokeDashoffset=(2*Math.PI*54*(1-pct/100)).toFixed(2);
   document.getElementById("pct").textContent=pct+"%";
   document.getElementById("pcsub").textContent=ap+" de "+total+" ramos";
 }
-document.getElementById("reset").onclick=()=>{if(confirm("¿Reiniciar todo tu progreso?")){state={};save();render();}};
+
+/* ===== Malla NO AJUSTADA (Plan 2017 · Res. 135/2017) — módulo aislado ===== */
+const COURSES_NA=[
+ {id:1,n:"Historia del Derecho",t:1,a:"Histórico",p:[]}, {id:2,n:"Historia y Ev. de las Instituciones Civiles",t:1,a:"Civil",p:[]},
+ {id:3,n:"Derecho Político",t:1,a:"Constitucional",p:[]}, {id:4,n:"Introducción a la Economía",t:1,a:"Económico",p:[]},
+ {id:5,n:"Introducción al Derecho",t:2,a:"Fundamentos",p:[]}, {id:6,n:"Electivo de Comunicación",t:2,a:"Electivo",p:[],tag:"fg"},
+ {id:7,n:"Historia Institucional de Chile",t:2,a:"Histórico",p:[]}, {id:8,n:"Fundamentos Filosóficos del Derecho",t:2,a:"Histórico",p:[]},
+ {id:9,n:"Teoría de la Ley y las Personas",t:3,a:"Civil",p:[5]}, {id:10,n:"Teoría Constitucional",t:3,a:"Constitucional",p:[3]},
+ {id:11,n:"Argumentación Jurídica y Debate",t:3,a:"Taller",p:[],tag:"sp"}, {id:12,n:"Electivo de Comunicación II",t:3,a:"Electivo",p:[],tag:"fg"},
+ {id:13,n:"Acto Jurídico",t:4,a:"Civil",p:[2,9]}, {id:14,n:"Organización y Atribuciones de los Tribunales",t:4,a:"Procesal",p:[9]},
+ {id:15,n:"Derecho Constitucional Orgánico",t:4,a:"Constitucional",p:[10]}, {id:16,n:"Teoría del Delito",t:4,a:"Penal",p:[9]},
+ {id:17,n:"Negociación y Ética Profesional",t:5,a:"Taller",p:[],tag:"sp"}, {id:18,n:"Electivo de Desarrollo del Pensamiento",t:5,a:"Electivo",p:[],tag:"fg"},
+ {id:19,n:"Bienes",t:5,a:"Civil",p:[13]}, {id:20,n:"Teoría del Proceso",t:5,a:"Procesal",p:[14]},
+ {id:21,n:"Derechos y Garantías Constitucionales (Ev. Ciclo)",t:6,a:"Constitucional",p:[13,14,15],tag:"he"}, {id:22,n:"Derecho Internacional Público",t:6,a:"Constitucional",p:[13,15]},
+ {id:23,n:"Teoría de la Reacción Penal",t:6,a:"Penal",p:[16]}, {id:24,n:"Electivo de Desarrollo Personal",t:6,a:"Electivo",p:[],tag:"fg"},
+ {id:25,n:"Teoría de las Obligaciones",t:7,a:"Civil",p:[19,21]}, {id:26,n:"Procedimientos Civiles de Cognición",t:7,a:"Procesal",p:[20,21]},
+ {id:27,n:"Derecho Individual del Trabajo",t:7,a:"Laboral",p:[19,21]}, {id:28,n:"Delitos en Particular I",t:7,a:"Penal",p:[23]},
+ {id:29,n:"Redacción Forense",t:8,a:"Taller",p:[19,20],tag:"sp"}, {id:30,n:"Electivo de Ética",t:8,a:"Electivo",p:[],tag:"fg"},
+ {id:31,n:"Fuentes de las Obligaciones",t:8,a:"Civil",p:[25]}, {id:32,n:"Procedimientos de Ejecución y Cautela",t:8,a:"Procesal",p:[26]},
+ {id:33,n:"Derecho Económico",t:9,a:"Económico",p:[4,21]}, {id:34,n:"Derecho Colectivo del Trabajo y Seg. Social",t:9,a:"Laboral",p:[27]},
+ {id:35,n:"Delitos en Particular II",t:9,a:"Penal",p:[28]}, {id:36,n:"Derecho de Familia",t:10,a:"Civil",p:[31]},
+ {id:37,n:"Responsabilidad Civil",t:10,a:"Civil",p:[31]}, {id:38,n:"Introducción al Derecho Comercial",t:10,a:"Comercial",p:[25]},
+ {id:39,n:"Derecho Administrativo I",t:10,a:"Administrativo",p:[21]}, {id:40,n:"Derecho Procesal Penal",t:11,a:"Procesal",p:[32,35]},
+ {id:41,n:"Solución Alternativa de Conflictos",t:11,a:"Taller",p:[17],tag:"sp"}, {id:42,n:"Derecho Sucesorio",t:11,a:"Civil",p:[36]},
+ {id:43,n:"Procedimientos Especiales Orales (Ev. Ciclo)",t:12,a:"Procesal",p:[36,37,40,41],tag:"he"}, {id:44,n:"Derecho de Sociedades",t:11,a:"Comercial",p:[31,38]},
+ {id:45,n:"Derecho Administrativo II",t:12,a:"Administrativo",p:[39]}, {id:46,n:"Taller de Litigación",t:12,a:"Taller",p:[40],tag:"sp"},
+ {id:47,n:"Electivo de Responsabilidad Social",t:12,a:"Electivo",p:[],tag:"fg"}, {id:48,n:"Recursos",t:13,a:"Procesal",p:[43]},
+ {id:49,n:"Metodología de la Investigación Jurídica",t:13,a:"Taller",p:[43]}, {id:50,n:"Contratación Mercantil",t:13,a:"Comercial",p:[43,44]},
+ {id:51,n:"Derecho Tributario I",t:13,a:"Tributario",p:[33,43]}, {id:52,n:"Clínica Jurídica (A+S)",t:13,a:"Taller",p:[42,43],tag:"he"},
+ {id:53,n:"Optativo de Especialidad I",t:14,a:"Electivo",p:[42,43],tag:"opt"}, {id:54,n:"Optativo de Especialidad II",t:14,a:"Electivo",p:[43],tag:"opt"},
+ {id:55,n:"Seminario de Tesis",t:14,a:"Taller",p:[49],tag:"he"}, {id:56,n:"Reorganización y Liquidación Patrimonial",t:14,a:"Procesal",p:[43,50]},
+ {id:57,n:"Derecho Tributario II",t:14,a:"Tributario",p:[51]}, {id:58,n:"Taller de Litigación Avanzada (Ev. Ciclo)",t:14,a:"Taller",p:[43,46],tag:"he"}
+];
+const YEARS_NA=[{y:1,t:[1,2,3]},{y:2,t:[4,5,6]},{y:3,t:[7,8,9]},{y:4,t:[10,11,12]},{y:5,t:[13,14]}];
+const byId_NA=Object.fromEntries(COURSES_NA.map(c=>[c.id,c]));
+const KEY_NA="malla_noajustada_v1";
+let stateNA={};try{const s=localStorage.getItem(KEY_NA);if(s)stateNA=JSON.parse(s);}catch(e){}
+function saveNA(){try{localStorage.setItem(KEY_NA,JSON.stringify(stateNA));}catch(e){}}
+function isUnlockedNA(c){return (c.p||[]).every(id=>stateNA[id]==="ok");}
+function statusOfNA(c){const s=stateNA[c.id];if(s==="ok")return"ok";if(s==="no")return"no";return isUnlockedNA(c)?"open":"lock";}
+function cycleNA(c){const s=statusOfNA(c);if(s==="lock")return;if(s==="open")stateNA[c.id]="ok";else if(s==="ok")stateNA[c.id]="no";else delete stateNA[c.id];saveNA();renderNA();}
+function preShortNA(c){const pre=c.p||[];if(!pre.length)return "Sin requisitos";return "Requiere: "+pre.map(id=>byId_NA[id].n).join(", ");}
+function yearDoneNA(Y){return COURSES_NA.filter(c=>Y.t.includes(c.t)).every(c=>stateNA[c.id]==="ok");}
+function toggleYearNA(Y){const ids=COURSES_NA.filter(c=>Y.t.includes(c.t)).map(c=>c.id);const d=yearDoneNA(Y);ids.forEach(id=>d?delete stateNA[id]:stateNA[id]="ok");saveNA();renderNA();}
+function renderNA(){
+  yearsEl.innerHTML="";
+  YEARS_NA.forEach((Y,yi)=>{
+    Y.t.forEach((t,ti)=>{
+      const col=document.createElement("div");
+      col.className="lvl"+(ti===0&&yi>0?" ystart":"");
+      const yb=ti===Y.t.length-1?`<button class="yrbtn${yearDoneNA(Y)?' on':''}" data-y="${Y.y}">${yearDoneNA(Y)?'↺ Quitar año':'✓ Aprobar año'}</button>`:"";
+      let h=`<div class="lvl-h"><div class="lvl-eyebrow">Año ${Y.y}</div><div class="lvl-num">Nivel ${t}</div>${yb}</div><div class="lvl-tiles">`;
+      COURSES_NA.filter(c=>c.t===t).forEach(c=>{
+        const s=statusOfNA(c);
+        const area=ADOT[c.a]||"var(--muted)";
+        const lab=s==="ok"?"✓ Aprobado":s==="no"?"✗ Reprobado":s==="lock"?"🔒 Bloqueado":"○ Pendiente";
+        const aSt=s==="ok"?"aprobado":s==="no"?"reprobado":s==="lock"?("bloqueado. "+preShortNA(c)):"disponible";
+        const badge=c.tag==="he"?'<span class="tbadge" aria-hidden="true">⭐</span>':c.tag==="fg"?'<span class="tbadge" aria-hidden="true">🌐</span>':c.tag==="sp"?'<span class="tbadge" aria-hidden="true">🔨</span>':c.tag==="opt"?'<span class="tbadge" aria-hidden="true">＋</span>':"";
+        h+=`<div class="tile ${s}" data-id="${c.id}" role="button" tabindex="0" aria-label="${c.n}, ${aSt}"><span class="abar" style="background:${area}" aria-hidden="true"></span>${badge}<div class="tname">${c.n}</div><div class="tfoot"><span class="tstat">${lab}</span></div><div class="treq">${preShortNA(c)}</div></div>`;
+      });
+      h+=`</div>`;
+      col.innerHTML=h;
+      yearsEl.appendChild(col);
+    });
+  });
+  yearsEl.querySelectorAll(".tile").forEach(el=>{const c=byId_NA[+el.dataset.id];const act=()=>{if(statusOfNA(c)!=="lock")cycleNA(c);};el.onclick=act;el.onkeydown=(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();act();}};});
+  yearsEl.querySelectorAll(".yrbtn").forEach(b=>{const Y=YEARS_NA.find(y=>y.y==+b.dataset.y);b.onclick=(e)=>{e.stopPropagation();toggleYearNA(Y);};});
+  const total=COURSES_NA.length, ap=COURSES_NA.filter(c=>stateNA[c.id]==="ok").length, pct=Math.round(ap/total*100);
+  const ring=document.getElementById("ring");if(ring)ring.style.strokeDashoffset=(2*Math.PI*54*(1-pct/100)).toFixed(2);
+  document.getElementById("pct").textContent=pct+"%";
+  document.getElementById("pcsub").textContent=ap+" de "+total+" ramos";
+}
+let curMalla=(function(){try{return localStorage.getItem("malla_sel_v1")||"ajustada";}catch(e){return "ajustada";}})();
+function showMalla(sel){
+  curMalla=(sel==="noajustada")?"noajustada":"ajustada";
+  try{localStorage.setItem("malla_sel_v1",curMalla);}catch(e){}
+  const tgl=document.getElementById("mallaToggle");
+  if(tgl){
+    tgl.textContent=curMalla==="noajustada"?"← Volver a la malla vigente (2023)":"Ver malla no ajustada (2017)";
+    tgl.classList.toggle("na",curMalla==="noajustada");
+  }
+  const note=document.getElementById("mallaNote");
+  if(note){
+    if(curMalla==="noajustada"){note.style.display="";note.innerHTML="<b>Malla no ajustada · Plan 2017 (Res. 135/2017).</b> Solo para estudiantes de ese plan. Los <b>prerrequisitos son exactos</b>; la ubicación por trimestre es <b>referencial</b>.";}
+    else{note.style.display="none";note.innerHTML="";}
+  }
+  if(curMalla==="noajustada")renderNA();else render();
+}
+
+document.getElementById("reset").onclick=()=>{if(confirm("¿Reiniciar todo tu progreso?")){if(curMalla==="noajustada"){stateNA={};saveNA();renderNA();}else{state={};save();render();}}};
 
 const SECS=["mural","malla","calc","hor","plan","pru","info","solic"];
 function go(tab){document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===tab));SECS.forEach(s=>document.getElementById(s).style.display=s===tab?"":"none");if(tab==="plan")planPropose();if(tab==="hor")renderHorView(horMode);if(tab==="pru")renderPru(pruMode);if(tab==="mural")renderMural();window.scrollTo(0,0);}
@@ -877,7 +1053,7 @@ function renderMural(){
     return '<div class="mcard" style="border-left-color:'+n.c+'"><div class="mtop"><span class="mtag" style="color:'+n.c+';background:'+n.bg+'">'+a.tipo+'</span>'+cd+'</div><div class="mtitle">'+a.titulo+'</div><div class="mtext">'+a.texto+'</div>'+cta+'</div>';
   }).join("");
 }
-renderEvals();calc();render();renderMural();
+renderEvals();calc();document.getElementById("mallaToggle").onclick=()=>showMalla(curMalla==="noajustada"?"ajustada":"noajustada");showMalla(curMalla);renderMural();
 
 /* ===== Respaldo de avance + legales ===== */
 function exportData(){
@@ -957,7 +1133,23 @@ function importData(file){
    {c:"📖 Reglamento",q:"Si me eliminan, ¿puedo seguir estudiando?",k:"eliminado eliminacion continuidad seguir continuar gracia apelar solicitud comision",a:"El estudiante eliminado puede pedir <b>continuidad de estudios</b> por causa grave justificada, dentro de los plazos del calendario. Lo resuelve la <b>Comisión de Gracia</b> de Sede y su decisión es inapelable."},
    {c:"📖 Reglamento",q:"¿Qué necesito para titularme?",k:"titulo titular titulacion egreso licenciado examen grado practica requisitos egresar",a:"Para el título profesional debes: aprobar todas las asignaturas del plan, realizar y aprobar la(s) práctica(s), rendir y aprobar el examen de título/grado (hasta 3 oportunidades) y estar al día con la Universidad. Tras egresar tienes hasta 2 años para completar las actividades de titulación."},
    {c:"📖 Reglamento",q:"¿Qué es el Ius Postulandi?",k:"ius postulandi certificado tercer año postular tribunales iuspostulandi",a:"Para que te emitan el certificado de <b>Ius Postulandi</b>, debes tener inscritas <b>todas las asignaturas del 3er año</b> de la carrera de Derecho."},
-   {c:"📖 Reglamento",q:"¿Qué requisitos hay para ser parte del Centro de Estudiantes?",k:"centro estudiantes requisitos postular directiva ser miembro candidato promedio elegible",a:"Para integrar la directiva del Centro de Estudiantes necesitas: ser <b>estudiante regular</b> de la carrera, no estar sancionado, y tener <b>promedio igual o superior a 5,0</b> en los dos semestres anteriores (salvo estudiantes de primer año)."}
+   {c:"📖 Reglamento",q:"¿Qué requisitos hay para ser parte del Centro de Estudiantes?",k:"centro estudiantes requisitos postular directiva ser miembro candidato promedio elegible",a:"Para integrar la directiva del Centro de Estudiantes necesitas: ser <b>estudiante regular</b> de la carrera, no estar sancionado, y tener <b>promedio igual o superior a 5,0</b> en los dos semestres anteriores (salvo estudiantes de primer año)."},
+   {c:"🏛️ Servicios",q:"¿Cómo saco un certificado (alumno regular, notas, etc.)?",k:"certificado certificados alumno regular concentracion notas tramite documento solicitar registro curricular",a:"Los certificados los gestiona <b>Registro Curricular</b> (Edificio Sector Sur). Escríbeles a <b>registrocurriculartco@uautonoma.cl</b> o acércate: Lun a Jue 08:30–13:30 y 15:00–18:30, Vie hasta 18:00.<br>💡 <b>Tip:</b> los de <b>concentración de notas</b> y <b>estudiante regular</b> puedes descargarlos al toque <b>online por Banner</b> (mira «¿Cómo saco un certificado online?»)."},
+   {c:"🏛️ Servicios",q:"¿Cómo saco un certificado online (notas o estudiante regular)?",k:"certificado online on line en linea banner autoservicio portal concentracion notas alumno estudiante regular descargar pdf solicitud de servicio sacar tramite menu de servicio",a:"Puedes descargarlo tú mismo desde <b>Banner</b> (Portal de Autoservicio), sin pasar por Registro Curricular:<br>1️⃣ Entra a la <b>Intranet de Alumnos</b> y abre <b>Banner</b> (en el menú de íconos de servicios).<br>2️⃣ Ve a la pestaña <b>Menú de Servicio</b> y pincha <b>Solicitud de servicio</b>.<br>3️⃣ En <b>Categoría</b> elige <b>Certificados On-Line</b>, y en <b>Servicio</b> elige <b>Certificado Concentración de Notas</b> o <b>Certificado Estudiante Regular</b>. Pincha <b>Continuar</b>.<br>4️⃣ Selecciona tu <b>Programa</b> y el <b>Período</b> (siempre el más reciente en año y bloque) y toca <b>Guardar</b>.<br>5️⃣ En <b>Ver status de solicitud</b>, pincha <b>Documento</b> y el certificado se descarga en <b>PDF</b> automáticamente."},
+   {c:"🏛️ Servicios",q:"¿Dónde pago el arancel o veo mi situación financiera?",k:"pago arancel pagar cuota mensualidad finanzas deuda situacion financiera dinero plata cobranza",a:"En <b>Finanzas</b>: <b>finanzas.temuco@uautonoma.cl</b> · +56 45 289 5244 / 5245 / 5051. Atención Lun a Jue 08:00–13:15 y 15:00–18:15."},
+   {c:"🏛️ Servicios",q:"¿Hay gimnasio o dónde puedo hacer deporte?",k:"deporte deportes gimnasio gym coliseo ramas deportivas actividad fisica entrenar futbol",a:"La Universidad cuenta con <b>Coliseo deportivo</b> y actividades a través de <b>Experiencia UA</b>. Revisa los horarios en <b>Info → Horarios de servicios</b>."},
+   {c:"🏛️ Servicios",q:"¿Dónde está la fotocopiadora y en qué horario?",k:"fotocopia fotocopiadora imprimir impresion copias anillado",a:"Encuentras el horario de la <b>Fotocopiadora</b> en la pestaña <b>Info → Horarios de servicios</b>."},
+   {c:"🏛️ Servicios",q:"¿Qué es Experiencia UA?",k:"experiencia ua dae bienestar vida estudiantil deporte cultura actividades",a:"<b>Experiencia UA</b> reúne los servicios de vida estudiantil: bienestar, deporte, cultura y actividades. Mira sus horarios en <b>Info → Horarios de servicios</b> y los beneficios en <b>Info → Enlaces útiles</b>."},
+   {c:"📱 La app",q:"¿Cómo instalo UApp en mi teléfono?",k:"instalar app aplicacion descargar pantalla inicio agregar telefono celular",a:"En <b>Android</b>: ábrela en Chrome → menú (los tres puntos) → 'Agregar a pantalla de inicio'. En <b>iPhone</b>: ábrela en Safari → botón Compartir → 'Agregar a inicio'. ¡Es gratis!"},
+   {c:"📱 La app",q:"¿Cómo respaldo mi avance para no perderlo?",k:"respaldo respaldar guardar backup avance perder cambiar telefono restaurar copia",a:"En la pestaña <b>Avance Curricular</b>, abajo, toca <b>Respaldar mi avance</b> para descargar una copia, y <b>Restaurar respaldo</b> para recuperarla en otro dispositivo."},
+   {c:"📱 La app",q:"¿Mis datos están seguros? ¿Quién los ve?",k:"datos privacidad seguro seguridad personales ven guardan informacion",a:"Tu avance, notas y ramos se guardan <b>solo en tu dispositivo</b>: no se envían a ningún servidor ni los vemos nosotros. Lee más en <b>Términos y Privacidad</b>, en el pie de la app."},
+   {c:"📱 La app",q:"¿Cómo hago una solicitud al Centro de Estudiantes?",k:"solicitud solicitudes peticion pedir tramite formulario consulta caso",a:"Ve a la pestaña <b>Solicitudes</b> y toca <b>Hacer una solicitud</b>: completas el formulario y nosotros lo revisamos. También por Instagram @ccee.derechouatco."},
+   {c:"📱 La app",q:"¿Puedo usar modo oscuro o agrandar la letra?",k:"modo oscuro tema noche letra grande tamaño accesibilidad contraste animaciones",a:"Sí. Toca el botón de <b>accesibilidad</b> (abajo a la izquierda): ahí eliges <b>tema claro/oscuro/automático</b>, <b>tamaño de letra</b> y <b>reducir animaciones</b>."},
+   {c:"📝 Inscripción",q:"¿Cómo convalido ramos o hago un traslado de carrera?",k:"convalidar convalidacion homologar homologacion traslado cambio carrera reconocimiento ramos validacion estudios traspaso",a:"Las convalidaciones y traslados se rigen por el <b>Reglamento de Validación de Estudios y Traslados</b> y los gestiona la <b>Dirección de Carrera</b> junto con Registro Curricular. Acércate a secretaría de Derecho (derecho.temuco01@cloud.uautonoma.cl) para iniciar el trámite dentro de los plazos."},
+   {c:"📖 Reglamento",q:"¿Cómo justifico una inasistencia o falta médica?",k:"justificar justificacion inasistencia falta medica certificado licencia ausencia enfermo no fui",a:"Presenta el <b>certificado o documento que respalde</b> tu inasistencia a la <b>Dirección de Carrera</b> dentro de los plazos del reglamento. Es clave hacerlo si faltaste a una evaluación, para no quedar con nota 1,0."},
+   {c:"👤 Autoridades",q:"Tengo un problema con un profesor o un ramo, ¿a quién acudo?",k:"problema profesor docente conflicto ramo reclamo queja a quien acudir ayuda academica situacion clase",a:"Puedes hablar con el <b>Coordinador vespertino, Fernando Bravo</b> (fernando.bravo@uautonoma.cl) o con la <b>Secretaría académica</b>. Y si necesitas apoyo o que te acompañen, cuenta con tu <b>Centro de Estudiantes</b> (@ccee.derechouatco)."},
+   {c:"📝 Inscripción",q:"¿Qué es la encuesta de evaluación docente y por qué importa?",k:"encuesta evaluacion docente docencia responder obligatoria bloqueo importante opinar profesores",a:"Es la encuesta donde evalúas a tus docentes cada período. <b>Es muy importante responderla:</b> si no la completas, puedes quedar con <b>bloqueo para la toma de carga</b> de asignaturas del período siguiente. Cuando se abra, lo avisamos en el <b>Mural</b>."},
+   {c:"🏛️ Servicios",q:"¿Cómo accedo a mi correo institucional o recupero mi clave?",k:"correo institucional clave contraseña acceso credenciales usuario plataforma recuperar email cuenta intranet",a:"Para tu <b>correo institucional, clave o credenciales de acceso</b>, contacta a la <b>Secretaría Administrativa de Derecho</b> (derecho.temuco01@cloud.uautonoma.cl · +56 45 289 5078), que te orientará con el soporte de la Universidad."}
   ];
 
   const fab=document.getElementById('chatFab'), panel=document.getElementById('chatPanel'),
@@ -1003,6 +1195,33 @@ if('serviceWorker' in navigator){
     }).catch(function(){});
   });
 }
+</script>
+<script>
+/* ===== Accesibilidad ===== */
+(function(){
+  var KEYA="uapp_a11y_v1";
+  var prefs={theme:"auto",font:"1",motion:false};
+  try{var s=JSON.parse(localStorage.getItem(KEYA));if(s)prefs=Object.assign(prefs,s);}catch(e){}
+  var mq=window.matchMedia('(prefers-color-scheme: dark)');
+  function applyTheme(){var dark=prefs.theme==="dark"||(prefs.theme==="auto"&&mq.matches);document.body.classList.toggle("dark",dark);}
+  function applyFont(){document.body.style.zoom=prefs.font;}
+  function applyMotion(){document.body.classList.toggle("reduce-motion",!!prefs.motion);}
+  function save(){try{localStorage.setItem(KEYA,JSON.stringify(prefs));}catch(e){}}
+  function mark(){
+    var t=document.querySelectorAll('#segTheme button');for(var i=0;i<t.length;i++)t[i].classList.toggle('on',t[i].dataset.v===prefs.theme);
+    var f=document.querySelectorAll('#segFont button');for(var j=0;j<f.length;j++)f[j].classList.toggle('on',f[j].dataset.v===String(prefs.font));
+    var tg=document.getElementById('togMotion');if(tg){tg.classList.toggle('on',!!prefs.motion);tg.setAttribute('aria-checked',prefs.motion?'true':'false');}
+  }
+  applyTheme();applyFont();applyMotion();
+  var fab=document.getElementById('a11yFab'),panel=document.getElementById('a11yPanel'),x=document.getElementById('a11yX');
+  if(fab&&panel)fab.onclick=function(){mark();panel.style.display='flex';};
+  if(x&&panel)x.onclick=function(){panel.style.display='none';};
+  if(panel)panel.onclick=function(e){if(e.target===panel)panel.style.display='none';};
+  var tb=document.querySelectorAll('#segTheme button');for(var i=0;i<tb.length;i++)tb[i].onclick=function(){prefs.theme=this.dataset.v;applyTheme();mark();save();};
+  var fb=document.querySelectorAll('#segFont button');for(var k=0;k<fb.length;k++)fb[k].onclick=function(){prefs.font=this.dataset.v;applyFont();mark();save();};
+  var tg=document.getElementById('togMotion');if(tg)tg.onclick=function(){prefs.motion=!prefs.motion;applyMotion();mark();save();};
+  if(mq.addEventListener)mq.addEventListener('change',function(){if(prefs.theme==='auto')applyTheme();});
+})();
 </script>
 </body>
 </html>
