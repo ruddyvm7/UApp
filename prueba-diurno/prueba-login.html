@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>UApp · Prueba Login Microsoft</title>
+<style>
+  :root{ --wine:#8b0c0c; --gold:#c79a3e; --navy:#2c080a; --ink:#2a2b2e; --muted:#7a756c; --line:#e6e0d6; --soft:#faf7f2; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:system-ui,sans-serif; background:#f6f5f2; color:var(--ink); padding:22px; max-width:560px; margin:0 auto; }
+  .head{ display:flex; align-items:center; gap:10px; border-bottom:3px solid; border-image:linear-gradient(90deg,var(--wine),var(--gold)) 1; padding-bottom:12px; margin-bottom:16px; }
+  .head .k{ color:var(--wine); font-weight:800; font-size:1.05rem; }
+  .head .s{ color:var(--muted); font-size:.72rem; }
+  .lead{ font-size:.9rem; color:#444; line-height:1.5; margin-bottom:18px; }
+  .btn{ display:inline-flex; align-items:center; gap:10px; background:var(--wine); color:#fff; border:0; border-radius:12px; padding:14px 20px; font-size:1rem; font-weight:700; cursor:pointer; width:100%; justify-content:center; }
+  .btn:hover{ background:#6c0909; }
+  .btn.out{ background:#fff; color:var(--wine); border:1.5px solid var(--wine); margin-top:10px; }
+  .ms{ width:18px; height:18px; display:inline-block; }
+  .box{ margin-top:20px; border-radius:12px; padding:16px; font-size:.9rem; line-height:1.55; }
+  .box.info{ background:#eef2f8; color:#3a5a8a; }
+  .box.ok{ background:#e6f4ea; color:#1e6b3a; border:1px solid #b6dcc2; }
+  .box.warn{ background:#fbf4e9; color:#8a6d1f; border:1px solid #efe0c4; }
+  .box.err{ background:#fbe9e6; color:#a3342a; border:1px solid #e3b3ab; white-space:pre-wrap; }
+  .field{ margin:6px 0; }
+  .field b{ color:var(--navy); }
+  .rolebadge{ display:inline-block; font-weight:800; border-radius:20px; padding:3px 12px; font-size:.85rem; }
+  .rolebadge.admin{ background:var(--wine); color:#fff; }
+  .rolebadge.editor{ background:var(--gold); color:#3a2e0a; }
+  .rolebadge.none{ background:#e0726a; color:#fff; }
+  .foot{ text-align:center; font-size:.7rem; color:var(--muted); margin-top:24px; padding-top:14px; border-top:1px solid var(--line); }
+</style>
+</head>
+<body>
+  <div class="head">
+    <div>
+      <div class="k">UApp · Prueba de acceso</div>
+      <div class="s">Login institucional (Microsoft) + verificación de rol</div>
+    </div>
+  </div>
+
+  <p class="lead">Esta prueba hace el flujo real del panel de administración: inicias sesión con tu <b>cuenta institucional</b>, y el sistema revisa en la tabla <b>editores</b> qué rol tienes.</p>
+
+  <div id="antesLogin">
+    <button class="btn" id="btnLogin">
+      <svg class="ms" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="10" height="10" fill="#f25022"/><rect x="12" y="1" width="10" height="10" fill="#7fba00"/><rect x="1" y="12" width="10" height="10" fill="#00a4ef"/><rect x="12" y="12" width="10" height="10" fill="#ffb900"/></svg>
+      Continuar con Microsoft
+    </button>
+  </div>
+
+  <div id="resultado"></div>
+
+  <div class="foot">« Tu voz, nuestra causa » · <b>UApp</b> · prueba de login v3.0</div>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  const SUPABASE_URL = "https://pohrbljeamhfkcjxikct.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_XVNXhyYjebrrs0R0oKgLZw_9tBbDazZ";
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const antes = document.getElementById('antesLogin');
+  const res   = document.getElementById('resultado');
+
+  document.getElementById('btnLogin').onclick = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'azure',
+      options: {
+        scopes: 'email openid profile',
+        redirectTo: window.location.href.split('#')[0]
+      }
+    });
+    if (error) {
+      res.innerHTML = `<div class="box err">❌ Error al iniciar: ${error.message}</div>`;
+    }
+  };
+
+  async function mostrarSesion(session) {
+    antes.style.display = 'none';
+    const email = session.user.email || '(sin correo)';
+    const nombre = session.user.user_metadata?.name || session.user.user_metadata?.full_name || '';
+
+    // Consulta el rol en la tabla editores
+    let rolHTML = '';
+    try {
+      const { data, error } = await supabase
+        .from('editores')
+        .select('rol, nombre')
+        .eq('email', email)
+        .maybeSingle();
+
+      if (error) throw error;
+
+      if (data) {
+        const cls = data.rol === 'admin' ? 'admin' : 'editor';
+        rolHTML = `<div class="box ok">✅ <b>Acceso autorizado.</b><br>
+          Rol: <span class="rolebadge ${cls}">${data.rol}</span><br>
+          ${data.nombre ? 'Registrado como: <b>'+data.nombre+'</b>' : ''}</div>`;
+      } else {
+        rolHTML = `<div class="box warn">⚠️ Iniciaste sesión correctamente, pero <b>tu correo no está en la lista de editores</b>, así que no tendrías permiso para editar.<br>
+          <span class="rolebadge none">sin rol</span><br>
+          (Esto es lo que le pasaría a un funcionario no autorizado. Correcto.)</div>`;
+      }
+    } catch (e) {
+      rolHTML = `<div class="box err">Sesión iniciada, pero hubo un problema consultando el rol:\n${e.message}</div>`;
+    }
+
+    res.innerHTML = `
+      <div class="box info">
+        <div class="field">👤 <b>Sesión iniciada</b></div>
+        <div class="field">Correo: <b>${email}</b></div>
+        ${nombre ? `<div class="field">Nombre: <b>${nombre}</b></div>` : ''}
+      </div>
+      ${rolHTML}
+      <button class="btn out" id="btnOut">Cerrar sesión</button>
+    `;
+    document.getElementById('btnOut').onclick = async () => {
+      await supabase.auth.signOut();
+      location.href = location.href.split('#')[0];
+    };
+  }
+
+  // Al cargar: ¿ya hay sesión (volviendo del login)?
+  const { data:{ session } } = await supabase.auth.getSession();
+  if (session) {
+    mostrarSesion(session);
+  }
+  supabase.auth.onAuthStateChange((_event, session) => {
+    if (session) mostrarSesion(session);
+  });
+</script>
+</body>
+</html>
