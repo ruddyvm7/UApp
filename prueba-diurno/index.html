@@ -723,7 +723,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
 const COURSES=[
  {id:1,n:"Historia del Derecho",t:1,a:"Histórico",p:[]},{id:2,n:"Derecho Político",t:1,a:"Constitucional",p:[]},
  {id:3,n:"Introducción al Derecho",t:1,a:"Fundamentos",p:[]},{id:4,n:"Electivo de Comunicación",t:1,a:"Electivo",p:[],tag:"fg"},
- {id:5,n:"Historia Institucional de Chile",t:2,a:"Histórico",p:[1]},{id:6,n:"Historia y Ev. de las Instituciones Civiles",t:2,a:"Civil",p:[]},
+ {id:5,n:"Historia Institucional de Chile",t:2,a:"Histórico",p:[]},{id:6,n:"Historia y Ev. de las Instituciones Civiles",t:2,a:"Civil",p:[]},
  {id:7,n:"Teoría de la Ley y las Personas",t:2,a:"Civil",p:[]},{id:8,n:"Electivo de Comunicación II",t:2,a:"Electivo",p:[],tag:"fg"},
  {id:9,n:"Fundamentos Filosóficos del Derecho",t:3,a:"Histórico",p:[]},{id:10,n:"Introducción a la Economía",t:3,a:"Económico",p:[]},
  {id:11,n:"Teoría Constitucional",t:3,a:"Constitucional",p:[2]},{id:12,n:"Argumentación Jurídica y Debate",t:3,a:"Taller",p:[],tag:"sp"},
@@ -742,13 +742,13 @@ const COURSES=[
  {id:37,n:"Responsabilidad Civil",t:10,a:"Civil",p:[25]},{id:38,n:"Derecho Societario",t:10,a:"Comercial",p:[25]},
  {id:39,n:"Taller de Litigación",t:10,a:"Taller",p:[26],tag:"sp"},{id:40,n:"Derecho Sucesorio",t:11,a:"Civil",p:[7,8,13]},
  {id:41,n:"Contratación Mercantil",t:11,a:"Comercial",p:[28]},{id:42,n:"Derecho Administrativo I",t:11,a:"Administrativo",p:[22]},
- {id:43,n:"Derecho Procesal Penal",t:11,a:"Procesal",p:[26]},{id:44,n:"Procedimientos Especiales Orales",t:12,a:"Procesal",p:[20,26]},
+ {id:43,n:"Derecho Procesal Penal",t:11,a:"Procesal",p:[26]},{id:44,n:"Procedimientos Especiales Orales",t:12,a:"Procesal",p:[17,26]},
  {id:45,n:"Derecho Administrativo II",t:12,a:"Administrativo",p:[22]},{id:46,n:"Derecho Tributario I",t:12,a:"Tributario",p:[]},
  {id:47,n:"Taller de Integración II (Ev. Ciclo)",t:12,a:"Taller",p:[24,37,39],tag:"he"},{id:48,n:"Optativo de Especialidad I",t:12,a:"Electivo",p:[],tag:"opt"},
- {id:49,n:"Reorg. y Liquidación Patrimonial",t:13,a:"Procesal",p:[28,38]},{id:50,n:"Recursos",t:13,a:"Procesal",p:[26]},
+ {id:49,n:"Reorg. y Liquidación Patrimonial",t:13,a:"Procesal",p:[28,38]},{id:50,n:"Recursos",t:13,a:"Procesal",p:[17,26]},
  {id:51,n:"Seminario de Investigación Jurídica",t:13,a:"Taller",p:{upTo:35},tag:"he"},{id:52,n:"Derecho Tributario II",t:13,a:"Tributario",p:[]},
  {id:53,n:"Optativo de Especialidad II",t:13,a:"Electivo",p:[],tag:"opt"},{id:54,n:"Taller de Integración III (Ev. Ciclo)",t:14,a:"Taller",p:{upTo:53},tag:"he"},
- {id:55,n:"Clínica Jurídica (A+S)",t:14,a:"Taller",p:{upTo:45},tag:"he"}
+ {id:55,n:"Clínica Jurídica (A+S)",t:14,a:"Taller",p:{upTo:35},tag:"he"}
 ];
 const YEARS=[{y:1,t:[1,2,3]},{y:2,t:[4,5,6]},{y:3,t:[7,8,9]},{y:4,t:[10,11,12]},{y:5,t:[13,14]}];
 const byId=Object.fromEntries(COURSES.map(c=>[c.id,c]));
@@ -818,7 +818,7 @@ const COURSES_NA=[
  {id:5,n:"Introducción al Derecho",t:2,a:"Fundamentos",p:[]}, {id:6,n:"Electivo de Comunicación",t:2,a:"Electivo",p:[],tag:"fg"},
  {id:7,n:"Historia Institucional de Chile",t:2,a:"Histórico",p:[]}, {id:8,n:"Fundamentos Filosóficos del Derecho",t:2,a:"Histórico",p:[]},
  {id:9,n:"Teoría de la Ley y las Personas",t:3,a:"Civil",p:[5]}, {id:10,n:"Teoría Constitucional",t:3,a:"Constitucional",p:[3]},
- {id:11,n:"Argumentación Jurídica y Debate",t:3,a:"Taller",p:[],tag:"sp"}, {id:12,n:"Electivo de Comunicación II",t:3,a:"Electivo",p:[],tag:"fg"},
+ {id:11,n:"Argumentación Jurídica y Debate",t:3,a:"Taller",p:[],tag:"sp"}, {id:12,n:"Electivo de Comunicación",t:3,a:"Electivo",p:[],tag:"fg"},
  {id:13,n:"Acto Jurídico",t:4,a:"Civil",p:[2,9]}, {id:14,n:"Organización y Atribuciones de los Tribunales",t:4,a:"Procesal",p:[9]},
  {id:15,n:"Derecho Constitucional Orgánico",t:4,a:"Constitucional",p:[10]}, {id:16,n:"Teoría del Delito",t:4,a:"Penal",p:[9]},
  {id:17,n:"Negociación y Ética Profesional",t:5,a:"Taller",p:[],tag:"sp"}, {id:18,n:"Electivo de Desarrollo del Pensamiento",t:5,a:"Electivo",p:[],tag:"fg"},
@@ -845,6 +845,10 @@ const COURSES_NA=[
 ];
 const YEARS_NA=[{y:1,t:[1,2,3]},{y:2,t:[4,5,6]},{y:3,t:[7,8,9]},{y:4,t:[10,11,12]},{y:5,t:[13,14]}];
 const byId_NA=Object.fromEntries(COURSES_NA.map(c=>[c.id,c]));
+/* ===== Créditos SCT-Chile (Res.165/2022 ajustada · Res.135/2017 no ajustada). Datos internos: NO se muestran en ficha; los usa el Planificador para el tope de carga. ===== */
+const CR_AJUSTADA={1:5,2:5,3:7,4:3,5:5,6:5,7:6,8:3,9:6,10:5,11:6,12:4,13:6,14:6,15:6,16:3,17:6,18:6,19:6,20:3,21:6,22:5,23:4,24:3,25:6,26:6,27:7,28:6,29:5,30:5,31:3,32:6,33:5,34:5,35:3,36:6,37:6,38:5,39:3,40:6,41:4,42:5,43:5,44:4,45:5,46:4,47:5,48:2,49:5,50:5,51:7,52:4,53:2,54:30,55:7};
+const CR_NOAJUST={1:5,2:5,3:5,4:5,5:7,6:3,7:5,8:6,9:6,10:6,11:4,12:3,13:6,14:6,15:6,16:6,17:3,18:3,19:6,20:6,21:5,22:4,23:6,24:3,25:6,26:6,27:5,28:7,29:3,30:3,31:7,32:6,33:5,34:5,35:7,36:6,37:6,38:5,39:5,40:5,41:3,42:6,43:6,44:5,45:5,46:5,47:3,48:5,49:7,50:5,51:6,52:7,53:4,54:4,55:7,56:5,57:6,58:4};
+function creditsOf(id){ return (curMalla==="noajustada"?CR_NOAJUST[id]:CR_AJUSTADA[id])||0; }
 const KEY_NA="malla_noajustada_v1";
 let stateNA={};try{const s=localStorage.getItem(KEY_NA);if(s)stateNA=JSON.parse(s);}catch(e){}
 function saveNA(){try{localStorage.setItem(KEY_NA,JSON.stringify(stateNA));}catch(e){}}
@@ -1027,7 +1031,8 @@ function planPropose(){
   }else h+=`<div class="pcard">No hay ramos para proponer con las reglas actuales. Marca tu avance en Avance Curricular.</div>`;
   if(excl.length){h+=`<div class="hgrp serif">No incluidos</div>`;excl.forEach(({c,r})=>h+=`<div class="pexc">• <b>${c.n}</b> (nivel ${c.t}) — ${r}</div>`);}
   h+=`<div class="hgrp serif">A tener en cuenta</div>`;
-  h+=`<div class="presum">Tu nivel más bajo pendiente es <b>nivel ${anchor}</b>. El reglamento permite cursar hasta 4 niveles consecutivos, es decir hasta <b>nivel ${anchor+maxDif}</b> (máx. 30 créditos).${apCount===0?'<br><span style="color:#b3445a">Aún no marcas ramos aprobados — hazlo en Avance Curricular para una propuesta real.</span>':''}</div>`;
+  const crSel=chosen.reduce((s,x)=>s+(creditsOf(x.c.id)||0),0);
+  h+=`<div class="presum">Tu nivel más bajo pendiente es <b>nivel ${anchor}</b>. En régimen trimestral el reglamento (Res. 009/2024, art. 17) permite cursar hasta <b>4 niveles consecutivos</b> desde ahí —hasta <b>nivel ${anchor+maxDif}</b>— inscribiendo primero lo reprobado del nivel más bajo. La carga de diseño es 30 SCT por nivel; el tope excepcional es <b>24 SCT trimestrales</b> (36 semestrales), autorizable solo por la Dirección de Carrera.${crSel?` Esta propuesta suma <b>${crSel} SCT</b>.`:''}${apCount===0?'<br><span style="color:#b3445a">Aún no marcas ramos aprobados — hazlo en Avance Curricular para una propuesta real.</span>':''}</div>`;
   if(offById[51]&&state[51]!=="ok")h+=`<div class="pinfo">ℹ️ El <b>Seminario de Investigación Jurídica</b> está en la oferta, pero <b>lo inscribe la Carrera</b> mediante formulario — no lo eliges tú.</div>`;
   h+=`<div class="pinfo">Excepción (Circular N°04/2026, punto 7): en ciclo avanzado podría autorizarse <b>una sola</b> coincidencia horaria, si ninguno de los dos ramos está en repetición. El planificador no la aplica automáticamente; debe pedirse vía formulario.</div>`;
   out.innerHTML=h;
@@ -1348,6 +1353,11 @@ if('serviceWorker' in navigator){
   var COURSES_SEM=COURSES.map(function(c){return Object.assign({},c,{t:SEM_OF[c.id]});});
   var YEARS_SEM=[{y:1,t:[1,2]},{y:2,t:[3,4]},{y:3,t:[5,6]},{y:4,t:[7,8]},{y:5,t:[9,10]}];
   var byId_SEM={};COURSES_SEM.forEach(function(c){byId_SEM[c.id]=c;});
+
+  /* --- Malla NO AJUSTADA semestral (Plan 2017 · Res.135/2017): 58 ramos en 10 semestres nativos, ubicación EXACTA (no referencial) --- */
+  var NA_SEM_OF={1:1,2:1,3:1,4:1,5:1,6:1,7:2,8:2,9:2,10:2,11:2,12:2,13:3,14:3,15:3,16:3,17:3,18:3,19:4,20:4,21:4,22:4,23:4,24:4,25:5,26:5,27:5,28:5,29:5,30:5,31:6,32:6,33:6,34:6,35:6,36:7,37:7,38:7,39:7,40:7,41:7,42:8,43:8,44:8,45:8,46:8,47:8,48:9,49:9,50:9,51:9,52:9,53:10,54:10,55:10,56:10,57:10,58:10};
+  var COURSES_NASEM=COURSES_NA.map(function(c){return Object.assign({},c,{t:NA_SEM_OF[c.id]});});
+  var byId_NASEM={};COURSES_NASEM.forEach(function(c){byId_NASEM[c.id]=c;});
   var KEY_SEM="malla_sem_diurno_v1", stateSEM={};
   function loadSEM(){stateSEM={};try{var s=localStorage.getItem(KEY_SEM);if(s)stateSEM=JSON.parse(s);}catch(e){}}
   function saveSEM(){try{localStorage.setItem(KEY_SEM,JSON.stringify(stateSEM));}catch(e){}}
@@ -1385,6 +1395,73 @@ if('serviceWorker' in navigator){
     var ring=document.getElementById("ring");if(ring)ring.style.strokeDashoffset=(2*Math.PI*54*(1-pct/100)).toFixed(2);
     document.getElementById("pct").textContent=pct+"%";
     document.getElementById("pcsub").textContent=ap+" de "+total+" ramos";
+  }
+
+  /* --- Estado/render de la malla NO AJUSTADA semestral (plan 2017) por jornada --- */
+  var KEY_NASEM="malla_nasem_diurno_v1", stateNASEM={};
+  function loadNASEM(){stateNASEM={};try{var s=localStorage.getItem(KEY_NASEM);if(s)stateNASEM=JSON.parse(s);}catch(e){}}
+  function saveNASEM(){try{localStorage.setItem(KEY_NASEM,JSON.stringify(stateNASEM));}catch(e){}}
+  function isUnlockedNASEM(c){return (c.p||[]).every(function(id){return stateNASEM[id]==="ok";});}
+  function statusOfNASEM(c){var s=stateNASEM[c.id];if(s==="ok")return"ok";if(s==="no")return"no";return isUnlockedNASEM(c)?"open":"lock";}
+  function cycleNASEM(c){var s=statusOfNASEM(c);if(s==="lock")return;if(s==="open")stateNASEM[c.id]="ok";else if(s==="ok")stateNASEM[c.id]="no";else delete stateNASEM[c.id];saveNASEM();renderNASEM();}
+  function preShortNASEM(c){var pre=c.p||[];if(!pre.length)return "Sin requisitos";return "Requiere: "+pre.map(function(id){return byId_NASEM[id].n;}).join(", ");}
+  function yearDoneNASEM(Y){return COURSES_NASEM.filter(function(c){return Y.t.indexOf(c.t)>=0;}).every(function(c){return stateNASEM[c.id]==="ok";});}
+  function toggleYearNASEM(Y){var ids=COURSES_NASEM.filter(function(c){return Y.t.indexOf(c.t)>=0;}).map(function(c){return c.id;});var d=yearDoneNASEM(Y);ids.forEach(function(id){if(d)delete stateNASEM[id];else stateNASEM[id]="ok";});saveNASEM();renderNASEM();}
+  function renderNASEM(){
+    yearsEl.innerHTML="";
+    YEARS_SEM.forEach(function(Y,yi){
+      Y.t.forEach(function(t,ti){
+        var col=document.createElement("div");
+        col.className="lvl"+(ti===0&&yi>0?" ystart":"");
+        var yb=ti===Y.t.length-1?'<button class="yrbtn'+(yearDoneNASEM(Y)?' on':'')+'" data-y="'+Y.y+'">'+(yearDoneNASEM(Y)?'↺ Quitar año':'✓ Aprobar año')+'</button>':"";
+        var h='<div class="lvl-h"><div class="lvl-eyebrow">Año '+Y.y+'</div><div class="lvl-num">Semestre '+t+'</div>'+yb+'</div><div class="lvl-tiles">';
+        COURSES_NASEM.filter(function(c){return c.t===t;}).forEach(function(c){
+          var s=statusOfNASEM(c);
+          var area=ADOT[c.a]||"var(--muted)";
+          var lab=s==="ok"?"✓ Aprobado":s==="no"?"✗ Reprobado":s==="lock"?"🔒 Bloqueado":"○ Pendiente";
+          var aSt=s==="ok"?"aprobado":s==="no"?"reprobado":s==="lock"?("bloqueado. "+preShortNASEM(c)):"disponible";
+          var badge=c.tag==="he"?'<span class="tbadge" aria-hidden="true">⭐</span>':c.tag==="fg"?'<span class="tbadge" aria-hidden="true">🌐</span>':c.tag==="sp"?'<span class="tbadge" aria-hidden="true">🔨</span>':c.tag==="opt"?'<span class="tbadge" aria-hidden="true">＋</span>':"";
+          h+='<div class="tile '+s+'" data-id="'+c.id+'" role="button" tabindex="0" aria-label="'+c.n+', '+aSt+'"><span class="abar" style="background:'+area+'" aria-hidden="true"></span>'+badge+'<div class="tname">'+c.n+'</div><div class="tfoot"><span class="tstat">'+lab+'</span></div><div class="treq">'+preShortNASEM(c)+'</div></div>';
+        });
+        h+='</div>';
+        col.innerHTML=h;
+        yearsEl.appendChild(col);
+      });
+    });
+    yearsEl.querySelectorAll(".tile").forEach(function(el){var c=byId_NASEM[+el.dataset.id];var act=function(){if(statusOfNASEM(c)!=="lock")cycleNASEM(c);};el.onclick=act;el.onkeydown=function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();act();}};});
+    yearsEl.querySelectorAll(".yrbtn").forEach(function(b){var Y=YEARS_SEM.find(function(y){return y.y==+b.dataset.y;});b.onclick=function(e){e.stopPropagation();toggleYearNASEM(Y);};});
+    var total=COURSES_NASEM.length, ap=COURSES_NASEM.filter(function(c){return stateNASEM[c.id]==="ok";}).length, pct=Math.round(ap/total*100);
+    var ring=document.getElementById("ring");if(ring)ring.style.strokeDashoffset=(2*Math.PI*54*(1-pct/100)).toFixed(2);
+    document.getElementById("pct").textContent=pct+"%";
+    document.getElementById("pcsub").textContent=ap+" de "+total+" ramos";
+  }
+
+  /* --- Selector de malla (ajustada/no ajustada) para Diurno y V.Regular --- */
+  var curMallaSem="ajustada"; /* por jornada */
+  function keyMallaSem(j){return "malla_sel_"+j+"_v1";}
+  function showMallaSem(j,sel){
+    curMallaSem=(sel==="noajustada")?"noajustada":"ajustada";
+    try{localStorage.setItem(keyMallaSem(j),curMallaSem);}catch(e){}
+    var nm=names[j];
+    var tgl=document.getElementById("mallaToggle");
+    if(tgl){
+      tgl.style.display="";
+      tgl.textContent=curMallaSem==="noajustada"?"← Volver a la malla vigente (2023)":"Ver malla no ajustada (2017)";
+      tgl.classList.toggle("na",curMallaSem==="noajustada");
+    }
+    var note=document.getElementById("mallaNote");
+    if(note){
+      note.style.display="";
+      if(curMallaSem==="noajustada"){
+        KEY_NASEM="malla_nasem_"+j+"_v1"; loadNASEM();
+        note.innerHTML="<b>"+nm+" · Malla no ajustada · Plan 2017 (Res. 135/2017), régimen semestral.</b> Solo para estudiantes de ese plan. Ubicación por semestre y prerrequisitos <b>oficiales exactos</b>.";
+        renderNASEM();
+      }else{
+        KEY_SEM="malla_sem_"+j+"_v1"; loadSEM();
+        note.innerHTML="<b>"+nm+" · Plan vigente (Res. 165/2022), régimen semestral.</b> Los prerrequisitos son los oficiales del plan.";
+        renderSEM();
+      }
+    }
   }
 
   /* --- Selector y rotulado de jornada --- */
@@ -1457,13 +1534,13 @@ if('serviceWorker' in navigator){
     var tgl=document.getElementById("mallaToggle");
     var note=document.getElementById("mallaNote");
     if(j==="tech"){
-      if(tgl)tgl.style.display="";
+      if(tgl){tgl.style.display="";tgl.onclick=function(){showMalla(curMalla==="noajustada"?"ajustada":"noajustada");};}
       showMalla(curMalla);
     }else{
-      if(tgl)tgl.style.display="none";
-      KEY_SEM="malla_sem_"+j+"_v1"; loadSEM();
-      if(note){note.style.display="";note.innerHTML="<b>"+nm+" · Plan vigente (Res. 165/2022), régimen semestral.</b> Los prerrequisitos son los oficiales del plan.";}
-      renderSEM();
+      /* Diurno y V.Regular: selector ajustada(2023)/no ajustada(2017), ambas semestrales */
+      var sel="ajustada"; try{sel=localStorage.getItem(keyMallaSem(j))||"ajustada";}catch(e){}
+      if(tgl)tgl.onclick=function(){showMallaSem(j,curMallaSem==="noajustada"?"ajustada":"noajustada");};
+      showMallaSem(j,sel);
     }
     swapSolic(j!=="tech");
   }
@@ -1474,7 +1551,10 @@ if('serviceWorker' in navigator){
     var oldReset=resetBtn.onclick;
     resetBtn.onclick=function(){
       if(curJornada&&curJornada!=="tech"){
-        if(confirm("¿Reiniciar todo tu progreso?")){stateSEM={};saveSEM();renderSEM();}
+        if(confirm("¿Reiniciar todo tu progreso?")){
+          if(curMallaSem==="noajustada"){stateNASEM={};saveNASEM();renderNASEM();}
+          else{stateSEM={};saveSEM();renderSEM();}
+        }
       }else if(oldReset){oldReset();}
     };
   }
