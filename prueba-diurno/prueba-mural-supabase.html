@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UApp · Prueba Mural desde Supabase</title>
+<style>
+  :root{ --wine:#8b0c0c; --gold:#c79a3e; --navy:#2c080a; --ink:#2a2b2e; --muted:#7a756c; --line:#e6e0d6; --soft:#faf7f2; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:system-ui,sans-serif; background:#f6f5f2; color:var(--ink); padding:18px; max-width:640px; margin:0 auto; }
+  .head{ display:flex; align-items:center; gap:10px; border-bottom:3px solid; border-image:linear-gradient(90deg,var(--wine),var(--gold)) 1; padding-bottom:12px; margin-bottom:6px; }
+  .head .k{ color:var(--wine); font-weight:800; font-size:1.05rem; letter-spacing:.02em; }
+  .head .s{ color:var(--muted); font-size:.72rem; }
+  .lead{ font-size:.82rem; color:var(--muted); margin:12px 0; }
+  .estado{ font-size:.8rem; padding:9px 12px; border-radius:10px; margin-bottom:14px; }
+  .cargando{ background:#eef2f8; color:#3a5a8a; }
+  .ok{ background:#e6f4ea; color:#1e6b3a; border:1px solid #b6dcc2; }
+  .err{ background:#fbe9e6; color:#a3342a; border:1px solid #e3b3ab; white-space:pre-wrap; }
+  .mcard{ background:#fff; border:1px solid var(--line); border-left:5px solid var(--gold); border-radius:12px; padding:14px 16px; margin-bottom:12px; box-shadow:0 2px 8px rgba(0,0,0,.04); }
+  .mcard.importante{ border-left-color:var(--wine); }
+  .mtag{ display:inline-block; font-size:.64rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em; color:var(--wine); background:#fbf4e9; border:1px solid #efe0c4; border-radius:20px; padding:2px 9px; margin-bottom:7px; }
+  .mtitle{ font-weight:800; color:var(--navy); font-size:1.02rem; margin-bottom:5px; }
+  .mtext{ font-size:.9rem; color:#3f3c37; line-height:1.5; }
+  .mmeta{ font-size:.7rem; color:var(--muted); margin-top:8px; }
+  .foot{ text-align:center; font-size:.7rem; color:var(--muted); margin-top:20px; padding-top:12px; border-top:1px solid var(--line); }
+  .foot b{ color:var(--wine); }
+</style>
+</head>
+<body>
+  <div class="head">
+    <div>
+      <div class="k">UApp · Mural (prueba)</div>
+      <div class="s">Leyendo en vivo desde Supabase</div>
+    </div>
+  </div>
+  <p class="lead">Esta página se conecta a tu base de datos, lee la tabla <b>avisos</b> y muestra solo los que están <b>publicados</b>. Es la demostración de que el contenido ya no vive en el código, sino en el “cerebro” de la app.</p>
+
+  <div id="estado" class="estado cargando">⏳ Conectando con Supabase y cargando avisos…</div>
+  <div id="lista"></div>
+
+  <div class="foot">« Tu voz, nuestra causa » · <b>UApp</b> · prueba de lectura v3.0</div>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  // Datos PÚBLICOS del proyecto (seguros de exponer)
+  const SUPABASE_URL = "https://pohrbljeamhfkcjxikct.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_XVNXhyYjebrrs0R0oKgLZw_9tBbDazZ";
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+  const estado = document.getElementById('estado');
+  const lista  = document.getElementById('lista');
+
+  const NIV = { importante:"Importante", info:"Información", evento:"Evento", normal:"Aviso" };
+
+  (async () => {
+    try {
+      // Lee avisos publicados, más nuevos primero
+      const { data, error } = await supabase
+        .from('avisos')
+        .select('titulo, texto, nivel, jornada, hasta, publicado')
+        .eq('publicado', true)
+        .order('created_at', { ascending:false });
+
+      if (error) throw error;
+
+      if (!data || data.length === 0) {
+        estado.className = "estado ok";
+        estado.textContent = "✅ ¡Conexión exitosa! Pero no hay avisos publicados todavía. (Marca 'publicado = true' en algún aviso y recarga.)";
+        return;
+      }
+
+      estado.className = "estado ok";
+      estado.textContent = `✅ ¡Conexión exitosa! Se leyeron ${data.length} aviso(s) desde Supabase.`;
+
+      lista.innerHTML = data.map(a => `
+        <div class="mcard ${a.nivel === 'importante' ? 'importante' : ''}">
+          <span class="mtag">${NIV[a.nivel] || 'Aviso'}${a.jornada ? ' · ' + a.jornada : ''}</span>
+          <div class="mtitle">${a.titulo ?? '(sin título)'}</div>
+          <div class="mtext">${(a.texto ?? '').replace(/</g,'&lt;')}</div>
+          ${a.hasta ? `<div class="mmeta">Vence: ${a.hasta}</div>` : ''}
+        </div>
+      `).join('');
+
+    } catch (e) {
+      estado.className = "estado err";
+      estado.textContent = "❌ Hubo un problema al leer los avisos:\n" + (e.message || e) +
+        "\n\n(Si dice algo de 'permission' o 'RLS', revisamos juntos la política de lectura.)";
+    }
+  })();
+</script>
+</body>
+</html>
