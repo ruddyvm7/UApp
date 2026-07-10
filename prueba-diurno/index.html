@@ -249,6 +249,11 @@ footer .motto{font-style:italic;color:var(--gold);font-size:15px;margin-top:4px;
 .ednone{color:var(--muted);font-style:italic}
 td.cell.selc{cursor:pointer}
 .hortally{background:var(--card);border:1px solid var(--cb);border-radius:12px;padding:10px 14px;font-size:14px;margin:0 0 12px;color:var(--ink)}
+.hortally .htrow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.hortally .htleft{flex:1;min-width:120px}
+.htclear{background:transparent;border:1px solid var(--cb2);color:var(--muted);font-size:12.5px;font-weight:600;padding:5px 11px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.htclear:hover,.htclear:focus-visible{background:var(--wine);border-color:var(--wine);color:#fff}
+body.dark .htclear{border-color:var(--cb2)}
 .hortally .htn{font-weight:700;color:var(--wine)}
 .hortally .htc{font-weight:700}
 .hortally .htc.over{color:#b3445a}
@@ -1103,10 +1108,18 @@ function renderHorTally(){
   var n=ids.length, sct=0, faltan=0;
   ids.forEach(function(id){var c=creditsForSel(id,insc[id]);if(c>0)sct+=c;else faltan++;});
   var over=sct>30;
-  var txt='<span class="htn">'+n+' '+(n===1?'ramo':'ramos')+'</span> · <span class="htc'+(over?' over':'')+'">'+sct+' SCT</span>';
+  var txt='<div class="htrow"><div class="htleft"><span class="htn">'+n+' '+(n===1?'ramo':'ramos')+'</span> · <span class="htc'+(over?' over':'')+'">'+sct+' SCT</span>';
   if(faltan>0)txt+=' <span class="htf">(+'+faltan+' sin crédito informado)</span>';
+  txt+='</div><button type="button" id="horClear" class="htclear">🗑 Vaciar selección</button></div>';
   if(over)txt+='<div class="htover">El período permite inscribir hasta <b>30 SCT</b> (Circular N°03/2026). Vas <b>'+(sct-30)+'</b> por sobre ese máximo.</div>';
   box.innerHTML=txt;box.style.display="block";
+  var cb=document.getElementById("horClear");
+  if(cb)cb.onclick=function(){
+    if(!Object.keys(insc).length)return;
+    insc={};saveInsc();
+    if(typeof showHorMsg==='function')showHorMsg("🧹 Selección vaciada. Puedes empezar de nuevo.","info");
+    renderAllHor();renderHorTally();
+  };
 }
 let horMode="all";
 /* --- Detección de coincidencia horaria entre ramos piqueados (bloqueo total) --- */
