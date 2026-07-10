@@ -136,6 +136,22 @@ body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--i
 .pcard .pn{font-weight:700;color:var(--wine);font-size:14.5px}
 .pcard .pm{font-size:12.5px;color:#666;margin-top:3px}
 .pcard .pt{font-size:12px;color:#7a6a3a;margin-top:5px}
+/* Semáforo de secciones en el planificador */
+.pcard.pc-red{border-left-color:#c0392b}
+.pcard.pc-blue{border-left-color:#2c6fbf}
+.pcard.pc-green{border-left-color:#3a8a4f}
+.pflag3{display:inline-block;background:#e5f3e9;color:#2b6b3f;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:9px;margin-left:6px;vertical-align:middle}
+.pflag4{display:inline-block;background:#e6eef8;color:#26568f;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:9px;margin-left:6px;vertical-align:middle}
+.palt{font-size:11.5px;color:#3a8a4f;margin-top:5px;font-style:italic}
+.pleg{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 10px}
+.plg{font-size:11px;font-weight:600;padding:2px 9px;border-radius:9px;border-left:3px solid}
+.plg-red{border-left-color:#c0392b;background:#fbeae8;color:#a3352a}
+.plg-blue{border-left-color:#2c6fbf;background:#e6eef8;color:#26568f}
+.plg-green{border-left-color:#3a8a4f;background:#e5f3e9;color:#2b6b3f}
+body.dark .pflag3,body.dark .plg-green{background:#20352a;color:#8fd0a5}
+body.dark .pflag4,body.dark .plg-blue{background:#1e2a3a;color:#9fc0e8}
+body.dark .plg-red{background:#3a1f1c;color:#e8a89f}
+body.dark .palt{color:#8fd0a5}
 .pflag{background:#b3445a;color:#fff;font-size:10px;padding:1px 7px;border-radius:8px;vertical-align:middle;font-weight:600}
 .pflag2{background:var(--gold);color:#fff;font-size:10px;padding:1px 7px;border-radius:8px;vertical-align:middle;font-weight:600}
 .pexc{font-size:12.5px;color:#777;margin:5px 0;padding-left:2px}
@@ -232,6 +248,19 @@ footer .motto{font-style:italic;color:var(--gold);font-size:15px;margin-top:4px;
 .edsec{font-weight:700;color:var(--gold2);font-size:11px}
 .ednone{color:var(--muted);font-style:italic}
 td.cell.selc{cursor:pointer}
+.hortally{background:var(--card);border:1px solid var(--cb);border-radius:12px;padding:10px 14px;font-size:14px;margin:0 0 12px;color:var(--ink)}
+.hortally .htn{font-weight:700;color:var(--wine)}
+.hortally .htc{font-weight:700}
+.hortally .htc.over{color:#b3445a}
+.hortally .htf{color:var(--muted);font-size:12.5px}
+.hortally .htover{margin-top:6px;font-size:12.5px;color:#8a6d1f;line-height:1.4}
+body.dark .hortally .htover{color:#e3cd91}
+.hortoast{position:fixed;left:50%;bottom:88px;transform:translateX(-50%) translateY(14px);z-index:1400;max-width:min(92vw,440px);padding:12px 15px;border-radius:13px;font-size:13.5px;line-height:1.45;box-shadow:0 8px 28px rgba(0,0,0,.22);opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s ease}
+.hortoast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.hortoast.tt-warn{background:#fbeae8;border:1px solid #f0b3ab;color:#a3352a}
+.hortoast.tt-info{background:#eef4fb;border:1px solid #bcd4ef;color:#26568f}
+body.dark .hortoast.tt-warn{background:#3a1f1c;border-color:#5a332e;color:#e8a89f}
+body.dark .hortoast.tt-info{background:#1e2a3a;border-color:#2f4661;color:#9fc0e8}
 td.cell.selon{background:#eaf6ee !important;outline:2px solid #1f6b3a;outline-offset:-2px}
 .selck{position:absolute;top:2px;right:3px;color:#1f6b3a;font-weight:800;font-size:11px}
 .enote{margin-top:7px;font-size:11.5px;color:#8a6d3a;font-style:italic}
@@ -302,9 +331,46 @@ td.cell.selon{background:#eaf6ee !important;outline:2px solid #1f6b3a;outline-of
 .legal-x{position:absolute;top:12px;right:12px;background:#f0e7d4;border:none;width:30px;height:30px;border-radius:50%;font-size:15px;cursor:pointer;color:var(--wine)}
 /* ===== Accesibilidad: panel ===== */
 #a11yFab{position:fixed;left:16px;bottom:16px;width:52px;height:52px;border:none;border-radius:50%;background:var(--wine);color:#fff;font-size:23px;box-shadow:0 6px 18px rgba(0,0,0,.28);cursor:pointer;z-index:9999;display:flex;align-items:center;justify-content:center}
+#ttsFab{position:fixed;left:16px;bottom:78px;width:52px;height:52px;border:none;border-radius:50%;background:var(--gold);color:#fff;font-size:22px;box-shadow:0 6px 18px rgba(0,0,0,.28);cursor:pointer;z-index:9999;align-items:center;justify-content:center}
+#ttsFab.speaking{background:#b3445a}
+/* Foco visible al navegar con teclado */
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:6px}
+/* Lectura fácil (dislexia): tipografía sans + espaciado amplio */
+body.easyread,body.easyread *{font-family:"Inter",Verdana,system-ui,sans-serif !important}
+body.easyread{letter-spacing:.035em;word-spacing:.12em}
+body.easyread p,body.easyread li,body.easyread td,body.easyread .pcard,body.easyread .note,body.easyread .presum,body.easyread .docbody,body.easyread .pinfo,body.easyread .pexc,body.easyread .msub{line-height:1.8}
+body.easyread a,body.hc a{text-decoration:underline}
+/* Alto contraste */
+body.hc{--bg:#fff;--card:#fff;--ink:#000;--muted:#2b2b2b;--cb:#000;--cb2:#000;--gold:#6e5200;--gold2:#5a4300;--wine:#5c0000;--okbg:#fff;--okb:#000;--nobg:#fff;--nob:#000;--ok:#005a2d;--no:#a30f00}
+body.hc .pcard,body.hc .note,body.hc .tile,body.hc .course,body.hc td,body.hc th,body.hc .hortally,body.hc .pinfo{border-color:#000}
+body.dark.hc{--bg:#000;--card:#000;--ink:#fff;--muted:#e0e0e0;--cb:#fff;--cb2:#fff;--gold:#ffd97a;--wine:#ff9d94;--okbg:#000;--okb:#fff;--nobg:#000;--nob:#fff;--ok:#7ee2a8;--no:#ffab9e}
+body.dark.hc .pcard,body.dark.hc .note,body.dark.hc .tile,body.dark.hc .course,body.dark.hc td,body.dark.hc th{border-color:#fff}
+/* Modo daltónico: paleta Okabe-Ito (azul=aprobado, naranjo=reprobado) */
+body.cb{--ok:#0072B2;--okbg:#e3eef7;--okb:#a9c8e4;--no:#D55E00;--nobg:#fbeee3;--nob:#e8bf9a}
+body.cb .course.ok .cname{color:#0b5e93}
+body.cb .course.no .cname{color:#a34800}
+body.cb .tile.ok{background:#0b5e93;border-color:#094d79}
+body.cb .tile.no{background:#b34a00;border-color:#8f3b00}
+body.cb td.cell.selon{background:#e3eef7 !important;outline-color:#0b5e93}
+body.cb .pcard.pc-red{border-left-color:#D55E00}
+body.cb .pcard.pc-green{border-left-color:#009E73}
+body.cb .pcard.pc-blue{border-left-color:#56B4E9}
+body.cb .plg-red{border-left-color:#D55E00;background:#fbeee3;color:#a34800}
+body.cb .plg-green{border-left-color:#009E73;background:#e2f3ed;color:#046a4e}
+body.cb .plg-blue{border-left-color:#56B4E9;background:#e9f4fb;color:#1f6a9e}
+body.cb .pflag{background:#fbeee3;color:#a34800}
+body.dark.cb{--ok:#6cb4ee;--okbg:#12293c;--okb:#2b5578;--no:#f0955a;--nobg:#3a2413;--nob:#6a4423}
+body.dark.cb .tile.ok{background:#0b5e93;border-color:#0a4c77}
+body.dark.cb .tile.no{background:#a04200;border-color:#7c3300}
 #a11yFab:active{transform:scale(.94)}
 .a11y-ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:10001;display:flex;align-items:flex-end;justify-content:center}
 .a11y-box{background:var(--card);color:var(--ink);width:100%;max-width:480px;border-radius:20px 20px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom));position:relative;box-shadow:0 -8px 30px rgba(0,0,0,.35)}
+.docbody{font-size:13.5px;line-height:1.55;color:var(--ink);margin-top:6px}
+.docbody h4{color:var(--wine);font-size:14px;margin:14px 0 5px;font-weight:700}
+.docbody ol,.docbody ul{margin:4px 0 4px 2px;padding-left:18px}
+.docbody li{margin-bottom:5px}
+.docbody .docsrc{font-size:11.5px;color:var(--muted);margin-top:14px;font-style:italic;border-top:1px solid var(--cb);padding-top:8px}
+body.dark .docbody h4{color:var(--gold)}
 .a11y-x{position:absolute;top:14px;right:14px;background:rgba(127,127,127,.2);border:none;width:30px;height:30px;border-radius:50%;font-size:15px;cursor:pointer;color:var(--ink)}
 .a11y-title{color:var(--wine);font-size:21px;font-weight:800;margin-bottom:16px}
 .a11y-grp{margin-bottom:18px}
@@ -540,6 +606,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
     <button data-h="mine">Mi horario</button>
   </div>
   <p class="boardhint" id="horHint">Toca los ramos que inscribiste para marcarlos. Luego revisa "Mi horario" y se reflejarán en Mis pruebas.</p>
+  <div id="horTally" class="hortally" role="status" aria-live="polite" style="display:none"></div>
   <div id="horList"></div>
 </div></section>
 
@@ -547,10 +614,9 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
   <div class="mh serif">Planificador de carga</div>
   <div class="msub">Cruza tu avance con la oferta del trimestre y propone qué tomar, sin choques de horario.</div>
   <div class="disc">⚠️ Propuesta <b>referencial</b>, no es una inscripción oficial. Confirma siempre con tu malla y con Registro Curricular antes de inscribir.</div>
-  <div class="note" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">La cantidad de carga se rige por: <a class="doclink" id="lnkReg" href="javascript:void(0)">📖 Reglamento del Estudiante</a> <a class="doclink" id="lnkCirc" href="javascript:void(0)">📄 Circular N°03/2026</a></div>
-  <button class="calcn" id="planBtn" style="width:100%">PROPONER MI CARGA</button>
   <div id="planOut" style="margin-top:6px"></div>
-  <div class="note" style="margin-top:12px"><b>📌 A tener en cuenta:</b> se priorizan los ramos <b>reprobados</b> y los del <b>nivel más bajo pendiente</b>, respetando prerrequisitos y los topes de <b>4 niveles consecutivos</b> y <b>30 créditos</b>. El detalle completo está en el Reglamento y la Circular enlazados arriba.</div>
+  <div class="note" style="margin-top:12px"><b>📌 A tener en cuenta:</b> se priorizan los ramos <b>reprobados</b> y los del <b>nivel más bajo pendiente</b>, respetando prerrequisitos y los topes de <b>4 niveles consecutivos</b> y <b>30 créditos</b>.</div>
+  <div class="note" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px">La carga se rige por: <a class="doclink" id="lnkReg" href="javascript:void(0)">📖 Reglamento del Estudiante</a> <a class="doclink" id="lnkCirc" href="javascript:void(0)">📄 Circular N°03/2026</a></div>
 </div></section>
 
 <section id="pru" style="display:none"><div class="wrap">
@@ -691,6 +757,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
 </div>
 
 <button id="a11yFab" aria-label="Accesibilidad"><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="3.7" r="1.7" fill="#fff" stroke="none"/><path d="M12 6.5v6.5M5.5 9h13M12 13l-3 7.3M12 13l3 7.3"/></svg></button>
+<button id="ttsFab" aria-label="Escuchar esta sección" style="display:none">🔊</button>
 <div id="a11yPanel" class="a11y-ov" style="display:none">
   <div class="a11y-box">
     <button class="a11y-x" id="a11yX" aria-label="Cerrar">✕</button>
@@ -716,6 +783,30 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
       <div><div class="a11y-lab" style="margin-bottom:2px">Reducir animaciones</div><div class="a11y-hint">Menos movimiento en la app</div></div>
       <button class="a11y-tog" id="togMotion" role="switch" aria-checked="false"><span></span></button>
     </div>
+    <div class="a11y-grp a11y-row">
+      <div><div class="a11y-lab" style="margin-bottom:2px">Leer en voz alta</div><div class="a11y-hint">Botón 🔊 que lee la sección en pantalla</div></div>
+      <button class="a11y-tog" id="togTTS" role="switch" aria-checked="false"><span></span></button>
+    </div>
+    <div class="a11y-grp a11y-row">
+      <div><div class="a11y-lab" style="margin-bottom:2px">Modo daltónico</div><div class="a11y-hint">Colores distinguibles (azul y naranjo)</div></div>
+      <button class="a11y-tog" id="togCB" role="switch" aria-checked="false"><span></span></button>
+    </div>
+    <div class="a11y-grp a11y-row">
+      <div><div class="a11y-lab" style="margin-bottom:2px">Lectura fácil</div><div class="a11y-hint">Más espacio entre letras y líneas</div></div>
+      <button class="a11y-tog" id="togEasy" role="switch" aria-checked="false"><span></span></button>
+    </div>
+    <div class="a11y-grp a11y-row">
+      <div><div class="a11y-lab" style="margin-bottom:2px">Alto contraste</div><div class="a11y-hint">Texto y bordes más marcados</div></div>
+      <button class="a11y-tog" id="togHC" role="switch" aria-checked="false"><span></span></button>
+    </div>
+  </div>
+</div>
+
+<div id="docModal" class="a11y-ov" style="display:none">
+  <div class="a11y-box" style="max-height:82vh;overflow-y:auto">
+    <button class="a11y-x" id="docX" aria-label="Cerrar">✕</button>
+    <div class="a11y-title serif" id="docTitle">Documento</div>
+    <div id="docBody" class="docbody"></div>
   </div>
 </div>
 
@@ -986,16 +1077,87 @@ function buildTable(data,key,sel){
   h+='</tr></thead><tbody>';
   for(let i=firstRow;i<=lastRow;i++){
     h+=`<tr><td class="th-h tm2">${BL[i][0]}<br>${BL[i][1]}</td>`;
-    Object.keys(DIAS).forEach(d=>{const c=grid[d][i];if(c&&c.cont)return;if(c){const id=sel?((c.sid!=null)?c.sid:OFER[c.ramo]):undefined;const selc=sel&&id!=null;const on=selc&&insc[id]===key;h+=`<td rowspan="${c.span}" class="cell${selc?' selc':''}${on?' selon':''}"${selc?` data-id="${id}" data-key="${key}"`:''}>${on?'<span class="selck">✓</span>':''}<span class="cr">${c.ramo}</span>${c.sala&&c.sala!=="—"?`<span class="cs">${c.sala}</span>`:""}${c.profe&&c.profe!=="—"?`<span class="cp">${c.profe}</span>`:""}</td>`;}else h+="<td></td>";});
+    Object.keys(DIAS).forEach(d=>{const c=grid[d][i];if(c&&c.cont)return;if(c){const id=sel?((c.sid!=null)?c.sid:OFER[c.ramo]):undefined;const selc=sel&&id!=null;const on=selc&&insc[id]===key;h+=`<td rowspan="${c.span}" class="cell${selc?' selc':''}${on?' selon':''}"${selc?` data-id="${id}" data-key="${key}" tabindex="0" role="button" aria-pressed="${on?'true':'false'}" aria-label="${c.ramo}. ${DIAS[d]} de ${BL[i][0]} a ${BL[i+c.span-1][1]}. ${on?'Seleccionado':'Tocar para seleccionar'}"`:''}>${on?'<span class="selck">✓</span>':''}<span class="cr">${c.ramo}</span>${c.sala&&c.sala!=="—"?`<span class="cs">${c.sala}</span>`:""}${c.profe&&c.profe!=="—"?`<span class="cp">${c.profe}</span>`:""}</td>`;}else h+="<td></td>";});
     h+="</tr>";
   }
   return h+"</tbody></table></div>";
 }
+/* --- Contador informativo de carga inscrita (ramos + SCT), sin bloquear --- */
+function nivelsOfInsc(){
+  var mn=99,mx=0,any=false;
+  Object.keys(insc).forEach(function(id){
+    var k=insc[id];var m=/_n(\d+)_/.exec(k||"");
+    if(m){var n=+m[1];if(n<mn)mn=n;if(n>mx)mx=n;any=true;}
+  });
+  return any?{min:mn,max:mx}:{min:0,max:0};
+}
+function creditsForSel(id,key){
+  var na=(key&&key.indexOf("na_")===0);
+  var m=na?CR_NOAJUST:CR_AJUSTADA;
+  return (m&&m[id])||0;
+}
+function renderHorTally(){
+  var box=document.getElementById("horTally");if(!box)return;
+  var ids=Object.keys(insc).map(Number);
+  if(!ids.length){box.style.display="none";return;}
+  var n=ids.length, sct=0, faltan=0;
+  ids.forEach(function(id){var c=creditsForSel(id,insc[id]);if(c>0)sct+=c;else faltan++;});
+  var over=sct>30;
+  var txt='<span class="htn">'+n+' '+(n===1?'ramo':'ramos')+'</span> · <span class="htc'+(over?' over':'')+'">'+sct+' SCT</span>';
+  if(faltan>0)txt+=' <span class="htf">(+'+faltan+' sin crédito informado)</span>';
+  if(over)txt+='<div class="htover">El período permite inscribir hasta <b>30 SCT</b> (Circular N°03/2026). Vas <b>'+(sct-30)+'</b> por sobre ese máximo.</div>';
+  box.innerHTML=txt;box.style.display="block";
+}
 let horMode="all";
+/* --- Detección de coincidencia horaria entre ramos piqueados (bloqueo total) --- */
+function _pmH(t){const p=String(t).split(":");return (+p[0])*60+(+p[1]);}
+function sessionsOf(id,key){const blk=HOR[key];if(!blk)return [];return blk.s.filter(se=>{const sid=(se[6]!=null)?se[6]:OFER[se[3]];return sid===id;});}
+function overlaps(a,b){return a[0]===b[0] && _pmH(a[1])<_pmH(b[2]) && _pmH(b[1])<_pmH(a[2]);}
+/* devuelve el primer ramo ya inscrito que choca con (id,key), o null */
+function clashOf(id,key){
+  const mine=sessionsOf(id,key);
+  const ids=Object.keys(insc).map(Number);
+  for(const oid of ids){
+    if(oid===id)continue;
+    const other=sessionsOf(oid,insc[oid]);
+    for(const s1 of mine)for(const s2 of other){
+      if(overlaps(s1,s2)){
+        const nm=(other[0]&&other[0][3])||"otro ramo";
+        return {nm,day:DIAS[s1[0]],t0:(_pmH(s1[1])>_pmH(s2[1])?s1[1]:s2[1]),t1:(_pmH(s1[2])<_pmH(s2[2])?s1[2]:s2[2])};
+      }
+    }
+  }
+  return null;
+}
+function showHorMsg(txt,kind){
+  let box=document.getElementById("horToast");
+  if(!box){box=document.createElement("div");box.id="horToast";box.className="hortoast";box.setAttribute("role","alert");box.setAttribute("aria-live","assertive");document.body.appendChild(box);}
+  box.className="hortoast "+(kind==="warn"?"tt-warn":"tt-info");
+  box.innerHTML=txt;
+  box.classList.remove("show");void box.offsetWidth;box.classList.add("show");
+  clearTimeout(showHorMsg._t);showHorMsg._t=setTimeout(()=>{box.classList.remove("show");},4200);
+}
 function renderAllHor(){
   let h="";Object.keys(HOR).forEach(k=>{h+=`<div class="hgrp serif">${HOR[k].l}</div>`+buildTable(HOR[k].s,k,true);});
   horList.innerHTML=h;
-  horList.querySelectorAll("td.selc").forEach(td=>td.onclick=()=>{const id=+td.dataset.id,key=td.dataset.key;if(insc[id]===key)delete insc[id];else insc[id]=key;saveInsc();renderAllHor();});
+  horList.querySelectorAll("td.selc").forEach(td=>{
+    td.onclick=()=>{
+    const id=+td.dataset.id,key=td.dataset.key;
+    if(insc[id]===key){delete insc[id];saveInsc();renderAllHor();renderHorTally();return;}
+    const cl=clashOf(id,key);
+    if(cl){showHorMsg(`⚠️ <b>Coincidencia horaria.</b> Choca con <b>${cl.nm}</b> (${cl.day} ${cl.t0}–${cl.t1}). Debes quitar el otro ramo para inscribir este.`,"warn");return;}
+    insc[id]=key;saveInsc();renderAllHor();renderHorTally();
+    /* avisos flotantes informativos (no bloquean): exceso de créditos y exceso de niveles */
+    var tot=0;Object.keys(insc).forEach(function(x){tot+=creditsForSel(+x,insc[x]);});
+    var nivs=nivelsOfInsc();
+    if(nivs.max-nivs.min>3){
+      showHorMsg(`📚 Estás combinando ramos de <b>niveles muy separados</b> (nivel ${nivs.min} y nivel ${nivs.max}). El reglamento permite inscribir hasta <b>3 niveles consecutivos</b> desde tu nivel más bajo pendiente.`,"warn");
+    }else if(tot>30){
+      showHorMsg(`📊 Llevas <b>${tot} SCT</b> — sobre el máximo de 30 del período (Circular N°03/2026). Puedes seguir explorando, pero inscribir sobre 30 requiere autorización.`,"warn");
+    }
+    };
+    td.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();td.onclick();}};
+  });
 }
 function renderMineHor(){
   const ids=Object.keys(insc).map(Number);
@@ -1007,7 +1169,8 @@ function renderHorView(mode){
   horMode=mode;
   document.querySelectorAll("#horSeg button").forEach(b=>b.classList.toggle("on",b.dataset.h===mode));
   const hint=document.getElementById("horHint");if(hint)hint.style.display=mode==="all"?"":"none";
-  if(mode==="all")renderAllHor();else renderMineHor();
+  if(mode==="all"){renderAllHor();renderHorTally();}
+  else{renderMineHor();var box=document.getElementById("horTally");if(box)box.style.display="none";}
 }
 document.querySelectorAll("#horSeg button").forEach(b=>b.onclick=()=>renderHorView(b.dataset.h));
 
@@ -1079,7 +1242,7 @@ function planProposeTECH(){
   out.innerHTML=h;
 }
 function planPropose(){ if(window.__planSem){ try{ if(window.__planSem())return; }catch(e){ console.error("planSem:",e); } } planProposeTECH(); }
-document.getElementById("planBtn").onclick=planPropose;
+var _pb=document.getElementById("planBtn");if(_pb)_pb.onclick=planPropose;
 /* Pruebas ejemplo */
 const MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
 const MESC=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
@@ -1362,27 +1525,107 @@ if('serviceWorker' in navigator){
 /* ===== Accesibilidad ===== */
 (function(){
   var KEYA="uapp_a11y_v1";
-  var prefs={theme:"auto",font:"1",motion:false};
+  var prefs={theme:"light",font:"1",motion:false,tts:false,cb:false,easy:false,hc:false};
   try{var s=JSON.parse(localStorage.getItem(KEYA));if(s)prefs=Object.assign(prefs,s);}catch(e){}
   var mq=window.matchMedia('(prefers-color-scheme: dark)');
   function applyTheme(){var dark=prefs.theme==="dark"||(prefs.theme==="auto"&&mq.matches);document.body.classList.toggle("dark",dark);}
   function applyFont(){document.body.style.zoom=prefs.font;}
   function applyMotion(){document.body.classList.toggle("reduce-motion",!!prefs.motion);}
+  function applyExtra(){
+    document.body.classList.toggle("cb",!!prefs.cb);
+    document.body.classList.toggle("easyread",!!prefs.easy);
+    document.body.classList.toggle("hc",!!prefs.hc);
+    var tf=document.getElementById('ttsFab');if(tf)tf.style.display=prefs.tts?'flex':'none';
+    if(!prefs.tts)ttsHalt();
+  }
   function save(){try{localStorage.setItem(KEYA,JSON.stringify(prefs));}catch(e){}}
+  var TOGS=[['togMotion','motion'],['togTTS','tts'],['togCB','cb'],['togEasy','easy'],['togHC','hc']];
   function mark(){
     var t=document.querySelectorAll('#segTheme button');for(var i=0;i<t.length;i++)t[i].classList.toggle('on',t[i].dataset.v===prefs.theme);
     var f=document.querySelectorAll('#segFont button');for(var j=0;j<f.length;j++)f[j].classList.toggle('on',f[j].dataset.v===String(prefs.font));
-    var tg=document.getElementById('togMotion');if(tg){tg.classList.toggle('on',!!prefs.motion);tg.setAttribute('aria-checked',prefs.motion?'true':'false');}
+    for(var m=0;m<TOGS.length;m++){var el=document.getElementById(TOGS[m][0]);if(el){el.classList.toggle('on',!!prefs[TOGS[m][1]]);el.setAttribute('aria-checked',prefs[TOGS[m][1]]?'true':'false');}}
   }
-  applyTheme();applyFont();applyMotion();
+  /* --- Lector en voz alta (voz del dispositivo, en español) --- */
+  var ttsOn=false;
+  function ttsHalt(){try{if(window.speechSynthesis)window.speechSynthesis.cancel();}catch(e){}ttsOn=false;var tf=document.getElementById('ttsFab');if(tf){tf.classList.remove('speaking');tf.textContent='🔊';tf.setAttribute('aria-label','Escuchar esta sección');}}
+  function seccionActiva(){var ids=(typeof SECS!=='undefined')?SECS:['mural','malla','calc','hor','plan','pru','info','solic'];for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.style.display!=='none')return el;}return null;}
+  function ttsGo(){
+    if(!('speechSynthesis' in window)||typeof SpeechSynthesisUtterance==='undefined'){alert('Este dispositivo no permite la lectura en voz alta.');return;}
+    if(ttsOn){ttsHalt();return;}
+    var sec=seccionActiva();if(!sec)return;
+    var txt=sec.textContent.replace(/\s+/g,' ').trim().slice(0,6000);if(!txt)return;
+    var u=new SpeechSynthesisUtterance(txt);u.lang='es';u.rate=1;
+    try{
+      var vs=window.speechSynthesis.getVoices()||[];var pref=['es-CL','es-419','es-US','es-MX','es-ES'];var v=null;
+      for(var p=0;p<pref.length&&!v;p++){for(var q=0;q<vs.length;q++){if(vs[q].lang&&String(vs[q].lang).indexOf(pref[p])===0){v=vs[q];break;}}}
+      if(!v){for(var r=0;r<vs.length;r++){if(vs[r].lang&&String(vs[r].lang).slice(0,2)==='es'){v=vs[r];break;}}}
+      if(v)u.voice=v;
+    }catch(e){}
+    u.onend=ttsHalt;u.onerror=ttsHalt;
+    ttsOn=true;var tf=document.getElementById('ttsFab');if(tf){tf.classList.add('speaking');tf.textContent='⏹';tf.setAttribute('aria-label','Detener lectura');}
+    try{window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}catch(e){ttsHalt();}
+  }
+  applyTheme();applyFont();applyMotion();applyExtra();
   var fab=document.getElementById('a11yFab'),panel=document.getElementById('a11yPanel'),x=document.getElementById('a11yX');
   if(fab&&panel)fab.onclick=function(){mark();panel.style.display='flex';};
   if(x&&panel)x.onclick=function(){panel.style.display='none';};
   if(panel)panel.onclick=function(e){if(e.target===panel)panel.style.display='none';};
   var tb=document.querySelectorAll('#segTheme button');for(var i=0;i<tb.length;i++)tb[i].onclick=function(){prefs.theme=this.dataset.v;applyTheme();mark();save();};
   var fb=document.querySelectorAll('#segFont button');for(var k=0;k<fb.length;k++)fb[k].onclick=function(){prefs.font=this.dataset.v;applyFont();mark();save();};
-  var tg=document.getElementById('togMotion');if(tg)tg.onclick=function(){prefs.motion=!prefs.motion;applyMotion();mark();save();};
+  for(var g=0;g<TOGS.length;g++)(function(id,key){var el=document.getElementById(id);if(el)el.onclick=function(){prefs[key]=!prefs[key];applyMotion();applyExtra();mark();save();};})(TOGS[g][0],TOGS[g][1]);
+  var tfab=document.getElementById('ttsFab');if(tfab)tfab.onclick=ttsGo;
+  document.addEventListener('click',function(e){if(e.target&&e.target.closest&&e.target.closest('.tab'))ttsHalt();},true);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var dm=document.getElementById('docModal');if(dm&&dm.style.display==='flex'){dm.style.display='none';return;}if(panel&&panel.style.display==='flex'){panel.style.display='none';}}});
   if(mq.addEventListener)mq.addEventListener('change',function(){if(prefs.theme==='auto')applyTheme();});
+
+  /* --- Ventanitas de documentos: Reglamento y Circular --- */
+  var DOCS={
+    reg:{title:"📖 Reglamento del Estudiante de Pregrado",body:
+      '<p>Resumen de las reglas de inscripción y avance más relevantes (Res. 009/2024, art. 17 y 19). Es un extracto orientativo; el reglamento completo prevalece.</p>'+
+      '<h4>Inscripción de asignaturas</h4>'+
+      '<ul>'+
+      '<li>Debes inscribir <b>primero</b> las asignaturas pendientes del <b>nivel más bajo</b>.</li>'+
+      '<li>Las asignaturas <b>reprobadas</b> son de inscripción <b>obligatoria</b> en el período inmediatamente siguiente en que se dicten (art. 19), sin derecho a eliminación.</li>'+
+      '<li>Puedes cursar asignaturas de hasta <b>3 niveles consecutivos</b> (régimen semestral) o <b>4 niveles</b> (trimestral), contados desde tu nivel más bajo pendiente.</li>'+
+      '<li>Solo se aceptan inscripciones que cumplan <b>íntegramente los prerrequisitos</b>.</li>'+
+      '</ul>'+
+      '<h4>Avance curricular</h4>'+
+      '<ul>'+
+      '<li>Tu nivel de avance es el semestre donde tienes <b>más asignaturas inscritas</b> (si hay empate, el más avanzado).</li>'+
+      '<li>El <b>Ius Postulandi</b> (habilitación para actuar judicialmente) exige tener el <b>3er año completo</b> inscrito.</li>'+
+      '</ul>'+
+      '<h4>Aprobación y asistencia</h4>'+
+      '<ul>'+
+      '<li>Nota mínima de aprobación: <b>4,0</b> (60% de logro).</li>'+
+      '<li>Asistencia mínima: <b>70% en primer año</b>, <b>60% en cursos superiores</b>; 100% en componentes prácticos.</li>'+
+      '<li>Puedes cursar una asignatura hasta <b>3 veces</b>; te eliminan si repruebas 3 veces la misma, o el 50% de lo cursado al 8º nivel.</li>'+
+      '</ul>'+
+      '<div class="docsrc">Extracto de la Resolución de Rectoría N°009/2024 (Reglamento General del Estudiante de Pregrado). Consulta el texto oficial completo en tu portal institucional.</div>'},
+    circ:{title:"📄 Circular N°03/2026 — Inscripción primavera 2026",body:
+      '<p>Directrices del Consejo de Carrera para la inscripción de asignaturas del período <b>primavera 2026</b>, en conformidad con el Reglamento del Estudiante de Pregrado.</p>'+
+      '<h4>Directrices de inscripción</h4>'+
+      '<ol>'+
+      '<li>Inscribir, <b>en primer término</b>, la o las asignaturas <b>pendientes del nivel más bajo</b>.</li>'+
+      '<li>Inscribir <b>obligatoriamente</b> las asignaturas <b>reprobadas</b> que se oferten, resguardando no generar coincidencia horaria.</li>'+
+      '<li>Solo se aceptan solicitudes que cumplan <b>íntegramente los prerrequisitos</b>.</li>'+
+      '<li>No se aceptan solicitudes con <b>exceso de niveles</b>.</li>'+
+      '<li>Las asignaturas de <b>semestre alterno</b> solo están disponibles para quienes las hayan <b>reprobado</b> o tengan condición de <b>convalidante</b>.</li>'+
+      '<li>Excepcionalmente puede autorizarse <b>una sola coincidencia horaria</b>, si ninguna de las asignaturas está en repetición y el estudiante está en <b>ciclo avanzado</b>. No se aceptan coincidencias de más de dos asignaturas.</li>'+
+      '<li>El <b>Seminario de Tesis</b> lo inscribe la Carrera mediante formulario.</li>'+
+      '<li>El máximo de créditos del período es <b>30 SCT</b>, sujeto a autorización.</li>'+
+      '<li>Tras la inscripción, la Carrera realiza una <b>auditoría</b> para inscribir reprobadas y revisar coincidencias.</li>'+
+      '<li>Es obligación del estudiante <b>revisar su portal</b> y verificar que su carga esté completa.</li>'+
+      '</ol>'+
+      '<div class="docsrc">Circular N°03/2026, Dirección de Carrera, Facultad de Derecho, Universidad Autónoma de Chile (julio 2026).</div>'}
+  };
+  var docModal=document.getElementById('docModal'),docTitle=document.getElementById('docTitle'),docBody=document.getElementById('docBody'),docX=document.getElementById('docX');
+  function openDoc(which){var d=DOCS[which];if(!d||!docModal)return;docTitle.innerHTML=d.title;docBody.innerHTML=d.body;docModal.style.display='flex';}
+  function closeDoc(){if(docModal)docModal.style.display='none';}
+  var lr=document.getElementById('lnkReg'),lc=document.getElementById('lnkCirc');
+  if(lr)lr.onclick=function(e){e.preventDefault();openDoc('reg');};
+  if(lc)lc.onclick=function(e){e.preventDefault();openDoc('circ');};
+  if(docX)docX.onclick=closeDoc;
+  if(docModal)docModal.onclick=function(e){if(e.target===docModal)closeDoc();};
 })();
 </script>
 <script>
@@ -1606,11 +1849,17 @@ if('serviceWorker' in navigator){
     if(!hasHor)h+='<div class="pinfo">📌 Los horarios de esta jornada aún no están publicados: la propuesta considera malla, prerrequisitos y créditos, sin verificación de choques de horario.</div>';
     if(chosen.length){
       h+='<div class="hgrp serif">Ramos propuestos ('+chosen.length+')</div>';
+      h+='<div class="pleg"><span class="plg plg-red">Obligatorio</span><span class="plg plg-blue">Única sección</span><span class="plg plg-green">Varias secciones</span></div>';
       chosen.forEach(function(x){
         var c=x.c,o=x.o;
-        var rep=(st[c.id]==="no")?' <span class="pflag">repite · obligatorio</span>':(c.t===anchor?' <span class="pflag2">nivel obligatorio</span>':'');
+        var mand=(st[c.id]==="no"||c.t===anchor);
+        var nsec=(offById[c.id]||[]).length;
+        /* semáforo: rojo=obligatorio · azul=única sección · verde=varias secciones */
+        var tone=mand?"pc-red":(nsec>=2?"pc-green":"pc-blue");
+        var rep=(st[c.id]==="no")?' <span class="pflag">repite · obligatorio</span>':(c.t===anchor?' <span class="pflag2">nivel obligatorio</span>':(nsec>=2?' <span class="pflag3">'+nsec+' secciones</span>':' <span class="pflag4">única sección</span>'));
         var meta='Semestre '+c.t+' · '+(CR[c.id]||0)+' SCT';
         var horas='Horario por publicar';
+        var altSecc='';
         if(o){
           var parts=o.label.split(" · ");
           meta+=' · '+parts.slice(2).join(" · ");
@@ -1618,8 +1867,18 @@ if('serviceWorker' in navigator){
           var sala=o.sessions[0][4],profe=o.sessions[0][5];
           if(sala&&sala!=="—")horas+=" · "+sala;
           if(profe&&profe!=="—")horas+=" · "+profe;
+          /* si hay más secciones, listarlas como alternativas */
+          if(nsec>=2){
+            var others=offById[c.id].filter(function(oo){return oo!==o;});
+            var od=others.map(function(oo){
+              var sec=oo.label.split(" · ").slice(2).join(" · ");
+              var dias=oo.sessions.map(function(se){return DIAS[se[0]].slice(0,3)+' '+se[1];}).join("/");
+              return sec+' ('+dias+')';
+            });
+            if(od.length)altSecc='<div class="palt">También disponible: '+od.join(" · ")+'</div>';
+          }
         }
-        h+='<div class="pcard"><div class="pn">'+c.n+rep+'</div><div class="pm">'+meta+'</div><div class="pt">'+horas+'</div></div>';
+        h+='<div class="pcard '+tone+'"><div class="pn">'+c.n+rep+'</div><div class="pm">'+meta+'</div><div class="pt">'+horas+'</div>'+altSecc+'</div>';
       });
       if(hasHor)h+='<div class="hgrp serif">Horario propuesto</div>'+buildTable([].concat.apply([],chosen.filter(function(x){return x.o;}).map(function(x){return x.o.sessions;})));
     }else{
