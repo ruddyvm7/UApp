@@ -547,7 +547,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
   <div class="mh serif">Planificador de carga</div>
   <div class="msub">Cruza tu avance con la oferta del trimestre y propone qué tomar, sin choques de horario.</div>
   <div class="disc">⚠️ Propuesta <b>referencial</b>, no es una inscripción oficial. Confirma siempre con tu malla y con Registro Curricular antes de inscribir.</div>
-  <div class="note" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">La cantidad de carga se rige por: <a class="doclink" id="lnkReg" href="javascript:void(0)">📖 Reglamento del Estudiante</a> <a class="doclink" id="lnkCirc" href="javascript:void(0)">📄 Circular N°04/2026</a></div>
+  <div class="note" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">La cantidad de carga se rige por: <a class="doclink" id="lnkReg" href="javascript:void(0)">📖 Reglamento del Estudiante</a> <a class="doclink" id="lnkCirc" href="javascript:void(0)">📄 Circular N°03/2026</a></div>
   <button class="calcn" id="planBtn" style="width:100%">PROPONER MI CARGA</button>
   <div id="planOut" style="margin-top:6px"></div>
   <div class="note" style="margin-top:12px"><b>📌 A tener en cuenta:</b> se priorizan los ramos <b>reprobados</b> y los del <b>nivel más bajo pendiente</b>, respetando prerrequisitos y los topes de <b>4 niveles consecutivos</b> y <b>30 créditos</b>. El detalle completo está en el Reglamento y la Circular enlazados arriba.</div>
@@ -755,8 +755,11 @@ const byId=Object.fromEntries(COURSES.map(c=>[c.id,c]));
 const KEY="malla_derecho_v4";
 let state={};try{const s=localStorage.getItem(KEY);if(s)state=JSON.parse(s);}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
-let insc={};try{const v=JSON.parse(localStorage.getItem("insc_sec_v1")||"{}");if(v&&typeof v==="object"&&!Array.isArray(v))insc=v;}catch(e){}
-function saveInsc(){try{localStorage.setItem("insc_sec_v1",JSON.stringify(insc));}catch(e){}}
+let INSC_KEY="insc_sec_v1";
+let insc={};
+function loadInsc(){insc={};try{const v=JSON.parse(localStorage.getItem(INSC_KEY)||"{}");if(v&&typeof v==="object"&&!Array.isArray(v))insc=v;}catch(e){}}
+loadInsc();
+function saveInsc(){try{localStorage.setItem(INSC_KEY,JSON.stringify(insc));}catch(e){}}
 function keySec(k){const m=/s(\d)/.exec(k||"");return m?+m[1]:0;}
 function prereqIds(c){if(c.p&&c.p.upTo)return COURSES.filter(x=>x.t<=byId[c.p.upTo].t&&x.id!==c.id).map(x=>x.id);return c.p||[];}
 function isUnlocked(c){return prereqIds(c).every(id=>state[id]==="ok");}
@@ -973,7 +976,7 @@ function buildTable(data,key,sel){
   const endIdx=t=>{let e=-1;BL.forEach((b,i)=>{if(_m(b[0])<_m(t))e=i;});return e;};
   let maxRow=0;
   const grid={};Object.keys(DIAS).forEach(d=>grid[d]=Array(BL.length).fill(null));
-  data.forEach(([d,ini,fin,ramo,sala,profe])=>{const a=idx(ini);let b=endIdx(fin);if(a<0)return;if(b<a)b=a;maxRow=Math.max(maxRow,b);grid[d][a]={ramo,sala,profe,span:b-a+1};for(let k=a+1;k<=b;k++)grid[d][k]={cont:true};});
+  data.forEach(([d,ini,fin,ramo,sala,profe,sid])=>{const a=idx(ini);let b=endIdx(fin);if(a<0)return;if(b<a)b=a;maxRow=Math.max(maxRow,b);grid[d][a]={ramo,sala,profe,sid,span:b-a+1};for(let k=a+1;k<=b;k++)grid[d][k]={cont:true};});
   /* recorte visual: primera y última fila con algún contenido (evita mostrar mañanas/tardes vacías) */
   let firstRow=0, lastRow=maxRow, found=false;
   for(let i=0;i<=maxRow;i++){const any=Object.keys(DIAS).some(d=>grid[d][i]);if(any){if(!found){firstRow=i;found=true;}lastRow=i;}}
@@ -983,7 +986,7 @@ function buildTable(data,key,sel){
   h+='</tr></thead><tbody>';
   for(let i=firstRow;i<=lastRow;i++){
     h+=`<tr><td class="th-h tm2">${BL[i][0]}<br>${BL[i][1]}</td>`;
-    Object.keys(DIAS).forEach(d=>{const c=grid[d][i];if(c&&c.cont)return;if(c){const id=sel?OFER[c.ramo]:undefined;const selc=sel&&id!=null;const on=selc&&insc[id]===key;h+=`<td rowspan="${c.span}" class="cell${selc?' selc':''}${on?' selon':''}"${selc?` data-id="${id}" data-key="${key}"`:''}>${on?'<span class="selck">✓</span>':''}<span class="cr">${c.ramo}</span>${c.sala&&c.sala!=="—"?`<span class="cs">${c.sala}</span>`:""}${c.profe&&c.profe!=="—"?`<span class="cp">${c.profe}</span>`:""}</td>`;}else h+="<td></td>";});
+    Object.keys(DIAS).forEach(d=>{const c=grid[d][i];if(c&&c.cont)return;if(c){const id=sel?((c.sid!=null)?c.sid:OFER[c.ramo]):undefined;const selc=sel&&id!=null;const on=selc&&insc[id]===key;h+=`<td rowspan="${c.span}" class="cell${selc?' selc':''}${on?' selon':''}"${selc?` data-id="${id}" data-key="${key}"`:''}>${on?'<span class="selck">✓</span>':''}<span class="cr">${c.ramo}</span>${c.sala&&c.sala!=="—"?`<span class="cs">${c.sala}</span>`:""}${c.profe&&c.profe!=="—"?`<span class="cp">${c.profe}</span>`:""}</td>`;}else h+="<td></td>";});
     h+="</tr>";
   }
   return h+"</tbody></table></div>";
@@ -997,7 +1000,7 @@ function renderAllHor(){
 function renderMineHor(){
   const ids=Object.keys(insc).map(Number);
   if(!ids.length){horList.innerHTML=`<div class="pcard">Aún no marcas ramos. En <b>"Todos los horarios"</b> toca los ramos que inscribiste y aquí verás solo tu horario.</div>`;return;}
-  let ses=[];ids.forEach(id=>{const blk=HOR[insc[id]];if(!blk)return;blk.s.forEach(se=>{if(OFER[se[3]]===id)ses.push(se);});});
+  let ses=[];ids.forEach(id=>{const blk=HOR[insc[id]];if(!blk)return;blk.s.forEach(se=>{const sid=(se[6]!=null)?se[6]:OFER[se[3]];if(sid===id)ses.push(se);});});
   horList.innerHTML=`<div class="hgrp serif">Mi horario</div>`+buildTable(ses,null,false);
 }
 function renderHorView(mode){
@@ -1014,32 +1017,34 @@ const OFER_TECH={"Teoría de la Ley y las Personas":7,"Historia Institucional de
 var BL_DIURNO=[["8:00", "8:40"], ["8:40", "9:20"], ["9:30", "10:10"], ["10:10", "10:50"], ["11:00", "11:40"], ["11:40", "12:20"], ["12:30", "13:10"], ["13:10", "13:50"], ["14:00", "14:40"], ["14:40", "15:20"], ["15:30", "16:10"], ["16:10", "16:50"], ["17:00", "17:40"], ["17:40", "18:20"], ["18:30", "19:10"], ["19:10", "19:50"]];
 
 var HOR_DIURNO={
-  "aj_n1_sec1_alt":{l:"1er año · Nivel 1 · Sección 1 · Alterna",plan:"aj",niv:1,alt:true,s:[["L", "8:00", "9:20", "Introducción al Derecho", "TEA SH-33", "PARADA SOTOMAYOR RICARDO"], ["L", "9:30", "10:50", "Historia del Derecho", "TEA SH-33", "KAUFHOLD CARRASCO RODOLFO"], ["L", "11:00", "12:20", "Derecho Político", "TEA SH-33", "SILVA PARRA GABRIELA"], ["L", "14:00", "15:20", "Introducción a la Economía", "TEA SH-33", "GARRIDO SUAZO MARCELO"], ["M", "8:00", "9:20", "Introducción a la Economía", "TEA SH-33", "GARRIDO SUAZO MARCELO"], ["M", "9:30", "12:20", "Historia y Ev. de las Instituciones Civiles", "TEA SH-33", "VERGARA MUÑOZ MARIA LUISA"], ["M", "12:30", "13:50", "Introducción al Derecho", "TEA SH-33", "PARADA SOTOMAYOR RICARDO"], ["X", "8:00", "9:20", "Introducción al Derecho", "TEA SH-33", "PARADA SOTOMAYOR RICARDO"], ["X", "11:00", "12:20", "Derecho Político", "TEA SH-33", "SILVA PARRA GABRIELA"], ["J", "9:30", "10:50", "Historia del Derecho", "TEA SH-33", "KAUFHOLD CARRASCO RODOLFO"]]},
-  "aj_n2_sec1":{l:"1er año · Nivel 2 · Sección 1",plan:"aj",niv:2,alt:false,s:[["L", "8:00", "9:20", "Teoría de la Ley y las Personas", "TEA SH-41", "ARNOIUL SEGUEL MÓNICA"], ["L", "9:30", "10:50", "Teoría Constitucional", "TEA SH-41", "SILVA PARRA GABRIELA"], ["L", "11:00", "12:20", "Electivo de Comunicación", "TEA SH-41", "—"], ["M", "8:00", "9:20", "Argumentación Jurídica y Debate", "TEA SH-41", "ALARCÓN ITURRIAGA ORLANDO"], ["M", "9:30", "10:50", "Historia Institucional de Chile", "TEA SH-41", "REINOSO ELGUEDA JORGE"], ["M", "11:00", "12:20", "Fundamentos Filosóficos del Derecho", "TEA SH-41", "REINOSO MÉNDEZ JORGE"], ["M", "12:30", "13:50", "Teoría de la Ley y las Personas", "TEA SH-41", "ARNOIUL SEGUEL MÓNICA"], ["X", "8:00", "9:20", "Teoría de la Ley y las Personas", "TEA SH-41", "ARNOIUL SEGUEL MÓNICA"], ["X", "9:30", "10:50", "Teoría Constitucional", "TEA SH-41", "SILVA PARRA GABRIELA"], ["X", "11:00", "12:20", "Historia Institucional de Chile", "TEA SH-41", "REINOSO ELGUEDA JORGE"], ["X", "12:30", "13:50", "Electivo de Comunicación", "TEA SH-41", "—"], ["J", "8:00", "9:20", "Argumentación Jurídica y Debate", "TEA SH-41", "ALARCÓN ITURRIAGA ORLANDO"], ["J", "9:30", "10:50", "Teoría Constitucional", "TEA SH-41", "SILVA PARRA GABRIELA"], ["J", "11:00", "12:20", "Fundamentos Filosóficos del Derecho", "TEA SH-41", "REINOSO MÉNDEZ JORGE"]]},
-  "aj_n2_sec2":{l:"1er año · Nivel 2 · Sección 2",plan:"aj",niv:2,alt:false,s:[["L", "8:00", "9:20", "Electivo de Comunicación", "TEA SH-42", "—"], ["L", "9:30", "10:50", "Teoría de la Ley y las Personas", "TEA SH-42", "ARNOIUL SEGUEL MÓNICA"], ["L", "11:00", "12:20", "Teoría Constitucional", "TEA SH-42", "LAZO GUTIÉRREZ MAURICIO"], ["M", "8:00", "9:20", "Teoría Constitucional", "TEA SH-42", "LAZO GUTIÉRREZ MAURICIO"], ["M", "9:30", "10:50", "Teoría de la Ley y las Personas", "TEA SH-42", "ARNOIUL SEGUEL MÓNICA"], ["M", "11:00", "12:20", "Historia Institucional de Chile", "TEA SH-42", "REINOSO ELGUEDA JORGE"], ["M", "12:30", "13:50", "Argumentación Jurídica y Debate", "TEA SH-42", "ALARCÓN ITURRIAGA ORLANDO"], ["X", "8:00", "9:20", "Argumentación Jurídica y Debate", "TEA SH-42", "ALARCÓN ITURRIAGA ORLANDO"], ["X", "9:30", "10:50", "Fundamentos Filosóficos del Derecho", "TEA SH-42", "REINOSO MÉNDEZ JORGE"], ["X", "11:00", "12:20", "Teoría Constitucional", "TEA SH-42", "LAZO GUTIÉRREZ MAURICIO"], ["X", "12:30", "13:50", "Electivo de Comunicación", "TEA SH-42", "—"], ["J", "8:00", "9:20", "Teoría de la Ley y las Personas", "TEA SH-42", "ARNOIUL SEGUEL MÓNICA"], ["J", "9:30", "10:50", "Fundamentos Filosóficos del Derecho", "TEA SH-42", "REINOSO MÉNDEZ JORGE"], ["J", "11:00", "12:20", "Historia Institucional de Chile", "TEA SH-42", "REINOSO ELGUEDA JORGE"]]},
-  "aj_n2_sec3":{l:"1er año · Nivel 2 · Sección 3",plan:"aj",niv:2,alt:false,s:[["L", "12:30", "13:50", "Argumentación Jurídica y Debate", "TEA SH-41", "ALARCÓN ITURRIAGA ORLANDO"], ["L", "14:00", "15:20", "Electivo de Comunicación", "TEA SH-41", "—"], ["L", "15:30", "16:50", "Teoría de la Ley y las Personas", "TEA SH-41", "ARNOIUL SEGUEL MÓNICA"], ["L", "17:00", "18:20", "Teoría Constitucional", "TEA SH-41", "ARÉVALO WADDINGTON SERGIO"], ["M", "12:30", "13:50", "Historia Institucional de Chile", "TEA SH-45", "REINOSO ELGUEDA JORGE"], ["M", "14:00", "15:20", "Teoría de la Ley y las Personas", "TEA SH-41", "ARNOIUL SEGUEL MÓNICA"], ["M", "15:30", "16:50", "Fundamentos Filosóficos del Derecho", "TEA SH-41", "REINOSO MÉNDEZ JORGE"], ["M", "17:00", "18:20", "Teoría Constitucional", "TEA SH-41", "ARÉVALO WADDINGTON SERGIO"], ["X", "12:30", "13:50", "Argumentación Jurídica y Debate", "TEA SH-45", "ALARCÓN ITURRIAGA ORLANDO"], ["X", "14:00", "15:20", "Fundamentos Filosóficos del Derecho", "TEA SH-41", "REINOSO MÉNDEZ JORGE"], ["X", "15:30", "16:50", "Electivo de Comunicación", "TEA SH-41", "—"], ["X", "17:00", "18:20", "Teoría Constitucional", "TEA SH-41", "ARÉVALO WADDINGTON SERGIO"], ["J", "14:00", "15:20", "Teoría de la Ley y las Personas", "TEA SH-41", "ARNOIUL SEGUEL MÓNICA"], ["J", "15:30", "16:50", "Historia Institucional de Chile", "TEA SH-41", "REINOSO ELGUEDA JORGE"]]},
-  "aj_n3_sec1_alt":{l:"2º año · Nivel 3 · Sección 1 · Alterna",plan:"aj",niv:3,alt:true,s:[["L", "8:00", "9:20", "Acto Jurídico", "TEA SH-45", "SEPÚLVEDA GÓMEZ RODRIGO"], ["X", "8:00", "9:20", "Acto Jurídico", "TEA SH-45", "SEPÚLVEDA GÓMEZ RODRIGO"], ["J", "8:00", "9:20", "Acto Jurídico", "TEA SH-45", "SEPÚLVEDA GÓMEZ RODRIGO"]]},
-  "aj_n4_sec1":{l:"2º año · Nivel 4 · Sección 1",plan:"aj",niv:4,alt:false,s:[["L", "8:00", "10:50", "Taller de Integración I (Ev. Ciclo)", "TEA SH-43", "BRAVO ALARCÓN FERNANDO"], ["L", "11:00", "12:20", "Teoría de la Reacción Penal", "TEA SH-43", "GRANDON CASTRO JULIO CESAR"], ["L", "12:30", "13:50", "Teoría del Proceso", "TEA SH-34", "RODRÍGUEZ CAÑETE PAULA"], ["M", "10:10", "11:40", "Teoría de la Reacción Penal", "TEA SH-32", "GRANDON CASTRO JULIO CESAR"], ["M", "11:40", "13:50", "Bienes", "TEA SH-32", "MANOSALVA CARRASCO PAULINA"], ["X", "8:40", "10:50", "Bienes", "TEA SH-34", "MANOSALVA CARRASCO PAULINA"], ["X", "11:00", "12:20", "Derecho Internacional Público", "TEA SH-34", "VALLEJOS ROA LIZ"], ["X", "12:30", "13:50", "Teoría del Proceso", "TEA SH-34", "RODRÍGUEZ CAÑETE PAULA"], ["J", "9:30", "12:20", "Derechos y Garantías Constitucionales", "TEA SH-34", "VELOSO ANGULO JAIME"], ["J", "12:30", "13:50", "Teoría del Proceso", "TEA SH-34", "RODRIGUEZ CAÑETE PAULA"]]},
-  "aj_n4_sec2":{l:"2º año · Nivel 4 · Sección 2",plan:"aj",niv:4,alt:false,s:[["L", "8:00", "9:20", "Derechos y Garantías Constitucionales", "TEA SH-44", "SILVA PARRA GABRIELA"], ["L", "9:30", "12:20", "Teoría de la Reacción Penal", "TEA SH-44", "FERNÁNDEZ RODRÍGUEZ CAMILA"], ["M", "8:00", "9:20", "Derechos y Garantías Constitucionales", "TEA SH-44", "SILVA PARRA GABRIELA"], ["M", "9:30", "11:40", "Bienes", "TEA SH-43", "MANOSALVA CARRASCO PAULINA"], ["M", "11:40", "13:50", "Teoría del Proceso", "TEA SH-43", "CAÑETE RODRÍGUEZ PAULA"], ["X", "8:00", "9:20", "Taller de Integración I (Ev. Ciclo)", "TEA SH-43", "BRAVO ALARCÓN FERNANDO"], ["X", "9:30", "10:50", "Derecho Internacional Público", "TEA SH-43", "VALLEJOS ROA LIZ"], ["X", "11:00", "13:10", "Bienes", "TEA SH-43", "MANOSALVA CARRASCO PAULINA"], ["J", "8:00", "9:20", "Taller de Integración I (Ev. Ciclo)", "TEA SH-43", "BRAVO ALARCÓN FERNANDO"], ["J", "9:30", "11:40", "Teoría del Proceso", "TEA SH-43", "CAÑETE RODRÍGUEZ PAULA"]]},
-  "aj_n4_sec3":{l:"2º año · Nivel 4 · Sección 3",plan:"aj",niv:4,alt:false,s:[["L", "14:00", "15:20", "Bienes", "TEA SH-34", "SÁNCHEZ CARRASCO DANIEL"], ["L", "15:30", "16:50", "Derechos y Garantías Constitucionales", "TEA SH-34", "ARÉVALO WADDINGTON SERGIO"], ["L", "17:00", "19:10", "Teoría del Proceso", "TEA SH-34", "CONTRERAS LAGOS MANUEL"], ["M", "14:00", "15:20", "Bienes", "TEA SH-34", "SÁNCHEZ CARRASCO DANIEL"], ["M", "15:30", "16:50", "Taller de Integración I (Ev. Ciclo)", "TEA SH-34", "BRAVO ALARCÓN FERNANDO"], ["M", "17:00", "19:10", "Teoría del Proceso", "TEA SH-34", "CONTRERAS LAGOS MANUEL"], ["X", "14:00", "15:20", "Derecho Internacional Público", "TEA SH-34", "VALLEJOS ROA LIZ"], ["X", "15:30", "16:50", "Derechos y Garantías Constitucionales", "TEA SH-34", "ARÉVALO WADDINGTON SERGIO"], ["X", "17:00", "18:20", "Taller de Integración I (Ev. Ciclo)", "TEA SH-34", "BRAVO ALARCÓN FERNANDO"], ["X", "19:10", "19:50", "Teoría del Proceso", "—", "DURÁN FERNÁNDEZ CARLOS"], ["J", "14:40", "16:10", "Bienes", "TEA SH-34", "SÁNCHEZ CARRASCO DANIEL"], ["J", "16:10", "19:10", "Teoría de la Reacción Penal", "TEA SH-34", "LEIVA MARTÍNEZ HÉCTOR"]]},
-  "aj_n4_sec4":{l:"2º año · Nivel 4 · Sección 4",plan:"aj",niv:4,alt:false,s:[["M", "10:10", "11:40", "Taller de Integración I (Ev. Ciclo)", "TEA SH-31", "RODRÍGUEZ CAÑETE PAULA"], ["X", "10:10", "11:40", "Taller de Integración I (Ev. Ciclo)", "TEA SH-31", "RODRÍGUEZ CAÑETE PAULA"], ["X", "19:10", "19:50", "Teoría del Proceso", "—", "DURÁN FERNÁNDEZ CARLOS"]]},
-  "aj_n6_sec1":{l:"3er año · Nivel 6 · Sección 1",plan:"aj",niv:6,alt:false,s:[["L", "11:00", "12:20", "Electivo de Responsabilidad Social", "TEA SH-45", "—"], ["L", "14:00", "15:20", "Procedimientos de Ejecución y Cautela", "TEA SH-42", "OSORIO ULLOA REINALDO"], ["L", "15:30", "16:50", "Derecho Mercantil", "TEA SH-42", "KAUFHOLD CARRASCO RODOLFO"], ["L", "17:00", "18:20", "Fuentes de las Obligaciones", "TEA SH-42", "VENEGAS POBLETE RADY"], ["M", "14:00", "15:20", "Fuentes de las Obligaciones", "TEA SH-42", "VENEGAS POBLETE RADY"], ["M", "15:30", "16:50", "Procedimientos de Ejecución y Cautela", "TEA SH-42", "OSORIO ULLOA REINALDO"], ["M", "17:00", "19:10", "Delitos en Particular II", "TEA SH-42", "FERNÁNDEZ RODRÍGUEZ CAMILA"], ["X", "11:00", "12:20", "Electivo de Responsabilidad Social", "TEA SH-44", "—"], ["X", "14:00", "15:20", "Derecho Colectivo del Trabajo y Seg. Social", "TEA SH-42", "LARRAGUIBEL ARAVENA CRISTIAN"], ["X", "15:30", "16:50", "Procedimientos de Ejecución y Cautela", "TEA SH-42", "OSORIO ULLOA REINALDO"], ["X", "17:00", "18:20", "Fuentes de las Obligaciones", "TEA SH-42", "VENEGAS POBLETE RADY"], ["J", "14:00", "15:20", "Derecho Colectivo del Trabajo y Seg. Social", "TEA SH-42", "LARRAGUIBEL ARAVENA CRISTIAN"], ["J", "15:30", "16:50", "Derecho Mercantil", "TEA SH-42", "KAUFHOLD CARRASCO RODOLFO"], ["J", "17:00", "19:10", "Delitos en Particular II", "TEA SH-42", "FERNÁNDEZ RODRÍGUEZ CAMILA"]]},
-  "aj_n6_sec2":{l:"3er año · Nivel 6 · Sección 2",plan:"aj",niv:6,alt:false,s:[["L", "13:10", "14:40", "Electivo de Responsabilidad Social", "TEA SH-44", "—"], ["L", "14:40", "16:10", "Fuentes de las Obligaciones", "TEA SH-44", "FUENTES QUIROZ CARLOS"], ["L", "16:10", "17:40", "Derecho Mercantil", "TEA SH-44", "MEZA OSSES GONZALO"], ["L", "17:40", "19:10", "Derecho Colectivo del Trabajo y Seg. Social", "TEA SH-44", "SÁEZ PAREDES FERNANDO"], ["M", "13:10", "14:40", "Procedimientos de Ejecución y Cautela", "TEA SH-44", "OSORIO ULLOA REINALDO"], ["M", "14:40", "16:10", "Fuentes de las Obligaciones", "TEA SH-44", "FUENTES QUIROZ CARLOS"], ["M", "17:00", "19:10", "Delitos en Particular II", "TEA SH-44", "TURRA LAGOS CLAUDIA"], ["X", "13:10", "14:40", "Electivo de Responsabilidad Social", "TEA SH-44", "—"], ["X", "14:40", "16:10", "Fuentes de las Obligaciones", "TEA SH-44", "FUENTES QUIROZ CARLOS"], ["X", "16:10", "17:40", "Derecho Mercantil", "TEA SH-44", "MEZA OSSES GONZALO"], ["X", "17:40", "19:10", "Derecho Colectivo del Trabajo y Seg. Social", "TEA SH-44", "SÁEZ PAREDES FERNANDO"], ["J", "14:00", "16:50", "Procedimientos de Ejecución y Cautela", "TEA SH-44", "OSORIO ULLOA REINALDO"], ["J", "17:00", "19:10", "Delitos en Particular II", "TEA SH-44", "TURRA LAGOS CLAUDIA"]]},
-  "aj_n8_sec1":{l:"4º año · Nivel 8 · Sección 1",plan:"aj",niv:8,alt:false,s:[["L", "9:30", "12:20", "Taller de Integración II (Ev. Ciclo)", "TEA SH-31", "—"], ["L", "13:10", "16:10", "Optativo de Especialidad I", "TEA SH-45", "CELEDÓN BAEZA ANDRÉS"], ["L", "16:10", "17:40", "Derecho Sucesorio", "TEA SH-45", "CASTRO ESPINOZA NELSON"], ["L", "17:40", "19:10", "Derecho Administrativo II", "TEA SH-45", "HENRÍQUEZ BURGOS RAÚL"], ["M", "9:30", "12:20", "Taller de Integración II (Ev. Ciclo)", "TEA SH-45", "PACHECO CORNEJO HELLEN"], ["M", "15:30", "17:40", "Procedimientos Especiales Orales", "TEA SH-45", "VILLARROEL CRUZAT ROBINSON"], ["M", "17:40", "19:10", "Contratación Mercantil", "TEA SH-45", "MEZA OSSES GONZALO"], ["X", "14:00", "15:20", "Derecho Tributario I", "TEA SH-45", "MATURANA LANZA CARLOS"], ["X", "16:10", "17:40", "Derecho Sucesorio", "TEA SH-45", "CASTRO ESPINOZA NELSON"], ["X", "17:40", "19:10", "Derecho Administrativo II", "TEA SH-45", "HENRÍQUEZ BURGOS RAÚL"], ["J", "14:00", "15:20", "Derecho Tributario I", "TEA SH-45", "MATURANA LANZA CARLOS"], ["J", "15:30", "17:40", "Procedimientos Especiales Orales", "TEA SH-45", "VILLARROEL CRUZAT ROBINSON"], ["J", "17:40", "19:10", "Contratación Mercantil", "TEA SH-45", "MEZA OSSES GONZALO"]]},
-  "na_n8_sec1":{l:"4º año · Nivel 8 · Sección 1 · No ajustada",plan:"na",niv:8,alt:false,s:[["L", "11:00", "12:20", "Electivo de Responsabilidad Social", "TEC SH-23", "—"], ["L", "14:00", "15:20", "Derecho Sucesorio", "TEA SH-31", "SAN JUAN TORRES MARCO"], ["L", "15:30", "17:40", "Procedimientos Especiales Orales (Ev. Ciclo)", "TEA SH-31", "ALARCÓN ITURRIAGA ORLANDO"], ["X", "11:00", "12:20", "Electivo de Responsabilidad Social", "TEA SH-45", "—"], ["X", "14:00", "15:20", "Derecho Sucesorio", "TEA SH-31", "SAN JUAN TORRES MARCO"], ["X", "15:30", "17:40", "Procedimientos Especiales Orales (Ev. Ciclo)", "TEA SH-43", "ALARCÓN ITURRIAGA ORLANDO"]]},
-  "na_n9_sec1_alt":{l:"5º año · Nivel 9 · Sección 1 · Alterna · No ajustada",plan:"na",niv:9,alt:true,s:[["X", "17:40", "19:10", "Recursos", "TEA SH-43", "CONTRERAS LAGOS MANUEL"], ["J", "17:40", "19:10", "Recursos", "TEA SH-41", "CONTRERAS LAGOS MANUEL"]]},
-  "na_n10_sec1_2":{l:"5º año · Nivel 10 · Sección 1 -2 · No ajustada",plan:"na",niv:10,alt:false,s:[["L", "14:00", "15:20", "Derecho Tributario II", "TEA SC-52", "MATURANA LANZA CARLOS"], ["L", "17:00", "18:20", "Optativo de Especialidad II", "TEA SC-52", "CELEDÓN BAEZA ANDRÉS"], ["M", "8:40", "10:10", "Taller de Litigación", "TEA SH-31", "FERNÁNDEZ RODRÍGUEZ CAMILA"], ["M", "14:00", "15:20", "Derecho Tributario II", "TEA SC-52", "MATURANA LANZA CARLOS"], ["M", "15:30", "16:50", "Reorganización y Liquidación Patrimonial", "TEA SC-52", "JAMARNE NIMER GABRIEL"], ["M", "17:00", "18:20", "Optativo de Especialidad I", "TEA SH-31", "NECULMAN MUÑOZ MARCELO"], ["X", "17:00", "18:20", "Reorganización y Liquidación Patrimonial", "TEA SH-33", "JAMARNE NIMER GABRIEL"], ["J", "9:30", "10:50", "Taller de Litigación", "TEA SH-31", "FERNÁNDEZ RODRÍGUEZ CAMILA"], ["J", "16:10", "17:40", "Optativo de Especialidad I", "TEA SH-33", "NECULMAN MUÑOZ MARCELO"], ["J", "17:40", "19:10", "Optativo de Especialidad II", "TEA SH-33", "CELEDÓN BAEZA ANDRÉS"]]}
+  "aj_n1_sec1_alt":{l:"1er año · Nivel 1 · Sección 1 · Alterna",plan:"aj",niv:1,alt:true,s:[["L", "8:00", "9:20", "Introducción al Derecho", "TEA SH-33", "PARADA SOTOMAYOR RICARDO", 3], ["L", "9:30", "10:50", "Historia del Derecho", "TEA SH-33", "KAUFHOLD CARRASCO RODOLFO", 1], ["L", "11:00", "12:20", "Derecho Político", "TEA SH-33", "SILVA PARRA GABRIELA", 2], ["L", "14:00", "15:20", "Introducción a la Economía", "TEA SH-33", "GARRIDO SUAZO MARCELO", 10], ["M", "8:00", "9:20", "Introducción a la Economía", "TEA SH-33", "GARRIDO SUAZO MARCELO", 10], ["M", "9:30", "12:20", "Historia y Ev. de las Instituciones Civiles", "TEA SH-33", "VERGARA MUÑOZ MARIA LUISA", 6], ["M", "12:30", "13:50", "Introducción al Derecho", "TEA SH-33", "PARADA SOTOMAYOR RICARDO", 3], ["X", "8:00", "9:20", "Introducción al Derecho", "TEA SH-33", "PARADA SOTOMAYOR RICARDO", 3], ["X", "11:00", "12:20", "Derecho Político", "TEA SH-33", "SILVA PARRA GABRIELA", 2], ["J", "9:30", "10:50", "Historia del Derecho", "TEA SH-33", "KAUFHOLD CARRASCO RODOLFO", 1]]},
+  "aj_n2_sec1":{l:"1er año · Nivel 2 · Sección 1",plan:"aj",niv:2,alt:false,s:[["L", "8:00", "9:20", "Teoría de la Ley y las Personas", "TEA SH-41", "ARNOIUL SEGUEL MÓNICA", 7], ["L", "9:30", "10:50", "Teoría Constitucional", "TEA SH-41", "SILVA PARRA GABRIELA", 11], ["L", "11:00", "12:20", "Electivo de Comunicación II", "TEA SH-41", "—", 8], ["M", "8:00", "9:20", "Argumentación Jurídica y Debate", "TEA SH-41", "ALARCÓN ITURRIAGA ORLANDO", 12], ["M", "9:30", "10:50", "Historia Institucional de Chile", "TEA SH-41", "REINOSO ELGUEDA JORGE", 5], ["M", "11:00", "12:20", "Fundamentos Filosóficos del Derecho", "TEA SH-41", "REINOSO MÉNDEZ JORGE", 9], ["M", "12:30", "13:50", "Teoría de la Ley y las Personas", "TEA SH-41", "ARNOIUL SEGUEL MÓNICA", 7], ["X", "8:00", "9:20", "Teoría de la Ley y las Personas", "TEA SH-41", "ARNOIUL SEGUEL MÓNICA", 7], ["X", "9:30", "10:50", "Teoría Constitucional", "TEA SH-41", "SILVA PARRA GABRIELA", 11], ["X", "11:00", "12:20", "Historia Institucional de Chile", "TEA SH-41", "REINOSO ELGUEDA JORGE", 5], ["X", "12:30", "13:50", "Electivo de Comunicación II", "TEA SH-41", "—", 8], ["J", "8:00", "9:20", "Argumentación Jurídica y Debate", "TEA SH-41", "ALARCÓN ITURRIAGA ORLANDO", 12], ["J", "9:30", "10:50", "Teoría Constitucional", "TEA SH-41", "SILVA PARRA GABRIELA", 11], ["J", "11:00", "12:20", "Fundamentos Filosóficos del Derecho", "TEA SH-41", "REINOSO MÉNDEZ JORGE", 9]]},
+  "aj_n2_sec2":{l:"1er año · Nivel 2 · Sección 2",plan:"aj",niv:2,alt:false,s:[["L", "8:00", "9:20", "Electivo de Comunicación II", "TEA SH-42", "—", 8], ["L", "9:30", "10:50", "Teoría de la Ley y las Personas", "TEA SH-42", "ARNOIUL SEGUEL MÓNICA", 7], ["L", "11:00", "12:20", "Teoría Constitucional", "TEA SH-42", "LAZO GUTIÉRREZ MAURICIO", 11], ["M", "8:00", "9:20", "Teoría Constitucional", "TEA SH-42", "LAZO GUTIÉRREZ MAURICIO", 11], ["M", "9:30", "10:50", "Teoría de la Ley y las Personas", "TEA SH-42", "ARNOIUL SEGUEL MÓNICA", 7], ["M", "11:00", "12:20", "Historia Institucional de Chile", "TEA SH-42", "REINOSO ELGUEDA JORGE", 5], ["M", "12:30", "13:50", "Argumentación Jurídica y Debate", "TEA SH-42", "ALARCÓN ITURRIAGA ORLANDO", 12], ["X", "8:00", "9:20", "Argumentación Jurídica y Debate", "TEA SH-42", "ALARCÓN ITURRIAGA ORLANDO", 12], ["X", "9:30", "10:50", "Fundamentos Filosóficos del Derecho", "TEA SH-42", "REINOSO MÉNDEZ JORGE", 9], ["X", "11:00", "12:20", "Teoría Constitucional", "TEA SH-42", "LAZO GUTIÉRREZ MAURICIO", 11], ["X", "12:30", "13:50", "Electivo de Comunicación II", "TEA SH-42", "—", 8], ["J", "8:00", "9:20", "Teoría de la Ley y las Personas", "TEA SH-42", "ARNOIUL SEGUEL MÓNICA", 7], ["J", "9:30", "10:50", "Fundamentos Filosóficos del Derecho", "TEA SH-42", "REINOSO MÉNDEZ JORGE", 9], ["J", "11:00", "12:20", "Historia Institucional de Chile", "TEA SH-42", "REINOSO ELGUEDA JORGE", 5]]},
+  "aj_n2_sec3":{l:"1er año · Nivel 2 · Sección 3",plan:"aj",niv:2,alt:false,s:[["L", "12:30", "13:50", "Argumentación Jurídica y Debate", "TEA SH-41", "ALARCÓN ITURRIAGA ORLANDO", 12], ["L", "14:00", "15:20", "Electivo de Comunicación II", "TEA SH-41", "—", 8], ["L", "15:30", "16:50", "Teoría de la Ley y las Personas", "TEA SH-41", "ARNOIUL SEGUEL MÓNICA", 7], ["L", "17:00", "18:20", "Teoría Constitucional", "TEA SH-41", "ARÉVALO WADDINGTON SERGIO", 11], ["M", "12:30", "13:50", "Historia Institucional de Chile", "TEA SH-45", "REINOSO ELGUEDA JORGE", 5], ["M", "14:00", "15:20", "Teoría de la Ley y las Personas", "TEA SH-41", "ARNOIUL SEGUEL MÓNICA", 7], ["M", "15:30", "16:50", "Fundamentos Filosóficos del Derecho", "TEA SH-41", "REINOSO MÉNDEZ JORGE", 9], ["M", "17:00", "18:20", "Teoría Constitucional", "TEA SH-41", "ARÉVALO WADDINGTON SERGIO", 11], ["X", "12:30", "13:50", "Argumentación Jurídica y Debate", "TEA SH-45", "ALARCÓN ITURRIAGA ORLANDO", 12], ["X", "14:00", "15:20", "Fundamentos Filosóficos del Derecho", "TEA SH-41", "REINOSO MÉNDEZ JORGE", 9], ["X", "15:30", "16:50", "Electivo de Comunicación II", "TEA SH-41", "—", 8], ["X", "17:00", "18:20", "Teoría Constitucional", "TEA SH-41", "ARÉVALO WADDINGTON SERGIO", 11], ["J", "14:00", "15:20", "Teoría de la Ley y las Personas", "TEA SH-41", "ARNOIUL SEGUEL MÓNICA", 7], ["J", "15:30", "16:50", "Historia Institucional de Chile", "TEA SH-41", "REINOSO ELGUEDA JORGE", 5]]},
+  "aj_n3_sec1_alt":{l:"2º año · Nivel 3 · Sección 1 · Alterna",plan:"aj",niv:3,alt:true,s:[["L", "8:00", "9:20", "Acto Jurídico", "TEA SH-45", "SEPÚLVEDA GÓMEZ RODRIGO", 13], ["X", "8:00", "9:20", "Acto Jurídico", "TEA SH-45", "SEPÚLVEDA GÓMEZ RODRIGO", 13], ["J", "8:00", "9:20", "Acto Jurídico", "TEA SH-45", "SEPÚLVEDA GÓMEZ RODRIGO", 13]]},
+  "aj_n4_sec1":{l:"2º año · Nivel 4 · Sección 1",plan:"aj",niv:4,alt:false,s:[["L", "8:00", "10:50", "Taller de Integración I (Ev. Ciclo)", "TEA SH-43", "BRAVO ALARCÓN FERNANDO", 24], ["L", "11:00", "12:20", "Teoría de la Reacción Penal", "TEA SH-43", "GRANDON CASTRO JULIO CESAR", 19], ["L", "12:30", "13:50", "Teoría del Proceso", "TEA SH-34", "RODRÍGUEZ CAÑETE PAULA", 17], ["M", "10:10", "11:40", "Teoría de la Reacción Penal", "TEA SH-32", "GRANDON CASTRO JULIO CESAR", 19], ["M", "11:40", "13:50", "Bienes", "TEA SH-32", "MANOSALVA CARRASCO PAULINA", 21], ["X", "8:40", "10:50", "Bienes", "TEA SH-34", "MANOSALVA CARRASCO PAULINA", 21], ["X", "11:00", "12:20", "Derecho Internacional Público", "TEA SH-34", "VALLEJOS ROA LIZ", 23], ["X", "12:30", "13:50", "Teoría del Proceso", "TEA SH-34", "RODRÍGUEZ CAÑETE PAULA", 17], ["J", "9:30", "12:20", "Derechos y Garantías Constitucionales", "TEA SH-34", "VELOSO ANGULO JAIME", 22], ["J", "12:30", "13:50", "Teoría del Proceso", "TEA SH-34", "RODRIGUEZ CAÑETE PAULA", 17]]},
+  "aj_n4_sec2":{l:"2º año · Nivel 4 · Sección 2",plan:"aj",niv:4,alt:false,s:[["L", "8:00", "9:20", "Derechos y Garantías Constitucionales", "TEA SH-44", "SILVA PARRA GABRIELA", 22], ["L", "9:30", "12:20", "Teoría de la Reacción Penal", "TEA SH-44", "FERNÁNDEZ RODRÍGUEZ CAMILA", 19], ["M", "8:00", "9:20", "Derechos y Garantías Constitucionales", "TEA SH-44", "SILVA PARRA GABRIELA", 22], ["M", "9:30", "11:40", "Bienes", "TEA SH-43", "MANOSALVA CARRASCO PAULINA", 21], ["M", "11:40", "13:50", "Teoría del Proceso", "TEA SH-43", "CAÑETE RODRÍGUEZ PAULA", 17], ["X", "8:00", "9:20", "Taller de Integración I (Ev. Ciclo)", "TEA SH-43", "BRAVO ALARCÓN FERNANDO", 24], ["X", "9:30", "10:50", "Derecho Internacional Público", "TEA SH-43", "VALLEJOS ROA LIZ", 23], ["X", "11:00", "13:10", "Bienes", "TEA SH-43", "MANOSALVA CARRASCO PAULINA", 21], ["J", "8:00", "9:20", "Taller de Integración I (Ev. Ciclo)", "TEA SH-43", "BRAVO ALARCÓN FERNANDO", 24], ["J", "9:30", "11:40", "Teoría del Proceso", "TEA SH-43", "CAÑETE RODRÍGUEZ PAULA", 17]]},
+  "aj_n4_sec3":{l:"2º año · Nivel 4 · Sección 3",plan:"aj",niv:4,alt:false,s:[["L", "14:00", "15:20", "Bienes", "TEA SH-34", "SÁNCHEZ CARRASCO DANIEL", 21], ["L", "15:30", "16:50", "Derechos y Garantías Constitucionales", "TEA SH-34", "ARÉVALO WADDINGTON SERGIO", 22], ["L", "17:00", "19:10", "Teoría del Proceso", "TEA SH-34", "CONTRERAS LAGOS MANUEL", 17], ["M", "14:00", "15:20", "Bienes", "TEA SH-34", "SÁNCHEZ CARRASCO DANIEL", 21], ["M", "15:30", "16:50", "Taller de Integración I (Ev. Ciclo)", "TEA SH-34", "BRAVO ALARCÓN FERNANDO", 24], ["M", "17:00", "19:10", "Teoría del Proceso", "TEA SH-34", "CONTRERAS LAGOS MANUEL", 17], ["X", "14:00", "15:20", "Derecho Internacional Público", "TEA SH-34", "VALLEJOS ROA LIZ", 23], ["X", "15:30", "16:50", "Derechos y Garantías Constitucionales", "TEA SH-34", "ARÉVALO WADDINGTON SERGIO", 22], ["X", "17:00", "18:20", "Taller de Integración I (Ev. Ciclo)", "TEA SH-34", "BRAVO ALARCÓN FERNANDO", 24], ["X", "19:10", "19:50", "Teoría del Proceso", "—", "DURÁN FERNÁNDEZ CARLOS", 17], ["J", "14:40", "16:10", "Bienes", "TEA SH-34", "SÁNCHEZ CARRASCO DANIEL", 21], ["J", "16:10", "19:10", "Teoría de la Reacción Penal", "TEA SH-34", "LEIVA MARTÍNEZ HÉCTOR", 19]]},
+  "aj_n4_sec4":{l:"2º año · Nivel 4 · Sección 4",plan:"aj",niv:4,alt:false,s:[["M", "10:10", "11:40", "Taller de Integración I (Ev. Ciclo)", "TEA SH-31", "RODRÍGUEZ CAÑETE PAULA", 24], ["X", "10:10", "11:40", "Taller de Integración I (Ev. Ciclo)", "TEA SH-31", "RODRÍGUEZ CAÑETE PAULA", 24], ["X", "19:10", "19:50", "Teoría del Proceso", "—", "DURÁN FERNÁNDEZ CARLOS", 17]]},
+  "aj_n6_sec1":{l:"3er año · Nivel 6 · Sección 1",plan:"aj",niv:6,alt:false,s:[["L", "11:00", "12:20", "Electivo de Responsabilidad Social", "TEA SH-45", "—", 35], ["L", "14:00", "15:20", "Procedimientos de Ejecución y Cautela", "TEA SH-42", "OSORIO ULLOA REINALDO", 32], ["L", "15:30", "16:50", "Derecho Mercantil", "TEA SH-42", "KAUFHOLD CARRASCO RODOLFO", 33], ["L", "17:00", "18:20", "Fuentes de las Obligaciones", "TEA SH-42", "VENEGAS POBLETE RADY", 28], ["M", "14:00", "15:20", "Fuentes de las Obligaciones", "TEA SH-42", "VENEGAS POBLETE RADY", 28], ["M", "15:30", "16:50", "Procedimientos de Ejecución y Cautela", "TEA SH-42", "OSORIO ULLOA REINALDO", 32], ["M", "17:00", "19:10", "Delitos en Particular II", "TEA SH-42", "FERNÁNDEZ RODRÍGUEZ CAMILA", 30], ["X", "11:00", "12:20", "Electivo de Responsabilidad Social", "TEA SH-44", "—", 35], ["X", "14:00", "15:20", "Derecho Colectivo del Trabajo y Seg. Social", "TEA SH-42", "LARRAGUIBEL ARAVENA CRISTIAN", 34], ["X", "15:30", "16:50", "Procedimientos de Ejecución y Cautela", "TEA SH-42", "OSORIO ULLOA REINALDO", 32], ["X", "17:00", "18:20", "Fuentes de las Obligaciones", "TEA SH-42", "VENEGAS POBLETE RADY", 28], ["J", "14:00", "15:20", "Derecho Colectivo del Trabajo y Seg. Social", "TEA SH-42", "LARRAGUIBEL ARAVENA CRISTIAN", 34], ["J", "15:30", "16:50", "Derecho Mercantil", "TEA SH-42", "KAUFHOLD CARRASCO RODOLFO", 33], ["J", "17:00", "19:10", "Delitos en Particular II", "TEA SH-42", "FERNÁNDEZ RODRÍGUEZ CAMILA", 30]]},
+  "aj_n6_sec2":{l:"3er año · Nivel 6 · Sección 2",plan:"aj",niv:6,alt:false,s:[["L", "13:10", "14:40", "Electivo de Responsabilidad Social", "TEA SH-44", "—", 35], ["L", "14:40", "16:10", "Fuentes de las Obligaciones", "TEA SH-44", "FUENTES QUIROZ CARLOS", 28], ["L", "16:10", "17:40", "Derecho Mercantil", "TEA SH-44", "MEZA OSSES GONZALO", 33], ["L", "17:40", "19:10", "Derecho Colectivo del Trabajo y Seg. Social", "TEA SH-44", "SÁEZ PAREDES FERNANDO", 34], ["M", "13:10", "14:40", "Procedimientos de Ejecución y Cautela", "TEA SH-44", "OSORIO ULLOA REINALDO", 32], ["M", "14:40", "16:10", "Fuentes de las Obligaciones", "TEA SH-44", "FUENTES QUIROZ CARLOS", 28], ["M", "17:00", "19:10", "Delitos en Particular II", "TEA SH-44", "TURRA LAGOS CLAUDIA", 30], ["X", "13:10", "14:40", "Electivo de Responsabilidad Social", "TEA SH-44", "—", 35], ["X", "14:40", "16:10", "Fuentes de las Obligaciones", "TEA SH-44", "FUENTES QUIROZ CARLOS", 28], ["X", "16:10", "17:40", "Derecho Mercantil", "TEA SH-44", "MEZA OSSES GONZALO", 33], ["X", "17:40", "19:10", "Derecho Colectivo del Trabajo y Seg. Social", "TEA SH-44", "SÁEZ PAREDES FERNANDO", 34], ["J", "14:00", "16:50", "Procedimientos de Ejecución y Cautela", "TEA SH-44", "OSORIO ULLOA REINALDO", 32], ["J", "17:00", "19:10", "Delitos en Particular II", "TEA SH-44", "TURRA LAGOS CLAUDIA", 30]]},
+  "aj_n8_sec1":{l:"4º año · Nivel 8 · Sección 1",plan:"aj",niv:8,alt:false,s:[["L", "9:30", "12:20", "Taller de Integración II (Ev. Ciclo)", "TEA SH-31", "—", 47], ["L", "13:10", "16:10", "Optativo de Especialidad I", "TEA SH-45", "CELEDÓN BAEZA ANDRÉS", 48], ["L", "16:10", "17:40", "Derecho Sucesorio", "TEA SH-45", "CASTRO ESPINOZA NELSON", 40], ["L", "17:40", "19:10", "Derecho Administrativo II", "TEA SH-45", "HENRÍQUEZ BURGOS RAÚL", 45], ["M", "9:30", "12:20", "Taller de Integración II (Ev. Ciclo)", "TEA SH-45", "PACHECO CORNEJO HELLEN", 47], ["M", "15:30", "17:40", "Procedimientos Especiales Orales", "TEA SH-45", "VILLARROEL CRUZAT ROBINSON", 44], ["M", "17:40", "19:10", "Contratación Mercantil", "TEA SH-45", "MEZA OSSES GONZALO", 41], ["X", "14:00", "15:20", "Derecho Tributario I", "TEA SH-45", "MATURANA LANZA CARLOS", 46], ["X", "16:10", "17:40", "Derecho Sucesorio", "TEA SH-45", "CASTRO ESPINOZA NELSON", 40], ["X", "17:40", "19:10", "Derecho Administrativo II", "TEA SH-45", "HENRÍQUEZ BURGOS RAÚL", 45], ["J", "14:00", "15:20", "Derecho Tributario I", "TEA SH-45", "MATURANA LANZA CARLOS", 46], ["J", "15:30", "17:40", "Procedimientos Especiales Orales", "TEA SH-45", "VILLARROEL CRUZAT ROBINSON", 44], ["J", "17:40", "19:10", "Contratación Mercantil", "TEA SH-45", "MEZA OSSES GONZALO", 41]]},
+  "na_n8_sec1":{l:"4º año · Nivel 8 · Sección 1 · No ajustada",plan:"na",niv:8,alt:false,s:[["L", "11:00", "12:20", "Electivo de Responsabilidad Social", "TEC SH-23", "—", 47], ["L", "14:00", "15:20", "Derecho Sucesorio", "TEA SH-31", "SAN JUAN TORRES MARCO", 42], ["L", "15:30", "17:40", "Procedimientos Especiales Orales (Ev. Ciclo)", "TEA SH-31", "ALARCÓN ITURRIAGA ORLANDO", 43], ["X", "11:00", "12:20", "Electivo de Responsabilidad Social", "TEA SH-45", "—", 47], ["X", "14:00", "15:20", "Derecho Sucesorio", "TEA SH-31", "SAN JUAN TORRES MARCO", 42], ["X", "15:30", "17:40", "Procedimientos Especiales Orales (Ev. Ciclo)", "TEA SH-43", "ALARCÓN ITURRIAGA ORLANDO", 43]]},
+  "na_n9_sec1_alt":{l:"5º año · Nivel 9 · Sección 1 · Alterna · No ajustada",plan:"na",niv:9,alt:true,s:[["X", "17:40", "19:10", "Recursos", "TEA SH-43", "CONTRERAS LAGOS MANUEL", 48], ["J", "17:40", "19:10", "Recursos", "TEA SH-41", "CONTRERAS LAGOS MANUEL", 48]]},
+  "na_n10_sec1_2":{l:"5º año · Nivel 10 · Sección 1 -2 · No ajustada",plan:"na",niv:10,alt:false,s:[["L", "14:00", "15:20", "Derecho Tributario II", "TEA SC-52", "MATURANA LANZA CARLOS", 57], ["L", "17:00", "18:20", "Optativo de Especialidad II", "TEA SC-52", "CELEDÓN BAEZA ANDRÉS", 54], ["M", "8:40", "10:10", "Taller de Litigación Avanzada (Ev. Ciclo)", "TEA SH-31", "FERNÁNDEZ RODRÍGUEZ CAMILA", 58], ["M", "14:00", "15:20", "Derecho Tributario II", "TEA SC-52", "MATURANA LANZA CARLOS", 57], ["M", "15:30", "16:50", "Reorganización y Liquidación Patrimonial", "TEA SC-52", "JAMARNE NIMER GABRIEL", 56], ["M", "17:00", "18:20", "Optativo de Especialidad I", "TEA SH-31", "NECULMAN MUÑOZ MARCELO", 53], ["X", "17:00", "18:20", "Reorganización y Liquidación Patrimonial", "TEA SH-33", "JAMARNE NIMER GABRIEL", 56], ["J", "9:30", "10:50", "Taller de Litigación Avanzada (Ev. Ciclo)", "TEA SH-31", "FERNÁNDEZ RODRÍGUEZ CAMILA", 58], ["J", "16:10", "17:40", "Optativo de Especialidad I", "TEA SH-33", "NECULMAN MUÑOZ MARCELO", 53], ["J", "17:40", "19:10", "Optativo de Especialidad II", "TEA SH-33", "CELEDÓN BAEZA ANDRÉS", 54]]}
 };
 
-var OFER_DIURNO={"Introducción al Derecho": 3, "Historia del Derecho": 1, "Derecho Político": 2, "Introducción a la Economía": 10, "Historia y Ev. de las Instituciones Civiles": 6, "Teoría de la Ley y las Personas": 7, "Teoría Constitucional": 11, "Electivo de Comunicación": 4, "Argumentación Jurídica y Debate": 12, "Historia Institucional de Chile": 5, "Fundamentos Filosóficos del Derecho": 9, "Acto Jurídico": 13, "Taller de Integración I (Ev. Ciclo)": 24, "Teoría de la Reacción Penal": 19, "Teoría del Proceso": 17, "Bienes": 21, "Derecho Internacional Público": 23, "Derechos y Garantías Constitucionales": 22, "Electivo de Responsabilidad Social": 47, "Procedimientos de Ejecución y Cautela": 32, "Derecho Mercantil": 33, "Fuentes de las Obligaciones": 28, "Delitos en Particular II": 30, "Derecho Colectivo del Trabajo y Seg. Social": 34, "Taller de Integración II (Ev. Ciclo)": 47, "Optativo de Especialidad I": 53, "Derecho Sucesorio": 42, "Derecho Administrativo II": 45, "Procedimientos Especiales Orales": 44, "Contratación Mercantil": 41, "Derecho Tributario I": 46, "Procedimientos Especiales Orales (Ev. Ciclo)": 43, "Recursos": 48, "Derecho Tributario II": 57, "Optativo de Especialidad II": 54, "Taller de Litigación": 46, "Reorganización y Liquidación Patrimonial": 56};
+var OFER_DIURNO={"Introducción al Derecho": 3, "Historia del Derecho": 1, "Derecho Político": 2, "Introducción a la Economía": 10, "Historia y Ev. de las Instituciones Civiles": 6, "Teoría de la Ley y las Personas": 7, "Teoría Constitucional": 11, "Electivo de Comunicación II": 8, "Argumentación Jurídica y Debate": 12, "Historia Institucional de Chile": 5, "Fundamentos Filosóficos del Derecho": 9, "Acto Jurídico": 13, "Taller de Integración I (Ev. Ciclo)": 24, "Teoría de la Reacción Penal": 19, "Teoría del Proceso": 17, "Bienes": 21, "Derecho Internacional Público": 23, "Derechos y Garantías Constitucionales": 22, "Electivo de Responsabilidad Social": 47, "Procedimientos de Ejecución y Cautela": 32, "Derecho Mercantil": 33, "Fuentes de las Obligaciones": 28, "Delitos en Particular II": 30, "Derecho Colectivo del Trabajo y Seg. Social": 34, "Taller de Integración II (Ev. Ciclo)": 47, "Optativo de Especialidad I": 53, "Derecho Sucesorio": 42, "Derecho Administrativo II": 45, "Procedimientos Especiales Orales": 44, "Contratación Mercantil": 41, "Derecho Tributario I": 46, "Procedimientos Especiales Orales (Ev. Ciclo)": 43, "Recursos": 48, "Derecho Tributario II": 57, "Optativo de Especialidad II": 54, "Taller de Litigación Avanzada (Ev. Ciclo)": 58, "Reorganización y Liquidación Patrimonial": 56};
 
 /* --- Punteros activos: el motor de horarios usa la rejilla/oferta de la jornada activa --- */
 var BL=BL_TECH, HOR=HOR_TECH, OFER=OFER_TECH;
 function setHorJornada(j){
   if(j==="diurno"){ BL=BL_DIURNO; HOR=HOR_DIURNO; OFER=OFER_DIURNO; }
   else { BL=BL_TECH; HOR=HOR_TECH; OFER=OFER_TECH; }
+  INSC_KEY=(j==="tech"||!j)?"insc_sec_v1":"insc_sec_"+j+"_v1";
+  loadInsc();
 }
-function planPropose(){
+function planProposeTECH(){
   const out=document.getElementById("planOut");if(!out)return;
   const maxDif=3, maxR=6;
   const offById={};
@@ -1068,11 +1073,12 @@ function planPropose(){
   if(excl.length){h+=`<div class="hgrp serif">No incluidos</div>`;excl.forEach(({c,r})=>h+=`<div class="pexc">• <b>${c.n}</b> (nivel ${c.t}) — ${r}</div>`);}
   h+=`<div class="hgrp serif">A tener en cuenta</div>`;
   const crSel=chosen.reduce((s,x)=>s+(creditsOf(x.c.id)||0),0);
-  h+=`<div class="presum">Tu nivel más bajo pendiente es <b>nivel ${anchor}</b>. En régimen trimestral el reglamento (Res. 009/2024, art. 17) permite cursar hasta <b>4 niveles consecutivos</b> desde ahí —hasta <b>nivel ${anchor+maxDif}</b>— inscribiendo primero lo reprobado del nivel más bajo. La carga de diseño es 30 SCT por nivel; el tope excepcional es <b>24 SCT trimestrales</b> (36 semestrales), autorizable solo por la Dirección de Carrera.${crSel?` Esta propuesta suma <b>${crSel} SCT</b>.`:''}${apCount===0?'<br><span style="color:#b3445a">Aún no marcas ramos aprobados — hazlo en Avance Curricular para una propuesta real.</span>':''}</div>`;
+  h+=`<div class="presum">Tu nivel más bajo pendiente es <b>nivel ${anchor}</b>. En régimen trimestral el reglamento (Res. 009/2024, art. 17) permite cursar hasta <b>4 niveles consecutivos</b> desde ahí —hasta <b>nivel ${anchor+maxDif}</b>— inscribiendo primero lo reprobado del nivel más bajo. El máximo del período es <b>30 SCT</b>, sujeto a autorización (Circular N°03/2026, inscripción primavera 2026).${crSel?` Esta propuesta suma <b>${crSel} SCT</b>.`:''}${apCount===0?'<br><span style="color:#b3445a">Aún no marcas ramos aprobados — hazlo en Avance Curricular para una propuesta real.</span>':''}</div>`;
   if(offById[51]&&state[51]!=="ok")h+=`<div class="pinfo">ℹ️ El <b>Seminario de Investigación Jurídica</b> está en la oferta, pero <b>lo inscribe la Carrera</b> mediante formulario — no lo eliges tú.</div>`;
-  h+=`<div class="pinfo">Excepción (Circular N°04/2026, punto 7): en ciclo avanzado podría autorizarse <b>una sola</b> coincidencia horaria, si ninguno de los dos ramos está en repetición. El planificador no la aplica automáticamente; debe pedirse vía formulario.</div>`;
+  h+=`<div class="pinfo">Excepción (Circular N°03/2026): en ciclo avanzado podría autorizarse <b>una sola</b> coincidencia horaria, si ninguno de los dos ramos está en repetición. No se aceptan coincidencias que involucren más de dos asignaturas. El planificador no la aplica automáticamente; debe pedirse a la Carrera.</div>`;
   out.innerHTML=h;
 }
+function planPropose(){ if(window.__planSem){ try{ if(window.__planSem())return; }catch(e){ console.error("planSem:",e); } } planProposeTECH(); }
 document.getElementById("planBtn").onclick=planPropose;
 /* Pruebas ejemplo */
 const MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
@@ -1500,6 +1506,145 @@ if('serviceWorker' in navigator){
     }
   }
 
+  /* --- PLANIFICADOR SEMESTRAL (Diurno / V.Regular) · Res. 009/2024 art. 17 y 19 --- */
+  window.__planSem=function(){
+    if(!curJornada||curJornada==="tech")return false;
+    var out=document.getElementById("planOut"); if(!out)return true;
+    var na=(curMallaSem==="noajustada");
+    var list=na?COURSES_NASEM:COURSES_SEM;
+    var st=na?stateNASEM:stateSEM;
+    var by=na?byId_NASEM:byId_SEM;
+    var CR=na?CR_NOAJUST:CR_AJUSTADA;
+    var unlocked=na?isUnlockedNASEM:isUnlockedSEM;
+    var maxDif=2, capBase=30, maxR=8;
+    var hasHor=(curJornada==="diurno");
+
+    var pend=list.filter(function(c){return st[c.id]!=="ok";});
+    var anchor=pend.length?Math.min.apply(null,pend.map(function(c){return c.t;})):1;
+    var apCount=list.length-pend.length;
+    var isSemn=function(c){return /^Seminario/i.test(c.n);};
+    var isMand=function(c){return st[c.id]==="no"||c.t===anchor;};
+
+    /* Oferta del período desde el horario oficial (solo secciones del plan del alumno) */
+    var offById={}, altOnly={};
+    if(hasHor){
+      Object.keys(HOR_DIURNO).forEach(function(k){
+        var blk=HOR_DIURNO[k];
+        if(blk.plan!==(na?"na":"aj"))return;
+        var g={};
+        blk.s.forEach(function(se){var id=se[6];if(id==null)return;(g[id]=g[id]||[]).push(se);});
+        Object.keys(g).forEach(function(idS){
+          var id=+idS, c=by[id]; if(!c)return;
+          if(blk.alt && !(st[id]==="no" || (c.t===anchor && st[id]!=="ok"))){ altOnly[id]=1; return; }
+          (offById[id]=offById[id]||[]).push({label:blk.l,alt:!!blk.alt,sessions:g[idS]});
+        });
+      });
+    }
+
+    var _pm=function(t){var p=String(t).split(":");return (+p[0])*60+(+p[1]);};
+    var idxOf=function(t){for(var i=0;i<BL_DIURNO.length;i++)if(_pm(BL_DIURNO[i][0])===_pm(t))return i;return -1;};
+    var endOf=function(t){var e=-1;BL_DIURNO.forEach(function(b,i){if(_pm(b[0])<_pm(t))e=i;});return e;};
+    var cellsOf=function(ss){var cs=[];ss.forEach(function(se){var a=idxOf(se[1]);var b=endOf(se[2]);if(a<0)return;if(b<a)b=a;for(var i=a;i<=b;i++)cs.push(se[0]+i);});return cs;};
+
+    /* Candidatos: pendientes, con prerrequisitos cumplidos, dentro de 3 niveles, no Seminario */
+    var elig=pend.filter(function(c){return unlocked(c)&&(c.t-anchor)<=maxDif&&!isSemn(c);});
+    /* menos opciones de sección primero: evita que un ramo flexible le quite el único bloque a otro */
+    elig.sort(function(a,b){var ma=isMand(a)?0:1,mb=isMand(b)?0:1;var oa=(offById[a.id]||[]).length,ob=(offById[b.id]||[]).length;return ma-mb||a.t-b.t||oa-ob||a.id-b.id;});
+
+    var chosen=[],occ={},crSum=0,confl=[],noCap=[];
+    if(hasHor){
+      elig.forEach(function(c){
+        if(!offById[c.id])return;
+        if(chosen.length>=maxR)return;
+        var mand=isMand(c);
+        if(!mand && crSum+(CR[c.id]||0)>capBase){noCap.push(c);return;}
+        var placed=false;
+        for(var i=0;i<offById[c.id].length;i++){
+          var o=offById[c.id][i], cs=cellsOf(o.sessions), clash=false;
+          for(var j2=0;j2<cs.length;j2++){if(occ[cs[j2]]){clash=true;break;}}
+          if(clash)continue;
+          cs.forEach(function(x){occ[x]=1;});
+          chosen.push({c:c,o:o,mand:mand}); crSum+=CR[c.id]||0; placed=true; break;
+        }
+        if(!placed)confl.push(c);
+      });
+    }else{
+      elig.forEach(function(c){
+        if(chosen.length>=maxR)return;
+        var mand=isMand(c);
+        if(!mand && crSum+(CR[c.id]||0)>capBase){noCap.push(c);return;}
+        chosen.push({c:c,o:null,mand:mand}); crSum+=CR[c.id]||0;
+      });
+    }
+    var chosenIds={};chosen.forEach(function(x){chosenIds[x.c.id]=1;});
+
+    /* No ofertados este período (dentro de niveles y desbloqueados) */
+    var noOfer=hasHor?elig.filter(function(c){return !offById[c.id]&&!chosenIds[c.id];}):[];
+    noOfer.sort(function(a,b){var ma=isMand(a)?0:1,mb=isMand(b)?0:1;return ma-mb||a.t-b.t;});
+
+    /* Excluidos con razón (solo entre los ofertados, como referencia útil) */
+    var excl=[];
+    if(hasHor){
+      Object.keys(offById).forEach(function(idS){
+        var id=+idS,c=by[id]; if(!c)return;
+        if(st[id]==="ok"||chosenIds[id]||isSemn(c))return;
+        var r;
+        if(!unlocked(c))r="faltan prerrequisitos";
+        else if(c.t-anchor>maxDif)r="supera el tope de 3 niveles (art. 17)";
+        else if(confl.indexOf(c)>=0)r="choca de horario con un ramo prioritario";
+        else if(noCap.indexOf(c)>=0)r="excedería el máximo de 30 SCT del período";
+        else r="quedó fuera por el máximo de ramos";
+        excl.push({c:c,r:r});
+      });
+    }else{
+      noCap.forEach(function(c){excl.push({c:c,r:"excedería el máximo de 30 SCT del período"});});
+    }
+    excl.sort(function(a,b){return a.c.t-b.c.t;});
+
+    /* Render */
+    var h='<div class="pinfo">Propuesta según tu malla <b>'+(na?"no ajustada (Res. 135/2017)":"vigente (Res. 165/2022)")+'</b> y tu avance marcado en Avance Curricular.</div>';
+    if(!hasHor)h+='<div class="pinfo">📌 Los horarios de esta jornada aún no están publicados: la propuesta considera malla, prerrequisitos y créditos, sin verificación de choques de horario.</div>';
+    if(chosen.length){
+      h+='<div class="hgrp serif">Ramos propuestos ('+chosen.length+')</div>';
+      chosen.forEach(function(x){
+        var c=x.c,o=x.o;
+        var rep=(st[c.id]==="no")?' <span class="pflag">repite · obligatorio</span>':(c.t===anchor?' <span class="pflag2">nivel obligatorio</span>':'');
+        var meta='Semestre '+c.t+' · '+(CR[c.id]||0)+' SCT';
+        var horas='Horario por publicar';
+        if(o){
+          var parts=o.label.split(" · ");
+          meta+=' · '+parts.slice(2).join(" · ");
+          horas=o.sessions.map(function(se){return DIAS[se[0]].slice(0,3)+' '+se[1]+'–'+se[2];}).join(" · ");
+          var sala=o.sessions[0][4],profe=o.sessions[0][5];
+          if(sala&&sala!=="—")horas+=" · "+sala;
+          if(profe&&profe!=="—")horas+=" · "+profe;
+        }
+        h+='<div class="pcard"><div class="pn">'+c.n+rep+'</div><div class="pm">'+meta+'</div><div class="pt">'+horas+'</div></div>';
+      });
+      if(hasHor)h+='<div class="hgrp serif">Horario propuesto</div>'+buildTable([].concat.apply([],chosen.filter(function(x){return x.o;}).map(function(x){return x.o.sessions;})));
+    }else{
+      h+='<div class="pcard">No hay ramos para proponer con las reglas actuales'+(hasHor?' y la oferta de este período':'')+'. Marca tu avance en Avance Curricular.</div>';
+    }
+    if(noOfer.length){
+      h+='<div class="hgrp serif">Pendientes sin oferta este período</div>';
+      noOfer.forEach(function(c){
+        var flag=isMand(c)?' <span class="pflag">'+(st[c.id]==="no"?'reprobado':'nivel más bajo')+'</span>':'';
+        var extra=altOnly[c.id]?' — se dicta solo en sección alterna (para quienes lo reprobaron o lo deben del nivel más bajo)':' — no aparece en el horario publicado; se inscribe cuando se dicte (art. 19)';
+        h+='<div class="pexc">• <b>'+c.n+'</b> (semestre '+c.t+')'+flag+extra+'</div>';
+      });
+    }
+    if(excl.length){h+='<div class="hgrp serif">No incluidos</div>';excl.forEach(function(x){h+='<div class="pexc">• <b>'+x.c.n+'</b> (semestre '+x.c.t+') — '+x.r+'</div>';});}
+    h+='<div class="hgrp serif">A tener en cuenta</div>';
+    var warn='';
+    if(crSum>capBase)warn=' <b style="color:#b3445a">⚠️ Los obligatorios superan el máximo de 30 SCT del período: debes regularizar con la Dirección de Carrera, ya que inscribir sobre 30 créditos requiere autorización.</b>';
+    h+='<div class="presum">Tu nivel más bajo pendiente es <b>semestre '+anchor+'</b>. El reglamento (Res. 009/2024, art. 17) permite cursar asignaturas de hasta <b>3 niveles consecutivos</b> desde ahí —hasta <b>semestre '+Math.min(anchor+maxDif,10)+'</b>—, inscribiendo <b>primero</b> las reprobadas y pendientes del nivel más bajo (las reprobadas son de inscripción obligatoria cuando se dictan). El máximo del período es <b>30 SCT</b>, sujeto a autorización (Circular N°03/2026, inscripción primavera 2026). Esta propuesta suma <b>'+crSum+' SCT</b>.'+warn+(apCount===0?'<br><span style="color:#b3445a">Aún no marcas ramos aprobados — hazlo en Avance Curricular para una propuesta real.</span>':'')+'</div>';
+    var semC=list.filter(function(c){return isSemn(c)&&st[c.id]!=="ok";})[0];
+    if(semC&&hasHor&&offById[semC.id])h+='<div class="pinfo">ℹ️ El <b>'+semC.n+'</b> (Seminario de Tesis) <b>lo inscribe la Carrera</b> mediante un formulario habilitado para ese efecto — no lo eliges tú.</div>';
+    if(hasHor)h+='<div class="pinfo">Excepción (Circular N°03/2026): en ciclo avanzado podría autorizarse <b>una sola</b> coincidencia horaria, si ninguno de los dos ramos está en repetición. No se aceptan coincidencias que involucren más de dos asignaturas. El planificador no la aplica automáticamente; debe pedirse a la Carrera.</div>';
+    out.innerHTML=h;
+    return true;
+  };
+
   /* --- Selector y rotulado de jornada --- */
   var KEYJ="jornada3_v1";
   var names={tech:"Jornada Vespertina TECH",vregular:"Jornada Vespertina Regular",diurno:"Jornada Diurna"};
@@ -1572,6 +1717,7 @@ if('serviceWorker' in navigator){
     /* secciones sin datos propios: mensaje pendiente */
     setPend(j,nm);
     if(typeof renderHorView==='function' && document.getElementById("hor")){ try{renderHorView(typeof horMode!=='undefined'?horMode:"all");}catch(e){} }
+    if(typeof planPropose==='function'){ try{planPropose();}catch(e){} }
     if(typeof renderMural==='function')renderMural();
     /* Info: bloque del Centro de Estudiantes solo en TECH */
     var cc=document.getElementById("infoCCEE"); if(cc)cc.style.display=(j==="tech")?"":"none";
@@ -1610,10 +1756,16 @@ if('serviceWorker' in navigator){
   var chg=document.getElementById("jornadaChange"); if(chg)chg.onclick=show;
   /* Enlaces directos por jornada: /derechodiurno, ?j=tech, #vespertino… (+ "fijo" oculta el cambio) */
   function jornadaFromURL(){
-    var s=(location.pathname+location.search+location.hash).toLowerCase();
+    /* 1º el query/hash explícito (la carpeta /prueba-diurno/ contiene "diurn" y no debe ganar) */
+    var q=(location.search+location.hash).toLowerCase();
+    if(q.indexOf("tech")>=0||q.indexOf("trimestral")>=0)return "tech";
+    if(q.indexOf("vespertino")>=0||q.indexOf("vreg")>=0||q.indexOf("regular")>=0)return "vregular";
+    if(q.indexOf("diurn")>=0)return "diurno";
+    /* 2º el path como respaldo */
+    var s=location.pathname.toLowerCase();
     if(s.indexOf("diurn")>=0)return "diurno";
     if(s.indexOf("tech")>=0||s.indexOf("trimestral")>=0)return "tech";
-    if(s.indexOf("vespertino")>=0||s.indexOf("regular")>=0||s.indexOf("vreg")>=0)return "vregular";
+    if(s.indexOf("vespertino")>=0||s.indexOf("vreg")>=0)return "vregular";
     return null;
   }
   var urlJ=jornadaFromURL();
