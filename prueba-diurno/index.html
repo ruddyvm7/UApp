@@ -1150,10 +1150,21 @@ function renderAllHor(){
     /* avisos flotantes informativos (no bloquean): exceso de créditos y exceso de niveles */
     var tot=0;Object.keys(insc).forEach(function(x){tot+=creditsForSel(+x,insc[x]);});
     var nivs=nivelsOfInsc();
-    if(nivs.max-nivs.min>3){
-      showHorMsg(`📚 Estás combinando ramos de <b>niveles muy separados</b> (nivel ${nivs.min} y nivel ${nivs.max}). El reglamento permite inscribir hasta <b>3 niveles consecutivos</b> desde tu nivel más bajo pendiente.`,"warn");
-    }else if(tot>30){
-      showHorMsg(`📊 Llevas <b>${tot} SCT</b> — sobre el máximo de 30 del período (Circular N°03/2026). Puedes seguir explorando, pero inscribir sobre 30 requiere autorización.`,"warn");
+    var av=(typeof window.__anchorAvance==='function')?window.__anchorAvance():{anchor:null,hasAvance:false};
+    if(av.hasAvance && av.anchor!=null){
+      /* regla real: desde tu ramo más atrasado sin aprobar, hasta 3 niveles consecutivos */
+      if(nivs.max - av.anchor > 2){
+        showHorMsg(`📚 Estás excediendo el <b>tope de niveles</b>. Tu ramo más atrasado sin aprobar está en <b>nivel ${av.anchor}</b>, así que puedes inscribir hasta <b>nivel ${av.anchor+2}</b> (3 niveles consecutivos). Piqueaste un ramo de <b>nivel ${nivs.max}</b>.`,"warn");
+      }else if(tot>30){
+        showHorMsg(`📊 Llevas <b>${tot} SCT</b> — sobre el máximo de 30 del período (Circular N°03/2026). Puedes seguir explorando, pero inscribir sobre 30 requiere autorización.`,"warn");
+      }
+    }else{
+      /* sin avance marcado: comparación aproximada entre lo piqueado + advertencia */
+      if(nivs.max-nivs.min>2){
+        showHorMsg(`📚 Estás combinando ramos que abarcan <b>más de 3 niveles</b> (nivel ${nivs.min} y nivel ${nivs.max}). ⚠️ No tienes registrado tu avance en <b>Avance Curricular</b>, así que este cálculo es aproximado y podría no reflejar tu tope real.`,"warn");
+      }else if(tot>30){
+        showHorMsg(`📊 Llevas <b>${tot} SCT</b> — sobre el máximo de 30 del período (Circular N°03/2026). Puedes seguir explorando, pero inscribir sobre 30 requiere autorización.`,"warn");
+      }
     }
     };
     td.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();td.onclick();}};
@@ -1750,6 +1761,23 @@ if('serviceWorker' in navigator){
   }
 
   /* --- PLANIFICADOR SEMESTRAL (Diurno / V.Regular) · Res. 009/2024 art. 17 y 19 --- */
+  /* Ancla real de niveles = nivel del ramo más atrasado sin aprobar en la malla del alumno.
+     Devuelve {anchor, hasAvance} para que Horarios valide el tope de 3 niveles con la misma regla que el planificador. */
+  window.__anchorAvance=function(){
+    if(!curJornada||curJornada==="tech")return {anchor:null,hasAvance:false};
+    var na=(curMallaSem==="noajustada");
+    var list=na?COURSES_NASEM:COURSES_SEM;
+    var st=na?stateNASEM:stateSEM;
+    var marcados=0,pendMin=99;
+    list.forEach(function(c){
+      var s=st[c.id];
+      if(s==="ok"||s==="no")marcados++;
+      if(s!=="ok"){ if(c.t<pendMin)pendMin=c.t; }
+    });
+    if(marcados===0)return {anchor:null,hasAvance:false};
+    return {anchor:(pendMin===99?1:pendMin),hasAvance:true};
+  };
+
   window.__planSem=function(){
     if(!curJornada||curJornada==="tech")return false;
     var out=document.getElementById("planOut"); if(!out)return true;
