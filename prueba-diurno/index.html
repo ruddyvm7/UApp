@@ -238,6 +238,40 @@ footer .motto{font-style:italic;color:var(--gold);font-size:15px;margin-top:4px;
 .elab{flex:0 0 88px;color:#8a7b5e;font-weight:700}
 .edates{color:#2a2118;display:flex;flex-direction:column;gap:2px}
 .ecols{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:9px}
+.ecols4{grid-template-columns:repeat(2,1fr)}
+.ecols3{grid-template-columns:repeat(2,1fr)}
+@media(min-width:560px){.ecols4{grid-template-columns:repeat(4,1fr)}.ecols3{grid-template-columns:repeat(3,1fr)}}
+/* Simulador de notas */
+.calchead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.allcalc{background:var(--card);border:1px solid var(--gold);color:var(--gold2);font-size:12.5px;font-weight:700;padding:8px 13px;border-radius:999px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.allcalc:hover,.allcalc:focus-visible{background:var(--gold);color:#fff}
+.ccempty{background:var(--card);border:1px dashed var(--cb2);border-radius:14px;padding:22px 18px;color:var(--muted);font-size:14px;line-height:1.55;text-align:center}
+.ccalc{padding:15px 16px;margin:0 0 13px}
+.cchead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px}
+.cchead b{font-size:15px;color:var(--ink)}
+.ccesp{background:#f3e6c4;color:#8a6d1f;font-size:10px;font-weight:800;letter-spacing:.03em;padding:2px 8px;border-radius:9px;text-transform:uppercase}
+.ccsec{background:var(--chipbg,#eee);color:var(--muted);font-size:11px;padding:2px 8px;border-radius:9px}
+.ccscheme{font-size:11.5px;color:var(--muted);margin-bottom:10px}
+.ccrow{display:grid;grid-template-columns:1fr auto 62px;align-items:center;gap:10px;padding:6px 0;border-top:1px solid var(--cb)}
+.cclab{font-size:13px;color:var(--ink)}
+.ccpct{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.ccinput{width:100%;box-sizing:border-box;text-align:center;font-size:15px;font-weight:700;padding:7px 4px;border:1.5px solid var(--cb2);border-radius:9px;background:var(--bg);color:var(--ink)}
+.ccinput:focus-visible{border-color:var(--gold);outline:none}
+.ccinput.ccbad{border-color:var(--no);background:#fbe6e2}
+body.dark .ccinput.ccbad{background:#3a1f1c}
+.ccreq{background:#fbeee3;color:#a34800;font-size:12px;padding:7px 10px;border-radius:9px;margin:9px 0 2px;line-height:1.4}
+body.dark .ccreq{background:#3a2413;color:#f0b98a}
+.ccresult{margin-top:13px;padding-top:12px;border-top:2px solid var(--cb2);text-align:center}
+.ccresult .gaugewrap{position:relative;max-width:210px;margin:0 auto}
+.ccresult .gauge{width:100%;height:auto}
+.ccresult .big{font-size:30px;font-weight:800;font-variant-numeric:tabular-nums;margin-top:-6px}
+.ccresult .vt{font-size:15px;font-weight:800;margin-top:4px}
+.ccresult .vd{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.45}
+.big.vg,.vt.vg{color:#1c7a3f}.big.vy,.vt.vy{color:#9a6a12}.big.vr,.vt.vr{color:#b23320}
+body.dark .big.vg,body.dark .vt.vg{color:#7ed3a0}body.dark .big.vy,body.dark .vt.vy{color:#e8c583}body.dark .big.vr,body.dark .vt.vr{color:#e8a89f}
+.ccpend{font-size:13px;color:var(--muted);font-style:italic;padding:6px 0}
+.acgrp{font-size:13px;font-weight:700;color:var(--wine);margin:16px 0 9px;padding-bottom:5px;border-bottom:2px solid var(--gold)}
+body.dark .acgrp{color:var(--gold)}
 .ecol{background:#fbf6ec;border:1px solid #f0e7d4;border-radius:9px;padding:8px 9px;min-width:0}
 .ecl{font-size:9.5px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;color:var(--gold2);margin-bottom:4px}
 .ecv{font-size:13.5px;color:#2a2118;line-height:1.3}
@@ -573,34 +607,16 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
 <section id="calc" style="display:none">
   <div class="toprule"></div>
   <div class="wrap">
-    <h1 class="h1 serif">Simulador de Notas</h1>
-    <p class="lead">Calcula tu promedio con los estándares de la carrera de Derecho. Elige el tipo de ramo:</p>
-    <div class="seg" id="yearSeg"><button data-m="first" class="on">1er año · 70/30</button><button data-m="upper">2º año en adelante · 90/10</button></div>
-    <div class="tablehead"><span>EVALUACIÓN</span><span class="c">PORCENTAJE</span><span class="c">NOTA (10–70)</span></div>
-    <div id="evals"></div>
-    <button class="calcn" id="calcBtn" style="width:100%;margin-top:2px">CALCULAR RESULTADO</button>
-    <div class="result">
-      <div class="lab">Tu promedio final estimado es:</div>
-      <div class="gaugewrap">
-        <svg class="gauge" viewBox="0 0 200 118">
-          <path class="gz gz-r" d="M20,100 A80,80 0 0 1 79.3,22.7"/>
-          <path class="gz gz-a" d="M79.3,22.7 A80,80 0 0 1 100,20"/>
-          <path class="gz gz-g" d="M100,20 A80,80 0 0 1 180,100"/>
-          <line class="needle" id="needle" x1="100" y1="100" x2="20" y2="100"/>
-          <circle class="hub" cx="100" cy="100" r="6"/>
-          <text class="gtick" x="16" y="114">1,0</text>
-          <text class="gtick" x="100" y="13" text-anchor="middle">4,0</text>
-          <text class="gtick" x="184" y="114" text-anchor="end">7,0</text>
-        </svg>
-        <div class="big" id="rBig">—</div>
+    <div class="calchead">
+      <div>
+        <h1 class="h1 serif">Simulador de Notas</h1>
+        <p class="lead">Se arma solo con los ramos que marcaste en Horarios. Escribe tus notas y mira tu situación en vivo.</p>
       </div>
-      <div class="vt" id="rVt"></div>
-      <div class="vd" id="rVd">Ingresa tus evaluaciones para calcular.</div>
-      <div class="sumw" id="sumW"></div>
+      <button class="allcalc" id="allCalcBtn">Todas las calculadoras</button>
     </div>
-    <div class="note" style="margin-top:12px">Escribe las notas en formato <b>10 a 70</b> (10 = 1,0 · 55 = 5,5 · 70 = 7,0). Aprobar: 40 · Examen: 35. El promedio se muestra en escala <b>1,0 a 7,0</b>. No aplica a talleres.</div>
-    <button class="cta" id="toMalla">Revisa tu avance curricular aquí 📊</button>
-    <div class="disc" style="margin-top:12px">⚠️ Herramienta de apoyo <b>referencial</b>, no oficial. Confirma tus notas y ponderaciones con tu profesor, el syllabus y Registro Curricular.</div>
+    <div id="calcCards"></div>
+    <div class="note" style="margin-top:12px">Escribe las notas en escala <b>1,0 a 7,0</b> (con coma o punto). El <b>parcial</b> es tu nota acumulativa (controles, presentaciones — cada profesor la arma a su criterio). No se ingresa nota de examen: la calculadora te dice si apruebas, quedas con derecho a examen o repruebas <b>solo con tus evaluaciones</b>.</div>
+    <div class="disc" style="margin-top:12px">⚠️ Herramienta de apoyo <b>referencial</b>, no oficial. Las ponderaciones y la relación créditos–horas están sujetas a confirmación con la Dirección de Carrera. Confirma siempre con tu profesor y el syllabus.</div>
   </div>
 </section>
 
@@ -815,6 +831,15 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
   </div>
 </div>
 
+<div id="allCalcModal" class="a11y-ov" style="display:none">
+  <div class="a11y-box" style="max-height:84vh;overflow-y:auto">
+    <button class="a11y-x" id="allCalcX" aria-label="Cerrar">✕</button>
+    <div class="a11y-title serif">Todas las calculadoras</div>
+    <p class="lead" style="margin:2px 0 10px">Elige cualquier esquema de la malla para calcular, sin depender de lo que tengas inscrito.</p>
+    <div id="allCalcList"></div>
+  </div>
+</div>
+
 <script>
 const COURSES=[
  {id:1,n:"Historia del Derecho",t:1,a:"Histórico",p:[]},{id:2,n:"Derecho Político",t:1,a:"Constitucional",p:[]},
@@ -1005,44 +1030,8 @@ function showMalla(sel){
 document.getElementById("reset").onclick=()=>{if(confirm("¿Reiniciar todo tu progreso?")){if(curMalla==="noajustada"){stateNA={};saveNA();renderNA();}else{state={};save();render();}}};
 
 const SECS=["mural","malla","calc","hor","plan","pru","info","solic"];
-function go(tab){document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===tab));SECS.forEach(s=>document.getElementById(s).style.display=s===tab?"":"none");if(tab==="plan")planPropose();if(tab==="hor")renderHorView(horMode);if(tab==="pru")renderPru(pruMode);if(tab==="mural")renderMural();window.scrollTo(0,0);}
+function go(tab){document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===tab));SECS.forEach(s=>document.getElementById(s).style.display=s===tab?"":"none");if(tab==="plan")planPropose();if(tab==="hor")renderHorView(horMode);if(tab==="pru")renderPru(pruMode);if(tab==="calc"&&window.__renderCalc)window.__renderCalc();if(tab==="mural")renderMural();window.scrollTo(0,0);}
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>go(b.dataset.tab));
-document.getElementById("toMalla").onclick=()=>go("malla");
-
-/* Simulador */
-let yearMode="first";
-function tmpl(m){return m==="first"?[["Primera Solemne",35],["Segunda Solemne",35],["Trabajos en clases",30]]:[["Primera Solemne",45],["Segunda Solemne",45],["Trabajos en clases",10]];}
-let evals=tmpl("first").map(r=>({name:r[0],w:r[1],g:""}));
-const evalsEl=document.getElementById("evals"), yearSeg=document.getElementById("yearSeg");
-yearSeg.querySelectorAll("button").forEach(b=>b.onclick=()=>{yearMode=b.dataset.m;yearSeg.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));evals=tmpl(yearMode).map((r,i)=>({name:r[0],w:r[1],g:evals[i]?evals[i].g:""}));renderEvals();calc();});
-function badG(v){return v!==""&&!isNaN(v)&&(v<10||v>70);}
-function renderEvals(){evalsEl.innerHTML="";evals.forEach((e,i)=>{const r=document.createElement("div");r.className="erow";r.innerHTML=`<input value="${e.name}"><input class="c" type="number" step="1" value="${e.w}"><input class="c" type="text" inputmode="numeric" value="${e.g}" placeholder="10-70">`;const[n,w,g]=r.querySelectorAll("input");if(badG(e.g))g.style.borderColor="var(--no)";n.oninput=()=>e.name=n.value;w.oninput=()=>{e.w=parseFloat(w.value)||0;calc();};g.oninput=()=>{const v=g.value.trim().replace(",",".");e.g=(v===""||isNaN(parseFloat(v)))?"":parseFloat(v);g.style.borderColor=badG(e.g)?"var(--no)":"";calc();};evalsEl.appendChild(r);});}
-document.getElementById("calcBtn").onclick=calc;
-function setNeedle(v){const n=document.getElementById("needle");if(!n)return;if(v==null){n.setAttribute("x2","20");n.setAttribute("y2","100");return;}const f=Math.max(0,Math.min(1,(v-1)/6)),a=Math.PI*(1-f),r=68;n.setAttribute("x2",(100+r*Math.cos(a)).toFixed(1));n.setAttribute("y2",(100-r*Math.sin(a)).toFixed(1));}
-function calc(){
-  const sumW=evals.reduce((s,e)=>s+(e.w||0),0);
-  const g=evals.filter(e=>e.g!==""&&!isNaN(e.g)&&e.w>0), wg=g.reduce((s,e)=>s+e.w,0);
-  const big=document.getElementById("rBig"),vt=document.getElementById("rVt"),vd=document.getElementById("rVd"),sw=document.getElementById("sumW");
-  sw.textContent="Ponderación total: "+sumW+"%"+(sumW===100?" ✓":" (debería ser 100%)");
-  if(!g.length||!wg){big.textContent="—";vt.textContent="";vt.className="vt";vd.textContent="Ingresa tus notas para calcular.";setNeedle(null);return;}
-  if(evals.some(e=>badG(e.g))){big.textContent="—";vt.className="vt vr";vt.textContent="⚠️ Nota fuera de rango";vd.innerHTML="Las notas van de <b>10 a 70</b> (10 = 1,0 · 70 = 7,0). Corrige los valores marcados en rojo.";setNeedle(null);return;}
-  const pts=g.reduce((s,e)=>s+e.g*e.w,0), avg=pts/wg, rem=sumW-wg;
-  const avgR=Math.round(avg), to7=v=>(v/10).toFixed(1).replace(".",",");
-  big.textContent=to7(avgR)+(rem>0?" *":"");setNeedle(avgR/10);
-  if(rem>0){
-    const need=tg=>{const v=(tg*sumW-pts)/rem;return v<=10?"cualquier nota (asegurado)":v>70?"más de 70 (no alcanza)":String(Math.ceil(v));};
-    vt.className="vt";vt.textContent="🧮 Promedio parcial";
-    vd.innerHTML=`Llevas <b>${to7(avgR)}</b> con lo ingresado. En el ${rem}% que falta necesitas <b>${need(40)}</b> para aprobar (40) y <b>${need(35)}</b> para ir a examen de repetición (35).<br><span style="color:var(--sptx)">La nota que falta va en formato 10–70.</span>`;
-    return;
-  }
-  let t,d,cls;
-  if(avgR>=60){cls="vg";t="🏆 Excelencia jurídica";d="Alegato impecable. Esta nota habla por sí sola.";}
-  else if(avgR>=50){cls="vg";t="⚖️ Argumentos firmes";d="Buen resultado. Un paso seguro hacia la toga.";}
-  else if(avgR>=40){cls="vg";t="✅ Primer fallo a favor";d="Pasaste. Hay margen para crecer, pero el ramo ya es tuyo.";}
-  else if(avgR>=35){cls="vy";t="📝 Segunda instancia";d="La asignatura admite recurso: el examen. Llega listo a defender tu nota.";}
-  else{cls="vr";t="🔁 A reintentar";d="No es el final, es un nuevo juicio. La próxima, con mejores pruebas.";}
-  vt.className="vt "+cls;vt.textContent=t;vd.innerHTML=d;
-}
 
 /* Horarios Otoño 2026 · 2º trimestre (por nivel y sección) */
 const DIAS={L:"Lunes",M:"Martes",X:"Miércoles",J:"Jueves",V:"Viernes"};
@@ -1230,6 +1219,9 @@ function setHorJornada(j){
   else { BL=BL_TECH; HOR=HOR_TECH; OFER=OFER_TECH; }
   INSC_KEY=(j==="tech"||!j)?"insc_sec_v1":"insc_sec_"+j+"_v1";
   loadInsc();
+  if(j==="diurno"){ EVALS=EVALS_SEM_VIE; PRU_REG="sem"; PRU_NOTE="Calendario oficial de evaluaciones · Primavera 2026. La jornada <b>Diurna</b> rinde los <b>viernes</b>. "+PRU_DIURNO_NOTE; }
+  else if(j==="vregular"){ EVALS=EVALS_SEM_SAB; PRU_REG="sem"; PRU_NOTE="Calendario oficial de evaluaciones · Primavera 2026. La jornada <b>Vespertina</b> rinde los <b>sábados</b> (las evaluaciones de ciclo, SENA y entregas se rinden en la misma fecha en todas las jornadas). "+PRU_DIURNO_NOTE; }
+  else { EVALS=EVALS_TECH; PRU_REG="tri"; PRU_NOTE=""; }
 }
 function planProposeTECH(){
   const out=document.getElementById("planOut");if(!out)return;
@@ -1270,7 +1262,7 @@ var _pb=document.getElementById("planBtn");if(_pb)_pb.onclick=planPropose;
 /* Pruebas ejemplo */
 const MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
 const MESC=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
-const EVALS=[
+const EVALS_TECH=[
  {id:5,asig:"Historia Institucional de Chile",niv:2,act:"30%",p1:[["07-07",1],["07-06",2],["07-09",3]],p2:[["08-04",1],["08-03",2],["08-06",3]],fin:"08-31"},
  {id:6,asig:"Historia y Evolución de las Instituciones Civiles",niv:2,act:"30%",p1:[["07-21",1],["07-21",2],["07-20",3]],p2:[["08-11",1],["08-11",2],["08-10",3]],fin:"09-01"},
  {id:7,asig:"Teoría de la Ley y las Personas",niv:2,act:"30%",p1:[["07-27",1],["07-28",2],["07-28",3]],p2:[["08-17",1],["08-18",2],["08-18",3]],fin:"09-02"},
@@ -1295,6 +1287,56 @@ const EVALS=[
  {id:2,asig:"Derecho Político",niv:1,act:"30%",alt:true,p1:[["07-03",null]],p2:[["08-14",null]],fin:"09-01"},
  {id:26,asig:"Procedimientos Civiles de Cognición",niv:7,act:"10%",alt:true,p1:[["07-06",null]],p2:[["08-17",null]],fin:"08-31"}
 ];
+/* ===== Evaluaciones DIURNO (Primavera 2026) — generado del Excel oficial; año corregido 2025→2026 (viernes) ===== */
+var EVALS_DIURNO=[
+  {aj:[2],na:[],asig:"Derecho Político",niv:1,plan:"aj",alt:true,e1:[],e2:["10-02"],e3:["11-13"],noExam:false},
+  {aj:[1],na:[],asig:"Historia del Derecho",niv:1,plan:"aj",alt:true,e1:[],e2:["09-25"],e3:["10-23"],noExam:false},
+  {aj:[6],na:[],asig:"Historia y Ev. de las Instituciones Civiles",niv:1,plan:"aj",alt:true,e1:[],e2:["10-09"],e3:["11-06"],noExam:false},
+  {aj:[10],na:[],asig:"Introducción a la Economía",niv:1,plan:"aj",alt:true,e1:[],e2:["09-11"],e3:["10-30"],noExam:false},
+  {aj:[3],na:[],asig:"Introducción al Derecho",niv:1,plan:"aj",alt:true,e1:[],e2:["09-04", "10-16"],e3:["11-20"],noExam:false},
+  {aj:[12],na:[],asig:"Argumentación Jurídica y Debate",niv:2,plan:"aj",alt:false,e1:["09-11"],e2:["10-23"],e3:["11-06"],noExam:true,note:"Inicio de debates: vie 6 de noviembre."},
+  {aj:[9],na:[],asig:"Fundamentos Filosóficos del Derecho",niv:2,plan:"aj",alt:false,e1:[],e2:["10-02"],e3:["11-13"],noExam:false},
+  {aj:[5],na:[],asig:"Historia Institucional de Chile",niv:2,plan:"aj",alt:false,e1:[],e2:["09-25"],e3:["10-30"],noExam:false},
+  {aj:[11],na:[],asig:"Teoría Constitucional",niv:2,plan:"aj",alt:false,e1:["08-28"],e2:["10-09"],e3:["11-20"],noExam:false},
+  {aj:[7],na:[],asig:"Teoría de la Ley y las Personas",niv:2,plan:"aj",alt:false,e1:["09-04"],e2:["10-16"],e3:["11-27"],noExam:false},
+  {aj:[13],na:[],asig:"Acto Jurídico",niv:3,plan:"aj",alt:true,e1:["08-28"],e2:["10-02"],e3:["11-27"],noExam:false},
+  {aj:[21],na:[],asig:"Bienes",niv:4,plan:"aj",alt:false,e1:["09-11"],e2:["10-23"],e3:["11-13"],noExam:false},
+  {aj:[23],na:[],asig:"Derecho Internacional Público",niv:4,plan:"aj",alt:false,e1:["09-25"],e2:["10-30"],e3:[],noExam:false},
+  {aj:[22],na:[],asig:"Derechos y Garantías Constitucionales",niv:4,plan:"aj",alt:false,e1:["10-09"],e2:["11-20"],e3:[],noExam:false},
+  {aj:[24],na:[],asig:"Taller de Integración I (Ev. Ciclo)",niv:4,plan:"aj",alt:false,e1:["08-28"],e2:["10-16"],e3:["11-13"],noExam:false,note:"Semana Evaluación"},
+  {aj:[19],na:[],asig:"Teoría de la Reacción Penal",niv:4,plan:"aj",alt:false,e1:["10-02"],e2:["11-06"],e3:[],noExam:false},
+  {aj:[17],na:[],asig:"Teoría del Proceso",niv:4,plan:"aj",alt:false,e1:["09-04"],e2:["10-16"],e3:["11-27"],noExam:false},
+  {aj:[30],na:[],asig:"Delitos en Particular II",niv:6,plan:"aj",alt:false,e1:["08-28"],e2:["10-09"],e3:["11-27"],noExam:false},
+  {aj:[34],na:[],asig:"Derecho Colectivo del Trabajo y Seg. Social",niv:6,plan:"aj",alt:false,e1:["10-02"],e2:["11-06"],e3:[],noExam:false},
+  {aj:[33],na:[],asig:"Derecho Mercantil",niv:6,plan:"aj",alt:false,e1:["09-25"],e2:["10-30"],e3:[],noExam:false},
+  {aj:[28],na:[],asig:"Fuentes de las Obligaciones",niv:6,plan:"aj",alt:false,e1:["09-11"],e2:["10-23"],e3:["11-20"],noExam:false},
+  {aj:[32],na:[],asig:"Procedimientos de Ejecución y Cautela",niv:6,plan:"aj",alt:false,e1:["09-04"],e2:["10-16"],e3:["11-13"],noExam:false,note:"Coordinada con SENA."},
+  {aj:[41],na:[],asig:"Contratación Mercantil",niv:8,plan:"aj",alt:false,e1:["09-11"],e2:["10-30"],e3:[],noExam:false},
+  {aj:[45],na:[],asig:"Derecho Administrativo II",niv:8,plan:"aj",alt:false,e1:["10-02"],e2:["10-23"],e3:[],noExam:false},
+  {aj:[40],na:[],asig:"Derecho Sucesorio",niv:8,plan:"aj",alt:false,e1:["09-25"],e2:["11-13"],e3:[],noExam:false,note:"Coordinada con SENA."},
+  {aj:[46],na:[],asig:"Derecho Tributario I",niv:8,plan:"aj",alt:false,e1:["10-16"],e2:["11-06"],e3:[],noExam:false},
+  {aj:[48],na:[],asig:"Optativo de Especialidad I",niv:8,plan:"aj",alt:false,e1:["10-09"],e2:["11-20"],e3:[],noExam:false},
+  {aj:[44],na:[],asig:"Procedimientos Especiales Orales",niv:8,plan:"aj",alt:false,e1:["09-04"],e2:["11-27"],e3:[],noExam:false},
+  {aj:[47],na:[],asig:"Taller de Integración II (Ev. Ciclo)",niv:8,plan:"aj",alt:false,e1:[],e2:["09-25"],e3:["11-20"],noExam:false,note:"1ª: Entrega De Portafolios (fecha por confirmar). Semana Evaluación"},
+  {aj:[],na:[44],asig:"Derecho de Sociedades",niv:8,plan:"na",alt:false,e1:["09-11"],e2:["11-06"],e3:[],noExam:false},
+  {aj:[],na:[43],asig:"Procedimientos Especiales Orales (Ev. Ciclo)",niv:8,plan:"na",alt:false,e1:["09-04"],e2:["11-27"],e3:[],noExam:false},
+  {aj:[],na:[49],asig:"Metodología de la Investigación Jurídica",niv:9,plan:"na",alt:false,e1:["08-28"],e2:["10-09"],e3:["11-20"],noExam:true,note:"Hito: Entrega Metodología Jurídica Hito: Exposciones Metodología Juríca"},
+  {aj:[],na:[48],asig:"Recursos",niv:9,plan:"na",alt:false,e1:["10-02"],e2:["11-13"],e3:[],noExam:false},
+  {aj:[],na:[57],asig:"Derecho Tributario II",niv:10,plan:"na",alt:false,e1:["08-28"],e2:["11-06"],e3:[],noExam:false},
+  {aj:[],na:[53],asig:"Optativo de Especialidad I",niv:10,plan:"na",alt:false,e1:["09-25"],e2:["11-13"],e3:[],noExam:false},
+  {aj:[],na:[54],asig:"Optativo de Especialidad II",niv:10,plan:"na",alt:false,e1:["10-02"],e2:["11-20"],e3:[],noExam:false},
+  {aj:[],na:[56],asig:"Reorganización y Liquidación Patrimonial",niv:10,plan:"na",alt:false,e1:["09-11"],e2:["10-30"],e3:[],noExam:false},
+  {aj:[],na:[55],asig:"Seminario de Tesis",niv:10,plan:"na",alt:false,e1:["09-04"],e2:["10-09"],e3:["11-13", "11-20"],noExam:false,note:"Semana Entrega Final 17-11-2025 Semana Exposiciones    24-11-2025 Semana Primera Entrega 01-09-2025 Semana Segunda Entrega 13-10-2025"},
+  {aj:[],na:[58],asig:"Taller de Litigación Avanzada (Ev. Ciclo)",niv:10,plan:"na",alt:false,e1:["09-11"],e2:["10-09"],e3:["11-13"],noExam:false}
+];
+/* ===== Evaluaciones PRIMAVERA 2026 (semestral) — del calendario oficial de la Carrera; año corregido a 2026 (viernes) ===== */
+var EVALS_SEM_VIE=[{"asig": "Derecho Político", "niv": 1, "aj": [2], "na": [3], "e2": ["10-02"], "e3": ["11-13"]}, {"asig": "Historia del Derecho", "niv": 1, "aj": [1], "na": [1], "e2": ["09-25"], "e3": ["10-23"]}, {"asig": "Historia y Ev. de las Instituciones Civiles", "niv": 1, "aj": [6], "na": [2], "e2": ["10-09"], "e3": ["11-06"]}, {"asig": "Introducción a la Economía", "niv": 1, "aj": [10], "na": [4], "e2": ["09-11"], "e3": ["10-30"]}, {"asig": "Introducción al Derecho", "niv": 1, "aj": [3], "na": [5], "e2": ["09-04", "10-16"], "e3": ["11-20"]}, {"asig": "Argumentación Jurídica y Debate", "niv": 2, "aj": [12], "na": [11], "noExam": true, "e1": ["09-11"], "e2": ["10-23"], "e3": ["11-06"]}, {"asig": "Fundamentos Filosóficos del Derecho", "niv": 2, "aj": [9], "na": [8], "e2": ["10-02"], "e3": ["11-13"]}, {"asig": "Historia Institucional de Chile", "niv": 2, "aj": [5], "na": [7], "e2": ["09-25"], "e3": ["10-30"]}, {"asig": "Teoría Constitucional", "niv": 2, "aj": [11], "na": [10], "e1": ["08-28"], "e2": ["10-09"], "e3": ["11-20"]}, {"asig": "Teoría de la Ley y las Personas", "niv": 2, "aj": [7], "na": [9], "e1": ["09-04"], "e2": ["10-16"], "e3": ["11-27"]}, {"asig": "Acto Jurídico", "niv": 3, "aj": [13], "na": [13], "e1": ["08-28"], "e2": ["10-02"], "e3": ["11-27"]}, {"asig": "Bienes", "niv": 4, "aj": [21], "na": [19], "e1": ["09-11"], "e2": ["10-23"], "e3": ["11-13"]}, {"asig": "Derecho Internacional Público", "niv": 4, "aj": [23], "na": [22], "e1": ["09-25"], "e2": ["10-30"]}, {"asig": "Derechos y Garantías Constitucionales", "niv": 4, "aj": [22], "na": [21], "e1": ["10-09"], "e2": ["11-20"]}, {"asig": "Taller de Integración I (Ev. Ciclo)", "niv": 4, "aj": [24], "na": [], "noExam": true, "e1": ["08-28"], "e2": ["10-16"], "e3": ["11-13"], "note": "SEMANA EVALUACIÓN"}, {"asig": "Teoría de la Reacción Penal", "niv": 4, "aj": [19], "na": [23], "e1": ["10-02"], "e2": ["11-06"]}, {"asig": "Teoría del Proceso", "niv": 4, "aj": [17], "na": [20], "e1": ["09-04"], "e2": ["10-16"], "e3": ["11-27"]}, {"asig": "Delitos en Particular II", "niv": 6, "aj": [30], "na": [35], "e1": ["08-28"], "e2": ["10-09"], "e3": ["11-27"]}, {"asig": "Derecho Colectivo del Trabajo y Seg. Social", "niv": 6, "aj": [34], "na": [34], "e1": ["10-02"], "e2": ["11-06"]}, {"asig": "Derecho Mercantil", "niv": 6, "aj": [33], "na": [], "e1": ["09-25"], "e2": ["10-30"]}, {"asig": "Fuentes de las Obligaciones", "niv": 6, "aj": [28], "na": [31], "e1": ["09-11"], "e2": ["10-23"], "e3": ["11-20"]}, {"asig": "Procedimientos de Ejecución y Cautela", "niv": 6, "aj": [32], "na": [32], "e1": ["09-04"], "e2": ["10-16"], "e3": ["11-13"], "note": "SENA"}, {"asig": "Contratación Mercantil", "niv": 8, "aj": [41], "na": [50], "e1": ["09-11"], "e2": ["10-30"]}, {"asig": "Derecho Administrativo II", "niv": 8, "aj": [45], "na": [45], "e1": ["10-02"], "e2": ["10-23"]}, {"asig": "Derecho Sucesorio", "niv": 8, "aj": [40], "na": [42], "e1": ["09-25"], "e2": ["11-13"], "note": "SENA"}, {"asig": "Derecho Tributario I", "niv": 8, "aj": [46], "na": [51], "e1": ["10-16"], "e2": ["11-06"]}, {"asig": "Derecho de Sociedades", "niv": 8, "aj": [], "na": [44], "plan": "na", "e1": ["09-11"], "e2": ["11-06"]}, {"asig": "Optativo de Especialidad I", "niv": 8, "aj": [48], "na": [], "e1": ["10-09"], "e2": ["11-20"]}, {"asig": "Procedimientos Especiales Orales", "niv": 8, "aj": [44], "na": [43], "noExam": true, "e1": ["09-04"], "e2": ["11-27"]}, {"asig": "Procedimientos Especiales Orales (Ev. Ciclo)", "niv": 8, "aj": [], "na": [43], "plan": "na", "noExam": true, "e1": ["09-04"], "e2": ["11-27"]}, {"asig": "Taller de Integración II (Ev. Ciclo)", "niv": 8, "aj": [47], "na": [], "noExam": true, "e2": ["09-25"], "e3": ["11-20"], "note": "SEMANA EVALUACIÓN"}, {"asig": "Derecho Tributario II", "niv": 9, "aj": [52], "na": [57], "e1": ["08-28"], "e2": ["11-06"]}, {"asig": "Metodología de la Investigación Jurídica", "niv": 9, "aj": [], "na": [49], "plan": "na", "noExam": true, "e1": ["08-28"], "e2": ["10-09"], "e3": ["11-20"], "note": "Entrega · Exposiciones"}, {"asig": "Optativo de Especialidad II", "niv": 9, "aj": [53], "na": [54], "e1": ["10-02"], "e2": ["11-20"]}, {"asig": "Recursos", "niv": 9, "aj": [], "na": [48], "plan": "na", "e1": ["10-02"], "e2": ["11-13"]}, {"asig": "Reorg. y Liquidación Patrimonial", "niv": 9, "aj": [49], "na": [56], "e1": ["09-11"], "e2": ["10-30"]}, {"asig": "Optativo de Especialidad I", "niv": 10, "aj": [], "na": [53], "plan": "na", "e1": ["09-25"], "e2": ["11-13"]}, {"asig": "Seminario de Tesis", "niv": 10, "aj": [], "na": [55], "plan": "na", "noExam": true, "e1": ["09-04"], "e2": ["10-09"], "e3": ["11-13", "11-20"], "note": "SEMANA ENTREGA FINAL 17-11-2026 · SEMANA EXPOSICIONES    24-11-2026 · SEMANA PRIMERA ENTREGA 01-09-2026 · SEMANA SEGUNDA ENTREGA 13-10-2026"}, {"asig": "Taller de Litigación Avanzada (Ev. Ciclo)", "niv": 10, "aj": [], "na": [58], "plan": "na", "noExam": true, "e1": ["09-11"], "e2": ["10-09"], "e3": ["11-13"], "note": "EV. CICLO Taller de Litigación Avanzada (ACD) · EV. CICLO. Taller de Litigación Avanzada (APJO) · EV. CICLO. Taller de Litigación Avanzada (Inicio Juiicios Orales)"}];
+var EVALS_SEM_SAB=[{"asig": "Derecho Político", "niv": 1, "aj": [2], "na": [3], "e2": ["10-03"], "e3": ["11-14"]}, {"asig": "Historia del Derecho", "niv": 1, "aj": [1], "na": [1], "e2": ["09-26"], "e3": ["10-24"]}, {"asig": "Historia y Ev. de las Instituciones Civiles", "niv": 1, "aj": [6], "na": [2], "e2": ["10-10"], "e3": ["11-07"]}, {"asig": "Introducción a la Economía", "niv": 1, "aj": [10], "na": [4], "e2": ["09-12"], "e3": ["10-31"]}, {"asig": "Introducción al Derecho", "niv": 1, "aj": [3], "na": [5], "e2": ["09-05", "10-17"], "e3": ["11-21"]}, {"asig": "Argumentación Jurídica y Debate", "niv": 2, "aj": [12], "na": [11], "noExam": true, "e1": ["09-12"], "e2": ["10-24"], "e3": ["11-07"]}, {"asig": "Fundamentos Filosóficos del Derecho", "niv": 2, "aj": [9], "na": [8], "e2": ["10-03"], "e3": ["11-14"]}, {"asig": "Historia Institucional de Chile", "niv": 2, "aj": [5], "na": [7], "e2": ["09-26"], "e3": ["10-31"]}, {"asig": "Teoría Constitucional", "niv": 2, "aj": [11], "na": [10], "e1": ["08-29"], "e2": ["10-10"], "e3": ["11-21"]}, {"asig": "Teoría de la Ley y las Personas", "niv": 2, "aj": [7], "na": [9], "e1": ["09-05"], "e2": ["10-17"], "e3": ["11-28"]}, {"asig": "Acto Jurídico", "niv": 3, "aj": [13], "na": [13], "e1": ["08-29"], "e2": ["10-03"], "e3": ["11-28"]}, {"asig": "Bienes", "niv": 4, "aj": [21], "na": [19], "e1": ["09-12"], "e2": ["10-24"], "e3": ["11-14"]}, {"asig": "Derecho Internacional Público", "niv": 4, "aj": [23], "na": [22], "e1": ["09-26"], "e2": ["10-31"]}, {"asig": "Derechos y Garantías Constitucionales", "niv": 4, "aj": [22], "na": [21], "e1": ["10-10"], "e2": ["11-21"]}, {"asig": "Taller de Integración I (Ev. Ciclo)", "niv": 4, "aj": [24], "na": [], "noExam": true, "e1": ["08-28"], "e2": ["10-16"], "e3": ["11-13"], "note": "SEMANA EVALUACIÓN"}, {"asig": "Teoría de la Reacción Penal", "niv": 4, "aj": [19], "na": [23], "e1": ["10-03"], "e2": ["11-07"]}, {"asig": "Teoría del Proceso", "niv": 4, "aj": [17], "na": [20], "e1": ["09-05"], "e2": ["10-17"], "e3": ["11-28"]}, {"asig": "Delitos en Particular II", "niv": 6, "aj": [30], "na": [35], "e1": ["08-29"], "e2": ["10-10"], "e3": ["11-28"]}, {"asig": "Derecho Colectivo del Trabajo y Seg. Social", "niv": 6, "aj": [34], "na": [34], "e1": ["10-03"], "e2": ["11-07"]}, {"asig": "Derecho Mercantil", "niv": 6, "aj": [33], "na": [], "e1": ["09-26"], "e2": ["10-31"]}, {"asig": "Fuentes de las Obligaciones", "niv": 6, "aj": [28], "na": [31], "e1": ["09-12"], "e2": ["10-24"], "e3": ["11-21"]}, {"asig": "Procedimientos de Ejecución y Cautela", "niv": 6, "aj": [32], "na": [32], "e1": ["09-05"], "e2": ["10-16"], "e3": ["11-14"], "note": "SENA"}, {"asig": "Contratación Mercantil", "niv": 8, "aj": [41], "na": [50], "e1": ["09-12"], "e2": ["10-31"]}, {"asig": "Derecho Administrativo II", "niv": 8, "aj": [45], "na": [45], "e1": ["10-03"], "e2": ["10-24"]}, {"asig": "Derecho Sucesorio", "niv": 8, "aj": [40], "na": [42], "e1": ["09-25"], "e2": ["11-14"], "note": "SENA"}, {"asig": "Derecho Tributario I", "niv": 8, "aj": [46], "na": [51], "e1": ["10-17"], "e2": ["11-07"]}, {"asig": "Derecho de Sociedades", "niv": 8, "aj": [], "na": [44], "plan": "na", "e1": ["09-12"], "e2": ["11-07"]}, {"asig": "Optativo de Especialidad I", "niv": 8, "aj": [48], "na": [], "e1": ["10-10"], "e2": ["11-21"]}, {"asig": "Procedimientos Especiales Orales", "niv": 8, "aj": [44], "na": [43], "noExam": true, "e1": ["09-05"], "e2": ["11-28"]}, {"asig": "Procedimientos Especiales Orales (Ev. Ciclo)", "niv": 8, "aj": [], "na": [43], "plan": "na", "noExam": true, "e1": ["09-05"], "e2": ["11-28"]}, {"asig": "Taller de Integración II (Ev. Ciclo)", "niv": 8, "aj": [47], "na": [], "noExam": true, "e2": ["09-25"], "e3": ["11-20"], "note": "SEMANA EVALUACIÓN"}, {"asig": "Derecho Tributario II", "niv": 9, "aj": [52], "na": [57], "e1": ["08-29"], "e2": ["11-07"]}, {"asig": "Metodología de la Investigación Jurídica", "niv": 9, "aj": [], "na": [49], "plan": "na", "noExam": true, "e1": ["08-28"], "e2": ["10-09"], "e3": ["11-20"], "note": "Entrega · Exposiciones"}, {"asig": "Optativo de Especialidad II", "niv": 9, "aj": [53], "na": [54], "e1": ["10-03"], "e2": ["11-21"]}, {"asig": "Recursos", "niv": 9, "aj": [], "na": [48], "plan": "na", "e1": ["10-03"], "e2": ["11-14"]}, {"asig": "Reorg. y Liquidación Patrimonial", "niv": 9, "aj": [49], "na": [56], "e1": ["09-12"], "e2": ["10-31"]}, {"asig": "Optativo de Especialidad I", "niv": 10, "aj": [], "na": [53], "plan": "na", "e1": ["09-26"], "e2": ["11-14"]}, {"asig": "Seminario de Tesis", "niv": 10, "aj": [], "na": [55], "plan": "na", "noExam": true, "e1": ["09-04"], "e2": ["10-09"], "e3": ["11-13", "11-20"], "note": "SEMANA ENTREGA FINAL 17-11-2026 · SEMANA EXPOSICIONES    24-11-2026 · SEMANA PRIMERA ENTREGA 01-09-2026 · SEMANA SEGUNDA ENTREGA 13-10-2026"}, {"asig": "Taller de Litigación Avanzada (Ev. Ciclo)", "niv": 10, "aj": [], "na": [58], "plan": "na", "noExam": true, "e1": ["09-11"], "e2": ["10-09"], "e3": ["11-13"], "note": "EV. CICLO Taller de Litigación Avanzada (ACD) · EV. CICLO. Taller de Litigación Avanzada (APJO) · EV. CICLO. Taller de Litigación Avanzada (Inicio Juiicios Orales)"}];
+/* ===== Motor de ponderaciones (hoja PORCENTAJES) · nº evaluaciones cruzado con el calendario oficial ===== */
+var PON_AJ={"1":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"2":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"3":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"4":{"n":"Departamento 2 evaluaciones","ev":[30,40],"p":30},"5":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"6":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"7":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"8":{"n":"Departamento 2 evaluaciones","ev":[30,40],"p":30},"9":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"10":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"11":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"12":{"n":"Argumentación Jurídica y Debate","ev":[20,30,50],"p":null,"esp":1,"req":2},"13":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"14":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"15":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"16":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"17":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"18":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"19":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"20":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"21":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"22":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"23":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"24":{"n":"Taller de Integración I","ev":[20,30,40],"p":10,"esp":1,"nf":"La última evaluación debe ser ≥ 4,0"},"25":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"26":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"27":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"28":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"29":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"30":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"31":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"32":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"33":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"34":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"35":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"36":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"37":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"38":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"39":{"n":"Taller de Litigación","ev":[20,30,50],"p":null,"esp":1},"40":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"41":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"42":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"43":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"44":{"n":"Procedimientos Especiales Orales","ev":[45,45,10],"p":null,"esp":1},"45":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"46":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"47":{"n":"Taller de Integración I","ev":[20,30,40],"p":10,"esp":1,"nf":"La última evaluación debe ser ≥ 4,0"},"48":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"49":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"50":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"51":{"n":"Seminario de Investigación Jurídica","ev":[10,20,70],"p":null,"esp":1,"nf":"La entrega final (70%) se compone de 50% producto y 20% exposición"},"52":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"53":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"54":{"n":"Taller de Integración I","ev":[20,30,40],"p":10,"esp":1,"nf":"La última evaluación debe ser ≥ 4,0"},"55":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10}};
+var PON_NA={"1":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"2":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"3":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"4":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"5":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"6":{"n":"Departamento 2 evaluaciones","ev":[30,40],"p":30},"7":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"8":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"9":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"10":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"11":{"n":"Argumentación Jurídica y Debate","ev":[20,30,50],"p":null,"esp":1,"req":2},"12":{"n":"Departamento 2 evaluaciones","ev":[30,40],"p":30},"13":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"14":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"15":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"16":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"17":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"18":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"19":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"20":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"21":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"22":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"23":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"24":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"25":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"26":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"27":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"28":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"29":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"30":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"31":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"32":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"33":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"34":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"35":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"36":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"37":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"38":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"39":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"40":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"41":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"42":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"43":{"n":"Procedimientos Especiales Orales","ev":[45,45,10],"p":null,"esp":1},"44":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"45":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"46":{"n":"Taller de Litigación","ev":[20,30,50],"p":null,"esp":1},"47":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"48":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"49":{"n":"Metodología de la Investigación Jurídica","ev":[10,20,70],"p":null,"esp":1,"nf":"50% producto · 20% exposición"},"50":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"51":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"52":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"53":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"54":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"55":{"n":"Seminario de Tesis","ev":[10,20,70],"p":null,"esp":1,"nf":"50% producto · 20% exposición"},"56":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"57":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"58":{"n":"Taller de Litigación","ev":[20,30,50],"p":null,"esp":1}};
+var PRU_DIURNO_NOTE="Exámenes finales: semana del 5 al 11 de diciembre de 2026. El calendario por asignatura está por confirmar por la Carrera.";
+var EVALS=EVALS_TECH, PRU_REG="tri", PRU_NOTE="";
 let pruMode="all";
 const DOW=["dom","lun","mar","mié","jue","vie","sáb"];
 function fmtOne(md){if(!md)return "—";const mm=+md.slice(0,2),dd=+md.slice(3);return `${DOW[new Date(2026,mm-1,dd).getDay()]} ${dd} ${MESC[mm-1]}`;}
@@ -1303,7 +1345,7 @@ function fmtEval(arr){
   if(arr.length===1){const [md,s]=arr[0];return fmtOne(md)+(s!=null?` <span class="edsec">(S${s})</span>`:"");}
   return arr.map(([md,s])=>`<span class="edseg"><span class="edsec">S${s}</span> ${fmtOne(md)}</span>`).join("");
 }
-function pruEarliest(e){const ds=[...(e.p1||[]),...(e.p2||[])].map(x=>x[0]).filter(Boolean);return ds.length?ds.slice().sort()[0]:"99-99";}
+function pruEarliest(e){const ds=[...(e.p1||[]),...(e.p2||[])].map(x=>x[0]).concat(e.e1||[],e.e2||[],e.e3||[]).filter(Boolean);return ds.length?ds.slice().sort()[0]:"99-99";}
 function fmtEvalCol(arr,sec){
   if(!arr||!arr.length)return '<span class="ednone">Por confirmar</span>';
   if(sec){const f=arr.find(x=>String(x[1])===String(sec));if(f)return `<span class="edbig">${fmtOne(f[0])}</span>`;}
@@ -1320,9 +1362,32 @@ function renderPru(mode){
     ib.innerHTML=ids.length?`<div class="ititle">Mostrando tus ramos inscritos. Para cambiarlos, ve a <b>Horarios</b> y toca tus ramos.</div>`:`<div class="ititle">Aún no marcas ramos. Ve a <b>Horarios</b>, toca los que inscribiste y vuelve aquí.</div>`;
   } else {ib.style.display="none";ib.innerHTML="";}
   let list=EVALS.slice().sort((a,b)=>(a.alt?1:0)-(b.alt?1:0)||a.niv-b.niv||pruEarliest(a).localeCompare(pruEarliest(b)));
-  if(mode==="mine")list=list.filter(e=>ids.includes(e.id));
+  if(mode==="mine")list=list.filter(e=>{
+    if(PRU_REG==="sem")return ids.some(id=>{const p=String(insc[id]||"").indexOf("na_")===0?"na":"aj";return (e[p]||[]).includes(id);});
+    return ids.includes(e.id);
+  });
   if(mode==="mine"&&!list.length){el.innerHTML="";return;}
-  el.innerHTML=list.map(e=>{
+  const colD=a=>(!a||!a.length)?'<span class="ednone">Por confirmar</span>':(a.length===1?`<span class="edbig">${fmtOne(a[0])}</span>`:a.map(md=>`<span class="edseg">${fmtOne(md)}</span>`).join(""));
+  el.innerHTML=(PRU_NOTE?`<div class="pinfo">📅 ${PRU_NOTE}</div>`:"")+list.map(e=>{
+    if(PRU_REG==="sem"){
+      let secTxt="";
+      if(mode==="mine"){
+        const hit=ids.find(id=>{const p=String(insc[id]||"").indexOf("na_")===0?"na":"aj";return (e[p]||[]).includes(id);});
+        if(hit!=null){const m=/_sec(.+?)(?:_alt)?$/.exec(insc[hit]||"");if(m)secTxt=" · Sección "+m[1].replace(/_/g,"-");}
+      }
+      const ex=e.noExam?'<span class="ednone">No rinde examen</span>':'<span class="edseg">5–11 dic · por definir</span>';
+      /* La 3ª columna solo se muestra si el ramo tiene tercera evaluación.
+         Si e1 falta en primer año (niv 1-2), la evaluación existe pero la fija el departamento → "Por confirmar". */
+      const tieneE3=!!(e.e3&&e.e3.length);
+      const cols=[
+        `<div class="ecol"><div class="ecl">1ª evaluación</div><div class="ecv">${colD(e.e1)}</div></div>`,
+        `<div class="ecol"><div class="ecl">2ª evaluación</div><div class="ecv">${colD(e.e2)}</div></div>`
+      ];
+      if(tieneE3)cols.push(`<div class="ecol"><div class="ecl">3ª evaluación</div><div class="ecv">${colD(e.e3)}</div></div>`);
+      cols.push(`<div class="ecol"><div class="ecl">Examen</div><div class="ecv">${ex}</div></div>`);
+      const gridCls=tieneE3?"ecols ecols4":"ecols ecols3";
+      return `<div class="ecard"><div class="ehead"><b>${e.asig}</b><span class="eniv">Nivel ${e.niv}${e.plan==="na"?" · No ajustada":""}${e.alt?" · alterna":""}${secTxt}</span></div><div class="${gridCls}">${cols.join("")}</div>${e.note?`<div class="enote">${e.note}</div>`:""}</div>`;
+    }
     const sec=(mode==="mine"&&insc[e.id])?keySec(insc[e.id]):0;
     const secTxt=sec?` · S${sec}`:"";
     return `<div class="ecard"><div class="ehead"><b>${e.asig}</b><span class="eniv">Nivel ${e.niv}${e.alt?" · alterno":""}${secTxt}</span></div><div class="ecols"><div class="ecol"><div class="ecl">1ª prueba</div><div class="ecv">${fmtEvalCol(e.p1,sec)}</div></div><div class="ecol"><div class="ecl">2ª prueba</div><div class="ecv">${fmtEvalCol(e.p2,sec)}</div></div><div class="ecol"><div class="ecl">Examen final</div><div class="ecv">${e.fin?`<span class="edbig">${fmtOne(e.fin)}</span>`:"No aplica"}</div></div></div>${e.note?`<div class="enote">${e.note}</div>`:""}</div>`;
@@ -1402,7 +1467,7 @@ async function renderMural(){
     return '<div class="mcard" style="border-left-color:'+n.c+'"><div class="mtop"><span class="mtag" style="color:'+n.c+';background:'+n.bg+'">'+a.tipo+'</span>'+cd+'</div><div class="mtitle">'+a.titulo+'</div><div class="mtext">'+a.texto+'</div>'+cta+'</div>';
   }).join("");
 }
-renderEvals();calc();document.getElementById("mallaToggle").onclick=()=>showMalla(curMalla==="noajustada"?"ajustada":"noajustada");showMalla(curMalla);renderMural();
+document.getElementById("mallaToggle").onclick=()=>showMalla(curMalla==="noajustada"?"ajustada":"noajustada");showMalla(curMalla);renderMural();
 
 /* ===== Respaldo de avance + legales ===== */
 function exportData(){
@@ -1599,7 +1664,7 @@ if('serviceWorker' in navigator){
   for(var g=0;g<TOGS.length;g++)(function(id,key){var el=document.getElementById(id);if(el)el.onclick=function(){prefs[key]=!prefs[key];applyMotion();applyExtra();mark();save();};})(TOGS[g][0],TOGS[g][1]);
   var tfab=document.getElementById('ttsFab');if(tfab)tfab.onclick=ttsGo;
   document.addEventListener('click',function(e){if(e.target&&e.target.closest&&e.target.closest('.tab'))ttsHalt();},true);
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var dm=document.getElementById('docModal');if(dm&&dm.style.display==='flex'){dm.style.display='none';return;}if(panel&&panel.style.display==='flex'){panel.style.display='none';}}});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var ac=document.getElementById('allCalcModal');if(ac&&ac.style.display==='flex'){ac.style.display='none';return;}var dm=document.getElementById('docModal');if(dm&&dm.style.display==='flex'){dm.style.display='none';return;}if(panel&&panel.style.display==='flex'){panel.style.display='none';}}});
   if(mq.addEventListener)mq.addEventListener('change',function(){if(prefs.theme==='auto')applyTheme();});
 
   /* --- Ventanitas de documentos: Reglamento y Circular --- */
@@ -1650,6 +1715,14 @@ if('serviceWorker' in navigator){
   if(lc)lc.onclick=function(e){e.preventDefault();openDoc('circ');};
   if(docX)docX.onclick=closeDoc;
   if(docModal)docModal.onclick=function(e){if(e.target===docModal)closeDoc();};
+
+  /* Todas las calculadoras */
+  var allCalcModal=document.getElementById('allCalcModal'),allCalcBtn=document.getElementById('allCalcBtn'),allCalcX=document.getElementById('allCalcX');
+  function openAllCalc(){if(!allCalcModal)return;if(window.__renderAllCalc)window.__renderAllCalc();allCalcModal.style.display='flex';}
+  function closeAllCalc(){if(allCalcModal)allCalcModal.style.display='none';}
+  if(allCalcBtn)allCalcBtn.onclick=openAllCalc;
+  if(allCalcX)allCalcX.onclick=closeAllCalc;
+  if(allCalcModal)allCalcModal.onclick=function(e){if(e.target===allCalcModal)closeAllCalc();};
 })();
 </script>
 <script>
@@ -1776,6 +1849,208 @@ if('serviceWorker' in navigator){
   /* --- PLANIFICADOR SEMESTRAL (Diurno / V.Regular) · Res. 009/2024 art. 17 y 19 --- */
   /* Ancla real de niveles = nivel del ramo más atrasado sin aprobar en la malla del alumno.
      Devuelve {anchor, hasAvance} para que Horarios valide el tope de 3 niveles con la misma regla que el planificador. */
+  /* ================= SIMULADOR DE NOTAS ================= */
+  /* Esquema de un ramo según su plan y ponderaciones. Devuelve {nombre,comp:[{lab,pct}],req,nf,esp,pend} */
+  function esquemaDe(cid,plan){
+    var tabla=(plan==="na")?PON_NA:PON_AJ;
+    var p=tabla[String(cid)];
+    if(!p)return null;
+    if(p.pend)return {nombre:p.n,pend:true};
+    var comp=[];
+    (p.ev||[]).forEach(function(pct,i){comp.push({lab:(i+1)+"ª evaluación",pct:pct});});
+    if(p.p!=null)comp.push({lab:"Parcial (acumulativa)",pct:p.p});
+    return {nombre:p.n,comp:comp,req:(p.req!=null?p.req:null),nf:p.nf||null,esp:!!p.esp};
+  }
+  /* Almacenamiento local de notas por jornada */
+  function notasKey(){return "notas_"+(curJornada||"tech")+"_v1";}
+  function loadNotas(){try{return JSON.parse(localStorage.getItem(notasKey()))||{};}catch(e){return {};}}
+  function saveNotas(o){try{localStorage.setItem(notasKey(),JSON.stringify(o));}catch(e){}}
+  /* Notas en escala 10 a 70 (10=1,0 · 70=7,0). Devuelve el valor 10-70 o null. */
+  function parseNota(v){
+    if(v==null)return null;
+    v=String(v).trim().replace(",",".");
+    if(v==="")return null;
+    var n=parseFloat(v);
+    if(isNaN(n))return null;
+    return n; // se valida rango aparte (badG)
+  }
+  function badNota(v){var n=parseNota(v);return n!=null&&(n<10||n>70);}
+  function to7(x){return (x/10).toFixed(1).replace(".",",");}  // 55 -> "5,5"
+  /* Cálculo con notas 10-70. Devuelve promedio en escala 10-70 con lo ingresado y cuánto % falta. */
+  function calcRamo(esq,notas){
+    var suma=0,pctUsado=0,ultima=null,idxUlt=esq.comp.length-1,bad=false;
+    esq.comp.forEach(function(c,i){
+      if(badNota(notas[i]))bad=true;
+      var nt=parseNota(notas[i]);
+      if(nt!=null&&nt>=10&&nt<=70){suma+=nt*c.pct;pctUsado+=c.pct;if(i===idxUlt)ultima=nt;}
+    });
+    var promParcial=pctUsado>0?(suma/pctUsado):null;   // promedio 10-70 con lo ingresado
+    var promTotal=(pctUsado>0)?(suma/100):null;         // sobre el 100%
+    var faltaPct=100-pctUsado;
+    return {suma:suma,pctUsado:pctUsado,faltaPct:faltaPct,promParcial:promParcial,promTotal:promTotal,completo:(pctUsado>=99.9),ultima:ultima,bad:bad};
+  }
+  /* Situación final (solo cuando el 100% está ingresado). prom en escala 10-70. */
+  function situacion(esq,r,notas){
+    var prom=r.promTotal;
+    if(esq.esp){
+      var reqIdx=(esq.req!=null)?esq.req:(esq.comp.length-1);
+      var notaReq=parseNota(notas[reqIdx]);
+      if(notaReq!=null && notaReq<40)return {cls:"vr",emoji:"🔁",txt:"A reintentar",detail:"La nota final ("+to7(notaReq)+") debe ser ≥ 4,0. "+(esq.nf||"")};
+      if(prom>=40 && notaReq!=null && notaReq>=40)return {cls:"vg",emoji:"✅",txt:"Aprobado",detail:"Promedio "+to7(prom)+" y nota final ≥ 4,0 ✓"};
+      if(prom<40)return {cls:"vr",emoji:"🔁",txt:"A reintentar",detail:"Promedio "+to7(prom)+", bajo 4,0."};
+      return {cls:"vg",emoji:"✅",txt:"Aprobado",detail:"Promedio "+to7(prom)};
+    }
+    var a=Math.round(prom);
+    if(a>=60)return {cls:"vg",emoji:"🏆",txt:"Excelencia jurídica",detail:"Alegato impecable. Esta nota habla por sí sola."};
+    if(a>=50)return {cls:"vg",emoji:"⚖️",txt:"Argumentos firmes",detail:"Buen resultado. Un paso seguro hacia la toga."};
+    if(a>=40)return {cls:"vg",emoji:"✅",txt:"Primer fallo a favor",detail:"Aprobado. Hay margen para crecer, pero el ramo ya es tuyo."};
+    if(a>=35)return {cls:"vy",emoji:"📝",txt:"Segunda instancia",detail:"Con derecho a examen: entre 3,5 y 3,9. Llega listo a defender tu nota."};
+    return {cls:"vr",emoji:"🔁",txt:"A reintentar",detail:"Bajo 3,5. No es el final, es un nuevo juicio."};
+  }
+  function fmtN(n){return (Math.round(n*100)/100).toFixed(2).replace(".",",");}
+  /* Coordenadas de la aguja del reloj para un valor 1,0-7,0 (recibe escala 10-70) */
+  function needlePos(v70){
+    var v=v70/10; var f=Math.max(0,Math.min(1,(v-1)/6)); var a=Math.PI*(1-f); var r=68;
+    return {x:(100+r*Math.cos(a)).toFixed(1),y:(100-r*Math.sin(a)).toFixed(1)};
+  }
+
+  /* Construye una tarjeta de calculadora con reloj y mensaje */
+  function cardCalc(cid,plan,nombreRamo,notasStore,storeId,secTxt){
+    var esq=esquemaDe(cid,plan);
+    if(!esq)return "";
+    if(esq.pend)return '<div class="card ccalc"><div class="cchead"><b>'+(nombreRamo||esq.nombre)+'</b></div><div class="ccpend">Esquema por confirmar con la Carrera.</div></div>';
+    var notas=notasStore[storeId]||[];
+    var rows=esq.comp.map(function(c,i){
+      var val=(notas[i]!=null)?notas[i]:"";
+      var bad=badNota(val);
+      return '<div class="ccrow"><span class="cclab">'+c.lab+'</span><span class="ccpct">'+c.pct+'%</span>'+
+        '<input class="ccinput'+(bad?' ccbad':'')+'" type="text" inputmode="numeric" data-store="'+storeId+'" data-i="'+i+'" value="'+val+'" placeholder="10–70" aria-label="Nota '+c.lab+'"></div>';
+    }).join("");
+    var badge=esq.esp?'<span class="ccesp">Especial</span>':'';
+    var reqTxt=(esq.esp&&(esq.req!=null||esq.nf))?'<div class="ccreq">⚠️ La nota final debe ser ≥ 4,0'+(esq.nf?' · '+esq.nf:'')+'</div>':'';
+    return '<div class="card ccalc" data-card="'+storeId+'" data-plan="'+plan+'">'+
+      '<div class="cchead"><b>'+(nombreRamo||esq.nombre)+'</b>'+badge+(secTxt?'<span class="ccsec">'+secTxt+'</span>':'')+'</div>'+
+      '<div class="ccscheme">'+esq.nombre+(esq.esp?'':' · '+esq.comp.map(function(c){return c.pct+'%';}).join(' / '))+'</div>'+
+      rows+reqTxt+
+      '<div class="ccresult" data-store="'+storeId+'">'+resultHTML(esq,notas)+'</div>'+
+      '</div>';
+  }
+  /* Bloque de resultado: reloj + número + mensaje. Se regenera al escribir. */
+  function resultHTML(esq,notas){
+    var r=calcRamo(esq,notas);
+    var np=needlePos(0);
+    var big="—",vt="",vd="Ingresa tus notas (10–70) para calcular.",vcls="";
+    if(r.bad){
+      vd="Las notas van de <b>10 a 70</b> (10 = 1,0 · 55 = 5,5 · 70 = 7,0). Corrige los valores en rojo.";vt="⚠️ Nota fuera de rango";vcls="vr";
+    }else if(r.pctUsado>0){
+      var mostrar=r.completo?r.promTotal:r.promParcial;
+      np=needlePos(Math.round(mostrar));
+      big=to7(Math.round(mostrar))+(r.completo?"":" *");
+      if(!r.completo){
+        // promedio parcial: cuánto necesita en lo que falta
+        var need=function(tg){var v=(tg*100-r.suma)/r.faltaPct;return v<=10?"cualquier nota":(v>70?"más de 7,0 (no alcanza)":to7(Math.ceil(v)));};
+        vt="🧮 Promedio parcial";vcls="";
+        vd="Llevas <b>"+to7(Math.round(r.promParcial))+"</b> con lo ingresado. En el <b>"+r.faltaPct+"%</b> que falta necesitas <b>"+need(40)+"</b> para aprobar"+(esq.esp?"":" y <b>"+need(35)+"</b> para ir a examen")+".";
+      }else{
+        var sit=situacion(esq,r,notas);
+        vt=sit.emoji+" "+sit.txt;vcls=sit.cls;vd=sit.detail;
+      }
+    }
+    return '<div class="gaugewrap"><svg class="gauge" viewBox="0 0 200 118" aria-hidden="true">'+
+      '<path class="gz gz-r" d="M20,100 A80,80 0 0 1 79.3,22.7"/>'+
+      '<path class="gz gz-a" d="M79.3,22.7 A80,80 0 0 1 100,20"/>'+
+      '<path class="gz gz-g" d="M100,20 A80,80 0 0 1 180,100"/>'+
+      '<line class="needle" x1="100" y1="100" x2="'+np.x+'" y2="'+np.y+'"/>'+
+      '<circle class="hub" cx="100" cy="100" r="6"/>'+
+      '<text class="gtick" x="16" y="114">1,0</text>'+
+      '<text class="gtick" x="100" y="13" text-anchor="middle">4,0</text>'+
+      '<text class="gtick" x="184" y="114" text-anchor="end">7,0</text></svg>'+
+      '<div class="big '+vcls+'">'+big+'</div></div>'+
+      '<div class="vt '+vcls+'">'+vt+'</div><div class="vd">'+vd+'</div>';
+  }
+
+  /* Vista principal: tarjetas de los ramos inscritos */
+  window.__renderCalc=function(){
+    var host=document.getElementById("calcCards");if(!host)return;
+    if(curJornada==="tech"){ host.innerHTML='<div class="ccempty">El simulador por ramos está disponible en las jornadas semestrales. Usa <b>Todas las calculadoras</b> para calcular cualquier esquema.</div>'; return; }
+    var notas=loadNotas();
+    var ids=Object.keys(insc);
+    if(!ids.length){
+      host.innerHTML='<div class="ccempty">Aún no marcaste ramos en <b>Horarios</b>. Ve a Horarios, piquea tus ramos del trimestre y volverán aquí como calculadoras listas para usar.<br><br>También puedes abrir <b>Todas las calculadoras</b> para explorar cualquier esquema.</div>';
+      return;
+    }
+    var plan=(curMallaSem==="noajustada")?"na":"aj";
+    var byIdMap={};(plan==="na"?COURSES_NASEM:COURSES_SEM).forEach(function(c){byIdMap[c.id]=c;});
+    var html=ids.map(function(id){
+      var key=insc[id];
+      var pl=(String(key).indexOf("na_")===0)?"na":"aj";
+      var nm=(byIdMap[id]&&byIdMap[id].n)||"";
+      var m=/_sec(.+?)(?:_alt)?$/.exec(key||"");var secTxt=m?("Sección "+m[1].replace(/_/g,"-")):"";
+      return cardCalc(id,pl,nm,notas,"r"+id,secTxt);
+    }).join("");
+    host.innerHTML=html;
+    bindCalcInputs(host);
+  };
+  function bindCalcInputs(host){
+    host.querySelectorAll(".ccinput").forEach(function(inp){
+      inp.oninput=function(){
+        var notas=loadNotas();
+        var sid=inp.dataset.store,i=+inp.dataset.i;
+        if(!notas[sid])notas[sid]=[];
+        notas[sid][i]=inp.value;
+        saveNotas(notas);
+        updateCardResult(inp.closest(".card"),sid);
+      };
+    });
+  }
+  /* Actualiza reloj + mensaje de una tarjeta sin tocar los inputs (preserva foco) */
+  function updateCardResult(card,sid){
+    if(!card)return;
+    var cid=sid.replace(/^[ra]/,"");
+    var plan=(insc[cid]&&String(insc[cid]).indexOf("na_")===0)?"na":(card.dataset.plan||"aj");
+    var esq=esquemaDe(cid,plan);
+    if(!esq||esq.pend)return;
+    var notas=loadNotas()[sid]||[];
+    var res=card.querySelector(".ccresult");
+    if(res)res.innerHTML=resultHTML(esq,notas);
+    // marcar inputs fuera de rango
+    card.querySelectorAll(".ccinput").forEach(function(inp){
+      inp.classList.toggle("ccbad",badNota(inp.value));
+    });
+  }
+
+  /* Todas las calculadoras: una calculadora por CONFIGURACIÓN única (no por ramo) */
+  window.__renderAllCalc=function(){
+    var host=document.getElementById("allCalcList");if(!host)return;
+    var notas=loadNotas();
+    var plan=(curMallaSem==="noajustada")?"na":"aj";
+    var tabla=(plan==="na")?PON_NA:PON_AJ;
+    var Tmap=(plan==="na")?NA_SEM_OF:SEM_OF;
+    function firma(p){return JSON.stringify([p.n,p.ev,p.p,p.req,p.nf]);}
+    var vistas={}, primero=[], superior=[], especiales=[];
+    Object.keys(tabla).forEach(function(cid){
+      var p=tabla[cid];if(!p||p.pend)return;
+      var f=firma(p);
+      if(vistas[f])return;
+      vistas[f]=true;
+      if(p.esp){especiales.push({cid:cid,p:p});return;}
+      var niv=(Tmap&&Tmap[cid])||1;
+      (niv<=2?primero:superior).push({cid:cid,p:p});
+    });
+    var byPct=function(a,b){return a.p.n.localeCompare(b.p.n);};
+    primero.sort(byPct);superior.sort(byPct);
+    function grupo(title,arr,usarNombreRamo){
+      if(!arr.length)return "";
+      return '<div class="acgrp serif">'+title+'</div>'+arr.map(function(x){
+        return cardCalc(x.cid,plan,usarNombreRamo?x.p.n:x.p.n,notas,"a"+x.cid,"");
+      }).join("");
+    }
+    host.innerHTML=grupo("Asignaturas de primer año",primero,false)+
+                   grupo("Asignaturas de segundo año en adelante",superior,false)+
+                   grupo("Asignaturas con ponderación especial",especiales,false);
+    bindCalcInputs(host);
+  };
+
   window.__anchorAvance=function(){
     if(!curJornada||curJornada==="tech")return {anchor:null,hasAvance:false};
     var na=(curMallaSem==="noajustada");
@@ -1975,8 +2250,8 @@ if('serviceWorker' in navigator){
   /* --- Placeholder "pendiente de publicar" en secciones aún sin datos de la jornada --- */
   function pendIdsFor(j){
     if(j==="tech")return [];
-    if(j==="diurno")return ["pru"];      /* Diurno ya tiene horarios publicados */
-    return ["hor","pru"];                 /* V.Regular: aún sin datos propios */
+    if(j==="diurno")return [];            /* Diurno: horarios y pruebas publicados */
+    return ["hor"];                       /* V.Regular: pruebas publicadas; horarios aún pendientes */
   }
   function setPend(j,nm){
     var ids=pendIdsFor(j);
@@ -2018,6 +2293,13 @@ if('serviceWorker' in navigator){
     setPend(j,nm);
     if(typeof renderHorView==='function' && document.getElementById("hor")){ try{renderHorView(typeof horMode!=='undefined'?horMode:"all");}catch(e){} }
     if(typeof planPropose==='function'){ try{planPropose();}catch(e){} }
+    if(typeof renderPru==='function'){ try{renderPru(typeof pruMode!=='undefined'?pruMode:"all");}catch(e){} }
+    /* rótulos del período según régimen */
+    var sem=(j!=="tech");
+    var hm=document.querySelector('#hor .mh');if(hm)hm.textContent=sem?"Horario del semestre":"Horario del trimestre";
+    var hs=document.querySelector('#hor .msub');if(hs)hs.textContent=sem?"Primavera 2026 · 2º semestre.":"Otoño 2026 · 2º trimestre.";
+    var pm=document.querySelector('#pru .mh');if(pm)pm.textContent=sem?"Pruebas del semestre":"Pruebas del trimestre";
+    var ps=document.querySelector('#pru .msub');if(ps)ps.textContent=sem?"Calendario oficial de evaluaciones · Primavera 2026.":ps.textContent;
     if(typeof renderMural==='function')renderMural();
     /* Info: bloque del Centro de Estudiantes solo en TECH */
     var cc=document.getElementById("infoCCEE"); if(cc)cc.style.display=(j==="tech")?"":"none";
