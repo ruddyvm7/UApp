@@ -432,6 +432,9 @@ body.dark.cb .tile.ok{background:#0b5e93;border-color:#0a4c77}
 body.dark.cb .tile.no{background:#a04200;border-color:#7c3300}
 #a11yFab:active{transform:scale(.94)}
 .a11y-ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:10001;display:flex;align-items:flex-end;justify-content:center}
+.a11y-ov.ovc{align-items:center;padding:16px}
+.a11y-ov.ovc .a11y-box{border-radius:18px;box-shadow:0 18px 50px rgba(0,0,0,.42);padding:22px 20px 22px;max-height:84vh}
+@media(max-height:520px){.a11y-ov.ovc .a11y-box{max-height:92vh}}
 .a11y-box{background:var(--card);color:var(--ink);width:100%;max-width:480px;border-radius:20px 20px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom));position:relative;box-shadow:0 -8px 30px rgba(0,0,0,.35)}
 .docbody{font-size:13.5px;line-height:1.55;color:var(--ink);margin-top:6px}
 .docbody h4{color:var(--wine);font-size:14px;margin:14px 0 5px;font-weight:700}
@@ -858,7 +861,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
   </div>
 </div>
 
-<div id="avisoModal" class="a11y-ov" style="display:none">
+<div id="avisoModal" class="a11y-ov ovc" style="display:none">
   <div class="a11y-box" style="max-height:84vh;overflow-y:auto">
     <button class="a11y-x" id="avisoX" aria-label="Cerrar">✕</button>
     <span class="mtag" id="avisoTag"></span>
@@ -1571,7 +1574,10 @@ function openAviso(ix){
   var ti=document.getElementById("avisoTitle"); if(ti)ti.textContent=a.titulo;
   var bd=document.getElementById("avisoBody");
   if(bd)bd.innerHTML='<div class="avtext">'+linkify(esc(a.texto))+'</div>'+cta+(meta.length?'<div class="avmetas">'+meta.join("")+'</div>':'');
-  var m=document.getElementById("avisoModal"); if(m)m.style.display="flex";
+  var m=document.getElementById("avisoModal");
+  if(m){m.style.display="flex";try{document.body.style.overflow="hidden";}catch(e){}
+    var bx=m.querySelector(".a11y-box"); if(bx)bx.scrollTop=0;
+    var x=document.getElementById("avisoX"); if(x&&x.focus)try{x.focus();}catch(e){}}
 }
 document.getElementById("mallaToggle").onclick=()=>showMalla(curMalla==="noajustada"?"ajustada":"noajustada");showMalla(curMalla);renderMural();
 (function(){var tp=document.getElementById("toPlan");if(tp)tp.onclick=function(){go("plan");};})();
@@ -1773,11 +1779,11 @@ if('serviceWorker' in navigator){
   document.addEventListener('click',function(e){if(e.target&&e.target.closest&&e.target.closest('.tab'))ttsHalt();},true);
   /* Ventana del aviso completo */
   var avModal=document.getElementById('avisoModal'),avX=document.getElementById('avisoX');
-  function closeAviso(){if(avModal)avModal.style.display='none';}
+  function closeAviso(){if(avModal)avModal.style.display='none';try{document.body.style.overflow='';}catch(e){}}
   if(avX)avX.onclick=closeAviso;
   if(avModal)avModal.onclick=function(e){if(e.target===avModal)closeAviso();};
 
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var av=document.getElementById('avisoModal');if(av&&av.style.display==='flex'){av.style.display='none';return;}var ac=document.getElementById('allCalcModal');if(ac&&ac.style.display==='flex'){ac.style.display='none';return;}var dm=document.getElementById('docModal');if(dm&&dm.style.display==='flex'){dm.style.display='none';return;}if(panel&&panel.style.display==='flex'){panel.style.display='none';}}});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var av=document.getElementById('avisoModal');if(av&&av.style.display==='flex'){av.style.display='none';try{document.body.style.overflow='';}catch(e){}return;}var ac=document.getElementById('allCalcModal');if(ac&&ac.style.display==='flex'){ac.style.display='none';return;}var dm=document.getElementById('docModal');if(dm&&dm.style.display==='flex'){dm.style.display='none';return;}if(panel&&panel.style.display==='flex'){panel.style.display='none';}}});
   if(mq.addEventListener)mq.addEventListener('change',function(){if(prefs.theme==='auto')applyTheme();});
 
   /* --- Ventanitas de documentos: Reglamento y Circular --- */
