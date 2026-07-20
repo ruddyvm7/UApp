@@ -180,6 +180,14 @@ footer .motto{font-style:italic;color:var(--gold);font-size:15px;margin-top:4px;
 /* ===== Rediseño UApp: malla horizontal + medidor de notas ===== */
 .h1{letter-spacing:-.4px}
 .cycle{font-size:12.5px}
+.prog{margin:16px 0 12px}
+.progtop{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:7px}
+.progpct{font-family:"Fraunces",serif;font-size:27px;font-weight:800;color:var(--wine);line-height:1}
+.progsub{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.6px}
+.progbar{height:11px;background:#ece3d2;border-radius:999px;overflow:hidden}
+.progfill{height:100%;width:0%;background:linear-gradient(90deg,var(--wine),var(--gold,#c79a3e));border-radius:999px;transition:width .7s cubic-bezier(.2,.8,.2,1)}
+body.dark .progbar{background:#3a3630}
+body.reduce .progfill{transition:none}
 .seal{position:relative;width:158px;height:158px;margin:18px auto 8px}
 .ringsvg{width:100%;height:100%;transform:rotate(-90deg)}
 .ring-track{fill:none;stroke:#ece3d2;stroke-width:9}
@@ -247,6 +255,17 @@ footer .motto{font-style:italic;color:var(--gold);font-size:15px;margin-top:4px;
 .mlink{color:var(--wine,#8b0c0c);font-weight:700;text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere;word-break:break-word}
 .mlink:hover,.mlink:focus-visible{color:var(--gold2,#a8801f)}
 body.dark .mlink{color:var(--gold,#c79a3e)}
+.mcard{cursor:pointer}
+.mcard:focus-visible{outline:2px solid var(--gold,#c79a3e);outline-offset:2px}
+.mtext{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.mmore{display:none;font-size:12.5px;font-weight:800;margin-top:7px}
+.mcard.clamped .mmore{display:block}
+.mdocflag{font-size:11.5px;color:var(--muted);margin-top:6px;font-weight:600}
+.avtext{font-size:14px;line-height:1.6;color:var(--ink);white-space:pre-wrap;margin:4px 0 12px}
+.avmetas{margin-top:14px;padding-top:12px;border-top:1px solid var(--cb2)}
+.avmeta{display:flex;justify-content:space-between;gap:12px;padding:5px 0;font-size:12.5px}
+.avml{color:var(--muted);font-weight:600}
+.avmv{color:var(--ink);font-weight:700;text-align:right}
 .hnote{background:var(--card);border:1px solid var(--cb2);border-left:3px solid var(--gold);border-radius:0 9px 9px 0;padding:9px 12px;font-size:12.5px;color:var(--muted);line-height:1.45;margin:-4px 0 14px}
 .ecols4{grid-template-columns:repeat(2,1fr)}
 .ecols3{grid-template-columns:repeat(2,1fr)}
@@ -567,7 +586,6 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
   <button class="tab" data-tab="malla">Avance Curricular</button>
   <button class="tab" data-tab="calc">Simulador de Notas</button>
   <button class="tab" data-tab="hor">Horarios</button>
-  <button class="tab" data-tab="plan">Planificador</button>
   <button class="tab" data-tab="pru">Pruebas</button>
   <button class="tab" data-tab="info">Info</button>
   <button class="tab" data-tab="solic">Solicitudes</button>
@@ -587,26 +605,22 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
     </div>
     <p class="mallaNote" id="mallaNote"></p>
     <p class="cycle"><b>Toca un ramo:</b> Disponible → Aprobado → Reprobado. Los bloqueados muestran qué les falta.</p>
-    <div class="seal">
-      <svg class="ringsvg" viewBox="0 0 120 120"><circle class="ring-track" cx="60" cy="60" r="54"/><circle class="ring-prog" id="ring" cx="60" cy="60" r="54"/></svg>
-      <div class="ring-center"><div class="ring-pct" id="pct">0%</div><div class="ring-sub" id="pcsub">0 de 55 ramos</div></div>
-    </div>
     <div class="legend">
       <span><i class="lg" style="background:#f3efe6;border-color:#d8cfba"></i>BLOQUEADO</span>
       <span><i class="lg" style="background:#fffdf8;border-color:#d8c9ab"></i>DISPONIBLE</span>
       <span><i class="lg" style="background:#1f6b3a;border-color:#175a30"></i>APROBADO</span>
       <span><i class="lg" style="background:#8b0c0c;border-color:#6c0909"></i>REPROBADO</span>
     </div>
-    <div class="areas">
-      <span><i class="adot" style="background:var(--civil)"></i>DERECHO CIVIL</span>
-      <span><i class="adot" style="background:var(--proc)"></i>DERECHO PROCESAL</span>
-      <span><i class="adot" style="background:var(--penal)"></i>DERECHO PENAL</span>
-    </div>
     <p class="boardhint">Desliza para recorrer los niveles →</p>
     <div id="years" class="board"></div>
     <div class="bkrow">
       <button class="bkbtn" id="bkExp">⬇️ Respaldar mi avance</button>
       <button class="bkbtn" id="bkImp">⬆️ Restaurar respaldo</button>
+    </div>
+    <div class="areas">
+      <span><i class="adot" style="background:var(--civil)"></i>DERECHO CIVIL</span>
+      <span><i class="adot" style="background:var(--proc)"></i>DERECHO PROCESAL</span>
+      <span><i class="adot" style="background:var(--penal)"></i>DERECHO PENAL</span>
     </div>
     <p class="bknote">Tu avance se guarda solo en este dispositivo. Respáldalo para no perderlo si cambias de teléfono o limpias el navegador.</p>
     <input type="file" id="bkFile" accept="application/json,.json" style="display:none">
@@ -632,6 +646,9 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
 
 <section id="hor" style="display:none"><div class="wrap">
   <div class="mh serif">Horario del trimestre</div><div class="msub">Otoño 2026 · 2º trimestre.</div>
+  <div class="mallaSwitch">
+    <button type="button" class="mSwBtn" id="toPlan">🧭 Planificador de carga</button>
+  </div>
   <div class="seg" id="horSeg" style="max-width:560px">
     <button class="on" data-h="all">Todos los horarios</button>
     <button data-h="mine">Mi horario</button>
@@ -841,6 +858,15 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
   </div>
 </div>
 
+<div id="avisoModal" class="a11y-ov" style="display:none">
+  <div class="a11y-box" style="max-height:84vh;overflow-y:auto">
+    <button class="a11y-x" id="avisoX" aria-label="Cerrar">✕</button>
+    <span class="mtag" id="avisoTag"></span>
+    <div class="a11y-title serif" id="avisoTitle" style="margin-top:8px"></div>
+    <div id="avisoBody"></div>
+  </div>
+</div>
+
 <div id="allCalcModal" class="a11y-ov" style="display:none">
   <div class="a11y-box" style="max-height:84vh;overflow-y:auto">
     <button class="a11y-x" id="allCalcX" aria-label="Cerrar">✕</button>
@@ -851,6 +877,8 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
 </div>
 
 <script>
+/* Barra de avance curricular (reemplaza al anillo: ocupa menos alto en pantalla) */
+function setProgress(p){var v=Math.max(0,Math.min(100,Number(p)||0));var b=document.getElementById("barFill");if(b)b.style.width=v.toFixed(1)+"%";var w=document.getElementById("progbar");if(w)w.setAttribute("aria-valuenow",Math.round(v));}
 const COURSES=[
  {id:1,n:"Historia del Derecho",t:1,a:"Histórico",p:[]},{id:2,n:"Derecho Político",t:1,a:"Constitucional",p:[]},
  {id:3,n:"Introducción al Derecho",t:1,a:"Fundamentos",p:[]},{id:4,n:"Electivo de Comunicación",t:1,a:"Electivo",p:[],tag:"fg"},
@@ -940,9 +968,9 @@ function render(){
   yearsEl.querySelectorAll(".tile").forEach(el=>{const c=byId[+el.dataset.id];const act=()=>{if(statusOf(c)!=="lock")cycle(c);};el.onclick=act;el.onkeydown=(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();act();}};});
   yearsEl.querySelectorAll(".yrbtn").forEach(b=>{const Y=YEARS.find(y=>y.y==+b.dataset.y);b.onclick=(e)=>{e.stopPropagation();toggleYear(Y);};});
   const total=COURSES.length, ap=COURSES.filter(c=>state[c.id]==="ok").length, pct=Math.round(ap/total*100);
-  const ring=document.getElementById("ring");if(ring)ring.style.strokeDashoffset=(2*Math.PI*54*(1-pct/100)).toFixed(2);
-  document.getElementById("pct").textContent=pct+"%";
-  document.getElementById("pcsub").textContent=ap+" de "+total+" ramos";
+  setProgress(pct);
+  var _p=document.getElementById("pct");if(_p)_p.textContent=pct+"%";
+  var _s=document.getElementById("pcsub");if(_s)_s.textContent=ap+" de "+total+" ramos";
 }
 
 /* ===== Malla NO AJUSTADA (Plan 2017 · Res. 135/2017) — módulo aislado ===== */
@@ -1016,9 +1044,9 @@ function renderNA(){
   yearsEl.querySelectorAll(".tile").forEach(el=>{const c=byId_NA[+el.dataset.id];const act=()=>{if(statusOfNA(c)!=="lock")cycleNA(c);};el.onclick=act;el.onkeydown=(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();act();}};});
   yearsEl.querySelectorAll(".yrbtn").forEach(b=>{const Y=YEARS_NA.find(y=>y.y==+b.dataset.y);b.onclick=(e)=>{e.stopPropagation();toggleYearNA(Y);};});
   const total=COURSES_NA.length, ap=COURSES_NA.filter(c=>stateNA[c.id]==="ok").length, pct=Math.round(ap/total*100);
-  const ring=document.getElementById("ring");if(ring)ring.style.strokeDashoffset=(2*Math.PI*54*(1-pct/100)).toFixed(2);
-  document.getElementById("pct").textContent=pct+"%";
-  document.getElementById("pcsub").textContent=ap+" de "+total+" ramos";
+  setProgress(pct);
+  var _p=document.getElementById("pct");if(_p)_p.textContent=pct+"%";
+  var _s=document.getElementById("pcsub");if(_s)_s.textContent=ap+" de "+total+" ramos";
 }
 let curMalla=(function(){try{return localStorage.getItem("malla_sel_v1")||"ajustada";}catch(e){return "ajustada";}})();
 function showMalla(sel){
@@ -1040,7 +1068,8 @@ function showMalla(sel){
 document.getElementById("reset").onclick=()=>{if(confirm("¿Reiniciar todo tu progreso?")){if(curMalla==="noajustada"){stateNA={};saveNA();renderNA();}else{state={};save();render();}}};
 
 const SECS=["mural","malla","calc","hor","plan","pru","info","solic"];
-function go(tab){document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===tab));SECS.forEach(s=>document.getElementById(s).style.display=s===tab?"":"none");if(tab==="plan")planPropose();if(tab==="hor")renderHorView(horMode);if(tab==="pru")renderPru(pruMode);if(tab==="calc"&&window.__renderCalc)window.__renderCalc();if(tab==="mural")renderMural();window.scrollTo(0,0);var _at=document.querySelector(".tab.active");if(_at&&typeof _at.scrollIntoView==="function"){try{_at.scrollIntoView({inline:"center",block:"nearest"});}catch(e){}}}
+function go(tab){var _hl=(tab==="plan")?"hor":tab;/* el Planificador se abre desde Horarios: esa pestaña queda marcada */
+  document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===_hl));SECS.forEach(s=>document.getElementById(s).style.display=s===tab?"":"none");if(tab==="plan")planPropose();if(tab==="hor")renderHorView(horMode);if(tab==="pru")renderPru(pruMode);if(tab==="calc"&&window.__renderCalc)window.__renderCalc();if(tab==="mural")renderMural();window.scrollTo(0,0);var _at=document.querySelector(".tab.active");if(_at&&typeof _at.scrollIntoView==="function"){try{_at.scrollIntoView({inline:"center",block:"nearest"});}catch(e){}}}
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>go(b.dataset.tab));
 /* La rueda del mouse desplaza la barra de pestañas horizontalmente (computadores) */
 (function(){var tb=document.querySelector(".tabbar");if(!tb)return;tb.addEventListener("wheel",function(e){if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){tb.scrollLeft+=e.deltaY;e.preventDefault();}},{passive:false});})();
@@ -1481,7 +1510,7 @@ async function renderMural(){
         new Promise((_,rej)=>setTimeout(()=>rej(new Error("timeout")),6000))
       ]);
       if(r && !r.error && Array.isArray(r.data)){
-        source=r.data.map(a=>({tipo:TIPO[a.nivel]||"Aviso",nivel:a.nivel||"normal",titulo:a.titulo||"",texto:a.texto||"",hasta:a.hasta||null,desde:a.desde||null,cta:(a.doc_url&&String(a.doc_url).trim())?{url:String(a.doc_url).trim(),label:(a.doc_label&&String(a.doc_label).trim())||"📄 Ver documento"}:null}));
+        source=r.data.map(a=>({tipo:TIPO[a.nivel]||"Aviso",nivel:a.nivel||"normal",titulo:a.titulo||"",texto:a.texto||"",hasta:a.hasta||null,desde:a.desde||null,autor:(a.autor||a.publicado_por||a.creado_por||"")||"",fecha:a.created_at||null,cta:(a.doc_url&&String(a.doc_url).trim())?{url:String(a.doc_url).trim(),label:(a.doc_label&&String(a.doc_label).trim())||"📄 Ver documento"}:null}));
       }
     }catch(e){}
   }
@@ -1498,7 +1527,8 @@ async function renderMural(){
   }).filter(a=> a.okDesde && (a.dleft===null || a.dleft>=0));
   items.sort((x,y)=>{ if(x.dleft===null)return 1; if(y.dleft===null)return -1; return x.dleft-y.dleft; });
   if(!items.length){ box.innerHTML='<div class="muralempty">No hay avisos por ahora 🎉</div>'; return; }
-  box.innerHTML=items.map(a=>{
+  window.__muralItems=items;
+  box.innerHTML=items.map((a,ix)=>{
     const n=NIV[a.nivel]||NIV.normal;
     let cd="";
     if(a.dleft!==null){
@@ -1507,12 +1537,44 @@ async function renderMural(){
     } else if(a.badge){
       cd='<span class="mcount" style="color:'+n.c+'">'+esc(a.badge)+'</span>';
     }
-    const _safeU=u=>{u=String(u||"").trim();return /^https?:\/\//i.test(u)?u:(/^www\./i.test(u)?"https://"+u:"#");};
-    const cta=a.cta?'<a class="mcta" style="background:'+n.c+'" href="'+esc(_safeU(a.cta.url))+'"'+(_safeU(a.cta.url)!=="#"?' target="_blank" rel="noopener noreferrer"':'')+'>'+esc(a.cta.label)+'</a>':"";
-    return '<div class="mcard" style="border-left-color:'+n.c+'"><div class="mtop"><span class="mtag" style="color:'+n.c+';background:'+n.bg+'">'+esc(a.tipo)+'</span>'+cd+'</div><div class="mtitle">'+esc(a.titulo)+'</div><div class="mtext">'+linkify(esc(a.texto))+'</div>'+cta+'</div>';
+    return '<div class="mcard" data-ix="'+ix+'" tabindex="0" role="button" aria-label="Abrir aviso: '+esc(a.titulo)+'" style="border-left-color:'+n.c+'">'+
+      '<div class="mtop"><span class="mtag" style="color:'+n.c+';background:'+n.bg+'">'+esc(a.tipo)+'</span>'+cd+'</div>'+
+      '<div class="mtitle">'+esc(a.titulo)+'</div>'+
+      '<div class="mtext">'+linkify(esc(a.texto))+'</div>'+
+      '<div class="mmore" style="color:'+n.c+'">Ver aviso completo →</div>'+
+      (a.cta?'<div class="mdocflag">📎 Incluye documento</div>':'')+
+      '</div>';
   }).join("");
+  /* Marcar solo las tarjetas cuyo texto realmente quedó cortado */
+  box.querySelectorAll(".mcard").forEach(function(c){
+    var t=c.querySelector(".mtext");
+    if(t && t.scrollHeight > t.clientHeight+2) c.classList.add("clamped");
+    var open=function(){ openAviso(+c.dataset.ix); };
+    c.onclick=open;
+    c.onkeydown=function(ev){ if(ev.key==="Enter"||ev.key===" "){ ev.preventDefault(); open(); } };
+  });
+}
+/* Ventana con el aviso completo y sus datos */
+function openAviso(ix){
+  var items=window.__muralItems||[]; var a=items[ix]; if(!a)return;
+  var NIV={importante:{c:"#8b0c0c",bg:"#fdeaea"},info:{c:"#1d4ed8",bg:"#e9f0fd"},evento:{c:"#9a6b00",bg:"#fbf3df"},normal:{c:"#6c0909",bg:"#fffdf8"}};
+  var n=NIV[a.nivel]||NIV.normal;
+  var fmt=function(d){ try{ return new Date(d).toLocaleDateString("es-CL",{day:"numeric",month:"long",year:"numeric"}); }catch(e){ return ""; } };
+  var meta=[];
+  if(a.autor) meta.push('<div class="avmeta"><span class="avml">Publicado por</span><span class="avmv">'+esc(a.autor)+'</span></div>');
+  if(a.fecha) meta.push('<div class="avmeta"><span class="avml">Fecha de publicación</span><span class="avmv">'+esc(fmt(a.fecha))+'</span></div>');
+  if(a.desde) meta.push('<div class="avmeta"><span class="avml">Vigente desde</span><span class="avmv">'+esc(fmt(a.desde+"T00:00:00"))+'</span></div>');
+  if(a.hasta) meta.push('<div class="avmeta"><span class="avml">Vigente hasta</span><span class="avmv">'+esc(fmt(a.hasta+"T00:00:00"))+(a.dleft!==null?' · '+(a.dleft===0?"último día":a.dleft===1?"queda 1 día":"quedan "+a.dleft+" días"):"")+'</span></div>');
+  var _safeU=function(u){u=String(u||"").trim();return /^https?:\/\//i.test(u)?u:(/^www\./i.test(u)?"https://"+u:"#");};
+  var cta=a.cta?'<a class="mcta" style="background:'+n.c+'" href="'+esc(_safeU(a.cta.url))+'"'+(_safeU(a.cta.url)!=="#"?' target="_blank" rel="noopener noreferrer"':'')+'>'+esc(a.cta.label)+'</a>':"";
+  var t=document.getElementById("avisoTag"); if(t){t.textContent=a.tipo;t.style.color=n.c;t.style.background=n.bg;}
+  var ti=document.getElementById("avisoTitle"); if(ti)ti.textContent=a.titulo;
+  var bd=document.getElementById("avisoBody");
+  if(bd)bd.innerHTML='<div class="avtext">'+linkify(esc(a.texto))+'</div>'+cta+(meta.length?'<div class="avmetas">'+meta.join("")+'</div>':'');
+  var m=document.getElementById("avisoModal"); if(m)m.style.display="flex";
 }
 document.getElementById("mallaToggle").onclick=()=>showMalla(curMalla==="noajustada"?"ajustada":"noajustada");showMalla(curMalla);renderMural();
+(function(){var tp=document.getElementById("toPlan");if(tp)tp.onclick=function(){go("plan");};})();
 
 /* ===== Respaldo de avance + legales ===== */
 function exportData(){
@@ -1709,7 +1771,13 @@ if('serviceWorker' in navigator){
   for(var g=0;g<TOGS.length;g++)(function(id,key){var el=document.getElementById(id);if(el)el.onclick=function(){prefs[key]=!prefs[key];applyMotion();applyExtra();mark();save();};})(TOGS[g][0],TOGS[g][1]);
   var tfab=document.getElementById('ttsFab');if(tfab)tfab.onclick=ttsGo;
   document.addEventListener('click',function(e){if(e.target&&e.target.closest&&e.target.closest('.tab'))ttsHalt();},true);
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var ac=document.getElementById('allCalcModal');if(ac&&ac.style.display==='flex'){ac.style.display='none';return;}var dm=document.getElementById('docModal');if(dm&&dm.style.display==='flex'){dm.style.display='none';return;}if(panel&&panel.style.display==='flex'){panel.style.display='none';}}});
+  /* Ventana del aviso completo */
+  var avModal=document.getElementById('avisoModal'),avX=document.getElementById('avisoX');
+  function closeAviso(){if(avModal)avModal.style.display='none';}
+  if(avX)avX.onclick=closeAviso;
+  if(avModal)avModal.onclick=function(e){if(e.target===avModal)closeAviso();};
+
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var av=document.getElementById('avisoModal');if(av&&av.style.display==='flex'){av.style.display='none';return;}var ac=document.getElementById('allCalcModal');if(ac&&ac.style.display==='flex'){ac.style.display='none';return;}var dm=document.getElementById('docModal');if(dm&&dm.style.display==='flex'){dm.style.display='none';return;}if(panel&&panel.style.display==='flex'){panel.style.display='none';}}});
   if(mq.addEventListener)mq.addEventListener('change',function(){if(prefs.theme==='auto')applyTheme();});
 
   /* --- Ventanitas de documentos: Reglamento y Circular --- */
@@ -1819,9 +1887,9 @@ if('serviceWorker' in navigator){
     yearsEl.querySelectorAll(".tile").forEach(function(el){var c=byId_SEM[+el.dataset.id];var act=function(){if(statusOfSEM(c)!=="lock")cycleSEM(c);};el.onclick=act;el.onkeydown=function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();act();}};});
     yearsEl.querySelectorAll(".yrbtn").forEach(function(b){var Y=YEARS_SEM.find(function(y){return y.y==+b.dataset.y;});b.onclick=function(e){e.stopPropagation();toggleYearSEM(Y);};});
     var total=COURSES_SEM.length, ap=COURSES_SEM.filter(function(c){return stateSEM[c.id]==="ok";}).length, pct=Math.round(ap/total*100);
-    var ring=document.getElementById("ring");if(ring)ring.style.strokeDashoffset=(2*Math.PI*54*(1-pct/100)).toFixed(2);
-    document.getElementById("pct").textContent=pct+"%";
-    document.getElementById("pcsub").textContent=ap+" de "+total+" ramos";
+    setProgress(pct);
+    var _p=document.getElementById("pct");if(_p)_p.textContent=pct+"%";
+    var _s=document.getElementById("pcsub");if(_s)_s.textContent=ap+" de "+total+" ramos";
   }
 
   /* --- Estado/render de la malla NO AJUSTADA semestral (plan 2017) por jornada --- */
@@ -1858,9 +1926,9 @@ if('serviceWorker' in navigator){
     yearsEl.querySelectorAll(".tile").forEach(function(el){var c=byId_NASEM[+el.dataset.id];var act=function(){if(statusOfNASEM(c)!=="lock")cycleNASEM(c);};el.onclick=act;el.onkeydown=function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();act();}};});
     yearsEl.querySelectorAll(".yrbtn").forEach(function(b){var Y=YEARS_SEM.find(function(y){return y.y==+b.dataset.y;});b.onclick=function(e){e.stopPropagation();toggleYearNASEM(Y);};});
     var total=COURSES_NASEM.length, ap=COURSES_NASEM.filter(function(c){return stateNASEM[c.id]==="ok";}).length, pct=Math.round(ap/total*100);
-    var ring=document.getElementById("ring");if(ring)ring.style.strokeDashoffset=(2*Math.PI*54*(1-pct/100)).toFixed(2);
-    document.getElementById("pct").textContent=pct+"%";
-    document.getElementById("pcsub").textContent=ap+" de "+total+" ramos";
+    setProgress(pct);
+    var _p=document.getElementById("pct");if(_p)_p.textContent=pct+"%";
+    var _s=document.getElementById("pcsub");if(_s)_s.textContent=ap+" de "+total+" ramos";
   }
 
   /* --- Selector de malla (ajustada/no ajustada) para Diurno y V.Regular --- */
