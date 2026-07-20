@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#8b0c0c">
 <meta name="robots" content="noindex, nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -27,7 +28,12 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom)}
 .serif{font-family:"Fraunces",serif}
-.tabbar{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid #e7e4dd;display:flex;justify-content:center;gap:4px;padding:0 8px;overflow-x:auto}
+.tabbar{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid #e7e4dd;display:flex;gap:4px;padding:0 8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#c9c2b6 transparent;overscroll-behavior-x:contain}
+.tabbar::-webkit-scrollbar{height:4px}
+.tabbar::-webkit-scrollbar-thumb{background:#c9c2b6;border-radius:4px}
+.tabbar::-webkit-scrollbar-track{background:transparent}
+.tab:first-child{margin-left:auto}
+.tab:last-child{margin-right:auto}
 .brandbar{display:flex;align-items:center;gap:12px;padding:11px 16px;background:var(--wine);color:#fff}
 .brandlogo{width:48px;height:48px;flex:0 0 48px;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:3px}
 .brandlogo img{width:100%;height:100%;object-fit:contain}
@@ -459,7 +465,7 @@ body.dark .mallaNote{background:rgba(199,154,62,.12);border-color:#5a4a2a;color:
 .mallaSwitch .mSwBtn.na{background:#fbf4e9;border-color:var(--gold,#c79a3e);color:#8a6d1f;font-weight:700}
 .mallaNote{font-size:.78rem;color:#8a6d1f;background:#fbf4e9;border:1px solid #efe0c4;border-radius:10px;padding:8px 11px;margin:6px 0 12px;line-height:1.4}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.7/dist/umd/supabase.js" integrity="sha384-hazsLVND17GNLVdtV19te6qbFT2YuLgl8SamcF+QR5eIOC+W4dGKrUNMxU1jH1zD" crossorigin="anonymous"></script>
 </head>
 <body>
 <style>
@@ -540,7 +546,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
         <span class="jov-op-desc">Clases de tarde · régimen trimestral</span>
       </button>
     </div>
-    <p class="jov-foot">Podrás cambiar de jornada cuando quieras desde la barra superior.<br>Prototipo: en Diurno y Vespertino Regular, el Mural, Horarios y Pruebas muestran contenido de ejemplo.</p>
+    <p class="jov-foot">Podrás cambiar de jornada cuando quieras desde la barra superior.<br>Prototipo: Diurno incluye horarios y calendario de pruebas reales; en Vespertino Regular las pruebas son reales y sus horarios están por publicar; el Mural muestra contenido de ejemplo.</p>
   </div>
 </div>
 <div class="brandbar">
@@ -615,7 +621,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
       <button class="allcalc" id="allCalcBtn">Todas las calculadoras</button>
     </div>
     <div id="calcCards"></div>
-    <div class="note" style="margin-top:12px">Escribe las notas en escala <b>1,0 a 7,0</b> (con coma o punto). El <b>parcial</b> es tu nota acumulativa (controles, presentaciones — cada profesor la arma a su criterio). No se ingresa nota de examen: la calculadora te dice si apruebas, quedas con derecho a examen o repruebas <b>solo con tus evaluaciones</b>.</div>
+    <div class="note" style="margin-top:12px">Escribe las notas en formato <b>10 a 70</b> (10 = 1,0 · 55 = 5,5 · 70 = 7,0). El <b>parcial</b> es tu nota acumulativa (controles, presentaciones — cada profesor la arma a su criterio). No se ingresa nota de examen: la calculadora te dice si apruebas, quedas con derecho a examen o repruebas <b>solo con tus evaluaciones</b>.</div>
     <div class="disc" style="margin-top:12px">⚠️ Herramienta de apoyo <b>referencial</b>, no oficial. Las ponderaciones y la relación créditos–horas están sujetas a confirmación con la Dirección de Carrera. Confirma siempre con tu profesor y el syllabus.</div>
   </div>
 </section>
@@ -636,7 +642,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
   <div class="msub">Cruza tu avance con la oferta del trimestre y propone qué tomar, sin choques de horario.</div>
   <div class="disc">⚠️ Propuesta <b>referencial</b>, no es una inscripción oficial. Confirma siempre con tu malla y con Registro Curricular antes de inscribir.</div>
   <div id="planOut" style="margin-top:6px"></div>
-  <div class="note" style="margin-top:12px"><b>📌 A tener en cuenta:</b> se priorizan los ramos <b>reprobados</b> y los del <b>nivel más bajo pendiente</b>, respetando prerrequisitos y los topes de <b>4 niveles consecutivos</b> y <b>30 créditos</b>.</div>
+  <div class="note" style="margin-top:12px"><b>📌 A tener en cuenta:</b> se priorizan los ramos <b>reprobados</b> y los del <b>nivel más bajo pendiente</b>, respetando prerrequisitos y los topes de <b id="planNivTope">4 niveles consecutivos</b> y <b>30 créditos</b>.</div>
   <div class="note" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px">La carga se rige por: <a class="doclink" id="lnkReg" href="javascript:void(0)">📖 Reglamento del Estudiante</a> <a class="doclink" id="lnkCirc" href="javascript:void(0)">📄 Circular N°03/2026</a></div>
 </div></section>
 
@@ -1030,8 +1036,12 @@ function showMalla(sel){
 document.getElementById("reset").onclick=()=>{if(confirm("¿Reiniciar todo tu progreso?")){if(curMalla==="noajustada"){stateNA={};saveNA();renderNA();}else{state={};save();render();}}};
 
 const SECS=["mural","malla","calc","hor","plan","pru","info","solic"];
-function go(tab){document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===tab));SECS.forEach(s=>document.getElementById(s).style.display=s===tab?"":"none");if(tab==="plan")planPropose();if(tab==="hor")renderHorView(horMode);if(tab==="pru")renderPru(pruMode);if(tab==="calc"&&window.__renderCalc)window.__renderCalc();if(tab==="mural")renderMural();window.scrollTo(0,0);}
+function go(tab){document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===tab));SECS.forEach(s=>document.getElementById(s).style.display=s===tab?"":"none");if(tab==="plan")planPropose();if(tab==="hor")renderHorView(horMode);if(tab==="pru")renderPru(pruMode);if(tab==="calc"&&window.__renderCalc)window.__renderCalc();if(tab==="mural")renderMural();window.scrollTo(0,0);var _at=document.querySelector(".tab.active");if(_at&&typeof _at.scrollIntoView==="function"){try{_at.scrollIntoView({inline:"center",block:"nearest"});}catch(e){}}}
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>go(b.dataset.tab));
+/* La rueda del mouse desplaza la barra de pestañas horizontalmente (computadores) */
+(function(){var tb=document.querySelector(".tabbar");if(!tb)return;tb.addEventListener("wheel",function(e){if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){tb.scrollLeft+=e.deltaY;e.preventDefault();}},{passive:false});})();
+/* Escape de texto externo o del usuario antes de inyectarlo en HTML (anti-XSS) */
+function escHtml(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");}
 
 /* Horarios Otoño 2026 · 2º trimestre (por nivel y sección) */
 const DIAS={L:"Lunes",M:"Martes",X:"Miércoles",J:"Jueves",V:"Viernes"};
@@ -1222,6 +1232,8 @@ function setHorJornada(j){
   if(j==="diurno"){ EVALS=EVALS_SEM_VIE; PRU_REG="sem"; PRU_NOTE="Calendario oficial de evaluaciones · Primavera 2026. La jornada <b>Diurna</b> rinde los <b>viernes</b>. "+PRU_DIURNO_NOTE; }
   else if(j==="vregular"){ EVALS=EVALS_SEM_SAB; PRU_REG="sem"; PRU_NOTE="Calendario oficial de evaluaciones · Primavera 2026. La jornada <b>Vespertina</b> rinde los <b>sábados</b> (las evaluaciones de ciclo, SENA y entregas se rinden en la misma fecha en todas las jornadas). "+PRU_DIURNO_NOTE; }
   else { EVALS=EVALS_TECH; PRU_REG="tri"; PRU_NOTE=""; }
+  var pnt=document.getElementById("planNivTope");
+  if(pnt)pnt.textContent=(j==="tech"||!j)?"4 niveles consecutivos":"3 niveles consecutivos";
 }
 function planProposeTECH(){
   const out=document.getElementById("planOut");if(!out)return;
@@ -1425,6 +1437,7 @@ const SB_URL="https://pohrbljeamhfkcjxikct.supabase.co";
 const SB_KEY="sb_publishable_XVNXhyYjebrrs0R0oKgLZw_9tBbDazZ";
 let sbc=null; try{ sbc=window.supabase.createClient(SB_URL,SB_KEY); }catch(e){}
 
+function esc(x){return String(x==null?"":x).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
 async function renderMural(){
   const box=document.getElementById("muralList"); if(!box) return;
   const jornada=(function(){try{return localStorage.getItem("jornada3_v1")||"tech";}catch(e){return "tech";}})();
@@ -1432,12 +1445,17 @@ async function renderMural(){
   let source=null;
   if(sbc){
     try{
-      const r=await sbc.from('avisos')
+      /* Carrera contra un timeout: si el servidor no responde en 6s, usamos el respaldo local */
+      const query=sbc.from('avisos')
         .select('titulo,texto,nivel,desde,hasta,jornada,publicado')
         .eq('publicado',true).eq('jornada',jornada)
         .order('created_at',{ascending:false});
-      if(!r.error && Array.isArray(r.data)){
-        source=r.data.map(a=>({tipo:TIPO[a.nivel]||"Aviso",nivel:a.nivel||"normal",titulo:a.titulo||"",texto:a.texto||"",hasta:a.hasta||null,desde:a.desde||null}));
+      const r=await Promise.race([
+        query,
+        new Promise((_,rej)=>setTimeout(()=>rej(new Error("timeout")),6000))
+      ]);
+      if(r && !r.error && Array.isArray(r.data)){
+        source=r.data.map(a=>({tipo:TIPO[a.nivel]||"Aviso",nivel:a.nivel||"normal",titulo:escHtml(a.titulo||""),texto:escHtml(a.texto||""),hasta:a.hasta||null,desde:a.desde||null}));
       }
     }catch(e){}
   }
@@ -1461,10 +1479,10 @@ async function renderMural(){
       const t=a.dleft===0?"Último día":a.dleft===1?"Queda 1 día":"Quedan "+a.dleft+" días";
       cd='<span class="mcount" style="color:'+n.c+'">⏳ '+t+'</span>';
     } else if(a.badge){
-      cd='<span class="mcount" style="color:'+n.c+'">'+a.badge+'</span>';
+      cd='<span class="mcount" style="color:'+n.c+'">'+esc(a.badge)+'</span>';
     }
-    const cta=a.cta?'<a class="mcta" style="background:'+n.c+'" href="'+a.cta.url+'"'+(a.cta.url&&a.cta.url!=="#"?' target="_blank" rel="noopener"':'')+'>'+a.cta.label+'</a>':"";
-    return '<div class="mcard" style="border-left-color:'+n.c+'"><div class="mtop"><span class="mtag" style="color:'+n.c+';background:'+n.bg+'">'+a.tipo+'</span>'+cd+'</div><div class="mtitle">'+a.titulo+'</div><div class="mtext">'+a.texto+'</div>'+cta+'</div>';
+    const cta=a.cta?'<a class="mcta" style="background:'+n.c+'" href="'+encodeURI(a.cta.url||"#")+'"'+(a.cta.url&&a.cta.url!=="#"?' target="_blank" rel="noopener"':'')+'>'+esc(a.cta.label)+'</a>':"";
+    return '<div class="mcard" style="border-left-color:'+n.c+'"><div class="mtop"><span class="mtag" style="color:'+n.c+';background:'+n.bg+'">'+esc(a.tipo)+'</span>'+cd+'</div><div class="mtitle">'+esc(a.titulo)+'</div><div class="mtext">'+esc(a.texto)+'</div>'+cta+'</div>';
   }).join("");
 }
 document.getElementById("mallaToggle").onclick=()=>showMalla(curMalla==="noajustada"?"ajustada":"noajustada");showMalla(curMalla);renderMural();
@@ -1588,7 +1606,7 @@ function importData(file){
   function addMsg(html,who){const d=document.createElement('div');d.className='cmsg '+who;d.innerHTML=html;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;}
   function showCats(){chips.innerHTML='';cats.forEach(c=>{const b=document.createElement('button');b.className='cchip';b.textContent=c;b.onclick=()=>showQs(c);chips.appendChild(b);});}
   function showQs(c){chips.innerHTML='';const back=document.createElement('button');back.className='cchip back';back.textContent='‹ Temas';back.onclick=showCats;chips.appendChild(back);FAQ.filter(f=>f.c===c).forEach(f=>{const b=document.createElement('button');b.className='cchip';b.textContent=f.q;b.onclick=()=>{addMsg(f.q,'user');setTimeout(()=>addMsg(f.a,'bot'),260);};chips.appendChild(b);});}
-  function ask(t){t=(t||"").trim();if(!t)return;addMsg(t,'user');inp.value='';const f=bestFaq(t);setTimeout(()=>{ if(f) addMsg(f.a,'bot'); else addMsg("No encontré una respuesta exacta 🙈. Prueba tocando un tema aquí abajo, o escríbenos al Instagram <b>@ccee.derechouatco</b> o al correo <b>cceedereua@gmail.com</b>.",'bot'); },300);}
+  function ask(t){t=(t||"").trim();if(!t)return;addMsg(esc(t),'user');inp.value='';const f=bestFaq(t);setTimeout(()=>{ if(f) addMsg(f.a,'bot'); else addMsg("No encontré una respuesta exacta 🙈. Prueba tocando un tema aquí abajo, o escríbenos al Instagram <b>@ccee.derechouatco</b> o al correo <b>cceedereua@gmail.com</b>.",'bot'); },300);}
   function openChat(){panel.style.display='flex';fab.style.display='none';if(!greeted){greeted=true;addMsg("¡Hola! 👋 Soy <b>Dona Tech</b>, el asistente del Centro de Estudiantes de Derecho. Pregúntame sobre fechas, inscripción de ramos, reglamento, apoyo, servicios o contactos. Toca un tema o escribe tu duda.",'bot');showCats();}setTimeout(()=>inp.focus(),100);}
   function closeChat(){panel.style.display='none';fab.style.display='flex';}
   fab.onclick=openChat; closeb.onclick=closeChat;
@@ -1924,7 +1942,7 @@ if('serviceWorker' in navigator){
       var val=(notas[i]!=null)?notas[i]:"";
       var bad=badNota(val);
       return '<div class="ccrow"><span class="cclab">'+c.lab+'</span><span class="ccpct">'+c.pct+'%</span>'+
-        '<input class="ccinput'+(bad?' ccbad':'')+'" type="text" inputmode="numeric" data-store="'+storeId+'" data-i="'+i+'" value="'+val+'" placeholder="10–70" aria-label="Nota '+c.lab+'"></div>';
+        '<input class="ccinput'+(bad?' ccbad':'')+'" type="text" inputmode="numeric" maxlength="5" data-store="'+storeId+'" data-i="'+i+'" value="'+escHtml(val)+'" placeholder="10–70" aria-label="Nota '+c.lab+'"></div>';
     }).join("");
     var badge=esq.esp?'<span class="ccesp">Especial</span>':'';
     var reqTxt=(esq.esp&&(esq.req!=null||esq.nf))?'<div class="ccreq">⚠️ La nota final debe ser ≥ 4,0'+(esq.nf?' · '+esq.nf:'')+'</div>':'';
@@ -2225,7 +2243,7 @@ if('serviceWorker' in navigator){
   var names={tech:"Jornada Vespertina TECH",vregular:"Jornada Vespertina Regular",diurno:"Jornada Diurna"};
   var curJornada=null;
   function getJ(){try{var v=localStorage.getItem(KEYJ);return names[v]?v:null;}catch(e){return null;}}
-  function setJ(j){try{localStorage.setItem(KEYJ,j);}catch(e){}}
+  function setJ(j){try{if(names[j])localStorage.setItem(KEYJ,j);}catch(e){}}
   function show(){var o=document.getElementById("jornadaOverlay");if(o)o.style.display="flex";}
   function hide(){var o=document.getElementById("jornadaOverlay");if(o)o.style.display="none";}
 
@@ -2276,6 +2294,7 @@ if('serviceWorker' in navigator){
   }
 
   function applyJornada(j){
+    if(!names[j])j="tech";   /* lista blanca: si el valor guardado fue manipulado, caer a un valor seguro */
     curJornada=j;
     if(typeof setHorJornada==='function')setHorJornada(j);
     var nm=names[j];
