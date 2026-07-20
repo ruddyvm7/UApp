@@ -244,6 +244,10 @@ footer .motto{font-style:italic;color:var(--gold);font-size:15px;margin-top:4px;
 .elab{flex:0 0 88px;color:#8a7b5e;font-weight:700}
 .edates{color:#2a2118;display:flex;flex-direction:column;gap:2px}
 .ecols{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:9px}
+.mlink{color:var(--wine,#8b0c0c);font-weight:700;text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere;word-break:break-word}
+.mlink:hover,.mlink:focus-visible{color:var(--gold2,#a8801f)}
+body.dark .mlink{color:var(--gold,#c79a3e)}
+.hnote{background:var(--card);border:1px solid var(--cb2);border-left:3px solid var(--gold);border-radius:0 9px 9px 0;padding:9px 12px;font-size:12.5px;color:var(--muted);line-height:1.45;margin:-4px 0 14px}
 .ecols4{grid-template-columns:repeat(2,1fr)}
 .ecols3{grid-template-columns:repeat(2,1fr)}
 @media(min-width:560px){.ecols4{grid-template-columns:repeat(4,1fr)}.ecols3{grid-template-columns:repeat(3,1fr)}}
@@ -546,7 +550,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
         <span class="jov-op-desc">Clases de tarde · régimen trimestral</span>
       </button>
     </div>
-    <p class="jov-foot">Podrás cambiar de jornada cuando quieras desde la barra superior.<br>Prototipo: Diurno incluye horarios y calendario de pruebas reales; en Vespertino Regular las pruebas son reales y sus horarios están por publicar; el Mural muestra contenido de ejemplo.</p>
+    <p class="jov-foot">Podrás cambiar de jornada cuando quieras desde la barra superior.<br>Prototipo: Diurno y Vespertino Regular incluyen horarios y calendario de pruebas reales; el Mural muestra contenido de ejemplo.</p>
   </div>
 </div>
 <div class="brandbar">
@@ -1150,7 +1154,7 @@ function showHorMsg(txt,kind){
   clearTimeout(showHorMsg._t);showHorMsg._t=setTimeout(()=>{box.classList.remove("show");},4200);
 }
 function renderAllHor(){
-  let h="";Object.keys(HOR).forEach(k=>{h+=`<div class="hgrp serif">${HOR[k].l}</div>`+buildTable(HOR[k].s,k,true);});
+  let h="";Object.keys(HOR).forEach(k=>{h+=`<div class="hgrp serif">${HOR[k].l}</div>`+buildTable(HOR[k].s,k,true)+(HOR[k].note?`<div class="hnote">${HOR[k].note}</div>`:"");});
   horList.innerHTML=h;
   horList.querySelectorAll("td.selc").forEach(td=>{
     td.onclick=()=>{
@@ -1221,11 +1225,18 @@ var HOR_DIURNO={
 };
 
 var OFER_DIURNO={"Introducción al Derecho": 3, "Historia del Derecho": 1, "Derecho Político": 2, "Introducción a la Economía": 10, "Historia y Ev. de las Instituciones Civiles": 6, "Teoría de la Ley y las Personas": 7, "Teoría Constitucional": 11, "Electivo de Comunicación II": 8, "Argumentación Jurídica y Debate": 12, "Historia Institucional de Chile": 5, "Fundamentos Filosóficos del Derecho": 9, "Acto Jurídico": 13, "Taller de Integración I (Ev. Ciclo)": 24, "Teoría de la Reacción Penal": 19, "Teoría del Proceso": 17, "Bienes": 21, "Derecho Internacional Público": 23, "Derechos y Garantías Constitucionales": 22, "Electivo de Responsabilidad Social": 47, "Procedimientos de Ejecución y Cautela": 32, "Derecho Mercantil": 33, "Fuentes de las Obligaciones": 28, "Delitos en Particular II": 30, "Derecho Colectivo del Trabajo y Seg. Social": 34, "Taller de Integración II (Ev. Ciclo)": 47, "Optativo de Especialidad I": 53, "Derecho Sucesorio": 42, "Derecho Administrativo II": 45, "Procedimientos Especiales Orales": 44, "Contratación Mercantil": 41, "Derecho Tributario I": 46, "Procedimientos Especiales Orales (Ev. Ciclo)": 43, "Recursos": 48, "Derecho Tributario II": 57, "Optativo de Especialidad II": 54, "Taller de Litigación Avanzada (Ev. Ciclo)": 58, "Reorganización y Liquidación Patrimonial": 56};
-
+/* ===== Rejilla y horario VESPERTINO REGULAR (Primavera 2026 · plan 201810) — generado desde el Excel oficial ===== */
+var BL_VESP=[["8:00", "8:40"], ["8:40", "9:20"], ["9:30", "10:10"], ["10:10", "10:50"], ["11:00", "11:40"], ["11:40", "12:20"], ["12:30", "13:10"], ["13:10", "13:50"], ["14:00", "14:40"], ["14:40", "15:20"], ["15:30", "16:10"], ["16:10", "16:50"], ["17:00", "17:40"], ["17:40", "18:20"], ["18:30", "19:10"], ["19:10", "19:50"], ["19:50", "20:30"], ["20:40", "21:20"], ["21:20", "22:00"], ["22:10", "22:50"], ["22:50", "23:30"]];
+var HOR_VESP={
+  "na_n8_sec1":{l:"4\u00ba a\u00f1o \u00b7 Nivel 8 \u00b7 Secci\u00f3n 1 \u00b7 No ajustada",plan:"na",niv:8,alt:false,s:[["J", "19:10", "22:00", "Derecho Sucesorio", "TEE SH-37", "CASTRO ESPINOZA NELSON", 42]]},
+  "na_n10_sec1":{l:"5\u00ba a\u00f1o \u00b7 Nivel 10 \u00b7 Secci\u00f3n 1 \u00b7 No ajustada",plan:"na",niv:10,alt:false,s:[["L", "19:10", "22:00", "Taller de Litigaci\u00f3n Avanzada (Ev. Ciclo)", "TEE SC-41", "RIVAS ARIAS VALESKA / FERN\u00c1NDEZ RODR\u00cdGUEZ CAMILA", 58], ["M", "19:10", "22:00", "Optativo de Especialidad II", "TEA SH-31", "HENR\u00cdQUEZ BURGOS RA\u00daL", 54], ["X", "19:10", "22:00", "Optativo de Especialidad I", "TEA SH-31", "NECULMAN MU\u00d1OZ MARCELO", 53], ["J", "19:10", "22:00", "Derecho Tributario II", "TEE SC-36", "LOYOLA MOLINA BORIS", 57], ["V", "19:10", "22:00", "Reorganizaci\u00f3n y Liquidaci\u00f3n Patrimonial", "TEE SC-36", "THIERS THIERS JEAN", 56]],note:"<b>Seminario de Tesis</b> no tiene bloque fijo en la rejilla: seg\u00fan el documento oficial se coordina <b>viernes o s\u00e1bado en sala virtual</b>."}
+};
+var OFER_VESP={"Derecho Sucesorio": 42, "Taller de Litigaci\u00f3n Avanzada (Ev. Ciclo)": 58, "Optativo de Especialidad II": 54, "Optativo de Especialidad I": 53, "Derecho Tributario II": 57, "Reorganizaci\u00f3n y Liquidaci\u00f3n Patrimonial": 56, "Seminario de Tesis": 55};
 /* --- Punteros activos: el motor de horarios usa la rejilla/oferta de la jornada activa --- */
 var BL=BL_TECH, HOR=HOR_TECH, OFER=OFER_TECH;
 function setHorJornada(j){
   if(j==="diurno"){ BL=BL_DIURNO; HOR=HOR_DIURNO; OFER=OFER_DIURNO; }
+  else if(j==="vregular"){ BL=BL_VESP; HOR=HOR_VESP; OFER=OFER_VESP; }
   else { BL=BL_TECH; HOR=HOR_TECH; OFER=OFER_TECH; }
   INSC_KEY=(j==="tech"||!j)?"insc_sec_v1":"insc_sec_"+j+"_v1";
   loadInsc();
@@ -1437,6 +1448,21 @@ const SB_URL="https://pohrbljeamhfkcjxikct.supabase.co";
 const SB_KEY="sb_publishable_XVNXhyYjebrrs0R0oKgLZw_9tBbDazZ";
 let sbc=null; try{ sbc=window.supabase.createClient(SB_URL,SB_KEY); }catch(e){}
 
+/* Convierte en enlaces clicables las URLs de un texto YA ESCAPADO.
+   Se aplica después de esc() para no abrir la puerta a inyección de código. */
+function linkify(escaped){
+  return String(escaped).replace(/(https?:\/\/[^\s<]+|www\.[^\s<]+)/g,function(m){
+    var url=m, tail="";
+    var t=/[.,;:!?)\]]+$/.exec(url);
+    if(t){ tail=t[0]; url=url.slice(0,url.length-tail.length); }
+    if(!url)return m;
+    var href=url.replace(/&amp;/g,"&");
+    if(/^www\./i.test(href))href="https://"+href;
+    var txt=url.replace(/^https?:\/\//i,"").replace(/\/$/,"");
+    if(txt.length>42)txt=txt.slice(0,39)+"…";
+    return '<a class="mlink" href="'+href+'" target="_blank" rel="noopener noreferrer">'+txt+'</a>'+tail;
+  });
+}
 function esc(x){return String(x==null?"":x).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
 async function renderMural(){
   const box=document.getElementById("muralList"); if(!box) return;
@@ -1447,7 +1473,7 @@ async function renderMural(){
     try{
       /* Carrera contra un timeout: si el servidor no responde en 6s, usamos el respaldo local */
       const query=sbc.from('avisos')
-        .select('titulo,texto,nivel,desde,hasta,jornada,publicado')
+        .select('*')
         .eq('publicado',true).eq('jornada',jornada)
         .order('created_at',{ascending:false});
       const r=await Promise.race([
@@ -1455,7 +1481,7 @@ async function renderMural(){
         new Promise((_,rej)=>setTimeout(()=>rej(new Error("timeout")),6000))
       ]);
       if(r && !r.error && Array.isArray(r.data)){
-        source=r.data.map(a=>({tipo:TIPO[a.nivel]||"Aviso",nivel:a.nivel||"normal",titulo:escHtml(a.titulo||""),texto:escHtml(a.texto||""),hasta:a.hasta||null,desde:a.desde||null}));
+        source=r.data.map(a=>({tipo:TIPO[a.nivel]||"Aviso",nivel:a.nivel||"normal",titulo:a.titulo||"",texto:a.texto||"",hasta:a.hasta||null,desde:a.desde||null,cta:(a.doc_url&&String(a.doc_url).trim())?{url:String(a.doc_url).trim(),label:(a.doc_label&&String(a.doc_label).trim())||"📄 Ver documento"}:null}));
       }
     }catch(e){}
   }
@@ -1481,8 +1507,9 @@ async function renderMural(){
     } else if(a.badge){
       cd='<span class="mcount" style="color:'+n.c+'">'+esc(a.badge)+'</span>';
     }
-    const cta=a.cta?'<a class="mcta" style="background:'+n.c+'" href="'+encodeURI(a.cta.url||"#")+'"'+(a.cta.url&&a.cta.url!=="#"?' target="_blank" rel="noopener"':'')+'>'+esc(a.cta.label)+'</a>':"";
-    return '<div class="mcard" style="border-left-color:'+n.c+'"><div class="mtop"><span class="mtag" style="color:'+n.c+';background:'+n.bg+'">'+esc(a.tipo)+'</span>'+cd+'</div><div class="mtitle">'+esc(a.titulo)+'</div><div class="mtext">'+esc(a.texto)+'</div>'+cta+'</div>';
+    const _safeU=u=>{u=String(u||"").trim();return /^https?:\/\//i.test(u)?u:(/^www\./i.test(u)?"https://"+u:"#");};
+    const cta=a.cta?'<a class="mcta" style="background:'+n.c+'" href="'+esc(_safeU(a.cta.url))+'"'+(_safeU(a.cta.url)!=="#"?' target="_blank" rel="noopener noreferrer"':'')+'>'+esc(a.cta.label)+'</a>':"";
+    return '<div class="mcard" style="border-left-color:'+n.c+'"><div class="mtop"><span class="mtag" style="color:'+n.c+';background:'+n.bg+'">'+esc(a.tipo)+'</span>'+cd+'</div><div class="mtitle">'+esc(a.titulo)+'</div><div class="mtext">'+linkify(esc(a.texto))+'</div>'+cta+'</div>';
   }).join("");
 }
 document.getElementById("mallaToggle").onclick=()=>showMalla(curMalla==="noajustada"?"ajustada":"noajustada");showMalla(curMalla);renderMural();
@@ -2269,7 +2296,7 @@ if('serviceWorker' in navigator){
   function pendIdsFor(j){
     if(j==="tech")return [];
     if(j==="diurno")return [];            /* Diurno: horarios y pruebas publicados */
-    return ["hor"];                       /* V.Regular: pruebas publicadas; horarios aún pendientes */
+    return [];                            /* V.Regular: horarios y pruebas publicados */
   }
   function setPend(j,nm){
     var ids=pendIdsFor(j);
@@ -2288,6 +2315,7 @@ if('serviceWorker' in navigator){
         card.querySelector(".pd").innerHTML="El contenido de esta sección para la <b>"+nm+"</b> aún no ha sido publicado. Se cargará próximamente.";
         sec.classList.add("pend-on");
       }else{
+        if(card)card.remove();
         sec.classList.remove("pend-on");
       }
     });
