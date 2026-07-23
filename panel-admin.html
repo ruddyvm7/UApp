@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>UApp · Panel de administración (prueba)</title>
+<style>
+  :root{ --wine:#8b0c0c; --wine2:#6c0909; --gold:#c79a3e; --navy:#2c080a; --ink:#2a2b2e; --muted:#7a756c; --line:#e6e0d6; --soft:#faf7f2; --ok:#2c7a4d; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:system-ui,sans-serif; background:#f2f1ee; color:var(--ink); }
+  .top{ background:#fff; border-bottom:1px solid var(--line); padding:12px 16px; display:flex; align-items:center; gap:10px; position:sticky; top:0; z-index:10; }
+  .top .brand{ font-weight:800; color:var(--wine); }
+  .top .brand small{ display:block; font-weight:600; color:var(--muted); font-size:.68rem; }
+  .top .user{ margin-left:auto; text-align:right; font-size:.78rem; color:var(--muted); }
+  .top .user b{ color:var(--navy); }
+  .rolechip{ display:inline-block; background:var(--wine); color:#fff; font-weight:800; font-size:.66rem; border-radius:20px; padding:2px 9px; margin-left:6px; }
+  .wrap{ max-width:820px; margin:0 auto; padding:18px 16px 40px; }
+  .btn{ background:var(--wine); color:#fff; border:0; border-radius:10px; padding:12px 18px; font-size:.95rem; font-weight:700; cursor:pointer; }
+  .btn:hover{ background:var(--wine2); }
+  .btn.ghost{ background:#fff; color:var(--wine); border:1.5px solid var(--wine); }
+  .btn.sm{ padding:6px 12px; font-size:.8rem; border-radius:8px; }
+  .btn.gold{ background:var(--gold); color:#3a2e0a; }
+  .btn.gray{ background:#e7e4de; color:#555; }
+  /* login gate */
+  #gate{ max-width:420px; margin:60px auto; background:#fff; border:1px solid var(--line); border-radius:16px; padding:30px 24px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,.06); }
+  #gate h1{ color:var(--navy); font-size:1.3rem; }
+  #gate p{ color:var(--muted); font-size:.88rem; margin:10px 0 20px; line-height:1.5; }
+  .msbtn{ display:inline-flex; align-items:center; gap:10px; width:100%; justify-content:center; }
+  .ms{ width:18px; height:18px; }
+  .card{ background:#fff; border:1px solid var(--line); border-radius:14px; padding:18px; margin-bottom:16px; }
+  .card h2{ font-size:1rem; color:var(--navy); margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+  label{ display:block; font-size:.78rem; font-weight:700; color:var(--navy); margin:10px 0 4px; }
+  input, textarea, select{ width:100%; border:1px solid #cfc9bd; border-radius:9px; padding:10px 12px; font-size:.92rem; font-family:inherit; background:#fff; }
+  textarea{ min-height:80px; resize:vertical; }
+  .row2{ display:flex; gap:10px; }
+  .row2 > div{ flex:1; }
+  .switch{ display:flex; align-items:center; gap:10px; margin-top:12px; font-size:.85rem; }
+  .switch input{ width:auto; }
+  .msg{ font-size:.85rem; border-radius:10px; padding:10px 12px; margin-top:12px; display:none; }
+  .msg.ok{ background:#e6f4ea; color:#1e6b3a; border:1px solid #b6dcc2; display:block; }
+  .msg.err{ background:#fbe9e6; color:#a3342a; border:1px solid #e3b3ab; display:block; white-space:pre-wrap; }
+  .aviso{ border:1px solid var(--line); border-left:5px solid var(--gold); border-radius:12px; padding:12px 14px; margin-bottom:10px; background:#fff; }
+  .aviso.importante{ border-left-color:var(--wine); }
+  .aviso .at{ font-weight:800; color:var(--navy); }
+  .aviso .ax{ font-size:.85rem; color:#555; margin:4px 0; line-height:1.45; }
+  .aviso . meta{ font-size:.72rem; color:var(--muted); }
+  .estado{ display:inline-block; font-size:.68rem; font-weight:800; border-radius:20px; padding:2px 9px; }
+  .estado.pub{ background:#e6f4ea; color:#1e6b3a; }
+  .estado.bor{ background:#f3efe6; color:#8a6d1f; }
+  .acts{ display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
+  .empty{ color:var(--muted); font-size:.85rem; text-align:center; padding:14px; }
+  .hint{ font-size:.72rem; color:var(--muted); margin-top:4px; }
+</style>
+</head>
+<body>
+
+<!-- Barra superior (oculta hasta login) -->
+<div class="top" id="topbar" style="display:none">
+  <div class="brand">UApp · Panel de administración<small>Prueba v3.0 · carga de avisos del mural</small></div>
+  <div class="user" id="userInfo"></div>
+  <button class="btn ghost sm" id="btnOut">Salir</button>
+</div>
+
+<!-- Puerta de login -->
+<div id="gate">
+  <h1>Panel de administración</h1>
+  <p>Acceso solo para personal autorizado. Inicia sesión con tu <b>cuenta institucional</b>.</p>
+  <button class="btn msbtn" id="btnLogin">
+    <svg class="ms" viewBox="0 0 23 23"><rect x="1" y="1" width="10" height="10" fill="#f25022"/><rect x="12" y="1" width="10" height="10" fill="#7fba00"/><rect x="1" y="12" width="10" height="10" fill="#00a4ef"/><rect x="12" y="12" width="10" height="10" fill="#ffb900"/></svg>
+    Continuar con Microsoft
+  </button>
+  <div class="msg" id="gateMsg"></div>
+</div>
+
+<!-- Panel (oculto hasta login+rol) -->
+<div class="wrap" id="panel" style="display:none">
+
+  <div class="card">
+    <h2>➕ Nuevo aviso</h2>
+    <label>Título</label>
+    <input id="f_titulo" placeholder="Ej: Fechas de evaluaciones">
+    <label>Texto</label>
+    <textarea id="f_texto" placeholder="Contenido del aviso…"></textarea>
+    <div class="row2">
+      <div>
+        <label>Nivel</label>
+        <select id="f_nivel">
+          <option value="normal">Normal</option>
+          <option value="importante">Importante</option>
+          <option value="info">Información</option>
+          <option value="evento">Evento</option>
+        </select>
+      </div>
+      <div>
+        <label>Jornada</label>
+        <select id="f_jornada">
+          <option value="tech">Vespertino TECH</option>
+          <option value="diurno">Diurno</option>
+          <option value="vregular">Vespertino Regular</option>
+        </select>
+      </div>
+    </div>
+    <div class="row2">
+      <div>
+        <label>Vence el (opcional)</label>
+        <input id="f_hasta" type="date">
+        <div class="hint">Tras esta fecha, el aviso desaparece solo.</div>
+      </div>
+    </div>
+    <div class="switch">
+      <input type="checkbox" id="f_publicado">
+      <label for="f_publicado" style="margin:0">Publicar de inmediato (si no, queda como borrador)</label>
+    </div>
+    <div style="margin-top:14px">
+      <button class="btn" id="btnGuardar">Guardar aviso</button>
+    </div>
+    <div class="msg" id="formMsg"></div>
+  </div>
+
+  <div class="card">
+    <h2>📋 Avisos cargados</h2>
+    <div id="lista"><div class="empty">Cargando…</div></div>
+  </div>
+
+</div>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+  const SUPABASE_URL = "https://pohrbljeamhfkcjxikct.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_XVNXhyYjebrrs0R0oKgLZw_9tBbDazZ";
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const $ = id => document.getElementById(id);
+  const gate = $('gate'), gateMsg = $('gateMsg'), panel = $('panel'), topbar = $('topbar');
+  let miRol = null, miEmail = null;
+
+  $('btnLogin').onclick = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider:'azure',
+      options:{ scopes:'email openid profile', redirectTo: location.href.split('#')[0] }
+    });
+    if (error){ gateMsg.className='msg err'; gateMsg.textContent = error.message; }
+  };
+  $('btnOut').onclick = async () => { await supabase.auth.signOut(); location.href = location.href.split('#')[0]; };
+
+  async function iniciar(session){
+    miEmail = session.user.email;
+    // Verifica rol
+    const { data, error } = await supabase.from('editores').select('rol,nombre').eq('email', miEmail).maybeSingle();
+    if (error){ gate.style.display='block'; gateMsg.className='msg err'; gateMsg.textContent='Error verificando rol: '+error.message; return; }
+    if (!data){
+      // logueado pero sin permiso
+      gate.style.display='block';
+      gateMsg.className='msg err';
+      gateMsg.innerHTML = 'Iniciaste sesión como <b>'+miEmail+'</b>, pero no tienes permisos de edición. <br><button class="btn ghost sm" style="margin-top:8px" onclick="location.reload()">Volver</button>';
+      await supabase.auth.signOut();
+      return;
+    }
+    miRol = data.rol;
+    gate.style.display='none';
+    topbar.style.display='flex';
+    panel.style.display='block';
+    $('userInfo').innerHTML = (data.nombre||miEmail)+' <span class="rolechip">'+miRol+'</span><br>'+miEmail;
+    cargarAvisos();
+  }
+
+  $('btnGuardar').onclick = async () => {
+    const titulo = $('f_titulo').value.trim();
+    const texto  = $('f_texto').value.trim();
+    if (!titulo){ formMsgShow('err','Ponle un título al aviso.'); return; }
+    const fila = {
+      titulo, texto,
+      nivel: $('f_nivel').value,
+      jornada: $('f_jornada').value,
+      hasta: $('f_hasta').value || null,
+      publicado: $('f_publicado').checked
+    };
+    const { error } = await supabase.from('avisos').insert(fila);
+    if (error){ formMsgShow('err','No se pudo guardar:\n'+error.message); return; }
+    formMsgShow('ok','✅ Aviso guardado'+(fila.publicado?' y publicado':' como borrador')+'.');
+    $('f_titulo').value=''; $('f_texto').value=''; $('f_hasta').value=''; $('f_publicado').checked=false;
+    cargarAvisos();
+  };
+  function formMsgShow(t,m){ const e=$('formMsg'); e.className='msg '+t; e.textContent=m; setTimeout(()=>{ if(t==='ok') e.className='msg'; }, 4000); }
+
+  async function cargarAvisos(){
+    const { data, error } = await supabase.from('avisos').select('*').order('created_at',{ascending:false});
+    const cont = $('lista');
+    if (error){ cont.innerHTML='<div class="msg err">'+error.message+'</div>'; return; }
+    if (!data.length){ cont.innerHTML='<div class="empty">Aún no hay avisos. Crea el primero arriba.</div>'; return; }
+    cont.innerHTML = data.map(a => `
+      <div class="aviso ${a.nivel==='importante'?'importante':''}">
+        <div style="display:flex;justify-content:space-between;gap:8px;align-items:start">
+          <div class="at">${esc(a.titulo)||'(sin título)'}</div>
+          <span class="estado ${a.publicado?'pub':'bor'}">${a.publicado?'PUBLICADO':'BORRADOR'}</span>
+        </div>
+        <div class="ax">${esc(a.texto||'')}</div>
+        <div class="meta" style="font-size:.72rem;color:#999">${a.jornada||''} · ${a.nivel||''}${a.hasta?' · vence '+a.hasta:''}</div>
+        <div class="acts">
+          <button class="btn sm ${a.publicado?'gray':'gold'}" data-toggle="${a.id}" data-pub="${a.publicado}">${a.publicado?'Despublicar':'Publicar'}</button>
+          <button class="btn sm ghost" data-del="${a.id}">Eliminar</button>
+        </div>
+      </div>`).join('');
+    cont.querySelectorAll('[data-toggle]').forEach(b=>b.onclick=async()=>{
+      await supabase.from('avisos').update({publicado: b.dataset.pub!=='true'}).eq('id', b.dataset.toggle);
+      cargarAvisos();
+    });
+    cont.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{
+      if(!confirm('¿Eliminar este aviso?')) return;
+      await supabase.from('avisos').delete().eq('id', b.dataset.del);
+      cargarAvisos();
+    });
+  }
+  function esc(s){ return (s||'').replace(/</g,'&lt;'); }
+
+  // arranque
+  const { data:{ session } } = await supabase.auth.getSession();
+  if (session) iniciar(session);
+  supabase.auth.onAuthStateChange((_e,s)=>{ if(s) iniciar(s); });
+</script>
+</body>
+</html>
