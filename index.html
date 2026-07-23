@@ -1507,6 +1507,9 @@ let sbc=null; try{ sbc=window.supabase.createClient(SB_URL,SB_KEY); }catch(e){}
 
 /* Convierte en enlaces clicables las URLs de un texto YA ESCAPADO.
    Se aplica después de esc() para no abrir la puerta a inyección de código. */
+/* Formato ligero para los avisos: **negrita**. Se aplica DESPUÉS de escapar,
+   por lo que no permite inyectar HTML. */
+function fmtTxt(s){ return String(s).replace(/\*\*([^*\n]+)\*\*/g,'<b>$1</b>'); }
 function linkify(escaped){
   return String(escaped).replace(/(https?:\/\/[^\s<]+|www\.[^\s<]+)/g,function(m){
     var url=m, tail="";
@@ -1571,7 +1574,7 @@ async function renderMural(){
     return '<div class="mcard" data-ix="'+ix+'" tabindex="0" role="button" aria-label="Abrir aviso: '+esc(a.titulo)+'" style="border-left-color:'+n.c+'">'+
       '<div class="mtop"><span class="mtag" style="color:'+n.c+';background:'+n.bg+'">'+esc(a.tipo)+'</span>'+cd+'</div>'+
       '<div class="mtitle">'+esc(a.titulo)+'</div>'+
-      '<div class="mtext">'+linkify(esc(a.texto))+'</div>'+
+      '<div class="mtext">'+fmtTxt(linkify(esc(a.texto)))+'</div>'+
       '<div class="mmore" style="color:'+n.c+'">Ver aviso completo →</div>'+
       (a.cta?'<div class="mdocflag">📎 Incluye documento</div>':'')+
       '</div>';
@@ -1642,7 +1645,7 @@ function openAviso(ix){
   var t=document.getElementById("avisoTag"); if(t){t.textContent=a.tipo;t.style.color=n.c;t.style.background=n.bg;}
   var ti=document.getElementById("avisoTitle"); if(ti)ti.textContent=a.titulo;
   var bd=document.getElementById("avisoBody");
-  if(bd)bd.innerHTML='<div class="avtext">'+linkify(esc(a.texto))+'</div>'+cta+(meta.length?'<div class="avmetas">'+meta.join("")+'</div>':'');
+  if(bd)bd.innerHTML='<div class="avtext">'+fmtTxt(linkify(esc(a.texto)))+'</div>'+cta+(meta.length?'<div class="avmetas">'+meta.join("")+'</div>':'');
   var m=document.getElementById("avisoModal");
   if(m){m.style.display="flex";try{document.body.style.overflow="hidden";}catch(e){}
     var bx=m.querySelector(".a11y-box"); if(bx)bx.scrollTop=0;

@@ -51,6 +51,11 @@
   .estado.bor{ background:#f3efe6; color:#8a6d1f; }
   .acts{ display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
   .empty{ color:var(--muted); font-size:.85rem; text-align:center; padding:14px; }
+  .asis summary{ cursor:pointer; font-size:.92rem; color:var(--navy); list-style:none; display:flex; align-items:center; gap:8px; }
+  .asis summary::-webkit-details-marker{ display:none; }
+  .asis summary::before{ content:"▸"; color:var(--wine); font-weight:900; }
+  .asis[open] summary::before{ content:"▾"; }
+  .asis summary b{ color:var(--wine); }
   .grupo{ font-size:.78rem; font-weight:800; color:var(--wine); text-transform:uppercase; letter-spacing:.04em; margin:16px 0 8px; padding-bottom:5px; border-bottom:2px solid var(--line); display:flex; justify-content:space-between; align-items:center; }
   .grupo span{ font-weight:700; color:var(--muted); text-transform:none; letter-spacing:0; }
   .aviso.vencido{ opacity:.72; border-left-color:#b9b3a7; }
@@ -86,6 +91,19 @@
 </div>
 
 <div class="wrap" id="panel" style="display:none">
+
+  <details class="card asis" id="asisCard">
+    <summary><b>🧮 Asistente de evaluaciones</b> — pega la tabla y la ordena por ti</summary>
+    <div style="margin-top:12px">
+      <p class="hint" style="margin-bottom:8px">Copia las filas desde el Excel o el Word que envía el departamento (con o sin la fila de títulos) y pégalas aquí. El asistente las ordena por día y arma el aviso.</p>
+      <textarea id="ev_pegar" placeholder="Pega aquí las filas de la tabla…" style="min-height:120px;font-family:ui-monospace,monospace;font-size:.82rem"></textarea>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn" id="btnOrdenar">Ordenar y usar en el aviso</button>
+        <button class="btn ghost" id="btnLimpiarEv">Limpiar</button>
+      </div>
+      <div class="msg" id="evMsg"></div>
+    </div>
+  </details>
 
   <div class="card">
     <h2 id="formTitle">➕ Nuevo aviso</h2>
@@ -404,6 +422,136 @@
       cargarAvisos();
     });
   }
+
+  /* ---------- asistente de evaluaciones ---------- */
+/* ===== Asistente de evaluaciones: convierte una tabla pegada en texto ordenado ===== */
+const MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const DIAS=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+const MIN=['de','del','la','las','los','y','e','en','a','al','el'];
+
+function tc(s){
+  return String(s).toLowerCase().replace(/\s+/g,' ').trim().split(' ').map((w,i)=>{
+    if(/^s\d+$/.test(w)) return w.toUpperCase();
+    if(i>0 && MIN.includes(w)) return w;
+    return w.charAt(0).toUpperCase()+w.slice(1);
+  }).join(' ');
+}
+function celdas(linea){
+  if(/\t/.test(linea)) return linea.split(/\t+/);
+  if(/\s\|\s/.test(linea)) return linea.split(/\s*\|\s*/);
+  return linea.split(/ {2,}/);
+}
+function parseEvaluaciones(texto, anio){
+  anio = anio || new Date().getFullYear();
+  const filas=[];
+  const errores=[];
+  String(texto).split(/\r?\n/).forEach(function(linea){
+    const L=linea.trim();
+    if(!L) return;
+    if(/fecha/i.test(L) && /asignatura/i.test(L)) return;           // encabezado
+    const cs=celdas(L).map(c=>c.trim()).filter(c=>c!=='');
+    if(cs.length<3){ errores.push(L); return; }
+    let fecha=null,hora=null,mod=null,sala=null,jornada=null;
+    const resto=[];
+    cs.forEach(function(c){
+      const mF=c.match(/^(\d{1,2})[-\/.](\d{1,2})(?:[-\/.](\d{2,4}))?$/);
+      if(mF && !fecha){ fecha={d:+mF[1],m:+mF[2],y:mF[3]?(mF[3].length===2?2000+ +mF[3]:+mF[3]):anio}; return; }
+      const mH=c.match(/(\d{1,2}):(\d{2})/);
+      if(mH && !hora){
+        hora=(mH[1].length===1?'0':'')+mH[1]+':'+mH[2];
+        const mM=c.replace(mH[0],'').match(/[a-záéíóúñ]{3,}/i);
+        if(mM) mod=mM[0].toLowerCase();
+        return;
+      }
+      if(/^(tech|diurno|vespertino|v\.?\s?regular)$/i.test(c)){ jornada=c.toUpperCase(); return; }
+      if(/^(sala\s*)?[a-z]{1,3}\s?-?\s?\d{1,3}$/i.test(c) && !sala){ sala=c.replace(/^sala\s*/i,'').toUpperCase(); return; }
+      resto.push(c);
+    });
+    if(!fecha){ errores.push(L); return; }
+    const asig=resto[0]||'', doc=resto[1]||'';
+    let seccion=null;
+    const mS=asig.match(/\s(S\d+)\s*$/i);
+    filas.push({
+      fecha:fecha, hora:hora, mod:mod, sala:sala, jornada:jornada,
+      asig:tc(mS?asig.replace(/\s(S\d+)\s*$/i,''):asig),
+      seccion:mS?mS[1].toUpperCase():null,
+      doc:doc?tc(doc):null
+    });
+  });
+
+  filas.sort(function(a,b){
+    const da=new Date(a.fecha.y,a.fecha.m-1,a.fecha.d), db=new Date(b.fecha.y,b.fecha.m-1,b.fecha.d);
+    if(+da!==+db) return da-db;
+    return String(a.hora||'').localeCompare(String(b.hora||''));
+  });
+
+  const grupos=[];
+  filas.forEach(function(f){
+    const k=f.fecha.y+'-'+f.fecha.m+'-'+f.fecha.d;
+    let g=grupos.find(x=>x.k===k);
+    if(!g){ g={k:k,fecha:f.fecha,items:[]}; grupos.push(g); }
+    g.items.push(f);
+  });
+
+  const lineas=[];
+  grupos.forEach(function(g){
+    const d=new Date(g.fecha.y,g.fecha.m-1,g.fecha.d);
+    lineas.push('**'+tc(DIAS[d.getDay()])+' '+g.fecha.d+' de '+MESES[g.fecha.m-1]+'**');
+    g.items.forEach(function(f){
+      const partes=[];
+      if(f.hora) partes.push(f.hora);
+      if(f.mod) partes.push(f.mod);
+      if(f.sala) partes.push('Sala '+f.sala);
+      if(f.doc) partes.push('Prof. '+f.doc);
+      lineas.push('• '+f.asig+(f.seccion?' '+f.seccion:'')+(partes.length?' — '+partes.join(' · '):''));
+    });
+    lineas.push('');
+  });
+
+  const texto_final = lineas.length
+    ? 'Revisa la fecha, hora y sala de TU sección.\n\n'+lineas.join('\n').trim()
+    : '';
+  const ultima = filas.length ? filas[filas.length-1].fecha : null;
+  const primera = filas.length ? filas[0].fecha : null;
+  const rango = (primera&&ultima)
+    ? (primera.d===ultima.d && primera.m===ultima.m
+        ? primera.d+' de '+MESES[primera.m-1]
+        : 'del '+primera.d+' al '+ultima.d+' de '+MESES[ultima.m-1])
+    : '';
+  return {
+    texto: texto_final,
+    total: filas.length,
+    errores: errores,
+    jornada: (filas.find(f=>f.jornada)||{}).jornada||null,
+    vence: ultima ? ultima.y+'-'+String(ultima.m).padStart(2,'0')+'-'+String(ultima.d).padStart(2,'0') : null,
+    rango: rango
+  };
+}
+
+  $('btnLimpiarEv').onclick = () => { $('ev_pegar').value=''; hide($('evMsg')); };
+
+  $('btnOrdenar').onclick = () => {
+    const crudo = $('ev_pegar').value;
+    if (!crudo.trim()){ show($('evMsg'),'err','Pega primero las filas de la tabla.'); return; }
+    const r = parseEvaluaciones(crudo, new Date().getFullYear());
+    if (!r.total){ show($('evMsg'),'err','No pude leer ninguna evaluación.\nRevisa que cada fila tenga al menos fecha, asignatura y hora, y que las columnas queden separadas (al copiar desde Excel o Word se separan solas).'); return; }
+
+    $('f_texto').value = r.texto;
+    $('f_nivel').value = 'importante';
+    if (r.vence) $('f_hasta').value = r.vence;
+    if (r.jornada === 'TECH') $('f_jornada').value = 'tech';
+    else if (/DIURNO/.test(r.jornada||'')) $('f_jornada').value = 'diurno';
+    else if (/VESPERTINO|REGULAR/.test(r.jornada||'')) $('f_jornada').value = 'vregular';
+    if (!$('f_titulo').value.trim()){
+      const j = r.jornada ? (' '+r.jornada) : '';
+      $('f_titulo').value = 'Evaluaciones'+j+(r.rango?' · '+r.rango:'');
+    }
+
+    let msg = '✅ Listo: '+r.total+(r.total===1?' evaluación ordenada':' evaluaciones ordenadas')+'. Revisa el texto abajo antes de guardar.';
+    if (r.errores.length) msg += '\n⚠️ No pude leer '+r.errores.length+' línea(s): '+esc(r.errores.slice(0,3).join(' / '));
+    show($('evMsg'), r.errores.length?'wait':'ok', msg);
+    $('f_texto').scrollIntoView({behavior:'smooth', block:'center'});
+  };
 
   /* ---------- arranque ---------- */
   const { data:{ session } } = await supabase.auth.getSession();
