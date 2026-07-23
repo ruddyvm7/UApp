@@ -260,6 +260,7 @@ body.reduce .progfill{transition:none}
 .elab{flex:0 0 88px;color:#8a7b5e;font-weight:700}
 .edates{color:#2a2118;display:flex;flex-direction:column;gap:2px}
 .ecols{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:9px}
+.cnota{display:block;margin-top:6px;font-size:10.5px;opacity:.72;line-height:1.4}
 .mlink{color:var(--wine,#8b0c0c);font-weight:700;text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere;word-break:break-word}
 .mlink:hover,.mlink:focus-visible{color:var(--gold2,#a8801f)}
 body.dark .mlink{color:var(--gold,#c79a3e)}
@@ -1758,23 +1759,51 @@ function importData(file){
   let greeted=false;
   const cats=[...new Set(FAQ.map(f=>f.c))];
   function norm(s){return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9ñ\s]/g," ").replace(/\s+/g," ").trim();}
+  /* Palabras muy comunes que no aportan al calce */
+  const STOP=["que","como","donde","cuando","cual","cuales","cuanto","cuanta","cuantos","cuantas","quien","quienes","cuesta","hace","hacer","debo","tener","para","por","con","sin","los","las","del","una","uno","unos","unas","este","esta","esto","esos","esas","hay","son","ser","estar","tiene","tengo","puedo","puede","pueden","quiero","necesito","saber","sobre","mas","muy","pero","porque","ahora","aqui","alli","algo","alguna","alguno","todo","toda","todos","todas","mi","mis","tu","tus","su","sus","yo","me","le","lo","la","el","de","en","al","se","es","un","y","o","a"];
   function bestFaq(q){
-    const words=norm(q).split(" ").filter(w=>w.length>2);
+    const words=norm(q).split(" ").filter(w=>w.length>2 && STOP.indexOf(w)<0);
     if(!words.length) return null;
-    let best=null,bs=0;
+    let best=null,bs=0,bfuerte=0;
     FAQ.forEach(f=>{
-      const keys=norm(f.k).split(" "), qn=norm(f.q);
-      let sc=0;
-      words.forEach(w=>{ if(keys.some(k=>k===w||k.indexOf(w)===0||w.indexOf(k)===0)) sc++; if(qn.indexOf(w)>=0) sc+=0.4; });
-      if(sc>bs){bs=sc;best=f;}
+      const keys=norm(f.k).split(" ").filter(k=>k.length>2), qn=norm(f.q);
+      let sc=0, fuertes=0;
+      words.forEach(w=>{
+        /* coincidencia fuerte: la palabra calza con una palabra clave del tema */
+        if(keys.some(k=>k===w||(w.length>=4&&k.indexOf(w)===0)||(k.length>=4&&w.indexOf(k)===0))){ sc+=1; fuertes++; return; }
+        /* coincidencia débil: la palabra aparece dentro del texto de la pregunta tipo */
+        if(w.length>=5 && qn.indexOf(w)>=0) sc+=0.4;
+      });
+      if(sc>bs){bs=sc;best=f;bfuerte=fuertes;}
     });
-    return bs>=1?best:null;
+    /* Solo responde si hubo al menos una coincidencia real de palabra clave,
+       o varias coincidencias débiles que juntas sean significativas. */
+    if(bfuerte>=1 && bs>=1) return best;
+    if(bs>=1.6) return best;
+    return null;
   }
   function addMsg(html,who){const d=document.createElement('div');d.className='cmsg '+who;d.innerHTML=html;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;}
   function showCats(){chips.innerHTML='';cats.forEach(c=>{const b=document.createElement('button');b.className='cchip';b.textContent=c;b.onclick=()=>showQs(c);chips.appendChild(b);});}
   function showQs(c){chips.innerHTML='';const back=document.createElement('button');back.className='cchip back';back.textContent='‹ Temas';back.onclick=showCats;chips.appendChild(back);FAQ.filter(f=>f.c===c).forEach(f=>{const b=document.createElement('button');b.className='cchip';b.textContent=f.q;b.onclick=()=>{addMsg(f.q,'user');setTimeout(()=>addMsg(f.a,'bot'),260);};chips.appendChild(b);});}
-  function ask(t){t=(t||"").trim();if(!t)return;addMsg(esc(t),'user');inp.value='';const f=bestFaq(t);setTimeout(()=>{ if(f) addMsg(f.a,'bot'); else addMsg("No encontré una respuesta exacta 🙈. Prueba tocando un tema aquí abajo, o escríbenos al Instagram <b>@ccee.derechouatco</b> o al correo <b>cceedereua@gmail.com</b>.",'bot'); },300);}
-  function openChat(){panel.style.display='flex';fab.style.display='none';if(!greeted){greeted=true;addMsg("¡Hola! 👋 Soy <b>Dona Tech</b>, el asistente del Centro de Estudiantes de Derecho. Pregúntame sobre fechas, inscripción de ramos, reglamento, apoyo, servicios o contactos. Toca un tema o escribe tu duda.",'bot');showCats();}setTimeout(()=>inp.focus(),100);}
+  /* Registro anónimo de consultas: sirve para saber qué se pregunta y qué falta responder.
+     No guarda identidad, ni sesión, ni dispositivo. Si falla, no interrumpe al usuario. */
+  function logConsulta(pregunta,respondida,tema){
+    try{
+      if(!sbc||!pregunta)return;
+      var txt=String(pregunta).trim().slice(0,300);
+      if(txt.length<3)return;
+      sbc.from('consultas').insert({
+        pregunta:txt,
+        respondida:!!respondida,
+        tema:tema||null,
+        jornada:(function(){try{return localStorage.getItem("jornada3_v1")||null;}catch(e){return null;}})()
+      }).then(function(){},function(){});
+    }catch(e){}
+  }
+  function ask(t,esChip){t=(t||"").trim();if(!t)return;addMsg(esc(t),'user');inp.value='';const f=bestFaq(t);
+    if(!esChip)logConsulta(t,!!f,f?f.c:null);
+    setTimeout(()=>{ if(f) addMsg(f.a,'bot'); else addMsg("No encontré una respuesta exacta 🙈. Prueba tocando un tema aquí abajo, o escríbenos al Instagram <b>@ccee.derechouatco</b> o al correo <b>cceedereua@gmail.com</b>.",'bot'); },300);}
+  function openChat(){panel.style.display='flex';fab.style.display='none';if(!greeted){greeted=true;addMsg("¡Hola! 👋 Soy <b>Dona Tech</b>, el asistente del Centro de Estudiantes de Derecho. Pregúntame sobre fechas, inscripción de ramos, reglamento, apoyo, servicios o contactos. Toca un tema o escribe tu duda.<br><span class=\"cnota\">Guardamos las preguntas de forma anónima para mejorar las respuestas. No escribas datos personales.</span>",'bot');showCats();}setTimeout(()=>inp.focus(),100);}
   function closeChat(){panel.style.display='none';fab.style.display='flex';}
   fab.onclick=openChat; closeb.onclick=closeChat;
   sendb.onclick=()=>ask(inp.value);
