@@ -795,7 +795,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
   <div class="legal-box">
     <button class="legal-x" id="legalX" aria-label="Cerrar">✕</button>
     <h3 class="serif">Privacidad</h3>
-    <p>UApp es una herramienta gratuita creada por el Centro de Estudiantes de Derecho Vespertino TECH. Tu avance, notas y ramos inscritos se guardan <b>únicamente en este dispositivo</b> (en el navegador): no se envían a ningún servidor ni los vemos nosotros, y no recopilamos datos personales. Los formularios externos (opinión y solicitudes) son de Google y Microsoft y se rigen por sus propias políticas.</p>
+    <p>UApp es una herramienta gratuita creada por el Centro de Estudiantes de Derecho Vespertino TECH. Tu avance, notas y ramos inscritos se guardan <b>únicamente en este dispositivo</b> (en el navegador): no se envían a ningún servidor ni los vemos nosotros, y no recopilamos datos personales. Los formularios externos (opinión y solicitudes) son de Google y Microsoft y se rigen por sus propias políticas.</p><p>Las preguntas que escribes al asistente <b>Dona Tech</b> se registran de forma <b>anónima</b> —solo el texto de la pregunta, sin tu identidad, sesión ni dispositivo— con el único fin de mejorar las respuestas. No son visibles para quienes administran la aplicación, se revisan periódicamente y se eliminan pasado el tiempo necesario. Por eso te pedimos <b>no escribir datos personales</b> en el asistente.</p>
     <h3 class="serif">Términos de uso</h3>
     <p>UApp es una <b>herramienta de apoyo referencial</b> hecha por estudiantes; no es un sistema oficial de la Universidad. La información (fechas, horarios, calendario, oferta de ramos y reglamento) puede cambiar: confirma siempre con las fuentes oficiales (Registro Curricular y la Dirección de Carrera) antes de tomar decisiones. El uso de la app es de tu responsabilidad.</p>
   </div>
@@ -1797,7 +1797,9 @@ function importData(file){
         respondida:!!respondida,
         tema:tema||null,
         jornada:(function(){try{return localStorage.getItem("jornada3_v1")||null;}catch(e){return null;}})()
-      }).then(function(){},function(){});
+      }).then(function(r){
+        if(r&&r.error&&window.console)console.warn("[UApp] No se pudo registrar la consulta:",r.error.message||r.error);
+      },function(e){ if(window.console)console.warn("[UApp] Error de red al registrar la consulta:",e&&e.message); });
     }catch(e){}
   }
   function ask(t,esChip){t=(t||"").trim();if(!t)return;addMsg(esc(t),'user');inp.value='';const f=bestFaq(t);
