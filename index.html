@@ -5,7 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#8b0c0c">
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="index, follow">
+<meta name="description" content="UApp · Plataforma estudiantil de la Carrera de Derecho de la Universidad Autónoma de Chile, sede Temuco: malla y avance curricular, horarios, planificador de carga, calendario de evaluaciones, simulador de notas y avisos oficiales.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="UApp · Derecho UA Temuco">
+<meta property="og:description" content="Tu malla, tus horarios, tus evaluaciones y tus notas en un solo lugar. Carrera de Derecho · Universidad Autónoma de Chile, sede Temuco.">
+<meta property="og:url" content="https://miuapp.cl/">
+<meta property="og:image" content="https://miuapp.cl/icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://miuapp.cl/">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="UApp">
@@ -1970,9 +1978,23 @@ if('serviceWorker' in navigator){
      Devuelve {anchor, hasAvance} para que Horarios valide el tope de 3 niveles con la misma regla que el planificador. */
   /* ================= SIMULADOR DE NOTAS ================= */
   /* Esquema de un ramo según su plan y ponderaciones. Devuelve {nombre,comp:[{lab,pct}],req,nf,esp,pend} */
-  function esquemaDe(cid,plan){
+  /* Registro de ponderación efectivo según la jornada.
+     TECH (trimestral) usa su propia tabla de la hoja PORCENTAJES:
+       · Asignaturas de departamento (1er año): 35 / 35 + parcial 30
+       · Asignaturas regulares (2º año en adelante): 45 / 45 + parcial 10
+     Las asignaturas especiales conservan su esquema propio. */
+  function ponRec(cid,plan){
     var tabla=(plan==="na")?PON_NA:PON_AJ;
     var p=tabla[String(cid)];
+    if(!p)return null;
+    if(curJornada!=="tech")return p;
+    if(p.esp||p.pend)return p;
+    return /^Departamento/.test(p.n)
+      ? {n:"Departamento TECH",ev:[35,35],p:30}
+      : {n:"Regular TECH",ev:[45,45],p:10};
+  }
+  function esquemaDe(cid,plan){
+    var p=ponRec(cid,plan);
     if(!p)return null;
     if(p.pend)return {nombre:p.n,pend:true};
     var comp=[];
@@ -2091,20 +2113,22 @@ if('serviceWorker' in navigator){
   /* Vista principal: tarjetas de los ramos inscritos */
   window.__renderCalc=function(){
     var host=document.getElementById("calcCards");if(!host)return;
-    if(curJornada==="tech"){ host.innerHTML='<div class="ccempty">El simulador por ramos está disponible en las jornadas semestrales. Usa <b>Todas las calculadoras</b> para calcular cualquier esquema.</div>'; return; }
     var notas=loadNotas();
     var ids=Object.keys(insc);
     if(!ids.length){
       host.innerHTML='<div class="ccempty">Aún no marcaste ramos en <b>Horarios</b>. Ve a Horarios, piquea tus ramos del trimestre y volverán aquí como calculadoras listas para usar.<br><br>También puedes abrir <b>Todas las calculadoras</b> para explorar cualquier esquema.</div>';
       return;
     }
-    var plan=(curMallaSem==="noajustada")?"na":"aj";
-    var byIdMap={};(plan==="na"?COURSES_NASEM:COURSES_SEM).forEach(function(c){byIdMap[c.id]=c;});
+    var esTech=(curJornada==="tech");
+    var plan=((esTech?curMalla:curMallaSem)==="noajustada")?"na":"aj";
+    var byIdMap={};(esTech?(plan==="na"?COURSES_NA:COURSES):(plan==="na"?COURSES_NASEM:COURSES_SEM)).forEach(function(c){byIdMap[c.id]=c;});
     var html=ids.map(function(id){
       var key=insc[id];
-      var pl=(String(key).indexOf("na_")===0)?"na":"aj";
+      var pl=esTech?plan:((String(key).indexOf("na_")===0)?"na":"aj");
       var nm=(byIdMap[id]&&byIdMap[id].n)||"";
-      var m=/_sec(.+?)(?:_alt)?$/.exec(key||"");var secTxt=m?("Sección "+m[1].replace(/_/g,"-")):"";
+      var secTxt="";
+      if(esTech){var mt=/s(\d+)$/.exec(key||"");if(mt)secTxt="Sección "+mt[1];}
+      else{var m=/_sec(.+?)(?:_alt)?$/.exec(key||"");if(m)secTxt="Sección "+m[1].replace(/_/g,"-");}
       return cardCalc(id,pl,nm,notas,"r"+id,secTxt);
     }).join("");
     host.innerHTML=html;
@@ -2142,13 +2166,13 @@ if('serviceWorker' in navigator){
   window.__renderAllCalc=function(){
     var host=document.getElementById("allCalcList");if(!host)return;
     var notas=loadNotas();
-    var plan=(curMallaSem==="noajustada")?"na":"aj";
+    var plan=((curJornada==="tech"?curMalla:curMallaSem)==="noajustada")?"na":"aj";
     var tabla=(plan==="na")?PON_NA:PON_AJ;
     var Tmap=(plan==="na")?NA_SEM_OF:SEM_OF;
     function firma(p){return JSON.stringify([p.n,p.ev,p.p,p.req,p.nf]);}
     var vistas={}, primero=[], superior=[], especiales=[];
     Object.keys(tabla).forEach(function(cid){
-      var p=tabla[cid];if(!p||p.pend)return;
+      var p=ponRec(cid,plan);if(!p||p.pend)return;
       var f=firma(p);
       if(vistas[f])return;
       vistas[f]=true;

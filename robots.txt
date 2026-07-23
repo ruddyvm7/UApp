@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Ambiente de pruebas: no debe aparecer en buscadores
+Disallow: /prueba-diurno/
+Disallow: /panel-admin.html
+Disallow: /prueba-diurno/panel-admin.html
+
+Sitemap: https://miuapp.cl/sitemap.xml
