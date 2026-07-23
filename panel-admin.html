@@ -139,7 +139,7 @@
       <div>
         <label for="f_autor">Publicado por</label>
         <input id="f_autor" placeholder="Ej: Centro de Estudiantes">
-        <div class="hint">Se completa solo con tu nombre. Puedes cambiarlo si el aviso lo firma otra unidad.</div>
+        <div class="hint">Es la firma visible del aviso. Aparte, el sistema registra automáticamente tu cuenta institucional como responsable, y eso no se puede modificar.</div>
       </div>
       <div>
         <label for="f_hasta">Vence el (opcional)</label>
@@ -379,7 +379,8 @@
           ${estado}
         </div>
         <div class="ax">${esc(a.texto||'')}</div>
-        <div class="meta">${esc(a.jornada||'')} · ${esc(a.nivel||'')}${a.autor?' · por '+esc(a.autor):''}${a.hasta?(ven?' · venció el ':' · vence ')+esc(a.hasta):''}</div>
+        <div class="meta">${esc(a.jornada||'')} · ${esc(a.nivel||'')}${a.autor?' · firma: '+esc(a.autor):''}${a.hasta?(ven?' · venció el ':' · vence ')+esc(a.hasta):''}</div>
+        ${a.creado_por?'<div class="meta" style="color:#a09a90">🔒 registrado por '+esc(a.creado_por)+'</div>':''}
         ${a.doc_url?'<div style="margin-top:5px">📎 <a class="doclink" href="'+esc(a.doc_url)+'" target="_blank" rel="noopener">'+esc(a.doc_label||'Ver documento')+'</a></div>':''}
         <div class="acts">
           <button class="btn sm ghost" data-edit="${esc(a.id)}">✏️ Editar</button>
