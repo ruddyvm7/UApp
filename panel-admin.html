@@ -51,6 +51,11 @@
   .estado.bor{ background:#f3efe6; color:#8a6d1f; }
   .acts{ display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
   .empty{ color:var(--muted); font-size:.85rem; text-align:center; padding:14px; }
+  .grupo{ font-size:.78rem; font-weight:800; color:var(--wine); text-transform:uppercase; letter-spacing:.04em; margin:16px 0 8px; padding-bottom:5px; border-bottom:2px solid var(--line); display:flex; justify-content:space-between; align-items:center; }
+  .grupo span{ font-weight:700; color:var(--muted); text-transform:none; letter-spacing:0; }
+  .aviso.vencido{ opacity:.72; border-left-color:#b9b3a7; }
+  .estado.ven{ background:#efece6; color:#6b6660; }
+  .editando{ box-shadow:0 0 0 3px rgba(199,154,62,.35); border-color:var(--gold)!important; }
   .hint{ font-size:.72rem; color:var(--muted); margin-top:4px; line-height:1.4; }
   /* Adjuntar documento */
   .drop{ border:1.5px dashed #cfc9bd; border-radius:11px; background:var(--soft); padding:14px; text-align:center; }
@@ -83,7 +88,7 @@
 <div class="wrap" id="panel" style="display:none">
 
   <div class="card">
-    <h2>➕ Nuevo aviso</h2>
+    <h2 id="formTitle">➕ Nuevo aviso</h2>
 
     <label for="f_titulo">Título</label>
     <input id="f_titulo" placeholder="Ej: Fechas de evaluaciones">
@@ -143,8 +148,9 @@
       <label for="f_publicado" style="margin:0">Publicar de inmediato (si no, queda como borrador)</label>
     </div>
 
-    <div style="margin-top:14px">
+    <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn" id="btnGuardar">Guardar aviso</button>
+      <button class="btn ghost" id="btnCancelar" style="display:none">Cancelar edición</button>
     </div>
     <div class="msg" id="formMsg"></div>
   </div>
@@ -169,6 +175,7 @@
   const gate = $('gate'), gateMsg = $('gateMsg'), panel = $('panel'), topbar = $('topbar');
   let miRol = null, miEmail = null, miNombre = null;
   let docUrl = null, docName = null;      // documento adjunto del aviso en edición
+  let editandoId = null;                  // id del aviso que se está editando (null = nuevo)
 
   /* ---------- utilidades ---------- */
   function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -273,17 +280,59 @@
       doc_label: docUrl ? ($('f_doclabel').value.trim() || '📄 Ver documento') : null
     };
 
-    btn.disabled = true; show($('formMsg'),'wait','⏳ Guardando…');
-    const { error } = await supabase.from('avisos').insert(fila);
+    btn.disabled = true; show($('formMsg'),'wait', editandoId ? '⏳ Guardando cambios…' : '⏳ Guardando…');
+    const { error } = editandoId
+      ? await supabase.from('avisos').update(fila).eq('id', editandoId)
+      : await supabase.from('avisos').insert(fila);
     btn.disabled = false;
     if (error){ show($('formMsg'),'err','No se pudo guardar:\n'+esc(explicar(error))); return; }
 
-    show($('formMsg'),'ok','✅ Aviso guardado'+(fila.publicado?' y publicado.':' como borrador.'));
-    $('f_titulo').value=''; $('f_texto').value=''; $('f_hasta').value='';
-    $('f_publicado').checked=false; $('f_doclabel').value='';
-    docUrl=null; docName=null; pintarAdjunto();
+    const eraEdicion = !!editandoId;
+    limpiarFormulario();
+    show($('formMsg'),'ok', eraEdicion ? '✅ Cambios guardados.' : ('✅ Aviso guardado'+(fila.publicado?' y publicado.':' como borrador.')));
     cargarAvisos();
   };
+
+  /* ---------- edición ---------- */
+  function limpiarFormulario(){
+    editandoId = null;
+    $('f_titulo').value=''; $('f_texto').value=''; $('f_hasta').value='';
+    $('f_publicado').checked=false; $('f_doclabel').value='';
+    $('f_nivel').value='normal'; $('f_autor').value = miNombre || '';
+    docUrl=null; docName=null; pintarAdjunto();
+    $('formTitle').textContent='➕ Nuevo aviso';
+    $('btnGuardar').textContent='Guardar aviso';
+    $('btnCancelar').style.display='none';
+    document.querySelectorAll('.aviso.editando').forEach(x=>x.classList.remove('editando'));
+    hide($('formMsg'));
+  }
+  $('btnCancelar').onclick = () => { limpiarFormulario(); window.scrollTo({top:0,behavior:'smooth'}); };
+
+  function editar(a){
+    editandoId = a.id;
+    $('f_titulo').value = a.titulo || '';
+    $('f_texto').value  = a.texto || '';
+    $('f_nivel').value  = a.nivel || 'normal';
+    $('f_jornada').value= a.jornada || 'tech';
+    $('f_autor').value  = a.autor || miNombre || '';
+    $('f_hasta').value  = a.hasta || '';
+    $('f_publicado').checked = !!a.publicado;
+    if (a.doc_url){
+      docUrl = a.doc_url;
+      docName = decodeURIComponent(String(a.doc_url).split('/').pop().split('?')[0]) || 'documento';
+      $('f_doclabel').value = a.doc_label || '';
+    } else { docUrl=null; docName=null; $('f_doclabel').value=''; }
+    pintarAdjunto();
+    $('formTitle').textContent='✏️ Editando aviso';
+    $('btnGuardar').textContent='Guardar cambios';
+    $('btnCancelar').style.display='inline-block';
+    document.querySelectorAll('.aviso.editando').forEach(x=>x.classList.remove('editando'));
+    const card = document.querySelector('[data-card="'+a.id+'"]');
+    if (card) card.classList.add('editando');
+    hide($('formMsg'));
+    window.scrollTo({ top:0, behavior:'smooth' });
+    $('f_titulo').focus();
+  }
 
   /* ---------- lista ---------- */
   async function cargarAvisos(){
@@ -292,20 +341,47 @@
     if (error){ cont.innerHTML=''; show($('listMsg'),'err','No se pudieron cargar los avisos:\n'+esc(explicar(error))); return; }
     hide($('listMsg'));
     if (!data.length){ cont.innerHTML='<div class="empty">Aún no hay avisos. Crea el primero arriba.</div>'; return; }
-    cont.innerHTML = data.map(a => `
-      <div class="aviso ${a.nivel==='importante'?'importante':''}">
+
+    /* Separar por estado: vigentes, borradores y vencidos */
+    const hoy = new Date(); hoy.setHours(0,0,0,0);
+    const vencido = a => { if(!a.hasta) return false; const d=new Date(a.hasta+'T00:00:00'); return d < hoy; };
+    const vigentes  = data.filter(a =>  a.publicado && !vencido(a));
+    const borrador  = data.filter(a => !a.publicado && !vencido(a));
+    const vencidos  = data.filter(a =>  vencido(a));
+
+    const tarjeta = a => {
+      const ven = vencido(a);
+      const estado = ven ? '<span class="estado ven">VENCIDO</span>'
+                         : (a.publicado ? '<span class="estado pub">PUBLICADO</span>'
+                                        : '<span class="estado bor">BORRADOR</span>');
+      return `
+      <div class="aviso ${a.nivel==='importante'&&!ven?'importante':''} ${ven?'vencido':''}" data-card="${esc(a.id)}">
         <div style="display:flex;justify-content:space-between;gap:8px;align-items:start">
           <div class="at">${esc(a.titulo)||'(sin título)'}</div>
-          <span class="estado ${a.publicado?'pub':'bor'}">${a.publicado?'PUBLICADO':'BORRADOR'}</span>
+          ${estado}
         </div>
         <div class="ax">${esc(a.texto||'')}</div>
-        <div class="meta">${esc(a.jornada||'')} · ${esc(a.nivel||'')}${a.autor?' · por '+esc(a.autor):''}${a.hasta?' · vence '+esc(a.hasta):''}</div>
+        <div class="meta">${esc(a.jornada||'')} · ${esc(a.nivel||'')}${a.autor?' · por '+esc(a.autor):''}${a.hasta?(ven?' · venció el ':' · vence ')+esc(a.hasta):''}</div>
         ${a.doc_url?'<div style="margin-top:5px">📎 <a class="doclink" href="'+esc(a.doc_url)+'" target="_blank" rel="noopener">'+esc(a.doc_label||'Ver documento')+'</a></div>':''}
         <div class="acts">
+          <button class="btn sm ghost" data-edit="${esc(a.id)}">✏️ Editar</button>
           <button class="btn sm ${a.publicado?'gray':'gold'}" data-toggle="${esc(a.id)}" data-pub="${a.publicado}">${a.publicado?'Despublicar':'Publicar'}</button>
           <button class="btn sm ghost" data-del="${esc(a.id)}">Eliminar</button>
         </div>
-      </div>`).join('');
+      </div>`;
+    };
+
+    const grupo = (titulo, arr, nota) => arr.length
+      ? '<div class="grupo">'+titulo+' <span>'+arr.length+(nota?' · '+nota:'')+'</span></div>' + arr.map(tarjeta).join('')
+      : '';
+
+    cont.innerHTML = grupo('En el mural', vigentes, 'visibles ahora')
+                   + grupo('Borradores', borrador, 'no visibles')
+                   + grupo('Historial', vencidos, 'ya vencidos');
+
+    const porId = {}; data.forEach(a => porId[a.id] = a);
+
+    cont.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => editar(porId[b.dataset.edit]));
 
     cont.querySelectorAll('[data-toggle]').forEach(b => b.onclick = async () => {
       b.disabled = true; hide($('listMsg'));
@@ -323,6 +399,7 @@
       const { error } = await supabase.from('avisos').delete().eq('id', b.dataset.del);
       b.disabled = false;
       if (error){ show($('listMsg'),'err','No se pudo eliminar:\n'+esc(explicar(error))); return; }
+      if (editandoId === b.dataset.del) limpiarFormulario();
       show($('listMsg'),'ok','✅ Aviso eliminado.');
       cargarAvisos();
     });

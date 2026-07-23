@@ -263,6 +263,14 @@ body.reduce .progfill{transition:none}
 .mlink{color:var(--wine,#8b0c0c);font-weight:700;text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere;word-break:break-word}
 .mlink:hover,.mlink:focus-visible{color:var(--gold2,#a8801f)}
 body.dark .mlink{color:var(--gold,#c79a3e)}
+.archbtn{display:block;width:100%;margin-top:4px;background:var(--card);border:1px dashed var(--cb2);color:var(--muted);font-family:inherit;font-size:13px;font-weight:700;padding:12px;border-radius:12px;cursor:pointer}
+.archbtn:hover,.archbtn:focus-visible{border-color:var(--gold);color:var(--gold2)}
+.arow{border:1px solid var(--cb);border-radius:11px;padding:11px 13px;margin-bottom:8px;cursor:pointer;background:var(--card)}
+.arow:hover{border-color:var(--gold)}
+.arow:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.atop{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:5px}
+.awhen{font-size:11px;color:var(--muted);font-weight:700;white-space:nowrap}
+.atitle{font-size:14px;font-weight:700;color:var(--ink);line-height:1.35}
 .mcard{cursor:pointer}
 .mcard:focus-visible{outline:2px solid var(--gold,#c79a3e);outline-offset:2px}
 .mtext{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
@@ -866,6 +874,15 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
     <button class="a11y-x" id="docX" aria-label="Cerrar">✕</button>
     <div class="a11y-title serif" id="docTitle">Documento</div>
     <div id="docBody" class="docbody"></div>
+  </div>
+</div>
+
+<div id="archModal" class="a11y-ov ovc" style="display:none">
+  <div class="a11y-box" style="max-height:84vh;overflow-y:auto">
+    <button class="a11y-x" id="archX" aria-label="Cerrar">✕</button>
+    <div class="a11y-title serif">Avisos anteriores</div>
+    <p class="lead" style="margin:2px 0 12px">Comunicados que ya vencieron. Toca uno para verlo completo.</p>
+    <div id="archList"></div>
   </div>
 </div>
 
@@ -1529,16 +1546,19 @@ async function renderMural(){
   if(source===null){ source = (jornada==="tech") ? AVISOS : []; }
   const today=new Date(); today.setHours(0,0,0,0);
   const NIV={importante:{c:"#8b0c0c",bg:"#fdeaea"},info:{c:"#1d4ed8",bg:"#e9f0fd"},evento:{c:"#9a6b00",bg:"#fbf3df"},normal:{c:"#6c0909",bg:"#fffdf8"}};
-  const items=source.map(a=>{
+  let items=source.map(a=>{
     let dleft=null;
     if(a.hasta){const d=new Date(a.hasta+"T00:00:00");dleft=Math.round((d-today)/86400000);}
     let okDesde=true;
     if(a.desde){const ds=new Date(a.desde+"T00:00:00");okDesde=today>=ds;}
     return Object.assign({},a,{dleft:dleft,okDesde:okDesde});
-  }).filter(a=> a.okDesde && (a.dleft===null || a.dleft>=0));
+  }).filter(a=> a.okDesde);
+  const vencidos=items.filter(a=> a.dleft!==null && a.dleft<0).sort((x,y)=> y.dleft-x.dleft);
+  items=items.filter(a=> a.dleft===null || a.dleft>=0);
   items.sort((x,y)=>{ if(x.dleft===null)return 1; if(y.dleft===null)return -1; return x.dleft-y.dleft; });
   if(!items.length){ box.innerHTML='<div class="muralempty">No hay avisos por ahora 🎉</div>'; return; }
-  window.__muralItems=items;
+  window.__muralItems=items.concat(vencidos);
+  window.__muralPast=vencidos.length;
   box.innerHTML=items.map((a,ix)=>{
     const n=NIV[a.nivel]||NIV.normal;
     let cd="";
@@ -1556,6 +1576,13 @@ async function renderMural(){
       (a.cta?'<div class="mdocflag">📎 Incluye documento</div>':'')+
       '</div>';
   }).join("");
+  /* Acceso al historial de avisos vencidos (fuera del mural) */
+  if(vencidos.length){
+    box.insertAdjacentHTML("beforeend",
+      '<button type="button" class="archbtn" id="archBtn">🗄️ Ver avisos anteriores ('+vencidos.length+')</button>');
+    var ab=document.getElementById("archBtn");
+    if(ab)ab.onclick=function(){ abrirHistorial(items.length,vencidos); };
+  }
   /* Marcar solo las tarjetas cuyo texto realmente quedó cortado */
   box.querySelectorAll(".mcard").forEach(function(c){
     var t=c.querySelector(".mtext");
@@ -1564,6 +1591,35 @@ async function renderMural(){
     c.onclick=open;
     c.onkeydown=function(ev){ if(ev.key==="Enter"||ev.key===" "){ ev.preventDefault(); open(); } };
   });
+}
+/* Historial: avisos que ya vencieron, en ventana aparte (no ocupan el mural) */
+function abrirHistorial(offset,vencidos){
+  var NIV={importante:{c:"#8b0c0c",bg:"#fdeaea"},info:{c:"#1d4ed8",bg:"#e9f0fd"},evento:{c:"#9a6b00",bg:"#fbf3df"},normal:{c:"#6c0909",bg:"#fffdf8"}};
+  var fmt=function(d){ try{ return new Date(d).toLocaleDateString("es-CL",{day:"numeric",month:"short",year:"numeric"}); }catch(e){ return ""; } };
+  var host=document.getElementById("archList"); if(!host)return;
+  host.innerHTML=vencidos.map(function(a,k){
+    var n=NIV[a.nivel]||NIV.normal;
+    var d=Math.abs(a.dleft);
+    var cuando=(d===0?"venció hoy":d===1?"venció ayer":"venció hace "+d+" días");
+    return '<div class="arow" data-ix="'+(offset+k)+'" tabindex="0" role="button" aria-label="Abrir aviso: '+esc(a.titulo)+'">'+
+      '<div class="atop"><span class="mtag" style="color:'+n.c+';background:'+n.bg+'">'+esc(a.tipo)+'</span>'+
+      '<span class="awhen">'+esc(a.hasta?fmt(a.hasta+"T00:00:00"):cuando)+'</span></div>'+
+      '<div class="atitle">'+esc(a.titulo)+'</div>'+
+      (a.cta?'<div class="mdocflag">📎 Incluye documento</div>':'')+
+      '</div>';
+  }).join("");
+  host.querySelectorAll(".arow").forEach(function(r){
+    var go=function(){ cerrarHistorial(); openAviso(+r.dataset.ix); };
+    r.onclick=go;
+    r.onkeydown=function(ev){ if(ev.key==="Enter"||ev.key===" "){ ev.preventDefault(); go(); } };
+  });
+  var m=document.getElementById("archModal");
+  if(m){ m.style.display="flex"; try{document.body.style.overflow="hidden";}catch(e){} }
+}
+function cerrarHistorial(){
+  var m=document.getElementById("archModal");
+  if(m)m.style.display="none";
+  try{document.body.style.overflow="";}catch(e){}
 }
 /* Ventana con el aviso completo y sus datos */
 function openAviso(ix){
@@ -1575,7 +1631,12 @@ function openAviso(ix){
   if(a.autor) meta.push('<div class="avmeta"><span class="avml">Publicado por</span><span class="avmv">'+esc(a.autor)+'</span></div>');
   if(a.fecha) meta.push('<div class="avmeta"><span class="avml">Fecha de publicación</span><span class="avmv">'+esc(fmt(a.fecha))+'</span></div>');
   if(a.desde) meta.push('<div class="avmeta"><span class="avml">Vigente desde</span><span class="avmv">'+esc(fmt(a.desde+"T00:00:00"))+'</span></div>');
-  if(a.hasta) meta.push('<div class="avmeta"><span class="avml">Vigente hasta</span><span class="avmv">'+esc(fmt(a.hasta+"T00:00:00"))+(a.dleft!==null?' · '+(a.dleft===0?"último día":a.dleft===1?"queda 1 día":"quedan "+a.dleft+" días"):"")+'</span></div>');
+  if(a.hasta){
+    var vig=(a.dleft!==null&&a.dleft<0)?"Venció el":"Vigente hasta";
+    var det="";
+    if(a.dleft!==null&&a.dleft>=0)det=' · '+(a.dleft===0?"último día":a.dleft===1?"queda 1 día":"quedan "+a.dleft+" días");
+    meta.push('<div class="avmeta"><span class="avml">'+vig+'</span><span class="avmv">'+esc(fmt(a.hasta+"T00:00:00"))+det+'</span></div>');
+  }
   var _safeU=function(u){u=String(u||"").trim();return /^https?:\/\//i.test(u)?u:(/^www\./i.test(u)?"https://"+u:"#");};
   var cta=a.cta?'<a class="mcta" style="background:'+n.c+'" href="'+esc(_safeU(a.cta.url))+'"'+(_safeU(a.cta.url)!=="#"?' target="_blank" rel="noopener noreferrer"':'')+'>'+esc(a.cta.label)+'</a>':"";
   var t=document.getElementById("avisoTag"); if(t){t.textContent=a.tipo;t.style.color=n.c;t.style.background=n.bg;}
@@ -1786,12 +1847,16 @@ if('serviceWorker' in navigator){
   var tfab=document.getElementById('ttsFab');if(tfab)tfab.onclick=ttsGo;
   document.addEventListener('click',function(e){if(e.target&&e.target.closest&&e.target.closest('.tab'))ttsHalt();},true);
   /* Ventana del aviso completo */
+  var arModal=document.getElementById('archModal'),arX=document.getElementById('archX');
+  if(arX)arX.onclick=function(){ if(window.cerrarHistorial)window.cerrarHistorial(); else { arModal.style.display='none'; document.body.style.overflow=''; } };
+  if(arModal)arModal.onclick=function(e){ if(e.target===arModal){ arModal.style.display='none'; try{document.body.style.overflow='';}catch(x){} } };
+
   var avModal=document.getElementById('avisoModal'),avX=document.getElementById('avisoX');
   function closeAviso(){if(avModal)avModal.style.display='none';try{document.body.style.overflow='';}catch(e){}}
   if(avX)avX.onclick=closeAviso;
   if(avModal)avModal.onclick=function(e){if(e.target===avModal)closeAviso();};
 
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var av=document.getElementById('avisoModal');if(av&&av.style.display==='flex'){av.style.display='none';try{document.body.style.overflow='';}catch(e){}return;}var ac=document.getElementById('allCalcModal');if(ac&&ac.style.display==='flex'){ac.style.display='none';return;}var dm=document.getElementById('docModal');if(dm&&dm.style.display==='flex'){dm.style.display='none';return;}if(panel&&panel.style.display==='flex'){panel.style.display='none';}}});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var ar=document.getElementById('archModal');if(ar&&ar.style.display==='flex'){ar.style.display='none';try{document.body.style.overflow='';}catch(x){}return;}var av=document.getElementById('avisoModal');if(av&&av.style.display==='flex'){av.style.display='none';try{document.body.style.overflow='';}catch(e){}return;}var ac=document.getElementById('allCalcModal');if(ac&&ac.style.display==='flex'){ac.style.display='none';return;}var dm=document.getElementById('docModal');if(dm&&dm.style.display==='flex'){dm.style.display='none';return;}if(panel&&panel.style.display==='flex'){panel.style.display='none';}}});
   if(mq.addEventListener)mq.addEventListener('change',function(){if(prefs.theme==='auto')applyTheme();});
 
   /* --- Ventanitas de documentos: Reglamento y Circular --- */
