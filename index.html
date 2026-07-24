@@ -1098,6 +1098,7 @@ document.getElementById("reset").onclick=()=>{if(confirm("¿Reiniciar todo tu pr
 
 const SECS=["mural","malla","calc","hor","plan","pru","info","solic"];
 function go(tab){var _hl=(tab==="plan")?"hor":tab;/* el Planificador se abre desde Horarios: esa pestaña queda marcada */
+  if(typeof logInteraccion==="function")logInteraccion(tab==="plan"?"planificador":tab,"ver seccion");
   document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===_hl));SECS.forEach(s=>document.getElementById(s).style.display=s===tab?"":"none");if(tab==="plan")planPropose();if(tab==="hor")renderHorView(horMode);if(tab==="pru")renderPru(pruMode);if(tab==="calc"&&window.__renderCalc)window.__renderCalc();if(tab==="mural")renderMural();window.scrollTo(0,0);var _at=document.querySelector(".tab.active");if(_at&&typeof _at.scrollIntoView==="function"){try{_at.scrollIntoView({inline:"center",block:"nearest"});}catch(e){}}}
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>go(b.dataset.tab));
 /* La rueda del mouse desplaza la barra de pestañas horizontalmente (computadores) */
@@ -1221,6 +1222,7 @@ function renderAllHor(){
     const cl=clashOf(id,key);
     if(cl){showHorMsg(`⚠️ <b>Coincidencia horaria.</b> Choca con <b>${cl.nm}</b> (${cl.day} ${cl.t0}–${cl.t1}). Debes quitar el otro ramo para inscribir este.`,"warn");return;}
     insc[id]=key;saveInsc();renderAllHor();renderHorTally();
+    if(typeof logInteraccion==="function")logInteraccion("horarios","inscribir ramo");
     /* avisos flotantes informativos (no bloquean): exceso de créditos y exceso de niveles */
     var tot=0;Object.keys(insc).forEach(function(x){tot+=creditsForSel(+x,insc[x]);});
     var nivs=nivelsOfInsc();
@@ -1506,6 +1508,56 @@ const SB_URL="https://pohrbljeamhfkcjxikct.supabase.co";
 const SB_KEY="sb_publishable_XVNXhyYjebrrs0R0oKgLZw_9tBbDazZ";
 let sbc=null; try{ sbc=window.supabase.createClient(SB_URL,SB_KEY); }catch(e){}
 
+/* Contador de visitas anónimo: una marca por dispositivo y por día.
+   No guarda identidad ni IP; solo fecha, jornada y si la app está instalada.
+   Registra a lo más una vez cada 24 h para no inflar cifras ni saturar la base. */
+/* Registro anónimo de interacciones: qué sección y qué acción, con la jornada.
+   Mide intensidad de uso. No guarda identidad ni IP. Falla en silencio. */
+function logInteraccion(seccion,accion){
+  try{
+    if(!sbc||!seccion||!accion) return;
+    var jor=null; try{ jor=localStorage.getItem("jornada3_v1")||null; }catch(e){}
+    sbc.from("interacciones").insert({
+      seccion:String(seccion).slice(0,40),
+      accion:String(accion).slice(0,40),
+      jornada:jor
+    }).then(function(r){
+      if(r&&r.error&&window.console)console.warn("[UApp] interacción no registrada:",r.error.message||r.error);
+    },function(e){ if(window.console)console.warn("[UApp] interacción: error de red",e&&e.message); });
+  }catch(e){}
+}
+
+(function registrarVisita(){
+  try{
+    if(!sbc) return;
+    var HOY=new Date().toISOString().slice(0,10);
+    var KEY="visita_v1";
+    var ult=null; try{ ult=localStorage.getItem(KEY); }catch(e){}
+    if(ult===HOY) return;                 /* ya se contó hoy en este dispositivo */
+    /* La jornada puede venir en el enlace (?derechodiurno) y todavía no estar
+       guardada cuando corre este contador. Se lee primero de la URL. */
+    var jor=null;
+    try{
+      var q=(location.search+location.hash+" "+location.pathname).toLowerCase();
+      if(q.indexOf("tech")>=0||q.indexOf("trimestral")>=0) jor="tech";
+      else if(q.indexOf("vespertino")>=0||q.indexOf("vreg")>=0||q.indexOf("regular")>=0) jor="vregular";
+      else if(q.indexOf("diurn")>=0) jor="diurno";
+      if(!jor) jor=localStorage.getItem("jornada3_v1")||null;
+    }catch(e){}
+    /* ¿abierta como app instalada? (standalone) */
+    var app=false;
+    try{
+      app=(window.matchMedia&&window.matchMedia("(display-mode: standalone)").matches)
+          || window.navigator.standalone===true;
+    }catch(e){}
+    sbc.from("visitas").insert({ jornada:jor, instalada:!!app })
+      .then(function(r){
+        if(r&&r.error){ if(window.console)console.warn("[UApp] visita no registrada:",r.error.message||r.error); return; }
+        try{ localStorage.setItem(KEY,HOY); }catch(e){}
+      },function(e){ if(window.console)console.warn("[UApp] visita: error de red",e&&e.message); });
+  }catch(e){}
+})();
+
 /* Convierte en enlaces clicables las URLs de un texto YA ESCAPADO.
    Se aplica después de esc() para no abrir la puerta a inyección de código. */
 /* Formato ligero para los avisos: **negrita**. Se aplica DESPUÉS de escapar,
@@ -1616,6 +1668,7 @@ async function renderMural(){
 }
 /* Historial: avisos que ya vencieron, en ventana aparte (no ocupan el mural) */
 function abrirHistorial(offset,vencidos){
+  if(typeof logInteraccion==="function")logInteraccion("mural","ver historial");
   var NIV={importante:{c:"#8b0c0c",bg:"#fdeaea"},info:{c:"#1d4ed8",bg:"#e9f0fd"},evento:{c:"#9a6b00",bg:"#fbf3df"},normal:{c:"#6c0909",bg:"#fffdf8"}};
   var fmt=function(d){ try{ return new Date(d).toLocaleDateString("es-CL",{day:"numeric",month:"short",year:"numeric"}); }catch(e){ return ""; } };
   var host=document.getElementById("archList"); if(!host)return;
@@ -1646,6 +1699,7 @@ function cerrarHistorial(){
 /* Ventana con el aviso completo y sus datos */
 function openAviso(ix){
   var items=window.__muralItems||[]; var a=items[ix]; if(!a)return;
+  if(typeof logInteraccion==="function")logInteraccion("mural","abrir aviso");
   var NIV={importante:{c:"#8b0c0c",bg:"#fdeaea"},info:{c:"#1d4ed8",bg:"#e9f0fd"},evento:{c:"#9a6b00",bg:"#fbf3df"},normal:{c:"#6c0909",bg:"#fffdf8"}};
   var n=NIV[a.nivel]||NIV.normal;
   var fmt=function(d){ try{ return new Date(d).toLocaleDateString("es-CL",{day:"numeric",month:"long",year:"numeric"}); }catch(e){ return ""; } };
@@ -1843,6 +1897,7 @@ function importData(file){
     }catch(e){}
   }
   function ask(t,esChip){t=(t||"").trim();if(!t)return;addMsg(esc(t),'user');inp.value='';
+    if(typeof logInteraccion==="function")logInteraccion("dona",esChip?"tocar tema":"preguntar");
     const j=jActual();
     const f=bestFaq(t);
     /* Si no calzó nada de su jornada, revisamos si la duda existe pero está
@@ -2295,10 +2350,21 @@ if('serviceWorker' in navigator){
         notas[sid][i]=inp.value;
         saveNotas(notas);
         updateCardResult(inp.closest(".card"),sid);
+        if(inp.value!==""&&!isNaN(parseFloat(inp.value)))marcaCalculo(sid);
       };
     });
   }
   /* Actualiza reloj + mensaje de una tarjeta sin tocar los inputs (preserva foco) */
+  var _calcTimer=null, _calcVistos={};
+  function marcaCalculo(sid){
+    if(_calcVistos[sid]) return;         /* ya se contó este ramo en esta sesión */
+    clearTimeout(_calcTimer);
+    _calcTimer=setTimeout(function(){
+      if(_calcVistos[sid])return;
+      _calcVistos[sid]=true;
+      if(typeof logInteraccion==="function")logInteraccion("simulador","calcular nota");
+    },1200);                              /* espera a que deje de escribir */
+  }
   function updateCardResult(card,sid){
     if(!card)return;
     var cid=sid.replace(/^[ra]/,"");
