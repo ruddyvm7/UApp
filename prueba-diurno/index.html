@@ -5,7 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#8b0c0c">
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="index, follow">
+<meta name="description" content="UApp · Plataforma estudiantil de la Carrera de Derecho de la Universidad Autónoma de Chile, sede Temuco: malla y avance curricular, horarios, planificador de carga, calendario de evaluaciones, simulador de notas y avisos oficiales.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="UApp · Derecho UA Temuco">
+<meta property="og:description" content="Tu malla, tus horarios, tus evaluaciones y tus notas en un solo lugar. Carrera de Derecho · Universidad Autónoma de Chile, sede Temuco.">
+<meta property="og:url" content="https://miuapp.cl/">
+<meta property="og:image" content="https://miuapp.cl/icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://miuapp.cl/">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="UApp">
@@ -32,8 +40,8 @@ body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--i
 .tabbar::-webkit-scrollbar{height:4px}
 .tabbar::-webkit-scrollbar-thumb{background:#c9c2b6;border-radius:4px}
 .tabbar::-webkit-scrollbar-track{background:transparent}
-.tab:first-child{margin-left:auto}
-.tab:last-child{margin-right:auto}
+.tab.tab-first{margin-left:auto}
+.tab.tab-last{margin-right:auto}
 .brandbar{display:flex;align-items:center;gap:12px;padding:11px 16px;background:var(--wine);color:#fff}
 .brandlogo{width:48px;height:48px;flex:0 0 48px;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:3px}
 .brandlogo img{width:100%;height:100%;object-fit:contain}
@@ -252,9 +260,18 @@ body.reduce .progfill{transition:none}
 .elab{flex:0 0 88px;color:#8a7b5e;font-weight:700}
 .edates{color:#2a2118;display:flex;flex-direction:column;gap:2px}
 .ecols{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:9px}
+.cnota{display:block;margin-top:6px;font-size:10.5px;opacity:.72;line-height:1.4}
 .mlink{color:var(--wine,#8b0c0c);font-weight:700;text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere;word-break:break-word}
 .mlink:hover,.mlink:focus-visible{color:var(--gold2,#a8801f)}
 body.dark .mlink{color:var(--gold,#c79a3e)}
+.archbtn{display:block;width:100%;margin-top:4px;background:var(--card);border:1px dashed var(--cb2);color:var(--muted);font-family:inherit;font-size:13px;font-weight:700;padding:12px;border-radius:12px;cursor:pointer}
+.archbtn:hover,.archbtn:focus-visible{border-color:var(--gold);color:var(--gold2)}
+.arow{border:1px solid var(--cb);border-radius:11px;padding:11px 13px;margin-bottom:8px;cursor:pointer;background:var(--card)}
+.arow:hover{border-color:var(--gold)}
+.arow:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.atop{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:5px}
+.awhen{font-size:11px;color:var(--muted);font-weight:700;white-space:nowrap}
+.atitle{font-size:14px;font-weight:700;color:var(--ink);line-height:1.35}
 .mcard{cursor:pointer}
 .mcard:focus-visible{outline:2px solid var(--gold,#c79a3e);outline-offset:2px}
 .mtext{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
@@ -572,7 +589,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
         <span class="jov-op-desc">Clases de tarde · régimen trimestral</span>
       </button>
     </div>
-    <p class="jov-foot">Podrás cambiar de jornada cuando quieras desde la barra superior.<br>Prototipo: Diurno y Vespertino Regular incluyen horarios y calendario de pruebas reales; el Mural muestra contenido de ejemplo.</p>
+    <p class="jov-foot">Podrás cambiar de jornada cuando quieras desde la barra superior.</p>
   </div>
 </div>
 <div class="brandbar">
@@ -587,9 +604,9 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
 <div class="tabbar">
   <button class="tab active" data-tab="mural">Mural</button>
   <button class="tab" data-tab="malla">Avance Curricular</button>
-  <button class="tab" data-tab="calc">Simulador de Notas</button>
   <button class="tab" data-tab="hor">Horarios</button>
   <button class="tab" data-tab="pru">Pruebas</button>
+  <button class="tab" data-tab="calc">Simulador de Notas</button>
   <button class="tab" data-tab="info">Info</button>
   <button class="tab" data-tab="solic">Solicitudes</button>
 </div>
@@ -650,7 +667,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
 <section id="hor" style="display:none"><div class="wrap">
   <div class="mh serif">Horario del trimestre</div><div class="msub">Otoño 2026 · 2º trimestre.</div>
   <div class="mallaSwitch">
-    <button type="button" class="mSwBtn" id="toPlan">🧭 Planificador de carga</button>
+    <button type="button" class="mSwBtn" id="toPlan">🧭 Planificador de carga</button> <button type="button" class="mSwBtn" id="dlHor">🖨️ Horario en PDF</button>
   </div>
   <div class="seg" id="horSeg" style="max-width:560px">
     <button class="on" data-h="all">Todos los horarios</button>
@@ -665,6 +682,8 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
   <div class="mh serif">Planificador de carga</div>
   <div class="msub">Cruza tu avance con la oferta del trimestre y propone qué tomar, sin choques de horario.</div>
   <div class="disc">⚠️ Propuesta <b>referencial</b>, no es una inscripción oficial. Confirma siempre con tu malla y con Registro Curricular antes de inscribir.</div>
+  <button type="button" class="mSwBtn" id="dlPlan">🖨️ Respaldo para la toma de carga (PDF)</button>
+  <div class="hint" style="font-size:.72rem;color:var(--muted);margin:4px 0 8px">Genera un documento con tu avance declarado, los ramos que seleccionaste en Horarios y las verificaciones de la app, para adjuntar o llevar impreso a tu solicitud de toma de carga.</div>
   <div id="planOut" style="margin-top:6px"></div>
   <div class="note" style="margin-top:12px"><b>📌 A tener en cuenta:</b> se priorizan los ramos <b>reprobados</b> y los del <b>nivel más bajo pendiente</b>, respetando prerrequisitos y los topes de <b id="planNivTope">4 niveles consecutivos</b> y <b>30 créditos</b>.</div>
   <div class="note" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px">La carga se rige por: <a class="doclink" id="lnkReg" href="javascript:void(0)">📖 Reglamento del Estudiante</a> <a class="doclink" id="lnkCirc" href="javascript:void(0)">📄 Circular N°03/2026</a></div>
@@ -678,6 +697,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
     <button data-m="mine">Mis ramos inscritos</button>
   </div>
   <div id="inscBox" class="inscbox" style="display:none"></div>
+  <div style="margin:8px 0"><button type="button" class="mSwBtn" id="dlPru">🖨️ Calendario en PDF</button></div>
   <div id="pruList"></div>
   <div class="pinfo" style="margin-top:14px"><b>Fechas relevantes del trimestre.</b> Inicio de clases: 1 jun · Fin del período lectivo: 28 ago · Receso: 13–17 jul · Feriados: 29 jun, 16 jul, 15 ago · Evaluaciones finales: 31 ago – 2 sep.</div>
   <p class="note">Fechas oficiales de la Carrera (TECH · 2º trimestre 2026). Algunas asignaturas tienen distinta fecha según sección (S1/S2/S3); revisa la tuya. La actividad acumulativa no tiene fecha fija.</p>
@@ -778,7 +798,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
   <div class="legal-box">
     <button class="legal-x" id="legalX" aria-label="Cerrar">✕</button>
     <h3 class="serif">Privacidad</h3>
-    <p>UApp es una herramienta gratuita creada por el Centro de Estudiantes de Derecho Vespertino TECH. Tu avance, notas y ramos inscritos se guardan <b>únicamente en este dispositivo</b> (en el navegador): no se envían a ningún servidor ni los vemos nosotros, y no recopilamos datos personales. Los formularios externos (opinión y solicitudes) son de Google y Microsoft y se rigen por sus propias políticas.</p>
+    <p>UApp es una herramienta gratuita creada por el Centro de Estudiantes de Derecho Vespertino TECH. Tu avance, notas y ramos inscritos se guardan <b>únicamente en este dispositivo</b> (en el navegador): no se envían a ningún servidor ni los vemos nosotros, y no recopilamos datos personales. Los formularios externos (reportes y solicitudes) son de Microsoft y se rigen por sus propias políticas.</p><p>Las preguntas que escribes al asistente <b>Dona Tech</b> se registran de forma <b>anónima</b> —solo el texto de la pregunta, sin tu identidad, sesión ni dispositivo— con el único fin de mejorar las respuestas. No son visibles para quienes administran la aplicación, se revisan periódicamente y se eliminan pasado el tiempo necesario. Por eso te pedimos <b>no escribir datos personales</b> en el asistente.</p>
     <h3 class="serif">Términos de uso</h3>
     <p>UApp es una <b>herramienta de apoyo referencial</b> hecha por estudiantes; no es un sistema oficial de la Universidad. La información (fechas, horarios, calendario, oferta de ramos y reglamento) puede cambiar: confirma siempre con las fuentes oficiales (Registro Curricular y la Dirección de Carrera) antes de tomar decisiones. El uso de la app es de tu responsabilidad.</p>
   </div>
@@ -787,7 +807,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
 <footer>
   <div class="fn serif">Derecho · Universidad Autónoma de Chile</div>
   <p class="motto serif">«Tu voz, nuestra causa»</p>
-  <a class="fbk" href="https://forms.gle/Zo5XL1Pmmv2sGMtm8" target="_blank" rel="noopener">💬 Danos tu opinión</a>
+  <a class="fbk" href="https://forms.cloud.microsoft/r/VysiXNfr1a" target="_blank" rel="noopener noreferrer">💬 Reportar un problema o sugerencia</a>
   <p class="sm">Una herramienta del <b>Centro de Estudiantes de Derecho Vespertino TECH</b> · UA Temuco</p>
   <p class="sm" style="margin-top:8px"><a href="javascript:void(0)" id="openLegal">Términos y Privacidad</a></p>
 </footer>
@@ -858,6 +878,15 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
     <button class="a11y-x" id="docX" aria-label="Cerrar">✕</button>
     <div class="a11y-title serif" id="docTitle">Documento</div>
     <div id="docBody" class="docbody"></div>
+  </div>
+</div>
+
+<div id="archModal" class="a11y-ov ovc" style="display:none">
+  <div class="a11y-box" style="max-height:84vh;overflow-y:auto">
+    <button class="a11y-x" id="archX" aria-label="Cerrar">✕</button>
+    <div class="a11y-title serif">Avisos anteriores</div>
+    <p class="lead" style="margin:2px 0 12px">Comunicados que ya vencieron. Toca uno para verlo completo.</p>
+    <div id="archList"></div>
   </div>
 </div>
 
@@ -1072,6 +1101,7 @@ document.getElementById("reset").onclick=()=>{if(confirm("¿Reiniciar todo tu pr
 
 const SECS=["mural","malla","calc","hor","plan","pru","info","solic"];
 function go(tab){var _hl=(tab==="plan")?"hor":tab;/* el Planificador se abre desde Horarios: esa pestaña queda marcada */
+  if(typeof logInteraccion==="function")logInteraccion(tab==="plan"?"planificador":tab,"ver seccion");
   document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===_hl));SECS.forEach(s=>document.getElementById(s).style.display=s===tab?"":"none");if(tab==="plan")planPropose();if(tab==="hor")renderHorView(horMode);if(tab==="pru")renderPru(pruMode);if(tab==="calc"&&window.__renderCalc)window.__renderCalc();if(tab==="mural")renderMural();window.scrollTo(0,0);var _at=document.querySelector(".tab.active");if(_at&&typeof _at.scrollIntoView==="function"){try{_at.scrollIntoView({inline:"center",block:"nearest"});}catch(e){}}}
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>go(b.dataset.tab));
 /* La rueda del mouse desplaza la barra de pestañas horizontalmente (computadores) */
@@ -1080,7 +1110,174 @@ document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>go(b.dataset.tab));
 function escHtml(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");}
 
 /* Horarios Otoño 2026 · 2º trimestre (por nivel y sección) */
-const DIAS={L:"Lunes",M:"Martes",X:"Miércoles",J:"Jueves",V:"Viernes"};
+const DIAS={L:"Lunes",M:"Martes",X:"Miércoles",J:"Jueves",V:"Viernes",S:"Sábado"};
+
+/* ================= Documentos imprimibles (PDF vía diálogo del sistema) =================
+   Genera un documento limpio en un iframe oculto y abre el diálogo de impresión:
+   ahí el estudiante elige "Guardar como PDF" o imprime directo. Sin dependencias. */
+function _e(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function _jLabel(){var j=null;try{j=localStorage.getItem("jornada3_v1");}catch(e){}
+  return j==="diurno"?"Jornada Diurna":j==="vregular"?"Jornada Vespertina Regular":"Jornada Vespertina TECH";}
+function _fGen(){try{return new Date().toLocaleString("es-CL",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});}catch(e){return new Date().toISOString().slice(0,16).replace("T"," ");}}
+function imprimirDoc(titulo,sub,cuerpo,piePersonal){
+  var css='@page{size:letter;margin:14mm}'+
+  '*{box-sizing:border-box}body{font-family:Georgia,\'Times New Roman\',serif;color:#2b2724;margin:0;font-size:12px;line-height:1.45;-webkit-print-color-adjust:exact;print-color-adjust:exact}'+
+  '.top{border-bottom:3px solid #8b0c0c;padding-bottom:8px;margin-bottom:12px}'+
+  '.brand{font-size:20px;font-weight:bold;color:#8b0c0c}.brand span{color:#c79a3e}'+
+  '.tt{font-size:16px;font-weight:bold;margin-top:2px}.sub{color:#6b6660;font-size:11px;margin-top:2px}'+
+  'h2{font-size:13px;color:#8b0c0c;border-bottom:1px solid #c79a3e;padding-bottom:3px;margin:14px 0 7px}'+
+  'table{width:100%;border-collapse:collapse;margin:6px 0}th,td{border:1px solid #d8d2c6;padding:5px 7px;text-align:left;vertical-align:top}'+
+  'th{background:#f4efe6;font-size:10.5px;text-transform:uppercase;letter-spacing:.4px}'+
+  '.ok{background:#e7f3ea}.no{background:#fbe6e2}.pen{background:#f3f1ec;color:#6b6660}'+
+  '.chip{display:inline-block;border:1px solid #cfc9bd;border-radius:5px;padding:1.5px 6px;margin:1.5px;font-size:9.6px}'+
+  '.chip.ok{border-color:#1f7a48;background:#e7f3ea}.chip.no{border-color:#a33;background:#fbe6e2}'+
+  '.tag{font-weight:bold}.tag.si{color:#1f7a48}.tag.alerta{color:#a33}'+
+  '.res{display:flex;gap:14px;margin:6px 0}.res b{font-size:16px}'+
+  '.firma{margin-top:22px;display:flex;gap:26px}.firma div{flex:1;border-top:1px solid #2b2724;padding-top:4px;font-size:11px;text-align:center}'+
+  '.pie{margin-top:16px;border-top:1px solid #d8d2c6;padding-top:7px;font-size:9.6px;color:#6b6660}'+
+  '.nota{background:#faf7f1;border-left:3px solid #c79a3e;padding:6px 9px;margin:8px 0;font-size:10.6px}';
+  var html='<!doctype html><html><head><meta charset="utf-8"><title>'+_e(titulo)+'</title><style>'+css+'</style></head><body>'+
+    '<div class="top"><div class="brand">U<span>App</span> · Derecho · UA Temuco</div>'+
+    '<div class="tt">'+_e(titulo)+'</div><div class="sub">'+_e(sub)+' · Generado el '+_e(_fGen())+'</div></div>'+
+    cuerpo+
+    (piePersonal||'')+
+    '<div class="pie">Documento <b>informativo</b> generado por el propio estudiante en UApp (miuapp.cl) a partir de la información que él registra en su dispositivo. '+
+    'No es un certificado ni reemplaza al registro académico oficial de la Universidad. Ante cualquier diferencia, prima la información de Registro Curricular.</div>'+
+    '</body></html>';
+  try{ window.__lastPrint={titulo:titulo,html:html}; }catch(e){}
+  try{
+    var fr=document.createElement("iframe");
+    fr.style.cssText="position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden";
+    document.body.appendChild(fr);
+    var d=fr.contentDocument||fr.contentWindow.document;
+    d.open();d.write(html);d.close();
+    var done=function(){ try{document.body.removeChild(fr);}catch(e){} };
+    setTimeout(function(){
+      try{ fr.contentWindow.focus(); fr.contentWindow.print(); }catch(e){}
+      if(fr.contentWindow && "onafterprint" in fr.contentWindow){ fr.contentWindow.onafterprint=done; setTimeout(done,120000); }
+      else setTimeout(done,120000);
+    },150);
+  }catch(e){}
+}
+function _cursoDe(id,key){
+  var na=String(key||"").indexOf("na_")===0;
+  var lista=na?(typeof COURSES_NA!=="undefined"?COURSES_NA:[]):(typeof COURSES!=="undefined"?COURSES:[]);
+  var c=null;lista.forEach(function(x){if(x.id===id)c=x;});
+  if(!c){(na?COURSES:COURSES_NA).forEach(function(x){if(x.id===id)c=x;});}
+  return c;
+}
+function _prerreqOK(id,key){
+  var na=String(key||"").indexOf("na_")===0;
+  var c=_cursoDe(id,key); if(!c)return null;
+  try{ return na?isUnlockedNA(c):isUnlocked(c); }catch(e){ return null; }
+}
+function _inscritosDetalle(){
+  var ids=Object.keys(insc).map(Number), out=[];
+  ids.forEach(function(id){
+    var key=insc[id], ses=sessionsOf(id,key), c=_cursoDe(id,key);
+    out.push({id:id,key:key,nombre:c?c.n:(ses[0]?ses[0][3]:("Ramo "+id)),nivel:c?c.t:null,
+              cred:(typeof creditsForSel==="function"?creditsForSel(id,key):0),
+              ses:ses,prerreq:_prerreqOK(id,key)});
+  });
+  out.sort(function(a,b){return (a.nivel||99)-(b.nivel||99)||a.id-b.id;});
+  return out;
+}
+function _minutos(t){var p=String(t).split(":");return (+p[0])*60+(+p[1]);}
+function docHorario(){
+  var det=_inscritosDetalle();
+  if(!det.length){ imprimirDoc("Mi horario semanal",_jLabel(),
+    '<div class="nota">Aún no has seleccionado ramos. Ve a <b>Horarios</b>, toca las secciones que vas a cursar y vuelve a generar este documento.</div>'); return; }
+  var ord=["L","M","X","J","V","S"], filas="";
+  ord.forEach(function(d){
+    var del=[];
+    det.forEach(function(r){ r.ses.forEach(function(se){ if(se[0]===d)del.push({se:se,n:r.nombre}); }); });
+    if(!del.length)return;
+    del.sort(function(a,b){return _minutos(a.se[1])-_minutos(b.se[1]);});
+    del.forEach(function(x,i){
+      filas+="<tr>"+(i===0?'<td rowspan="'+del.length+'"><b>'+_e(DIAS[d]||d)+"</b></td>":"")+
+        "<td>"+_e(x.se[1])+"–"+_e(x.se[2])+"</td><td>"+_e(x.n)+"</td><td>"+_e(x.se[4]||"—")+"</td><td>"+_e(x.se[5]||"—")+"</td></tr>";
+    });
+  });
+  var sct=0,horas=0;det.forEach(function(r){sct+=(r.cred||0);r.ses.forEach(function(se){horas+=(_minutos(se[2])-_minutos(se[1]))/60;});});
+  var cuerpo='<div class="res"><div><b>'+det.length+'</b> ramos</div><div><b>'+sct+'</b> SCT</div><div><b>'+(Math.round(horas*10)/10)+'</b> h semanales</div></div>'+
+    '<table><tr><th>Día</th><th>Horario</th><th>Asignatura</th><th>Sala</th><th>Docente</th></tr>'+filas+"</table>";
+  imprimirDoc("Mi horario semanal",_jLabel(),cuerpo);
+  if(typeof logInteraccion==="function")logInteraccion("horarios","descargar horario");
+}
+function docPruebas(){
+  var ids=Object.keys(insc).map(Number);
+  var lista=EVALS.slice(), mios=false;
+  if(ids.length){
+    var f=lista.filter(function(e){
+      if(PRU_REG==="sem")return ids.some(function(id){var p=String(insc[id]||"").indexOf("na_")===0?"na":"aj";return (e[p]||[]).indexOf(id)>=0;});
+      return ids.indexOf(e.id)>=0;
+    });
+    if(f.length){lista=f;mios=true;}
+  }
+  lista.sort(function(a,b){return a.niv-b.niv||String(a.asig).localeCompare(String(b.asig));});
+  var filas="";
+  lista.forEach(function(e){
+    var fech=[];
+    if(PRU_REG==="sem"){
+      ["e1","e2","e3"].forEach(function(k,i){ (e[k]||[]).forEach(function(d){fech.push("Ev."+(i+1)+": "+d);}); });
+      if(e.noExam)fech.push("Sin examen");
+    }else{
+      (e.p1||[]).forEach(function(p){fech.push("S"+p[1]+" P1: "+p[0]);});
+      (e.p2||[]).forEach(function(p){fech.push("S"+p[1]+" P2: "+p[0]);});
+      if(e.fin)fech.push("Examen: "+e.fin);
+      if(e.act)fech.push("Acumulativa: "+e.act);
+    }
+    filas+="<tr><td>"+_e(e.asig)+(e.plan==="na"?' <span class="chip">Plan No Ajustado</span>':"")+"</td><td>"+_e(e.niv)+"</td><td>"+_e(fech.join(" · "))+(e.note?'<br><span style="font-size:9.5px;color:#6b6660">'+_e(e.note)+"</span>":"")+"</td></tr>";
+  });
+  var cuerpo=(mios?'<div class="nota">Mostrando <b>solo tus ramos inscritos</b> en Horarios ('+ids.length+'). El calendario completo está en la app.</div>':"")+
+    '<table><tr><th>Asignatura</th><th>Nivel</th><th>Fechas</th></tr>'+filas+"</table>";
+  imprimirDoc("Calendario de evaluaciones",_jLabel(),cuerpo);
+  if(typeof logInteraccion==="function")logInteraccion("pruebas","descargar calendario");
+}
+function docRespaldo(){
+  var esNA=(typeof curMalla!=="undefined"&&curMalla==="noajustada");
+  var C=esNA?COURSES_NA:COURSES, S=esNA?stateNA:state;
+  var det=_inscritosDetalle();
+  var ap=0,rep=0,pen=0,chips={},maxT=0;
+  C.forEach(function(c){maxT=Math.max(maxT,c.t);var st=S[c.id];if(st==="ok")ap++;else if(st==="no")rep++;else pen++;
+    (chips[c.t]=chips[c.t]||[]).push('<span class="chip '+(st==="ok"?"ok":st==="no"?"no":"")+'">'+_e(c.n)+"</span>");});
+  var malla="";
+  for(var t=1;t<=maxT;t++){ if(chips[t])malla+="<tr><td style='white-space:nowrap'><b>Nivel "+t+"</b></td><td>"+chips[t].join("")+"</td></tr>"; }
+  var cuerpo='<h2>1 · Situación curricular declarada</h2>'+
+    '<div class="res"><div><b>'+ap+'</b> aprobadas</div><div><b>'+rep+'</b> reprobadas</div><div><b>'+pen+'</b> pendientes</div><div>Malla: <b>'+(esNA?"Plan No Ajustado (Res. 135/2017)":"Plan Ajustado (Res. 165/2022)")+'</b></div></div>'+
+    '<table>'+malla+'</table>'+
+    '<div class="nota">Verde = aprobada · Rojo = reprobada · Sin color = pendiente. Avance <b>declarado por el estudiante</b> en la app.</div>';
+  cuerpo+='<h2>2 · Ramos que solicita inscribir</h2>';
+  if(!det.length){
+    cuerpo+='<div class="nota">El estudiante aún no seleccionó secciones en <b>Horarios</b>. Este documento debe generarse con la combinación elegida.</div>';
+  }else{
+    var filas="";det.forEach(function(r){
+      var pr=(r.prerreq===null)?"—":(r.prerreq?'<span class="tag si">✓ cumple</span>':'<span class="tag alerta">✗ revisar</span>');
+      var hor=r.ses.map(function(se){return (DIAS[se[0]]||se[0]).slice(0,3)+" "+se[1]+"–"+se[2];}).join(" · ");
+      filas+="<tr><td>"+_e(r.nombre)+"</td><td>"+_e(r.nivel==null?"—":r.nivel)+"</td><td>"+_e(r.cred||"—")+"</td><td>"+_e(hor||"—")+"</td><td>"+pr+"</td></tr>";
+    });
+    cuerpo+='<table><tr><th>Asignatura</th><th>Nivel</th><th>SCT</th><th>Horario</th><th>Prerrequisitos</th></tr>'+filas+"</table>";
+    /* Verificaciones */
+    var choques=[];
+    for(var i=0;i<det.length;i++)for(var j=i+1;j<det.length;j++){
+      det[i].ses.forEach(function(a){det[j].ses.forEach(function(b){ if(overlaps(a,b))choques.push(_e(det[i].nombre)+" ↔ "+_e(det[j].nombre)+" ("+(DIAS[a[0]]||a[0])+")"); });});
+    }
+    var sct=0;det.forEach(function(r){sct+=(r.cred||0);});
+    var nivs={};det.forEach(function(r){if(r.nivel!=null)nivs[r.nivel]=1;});
+    var nNiv=Object.keys(nivs).length;
+    var jor=null;try{jor=localStorage.getItem("jornada3_v1");}catch(e){}
+    var tope=(jor==="tech")?4:3, regla=(jor==="tech")?"Res. de Rectoría 009/2024, art. 17 (régimen trimestral)":"Reglamento General del Estudiante, art. 17 (régimen semestral)";
+    var faltaPr=det.filter(function(r){return r.prerreq===false;}).length;
+    cuerpo+='<h2>3 · Verificaciones de la aplicación</h2><table>'+
+      '<tr><td>Coincidencias de horario entre las secciones elegidas</td><td>'+(choques.length?'<span class="tag alerta">✗ '+choques.join(" · ")+'</span>':'<span class="tag si">✓ Sin topes</span>')+"</td></tr>"+
+      '<tr><td>Prerrequisitos según el avance declarado</td><td>'+(faltaPr?'<span class="tag alerta">✗ '+faltaPr+' ramo(s) por revisar</span>':'<span class="tag si">✓ Todos cumplen</span>')+"</td></tr>"+
+      '<tr><td>Niveles distintos en la selección ('+nNiv+') — tope '+tope+' · '+_e(regla)+'</td><td>'+(nNiv<=tope?'<span class="tag si">✓ Dentro del tope</span>':'<span class="tag alerta">✗ Excede el tope</span>')+"</td></tr>"+
+      '<tr><td>Créditos seleccionados</td><td><b>'+sct+' SCT</b>'+(sct>30?' <span class="tag alerta">— sobre el máximo de 30 SCT del período (Circular N°03/2026)</span>':' <span class="tag si">✓ dentro del máximo del período (30 SCT)</span>')+"</td></tr></table>";
+  }
+  var firma='<div class="firma"><div>Nombre del estudiante</div><div>RUT</div><div>Firma</div></div>';
+  imprimirDoc("Respaldo de planificación de carga académica",_jLabel(),cuerpo,firma);
+  if(typeof logInteraccion==="function")logInteraccion("planificador","descargar respaldo");
+}
 const BL_TECH=[["19:10","19:50"],["19:50","20:30"],["20:40","21:20"],["21:20","22:00"],["22:10","22:50"]];
 const HOR_TECH={
  n2s1:{l:"1er año (Nivel 2) · Sección 1",s:[["L","19:10","21:20","Teoría de la Ley y las Personas","SH-32","Hernán Parada Sotomayor"],["M","19:10","20:30","Historia Institucional de Chile","SH-32","Mauricio Silva Kachele"],["M","20:40","22:00","Historia y Evolución de las Instituciones","SH-32","Jorge Reinoso Elgueda"],["X","19:10","21:20","Teoría de la Ley y las Personas","SH-32","Hernán Parada Sotomayor"],["J","19:10","20:30","Historia y Evolución de las Instituciones","SH-32","Jorge Reinoso Elgueda"],["J","20:40","22:00","Historia Institucional de Chile","SH-32","Mauricio Silva Kachele"],["V","19:10","21:20","Comunicación y Argumentación","—","—"]]},
@@ -1195,6 +1392,7 @@ function renderAllHor(){
     const cl=clashOf(id,key);
     if(cl){showHorMsg(`⚠️ <b>Coincidencia horaria.</b> Choca con <b>${cl.nm}</b> (${cl.day} ${cl.t0}–${cl.t1}). Debes quitar el otro ramo para inscribir este.`,"warn");return;}
     insc[id]=key;saveInsc();renderAllHor();renderHorTally();
+    if(typeof logInteraccion==="function")logInteraccion("horarios","inscribir ramo");
     /* avisos flotantes informativos (no bloquean): exceso de créditos y exceso de niveles */
     var tot=0;Object.keys(insc).forEach(function(x){tot+=creditsForSel(+x,insc[x]);});
     var nivs=nivelsOfInsc();
@@ -1480,8 +1678,82 @@ const SB_URL="https://pohrbljeamhfkcjxikct.supabase.co";
 const SB_KEY="sb_publishable_XVNXhyYjebrrs0R0oKgLZw_9tBbDazZ";
 let sbc=null; try{ sbc=window.supabase.createClient(SB_URL,SB_KEY); }catch(e){}
 
+/* ¿Estamos en el ambiente de prueba (carpeta /prueba…)? Si es así:
+   no se registran visitas, interacciones ni consultas (para no contaminar
+   las métricas reales), no se activa el guardado sin conexión, y se pide
+   a los buscadores no indexar la página. El mismo archivo sirve para
+   producción y para prueba sin mantener dos versiones. */
+var ES_PRUEBA=false; try{ ES_PRUEBA=/\/prueba/i.test(location.pathname); }catch(e){}
+if(ES_PRUEBA){
+  try{
+    var mr=document.createElement("meta"); mr.name="robots"; mr.content="noindex,nofollow";
+    document.head.appendChild(mr);
+    document.addEventListener("DOMContentLoaded",function(){
+      var b=document.createElement("div");
+      b.textContent="🧪 Ambiente de prueba";
+      b.style.cssText="position:fixed;left:10px;bottom:10px;z-index:9999;background:#8b0c0c;color:#fff;font:600 11px/1 Inter,system-ui,sans-serif;padding:6px 10px;border-radius:20px;opacity:.92;pointer-events:none";
+      document.body.appendChild(b);
+    });
+  }catch(e){}
+}
+
+/* Contador de visitas anónimo: una marca por dispositivo y por día.
+   No guarda identidad ni IP; solo fecha, jornada y si la app está instalada.
+   Registra a lo más una vez cada 24 h para no inflar cifras ni saturar la base. */
+/* Registro anónimo de interacciones: qué sección y qué acción, con la jornada.
+   Mide intensidad de uso. No guarda identidad ni IP. Falla en silencio. */
+function logInteraccion(seccion,accion){
+  try{
+    if(ES_PRUEBA) return;
+    if(!sbc||!seccion||!accion) return;
+    var jor=null; try{ jor=localStorage.getItem("jornada3_v1")||null; }catch(e){}
+    sbc.from("interacciones").insert({
+      seccion:String(seccion).slice(0,40),
+      accion:String(accion).slice(0,40),
+      jornada:jor
+    }).then(function(r){
+      if(r&&r.error&&window.console)console.warn("[UApp] interacción no registrada:",r.error.message||r.error);
+    },function(e){ if(window.console)console.warn("[UApp] interacción: error de red",e&&e.message); });
+  }catch(e){}
+}
+
+(function registrarVisita(){
+  try{
+    if(ES_PRUEBA) return;
+    if(!sbc) return;
+    var HOY=new Date().toISOString().slice(0,10);
+    var KEY="visita_v1";
+    var ult=null; try{ ult=localStorage.getItem(KEY); }catch(e){}
+    if(ult===HOY) return;                 /* ya se contó hoy en este dispositivo */
+    /* La jornada puede venir en el enlace (?derechodiurno) y todavía no estar
+       guardada cuando corre este contador. Se lee primero de la URL. */
+    var jor=null;
+    try{
+      var q=(location.search+location.hash+" "+location.pathname).toLowerCase();
+      if(q.indexOf("tech")>=0||q.indexOf("trimestral")>=0) jor="tech";
+      else if(q.indexOf("vespertino")>=0||q.indexOf("vreg")>=0||q.indexOf("regular")>=0) jor="vregular";
+      else if(q.indexOf("diurn")>=0) jor="diurno";
+      if(!jor) jor=localStorage.getItem("jornada3_v1")||null;
+    }catch(e){}
+    /* ¿abierta como app instalada? (standalone) */
+    var app=false;
+    try{
+      app=(window.matchMedia&&window.matchMedia("(display-mode: standalone)").matches)
+          || window.navigator.standalone===true;
+    }catch(e){}
+    sbc.from("visitas").insert({ jornada:jor, instalada:!!app })
+      .then(function(r){
+        if(r&&r.error){ if(window.console)console.warn("[UApp] visita no registrada:",r.error.message||r.error); return; }
+        try{ localStorage.setItem(KEY,HOY); }catch(e){}
+      },function(e){ if(window.console)console.warn("[UApp] visita: error de red",e&&e.message); });
+  }catch(e){}
+})();
+
 /* Convierte en enlaces clicables las URLs de un texto YA ESCAPADO.
    Se aplica después de esc() para no abrir la puerta a inyección de código. */
+/* Formato ligero para los avisos: **negrita**. Se aplica DESPUÉS de escapar,
+   por lo que no permite inyectar HTML. */
+function fmtTxt(s){ return String(s).replace(/\*\*([^*\n]+)\*\*/g,'<b>$1</b>'); }
 function linkify(escaped){
   return String(escaped).replace(/(https?:\/\/[^\s<]+|www\.[^\s<]+)/g,function(m){
     var url=m, tail="";
@@ -1513,7 +1785,7 @@ async function renderMural(){
         new Promise((_,rej)=>setTimeout(()=>rej(new Error("timeout")),6000))
       ]);
       if(r && !r.error && Array.isArray(r.data)){
-        source=r.data.map(a=>({tipo:TIPO[a.nivel]||"Aviso",nivel:a.nivel||"normal",titulo:a.titulo||"",texto:a.texto||"",hasta:a.hasta||null,desde:a.desde||null,autor:(a.autor||a.publicado_por||a.creado_por||"")||"",fecha:a.created_at||null,cta:(a.doc_url&&String(a.doc_url).trim())?{url:String(a.doc_url).trim(),label:(a.doc_label&&String(a.doc_label).trim())||"📄 Ver documento"}:null}));
+        source=r.data.map(a=>({tipo:TIPO[a.nivel]||"Aviso",nivel:a.nivel||"normal",titulo:a.titulo||"",texto:a.texto||"",hasta:a.hasta||null,desde:a.desde||null,autor:(a.autor||a.publicado_por||a.creado_por||"")||"",fecha:a.created_at||null,fijado:(a.fijado===true),verVig:(a.mostrar_vigencia!==false),cta:(a.doc_url&&String(a.doc_url).trim())?{url:String(a.doc_url).trim(),label:(a.doc_label&&String(a.doc_label).trim())||"📄 Ver documento"}:null}));
       }
     }catch(e){}
   }
@@ -1521,33 +1793,61 @@ async function renderMural(){
   if(source===null){ source = (jornada==="tech") ? AVISOS : []; }
   const today=new Date(); today.setHours(0,0,0,0);
   const NIV={importante:{c:"#8b0c0c",bg:"#fdeaea"},info:{c:"#1d4ed8",bg:"#e9f0fd"},evento:{c:"#9a6b00",bg:"#fbf3df"},normal:{c:"#6c0909",bg:"#fffdf8"}};
-  const items=source.map(a=>{
+  let items=source.map(a=>{
     let dleft=null;
     if(a.hasta){const d=new Date(a.hasta+"T00:00:00");dleft=Math.round((d-today)/86400000);}
     let okDesde=true;
     if(a.desde){const ds=new Date(a.desde+"T00:00:00");okDesde=today>=ds;}
     return Object.assign({},a,{dleft:dleft,okDesde:okDesde});
-  }).filter(a=> a.okDesde && (a.dleft===null || a.dleft>=0));
-  items.sort((x,y)=>{ if(x.dleft===null)return 1; if(y.dleft===null)return -1; return x.dleft-y.dleft; });
-  if(!items.length){ box.innerHTML='<div class="muralempty">No hay avisos por ahora 🎉</div>'; return; }
-  window.__muralItems=items;
+  }).filter(a=> a.okDesde);
+  const vencidos=items.filter(a=> a.dleft!==null && a.dleft<0).sort((x,y)=> y.dleft-x.dleft);
+  items=items.filter(a=> a.dleft===null || a.dleft>=0);
+  items.sort((x,y)=>{
+    if(x.fijado!==y.fijado) return x.fijado?-1:1;   /* fijados siempre arriba */
+    if(x.dleft===null && y.dleft===null) return 0;
+    if(x.dleft===null) return 1;                    /* sin vencimiento, al final */
+    if(y.dleft===null) return -1;
+    return x.dleft-y.dleft;
+  });
+  window.__muralItems=items.concat(vencidos);
+  window.__muralPast=vencidos.length;
+  /* Sin avisos vigentes: se avisa, pero igual se ofrece el historial si hay vencidos */
+  if(!items.length){
+    box.innerHTML='<div class="muralempty">No hay avisos por ahora 🎉</div>';
+    if(vencidos.length){
+      box.insertAdjacentHTML("beforeend",
+        '<button type="button" class="archbtn" id="archBtn">🗄️ Ver avisos anteriores ('+vencidos.length+')</button>');
+      var ab0=document.getElementById("archBtn");
+      if(ab0)ab0.onclick=function(){ abrirHistorial(0,vencidos); };
+    }
+    return;
+  }
   box.innerHTML=items.map((a,ix)=>{
     const n=NIV[a.nivel]||NIV.normal;
     let cd="";
-    if(a.dleft!==null){
+    if(a.fijado){
+      cd='<span class="mcount" style="color:'+n.c+'">📌 Fijado</span>';
+    } else if(a.dleft!==null && a.verVig!==false){
       const t=a.dleft===0?"Último día":a.dleft===1?"Queda 1 día":"Quedan "+a.dleft+" días";
       cd='<span class="mcount" style="color:'+n.c+'">⏳ '+t+'</span>';
-    } else if(a.badge){
+    } else if(a.dleft===null && a.badge){
       cd='<span class="mcount" style="color:'+n.c+'">'+esc(a.badge)+'</span>';
     }
     return '<div class="mcard" data-ix="'+ix+'" tabindex="0" role="button" aria-label="Abrir aviso: '+esc(a.titulo)+'" style="border-left-color:'+n.c+'">'+
       '<div class="mtop"><span class="mtag" style="color:'+n.c+';background:'+n.bg+'">'+esc(a.tipo)+'</span>'+cd+'</div>'+
       '<div class="mtitle">'+esc(a.titulo)+'</div>'+
-      '<div class="mtext">'+linkify(esc(a.texto))+'</div>'+
+      '<div class="mtext">'+fmtTxt(linkify(esc(a.texto)))+'</div>'+
       '<div class="mmore" style="color:'+n.c+'">Ver aviso completo →</div>'+
       (a.cta?'<div class="mdocflag">📎 Incluye documento</div>':'')+
       '</div>';
   }).join("");
+  /* Acceso al historial de avisos vencidos (fuera del mural) */
+  if(vencidos.length){
+    box.insertAdjacentHTML("beforeend",
+      '<button type="button" class="archbtn" id="archBtn">🗄️ Ver avisos anteriores ('+vencidos.length+')</button>');
+    var ab=document.getElementById("archBtn");
+    if(ab)ab.onclick=function(){ abrirHistorial(items.length,vencidos); };
+  }
   /* Marcar solo las tarjetas cuyo texto realmente quedó cortado */
   box.querySelectorAll(".mcard").forEach(function(c){
     var t=c.querySelector(".mtext");
@@ -1557,9 +1857,40 @@ async function renderMural(){
     c.onkeydown=function(ev){ if(ev.key==="Enter"||ev.key===" "){ ev.preventDefault(); open(); } };
   });
 }
+/* Historial: avisos que ya vencieron, en ventana aparte (no ocupan el mural) */
+function abrirHistorial(offset,vencidos){
+  if(typeof logInteraccion==="function")logInteraccion("mural","ver historial");
+  var NIV={importante:{c:"#8b0c0c",bg:"#fdeaea"},info:{c:"#1d4ed8",bg:"#e9f0fd"},evento:{c:"#9a6b00",bg:"#fbf3df"},normal:{c:"#6c0909",bg:"#fffdf8"}};
+  var fmt=function(d){ try{ return new Date(d).toLocaleDateString("es-CL",{day:"numeric",month:"short",year:"numeric"}); }catch(e){ return ""; } };
+  var host=document.getElementById("archList"); if(!host)return;
+  host.innerHTML=vencidos.map(function(a,k){
+    var n=NIV[a.nivel]||NIV.normal;
+    var d=Math.abs(a.dleft);
+    var cuando=(d===0?"venció hoy":d===1?"venció ayer":"venció hace "+d+" días");
+    return '<div class="arow" data-ix="'+(offset+k)+'" tabindex="0" role="button" aria-label="Abrir aviso: '+esc(a.titulo)+'">'+
+      '<div class="atop"><span class="mtag" style="color:'+n.c+';background:'+n.bg+'">'+esc(a.tipo)+'</span>'+
+      '<span class="awhen">'+esc(a.hasta?fmt(a.hasta+"T00:00:00"):cuando)+'</span></div>'+
+      '<div class="atitle">'+esc(a.titulo)+'</div>'+
+      (a.cta?'<div class="mdocflag">📎 Incluye documento</div>':'')+
+      '</div>';
+  }).join("");
+  host.querySelectorAll(".arow").forEach(function(r){
+    var go=function(){ cerrarHistorial(); openAviso(+r.dataset.ix); };
+    r.onclick=go;
+    r.onkeydown=function(ev){ if(ev.key==="Enter"||ev.key===" "){ ev.preventDefault(); go(); } };
+  });
+  var m=document.getElementById("archModal");
+  if(m){ m.style.display="flex"; try{document.body.style.overflow="hidden";}catch(e){} }
+}
+function cerrarHistorial(){
+  var m=document.getElementById("archModal");
+  if(m)m.style.display="none";
+  try{document.body.style.overflow="";}catch(e){}
+}
 /* Ventana con el aviso completo y sus datos */
 function openAviso(ix){
   var items=window.__muralItems||[]; var a=items[ix]; if(!a)return;
+  if(typeof logInteraccion==="function")logInteraccion("mural","abrir aviso");
   var NIV={importante:{c:"#8b0c0c",bg:"#fdeaea"},info:{c:"#1d4ed8",bg:"#e9f0fd"},evento:{c:"#9a6b00",bg:"#fbf3df"},normal:{c:"#6c0909",bg:"#fffdf8"}};
   var n=NIV[a.nivel]||NIV.normal;
   var fmt=function(d){ try{ return new Date(d).toLocaleDateString("es-CL",{day:"numeric",month:"long",year:"numeric"}); }catch(e){ return ""; } };
@@ -1567,20 +1898,29 @@ function openAviso(ix){
   if(a.autor) meta.push('<div class="avmeta"><span class="avml">Publicado por</span><span class="avmv">'+esc(a.autor)+'</span></div>');
   if(a.fecha) meta.push('<div class="avmeta"><span class="avml">Fecha de publicación</span><span class="avmv">'+esc(fmt(a.fecha))+'</span></div>');
   if(a.desde) meta.push('<div class="avmeta"><span class="avml">Vigente desde</span><span class="avmv">'+esc(fmt(a.desde+"T00:00:00"))+'</span></div>');
-  if(a.hasta) meta.push('<div class="avmeta"><span class="avml">Vigente hasta</span><span class="avmv">'+esc(fmt(a.hasta+"T00:00:00"))+(a.dleft!==null?' · '+(a.dleft===0?"último día":a.dleft===1?"queda 1 día":"quedan "+a.dleft+" días"):"")+'</span></div>');
+  var venc=(a.dleft!==null&&a.dleft<0);
+  if(a.hasta && (a.verVig!==false || venc)){
+    var vig=venc?"Venció el":"Vigente hasta";
+    var det="";
+    if(a.dleft!==null&&a.dleft>=0&&a.verVig!==false)det=' · '+(a.dleft===0?"último día":a.dleft===1?"queda 1 día":"quedan "+a.dleft+" días");
+    meta.push('<div class="avmeta"><span class="avml">'+vig+'</span><span class="avmv">'+esc(fmt(a.hasta+"T00:00:00"))+det+'</span></div>');
+  }
   var _safeU=function(u){u=String(u||"").trim();return /^https?:\/\//i.test(u)?u:(/^www\./i.test(u)?"https://"+u:"#");};
   var cta=a.cta?'<a class="mcta" style="background:'+n.c+'" href="'+esc(_safeU(a.cta.url))+'"'+(_safeU(a.cta.url)!=="#"?' target="_blank" rel="noopener noreferrer"':'')+'>'+esc(a.cta.label)+'</a>':"";
   var t=document.getElementById("avisoTag"); if(t){t.textContent=a.tipo;t.style.color=n.c;t.style.background=n.bg;}
   var ti=document.getElementById("avisoTitle"); if(ti)ti.textContent=a.titulo;
   var bd=document.getElementById("avisoBody");
-  if(bd)bd.innerHTML='<div class="avtext">'+linkify(esc(a.texto))+'</div>'+cta+(meta.length?'<div class="avmetas">'+meta.join("")+'</div>':'');
+  if(bd)bd.innerHTML='<div class="avtext">'+fmtTxt(linkify(esc(a.texto)))+'</div>'+cta+(meta.length?'<div class="avmetas">'+meta.join("")+'</div>':'');
   var m=document.getElementById("avisoModal");
   if(m){m.style.display="flex";try{document.body.style.overflow="hidden";}catch(e){}
     var bx=m.querySelector(".a11y-box"); if(bx)bx.scrollTop=0;
     var x=document.getElementById("avisoX"); if(x&&x.focus)try{x.focus();}catch(e){}}
 }
 document.getElementById("mallaToggle").onclick=()=>showMalla(curMalla==="noajustada"?"ajustada":"noajustada");showMalla(curMalla);renderMural();
-(function(){var tp=document.getElementById("toPlan");if(tp)tp.onclick=function(){go("plan");};})();
+(function(){var tp=document.getElementById("toPlan");if(tp)tp.onclick=function(){go("plan");};
+  var b1=document.getElementById("dlHor");if(b1)b1.onclick=function(){docHorario();};
+  var b2=document.getElementById("dlPru");if(b2)b2.onclick=function(){docPruebas();};
+  var b3=document.getElementById("dlPlan");if(b3)b3.onclick=function(){docRespaldo();};})();
 
 /* ===== Respaldo de avance + legales ===== */
 function exportData(){
@@ -1618,20 +1958,20 @@ function importData(file){
 (function(){
   const FAQ=[
    // Calendario académico (régimen trimestral · TECH)
-   {c:"📅 Calendario",q:"¿Cuándo empiezan las clases?",k:"empiezan inician comienzan empieza inicio clases partida partir comienzo cuando empiezan",a:"Inicio de clases de cada trimestre 2026 (Derecho vespertino TECH):<br>• <b>1er trimestre:</b> lunes 2 de marzo<br>• <b>2º trimestre:</b> lunes 1 de junio<br>• <b>3er trimestre:</b> lunes 7 de septiembre"},
-   {c:"📅 Calendario",q:"¿Cuándo termina cada trimestre?",k:"termina termino fin final acaba periodo lectivo cuando termina cierre",a:"Fin del período lectivo 2026:<br>• <b>1er trimestre:</b> viernes 22 de mayo<br>• <b>2º trimestre:</b> viernes 28 de agosto<br>• <b>3er trimestre:</b> viernes 4 de diciembre"},
-   {c:"📅 Calendario",q:"¿Cuándo es el receso?",k:"receso vacaciones descanso intertrimestral semana libre feriado largo",a:"Recesos 2026:<br>• <b>1er trimestre:</b> 25 al 29 de mayo<br>• <b>2º trimestre:</b> 13 al 17 de julio<br>• <b>Fiestas Patrias (3er trim.):</b> 14 al 17 de septiembre"},
+   {c:"📅 Calendario",q:"¿Cuándo empiezan las clases?",k:"empiezan inician comienzan empieza inicio clases partida partir comienzo cuando empiezan",a:"Inicio de clases de cada trimestre 2026 (Derecho vespertino TECH):<br>• <b>1er trimestre:</b> lunes 2 de marzo<br>• <b>2º trimestre:</b> lunes 1 de junio<br>• <b>3er trimestre:</b> lunes 7 de septiembre",j:"tech"},
+   {c:"📅 Calendario",q:"¿Cuándo termina cada trimestre?",k:"termina termino fin final acaba periodo lectivo cuando termina cierre",a:"Fin del período lectivo 2026:<br>• <b>1er trimestre:</b> viernes 22 de mayo<br>• <b>2º trimestre:</b> viernes 28 de agosto<br>• <b>3er trimestre:</b> viernes 4 de diciembre",j:"tech"},
+   {c:"📅 Calendario",q:"¿Cuándo es el receso?",k:"receso vacaciones descanso intertrimestral semana libre feriado largo",a:"Recesos 2026:<br>• <b>1er trimestre:</b> 25 al 29 de mayo<br>• <b>2º trimestre:</b> 13 al 17 de julio<br>• <b>Fiestas Patrias (3er trim.):</b> 14 al 17 de septiembre",j:"tech"},
    {c:"📅 Calendario",q:"¿Qué feriados hay en 2026?",k:"feriado feriados festivo festivos asueto no hay clases dias libres",a:"Feriados 2026: Viernes Santo 3 abr · Día del Trabajo 1 may · Glorias Navales 21 may · San Pedro y San Pablo 29 jun · Virgen del Carmen 16 jul · Asunción 15 ago · Fiestas Patrias 18 sep · Encuentro de Dos Mundos 12 oct · Inmaculada Concepción 8 dic · Navidad 25 dic."},
    // Inscripción de ramos
-   {c:"📝 Inscripción",q:"¿Hasta cuándo puedo inscribir ramos?",k:"inscribir inscripcion ramos asignaturas tomar inscribo carga academica cuando inscribo escribir ramo",a:"Inscripción de asignaturas 2026 (TECH):<br>• <b>1er trimestre:</b> 9 y 10 de enero<br>• <b>2º trimestre:</b> viernes 29 de mayo<br>• <b>3er trimestre:</b> viernes 4 de septiembre"},
-   {c:"📝 Inscripción",q:"¿Hasta cuándo puedo modificar mi malla / inscripción?",k:"modificar modificacion cambiar malla inscripcion ajustar agregar botar eliminar ramo plazo",a:"Modificación de la inscripción de asignaturas 2026 (TECH):<br>• <b>1er trimestre:</b> 24 al 27 de febrero<br>• <b>2º trimestre:</b> 1 al 5 de junio<br>• <b>3er trimestre:</b> 7 al 11 de septiembre"},
-   {c:"📝 Inscripción",q:"¿Cuándo son las pruebas y exámenes?",k:"prueba pruebas evaluacion evaluaciones examen examenes solemne certamen fechas notas repeticion",a:"Cada trimestre tiene evaluaciones regulares y un examen de repetición. Las <b>fechas exactas de cada ramo</b> (1ª, 2ª y examen) están en la pestaña <b>Pruebas</b> de esta app. Examen de repetición: 1er trim 25–27 may · 2º trim 31 ago–2 sep · 3er trim 9–11 dic."},
+   {c:"📝 Inscripción",q:"¿Hasta cuándo puedo inscribir ramos?",k:"inscribir inscripcion ramos asignaturas tomar inscribo carga academica cuando inscribo escribir ramo",a:"Inscripción de asignaturas 2026 (TECH):<br>• <b>1er trimestre:</b> 9 y 10 de enero<br>• <b>2º trimestre:</b> viernes 29 de mayo<br>• <b>3er trimestre:</b> viernes 4 de septiembre",j:"tech"},
+   {c:"📝 Inscripción",q:"¿Hasta cuándo puedo modificar mi malla / inscripción?",k:"modificar modificacion cambiar malla inscripcion ajustar agregar botar eliminar ramo plazo",a:"Modificación de la inscripción de asignaturas 2026 (TECH):<br>• <b>1er trimestre:</b> 24 al 27 de febrero<br>• <b>2º trimestre:</b> 1 al 5 de junio<br>• <b>3er trimestre:</b> 7 al 11 de septiembre",j:"tech"},
+   {c:"📝 Inscripción",q:"¿Cuándo son las pruebas y exámenes?",k:"prueba pruebas evaluacion evaluaciones examen examenes solemne certamen fechas notas repeticion",a:"Cada trimestre tiene evaluaciones regulares y un examen de repetición. Las <b>fechas exactas de cada ramo</b> (1ª, 2ª y examen) están en la pestaña <b>Pruebas</b> de esta app. Examen de repetición: 1er trim 25–27 may · 2º trim 31 ago–2 sep · 3er trim 9–11 dic.",j:"tech"},
    // Centro de Estudiantes
-   {c:"⚖️ Centro de Estudiantes",q:"¿Cómo contacto al Centro de Estudiantes?",k:"centro estudiantes contacto contactar ccee instagram correo redes hablar ustedes",a:"Escríbenos por Instagram <b>@ccee.derechouatco</b> o al correo <b>cceedereua@gmail.com</b>. ¡Estamos para ayudarte!"},
+   {c:"⚖️ Centro de Estudiantes",q:"¿Cómo contacto al Centro de Estudiantes?",k:"centro estudiantes contacto contactar ccee instagram correo redes hablar ustedes",a:"Escríbenos por Instagram <b>@ccee.derechouatco</b> o al correo <b>cceedereua@gmail.com</b>. ¡Estamos para ayudarte!",j:"tech"},
    // Autoridades
    {c:"👤 Autoridades",q:"¿Quién es la Directora de Sede / Vicedecana?",k:"directora vicedecana decana valeska rivas autoridad jefa direccion sede",a:"<b>Valeska Rivas Arias</b> — Vicedecana de la Facultad de Derecho y Directora Sede Temuco.<br>📧 valeska.rivas@uautonoma.cl"},
    {c:"👤 Autoridades",q:"¿Quién es la Secretaria académica?",k:"secretaria academica francisca game",a:"<b>Francisca Game Musante</b> — Secretaria académica.<br>📧 francisca.game@uautonoma.cl"},
-   {c:"👤 Autoridades",q:"¿Quién es el Coordinador vespertino?",k:"coordinador vespertino fernando bravo coordinacion jornada",a:"<b>Fernando Bravo Alarcón</b> — Coordinador vespertino.<br>📧 fernando.bravo@uautonoma.cl"},
+   {c:"👤 Autoridades",q:"¿Quién es el Coordinador vespertino?",k:"coordinador vespertino fernando bravo coordinacion jornada",a:"<b>Fernando Bravo Alarcón</b> — Coordinador vespertino.<br>📧 fernando.bravo@uautonoma.cl",j:"vesp"},
    {c:"👤 Autoridades",q:"¿Cómo contacto a secretaría de Derecho?",k:"secretaria administrativa daniela mella administracion telefono carrera contacto derecho",a:"<b>Daniela Mella Tapia</b> — Secretaria Administrativa.<br>📧 derecho.temuco01@cloud.uautonoma.cl · 📞 +56 45 289 5078"},
    // Servicios
    {c:"🏛️ Servicios",q:"¿Dónde queda Registro Curricular?",k:"registro curricular certificado certificados horario ubicacion donde queda tramite actas concentracion",a:"<b>Registro Curricular</b> — Edificio Registro Curricular, Sector Sur.<br>🕗 Lun a Jue 08:30–13:30 y 15:00–18:30 · Vie 08:30–13:30 y 15:00–18:00<br>📧 registrocurriculartco@uautonoma.cl"},
@@ -1648,19 +1988,19 @@ function importData(file){
    // Reglamento General del Estudiante de Pregrado
    {c:"📖 Reglamento",q:"¿Con qué nota apruebo un ramo?",k:"nota aprobar aprobacion minima cuatro paso aprueba calificacion aprobar ramo",a:"La nota mínima de aprobación es <b>4,0</b> (las notas van de 1,0 a 7,0). Para obtener un 4,0 se exige un nivel de logro mínimo del <b>60%</b>. El syllabus puede pedir una nota de aprobación más alta."},
    {c:"📖 Reglamento",q:"¿Qué es el examen de repetición y cuándo lo puedo dar?",k:"examen repeticion recuperativo segunda oportunidad reprobado 3.5 promedio recuperar",a:"Si en un ramo <b>teórico</b> tu promedio final queda <b>entre 3,5 y 3,9</b> y cumpliste la asistencia, puedes rendir el <b>examen de repetición</b> (en las fechas del calendario). Si obtienes 4,0 o más, tu nota final será 4,0; si no, mantienes la nota que tenías."},
-   {c:"📖 Reglamento",q:"¿Cuánta asistencia necesito?",k:"asistencia minima faltar inasistencia porcentaje asistir cuanta falta",a:"Asistencia mínima: <b>70% en primer año</b> y <b>60% en cursos superiores</b>. En componentes prácticos (talleres, laboratorios) es 100%. En vespertino TECH cuenta tu participación remota sincrónica o presencial."},
-   {c:"📖 Reglamento",q:"¿Cómo se calcula la nota final del ramo?",k:"nota final calculo ponderacion porcentaje acumulativa evaluaciones promedio ponderado como se calcula",a:"En ramos trimestrales: <b>2 evaluaciones regulares = 70%</b> y <b>1 evaluación acumulativa</b> (foros, quiz, trabajos) <b>= 30%</b>. La nota final es ese promedio ponderado, salvo que el syllabus indique otro sistema."},
+   {c:"📖 Reglamento",q:"¿Cuánta asistencia necesito?",k:"asistencia minima faltar inasistencia porcentaje asistir cuanta falta",a:"Asistencia mínima: <b>70% en primer año</b> y <b>60% en cursos superiores</b>. En componentes prácticos (talleres, laboratorios) es 100%. En vespertino TECH cuenta tu participación remota sincrónica o presencial.",j:"tech"},
+   {c:"📖 Reglamento",q:"¿Cómo se calcula la nota final del ramo?",k:"nota final calculo ponderacion porcentaje acumulativa evaluaciones promedio ponderado como se calcula",a:"En ramos trimestrales: <b>2 evaluaciones regulares = 70%</b> y <b>1 evaluación acumulativa</b> (foros, quiz, trabajos) <b>= 30%</b>. La nota final es ese promedio ponderado, salvo que el syllabus indique otro sistema.",j:"tech"},
    {c:"📖 Reglamento",q:"¿Qué pasa si falto a una prueba?",k:"falto falte no asisti prueba evaluacion ausente justificar uno ausencia",a:"Si no asistes a una evaluación, se califica con <b>1,0</b> (lo mismo si hay copia o fraude). Si tuviste una causa justificada, debes presentar la solicitud de excepción en la Dirección de Carrera dentro de los plazos."},
    {c:"📖 Reglamento",q:"¿Cuándo me entregan las notas y cómo pido recorrección?",k:"notas plazo entrega recorreccion revision recorregir reclamar dias publican",a:"El docente informa la nota en un máximo de <b>10 días corridos</b> tras la evaluación. Desde que se publica, tienes <b>3 días corridos</b> para pedirle la revisión de tu evaluación."},
-   {c:"📖 Reglamento",q:"¿Cuántas veces puedo reprobar un ramo antes de que me eliminen?",k:"reprobar reprobado eliminacion eliminado cuantas veces repetir eliminan tres",a:"Puedes cursar una asignatura hasta <b>3 veces</b>. Te eliminan de la carrera si: (a) repruebas <b>3 veces la misma asignatura</b>, o (b) repruebas el <b>50% de las asignaturas</b> cursadas al término del <b>8º nivel</b> (régimen trimestral)."},
+   {c:"📖 Reglamento",q:"¿Cuántas veces puedo reprobar un ramo antes de que me eliminen?",k:"reprobar reprobado eliminacion eliminado cuantas veces repetir eliminan tres",a:"Puedes cursar una asignatura hasta <b>3 veces</b>. Te eliminan de la carrera si: (a) repruebas <b>3 veces la misma asignatura</b>, o (b) repruebas el <b>50% de las asignaturas</b> cursadas al término del <b>8º nivel</b> (régimen trimestral).",j:"tech"},
    {c:"📖 Reglamento",q:"Si repruebo un ramo, ¿qué tengo que hacer?",k:"reprobe reprobado ramo repetir volver cursar siguiente obligatorio inscribir arrastro",a:"El ramo reprobado debes cursarlo en el <b>período siguiente en que se dicte</b>, y la carrera lo inscribe <b>obligatoriamente</b> (sin derecho a sacarlo de tu carga)."},
-   {c:"📖 Reglamento",q:"¿Cuántos niveles puedo tomar al mismo tiempo?",k:"niveles cuantos ramos tomar inscribir adelantar consecutivos carga cruzar",a:"En régimen trimestral puedes inscribir asignaturas de <b>hasta 4 niveles distintos y consecutivos</b>, partiendo del nivel más bajo que tengas pendiente y cumpliendo los prerrequisitos. Casos excepcionales (más niveles o hasta 24 créditos) se solicitan a la Dirección de Carrera."},
-   {c:"📖 Reglamento",q:"¿Puedo bajar mi carga académica si me enfermo?",k:"bajar rebajar disminuir carga academica enfermedad enfermo reducir rebaja",a:"Sí. Por enfermedad certificada u otra causa grave puedes pedir disminuir tu carga <b>hasta en un 50%</b> a la Dirección de Carrera, a más tardar <b>4 semanas antes del término del trimestre</b>."},
+   {c:"📖 Reglamento",q:"¿Cuántos niveles puedo tomar al mismo tiempo?",k:"niveles cuantos ramos tomar inscribir adelantar consecutivos carga cruzar",a:"En régimen trimestral puedes inscribir asignaturas de <b>hasta 4 niveles distintos y consecutivos</b>, partiendo del nivel más bajo que tengas pendiente y cumpliendo los prerrequisitos. Casos excepcionales (más niveles o hasta 24 créditos) se solicitan a la Dirección de Carrera.",j:"tech"},
+   {c:"📖 Reglamento",q:"¿Puedo bajar mi carga académica si me enfermo?",k:"bajar rebajar disminuir carga academica enfermedad enfermo reducir rebaja",a:"Sí. Por enfermedad certificada u otra causa grave puedes pedir disminuir tu carga <b>hasta en un 50%</b> a la Dirección de Carrera, a más tardar <b>4 semanas antes del término del trimestre</b>.",j:"tech"},
    {c:"📖 Reglamento",q:"¿Qué son la suspensión, anulación y retiro?",k:"suspension anulacion retiro abandono interrupcion congelar pausar dejar estudios",a:"<b>Suspensión:</b> pausar tus estudios un tiempo (antes de tomar carga). <b>Anulación:</b> dejar sin efecto todos los ramos inscritos (en la fecha del calendario). <b>Retiro:</b> dejar la carrera; no borra notas ni carga. Suspensión y anulación: hasta 2 veces cada una, máx. 1 año por vez."},
    {c:"📖 Reglamento",q:"Si me eliminan, ¿puedo seguir estudiando?",k:"eliminado eliminacion continuidad seguir continuar gracia apelar solicitud comision",a:"El estudiante eliminado puede pedir <b>continuidad de estudios</b> por causa grave justificada, dentro de los plazos del calendario. Lo resuelve la <b>Comisión de Gracia</b> de Sede y su decisión es inapelable."},
    {c:"📖 Reglamento",q:"¿Qué necesito para titularme?",k:"titulo titular titulacion egreso licenciado examen grado practica requisitos egresar",a:"Para el título profesional debes: aprobar todas las asignaturas del plan, realizar y aprobar la(s) práctica(s), rendir y aprobar el examen de título/grado (hasta 3 oportunidades) y estar al día con la Universidad. Tras egresar tienes hasta 2 años para completar las actividades de titulación."},
    {c:"📖 Reglamento",q:"¿Qué es el Ius Postulandi?",k:"ius postulandi certificado tercer año postular tribunales iuspostulandi",a:"Para que te emitan el certificado de <b>Ius Postulandi</b>, debes tener inscritas <b>todas las asignaturas del 3er año</b> de la carrera de Derecho."},
-   {c:"📖 Reglamento",q:"¿Qué requisitos hay para ser parte del Centro de Estudiantes?",k:"centro estudiantes requisitos postular directiva ser miembro candidato promedio elegible",a:"Para integrar la directiva del Centro de Estudiantes necesitas: ser <b>estudiante regular</b> de la carrera, no estar sancionado, y tener <b>promedio igual o superior a 5,0</b> en los dos semestres anteriores (salvo estudiantes de primer año)."},
+   {c:"📖 Reglamento",q:"¿Qué requisitos hay para ser parte del Centro de Estudiantes?",k:"centro estudiantes requisitos postular directiva ser miembro candidato promedio elegible",a:"Para integrar la directiva del Centro de Estudiantes necesitas: ser <b>estudiante regular</b> de la carrera, no estar sancionado, y tener <b>promedio igual o superior a 5,0</b> en los dos semestres anteriores (salvo estudiantes de primer año).",j:"tech"},
    {c:"🏛️ Servicios",q:"¿Cómo saco un certificado (alumno regular, notas, etc.)?",k:"certificado certificados alumno regular concentracion notas tramite documento solicitar registro curricular",a:"Los certificados los gestiona <b>Registro Curricular</b> (Edificio Sector Sur). Escríbeles a <b>registrocurriculartco@uautonoma.cl</b> o acércate: Lun a Jue 08:30–13:30 y 15:00–18:30, Vie hasta 18:00.<br>💡 <b>Tip:</b> los de <b>concentración de notas</b> y <b>estudiante regular</b> puedes descargarlos al toque <b>online por Banner</b> (mira «¿Cómo saco un certificado online?»)."},
    {c:"🏛️ Servicios",q:"¿Cómo saco un certificado online (notas o estudiante regular)?",k:"certificado online on line en linea banner autoservicio portal concentracion notas alumno estudiante regular descargar pdf solicitud de servicio sacar tramite menu de servicio",a:"Puedes descargarlo tú mismo desde <b>Banner</b> (Portal de Autoservicio), sin pasar por Registro Curricular:<br>1️⃣ Entra a la <b>Intranet de Alumnos</b> y abre <b>Banner</b> (en el menú de íconos de servicios).<br>2️⃣ Ve a la pestaña <b>Menú de Servicio</b> y pincha <b>Solicitud de servicio</b>.<br>3️⃣ En <b>Categoría</b> elige <b>Certificados On-Line</b>, y en <b>Servicio</b> elige <b>Certificado Concentración de Notas</b> o <b>Certificado Estudiante Regular</b>. Pincha <b>Continuar</b>.<br>4️⃣ Selecciona tu <b>Programa</b> y el <b>Período</b> (siempre el más reciente en año y bloque) y toca <b>Guardar</b>.<br>5️⃣ En <b>Ver status de solicitud</b>, pincha <b>Documento</b> y el certificado se descarga en <b>PDF</b> automáticamente."},
    {c:"🏛️ Servicios",q:"¿Dónde pago el arancel o veo mi situación financiera?",k:"pago arancel pagar cuota mensualidad finanzas deuda situacion financiera dinero plata cobranza",a:"En <b>Finanzas</b>: <b>finanzas.temuco@uautonoma.cl</b> · +56 45 289 5244 / 5245 / 5051. Atención Lun a Jue 08:00–13:15 y 15:00–18:15."},
@@ -1670,13 +2010,21 @@ function importData(file){
    {c:"📱 La app",q:"¿Cómo instalo UApp en mi teléfono?",k:"instalar app aplicacion descargar pantalla inicio agregar telefono celular",a:"En <b>Android</b>: ábrela en Chrome → menú (los tres puntos) → 'Agregar a pantalla de inicio'. En <b>iPhone</b>: ábrela en Safari → botón Compartir → 'Agregar a inicio'. ¡Es gratis!"},
    {c:"📱 La app",q:"¿Cómo respaldo mi avance para no perderlo?",k:"respaldo respaldar guardar backup avance perder cambiar telefono restaurar copia",a:"En la pestaña <b>Avance Curricular</b>, abajo, toca <b>Respaldar mi avance</b> para descargar una copia, y <b>Restaurar respaldo</b> para recuperarla en otro dispositivo."},
    {c:"📱 La app",q:"¿Mis datos están seguros? ¿Quién los ve?",k:"datos privacidad seguro seguridad personales ven guardan informacion",a:"Tu avance, notas y ramos se guardan <b>solo en tu dispositivo</b>: no se envían a ningún servidor ni los vemos nosotros. Lee más en <b>Términos y Privacidad</b>, en el pie de la app."},
-   {c:"📱 La app",q:"¿Cómo hago una solicitud al Centro de Estudiantes?",k:"solicitud solicitudes peticion pedir tramite formulario consulta caso",a:"Ve a la pestaña <b>Solicitudes</b> y toca <b>Hacer una solicitud</b>: completas el formulario y nosotros lo revisamos. También por Instagram @ccee.derechouatco."},
+   {c:"📱 La app",q:"¿Cómo hago una solicitud al Centro de Estudiantes?",k:"solicitud solicitudes peticion pedir tramite formulario consulta caso",a:"Ve a la pestaña <b>Solicitudes</b> y toca <b>Hacer una solicitud</b>: completas el formulario y nosotros lo revisamos. También por Instagram @ccee.derechouatco.",j:"tech"},
    {c:"📱 La app",q:"¿Puedo usar modo oscuro o agrandar la letra?",k:"modo oscuro tema noche letra grande tamaño accesibilidad contraste animaciones",a:"Sí. Toca el botón de <b>accesibilidad</b> (abajo a la izquierda): ahí eliges <b>tema claro/oscuro/automático</b>, <b>tamaño de letra</b> y <b>reducir animaciones</b>."},
    {c:"📝 Inscripción",q:"¿Cómo convalido ramos o hago un traslado de carrera?",k:"convalidar convalidacion homologar homologacion traslado cambio carrera reconocimiento ramos validacion estudios traspaso",a:"Las convalidaciones y traslados se rigen por el <b>Reglamento de Validación de Estudios y Traslados</b> y los gestiona la <b>Dirección de Carrera</b> junto con Registro Curricular. Acércate a secretaría de Derecho (derecho.temuco01@cloud.uautonoma.cl) para iniciar el trámite dentro de los plazos."},
    {c:"📖 Reglamento",q:"¿Cómo justifico una inasistencia o falta médica?",k:"justificar justificacion inasistencia falta medica certificado licencia ausencia enfermo no fui",a:"Presenta el <b>certificado o documento que respalde</b> tu inasistencia a la <b>Dirección de Carrera</b> dentro de los plazos del reglamento. Es clave hacerlo si faltaste a una evaluación, para no quedar con nota 1,0."},
-   {c:"👤 Autoridades",q:"Tengo un problema con un profesor o un ramo, ¿a quién acudo?",k:"problema profesor docente conflicto ramo reclamo queja a quien acudir ayuda academica situacion clase",a:"Puedes hablar con el <b>Coordinador vespertino, Fernando Bravo</b> (fernando.bravo@uautonoma.cl) o con la <b>Secretaría académica</b>. Y si necesitas apoyo o que te acompañen, cuenta con tu <b>Centro de Estudiantes</b> (@ccee.derechouatco)."},
+   {c:"👤 Autoridades",q:"Tengo un problema con un profesor o un ramo, ¿a quién acudo?",k:"problema profesor docente conflicto ramo reclamo queja a quien acudir ayuda academica situacion clase",a:"Puedes hablar con el <b>Coordinador vespertino, Fernando Bravo</b> (fernando.bravo@uautonoma.cl) o con la <b>Secretaría académica</b>. Y si necesitas apoyo o que te acompañen, cuenta con tu <b>Centro de Estudiantes</b> (@ccee.derechouatco).",j:"vesp"},
    {c:"📝 Inscripción",q:"¿Qué es la encuesta de evaluación docente y por qué importa?",k:"encuesta evaluacion docente docencia responder obligatoria bloqueo importante opinar profesores",a:"Es la encuesta donde evalúas a tus docentes cada período. <b>Es muy importante responderla:</b> si no la completas, puedes quedar con <b>bloqueo para la toma de carga</b> de asignaturas del período siguiente. Cuando se abra, lo avisamos en el <b>Mural</b>."},
    {c:"🏛️ Servicios",q:"¿Cómo accedo a mi correo institucional o recupero mi clave?",k:"correo institucional clave contraseña acceso credenciales usuario plataforma recuperar email cuenta intranet",a:"Para tu <b>correo institucional, clave o credenciales de acceso</b>, contacta a la <b>Secretaría Administrativa de Derecho</b> (derecho.temuco01@cloud.uautonoma.cl · +56 45 289 5078), que te orientará con el soporte de la Universidad."}
+  ,
+   /* --- Equivalentes para régimen SEMESTRAL (Diurno y Vespertino Regular) --- */
+   {c:"📖 Reglamento",q:"¿Cómo se calcula la nota final del ramo?",k:"nota final calculo calcula ponderacion ponderaciones evaluaciones porcentaje acumulativa promedio",a:"En ramos <b>semestrales</b> depende de las horas de la asignatura (Reglamento General del Estudiante, art. 25):<br>• <b>72 horas o menos:</b> 2 evaluaciones regulares = 70% + 1 acumulativa = 30%.<br>• <b>108 horas o más:</b> 3 evaluaciones regulares = 70% + 1 acumulativa = 30%.<br>La acumulativa reúne foros, quiz, ensayos y trabajos similares. El syllabus puede fijar otro sistema, así que revísalo siempre.",j:"sem"},
+   {c:"📖 Reglamento",q:"¿Cuántas veces puedo reprobar un ramo antes de que me eliminen?",k:"reprobar reprobado veces eliminan eliminacion elimina tres oportunidades cuantas",a:"Puedes cursar una asignatura hasta <b>3 veces</b>. Te eliminan de la carrera si (art. 44):<br>• repruebas <b>3 veces la misma asignatura</b>, o<br>• repruebas el <b>50% de las asignaturas cursadas al término del 6º nivel</b> (régimen semestral).<br>Si te eliminan, puedes pedir continuación de estudios a la Comisión de Gracia de Sede dentro de los plazos del calendario académico.",j:"sem"},
+   {c:"📖 Reglamento",q:"¿Cuántos niveles puedo tomar al mismo tiempo?",k:"niveles nivel simultaneo mismo tiempo cuantos tomar inscribir distintos consecutivos",a:"En régimen <b>semestral</b> puedes inscribir asignaturas de <b>hasta 3 niveles distintos y consecutivos</b> (art. 17), partiendo del nivel más bajo que tengas pendiente y cumpliendo los prerrequisitos. Excepcionalmente puedes pedir a la Dirección de Carrera cursar hasta <b>36 créditos semestrales</b> o ramos de niveles superiores, con causa grave justificada.",j:"sem"},
+   {c:"📖 Reglamento",q:"¿Puedo bajar mi carga académica si me enfermo?",k:"bajar disminuir carga academica enfermo enfermedad reducir menos ramos",a:"Sí. Por enfermedad certificada u otra causa grave puedes solicitar al Director de Carrera disminuir tu carga <b>hasta en un 50%</b>, a más tardar <b>6 semanas antes del término del semestre</b> (art. 16).",j:"sem"},
+   {c:"📖 Reglamento",q:"¿Cuánta asistencia necesito?",k:"asistencia asistir faltas porcentaje minima minimo cuanta necesito",a:"Asistencia mínima: <b>70% en primer año</b> y <b>60% en cursos superiores</b> (art. 21). En componentes prácticos —talleres, laboratorios, prácticas— la asistencia exigida es del <b>100%</b>. El syllabus de cada ramo puede fijar un porcentaje distinto.",j:"sem"},
+   {c:"👤 Autoridades",q:"Tengo un problema con un profesor o un ramo, ¿a quién acudo?",k:"problema profesor docente ramo conflicto reclamo queja acudo quien hablar",a:"Primero conversa con el <b>docente</b>. Si no se resuelve, acude a la <b>Secretaría académica</b> o a la <b>Dirección de Carrera de Derecho</b>, que es la instancia que resuelve estas situaciones.",j:"sem"}
   ];
 
   const fab=document.getElementById('chatFab'), panel=document.getElementById('chatPanel'),
@@ -1684,25 +2032,83 @@ function importData(file){
         inp=document.getElementById('chatIn'), sendb=document.getElementById('chatSend'),
         closeb=document.getElementById('chatClose');
   let greeted=false;
-  const cats=[...new Set(FAQ.map(f=>f.c))];
+  /* Las categorías y los temas sugeridos se recalculan según la jornada */
   function norm(s){return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9ñ\s]/g," ").replace(/\s+/g," ").trim();}
-  function bestFaq(q){
-    const words=norm(q).split(" ").filter(w=>w.length>2);
+  /* Palabras muy comunes que no aportan al calce */
+  const STOP=["que","como","donde","cuando","cual","cuales","cuanto","cuanta","cuantos","cuantas","quien","quienes","cuesta","hace","hacer","debo","tener","para","por","con","sin","los","las","del","una","uno","unos","unas","este","esta","esto","esos","esas","hay","son","ser","estar","tiene","tengo","puedo","puede","pueden","quiero","necesito","saber","sobre","mas","muy","pero","porque","ahora","aqui","alli","algo","alguna","alguno","todo","toda","todos","todas","mi","mis","tu","tus","su","sus","yo","me","le","lo","la","el","de","en","al","se","es","un","y","o","a"];
+  /* Cada respuesta puede estar acotada a una jornada:
+     sin marca = sirve para todas · "tech" = solo Vespertino TECH
+     "sem" = Diurno y Vespertino Regular · "vesp" = las dos vespertinas */
+  function jActual(){ try{ return localStorage.getItem("jornada3_v1")||"tech"; }catch(e){ return "tech"; } }
+  function faqAplica(f,j){
+    if(!f.j) return true;
+    if(f.j==="tech") return j==="tech";
+    if(f.j==="sem")  return j==="diurno"||j==="vregular";
+    if(f.j==="vesp") return j==="tech"||j==="vregular";
+    return f.j===j;
+  }
+  function faqVisible(){ var j=jActual(); return FAQ.filter(function(f){ return faqAplica(f,j); }); }
+
+  function bestFaq(q,lista){
+    const words=norm(q).split(" ").filter(w=>w.length>2 && STOP.indexOf(w)<0);
     if(!words.length) return null;
-    let best=null,bs=0;
-    FAQ.forEach(f=>{
-      const keys=norm(f.k).split(" "), qn=norm(f.q);
-      let sc=0;
-      words.forEach(w=>{ if(keys.some(k=>k===w||k.indexOf(w)===0||w.indexOf(k)===0)) sc++; if(qn.indexOf(w)>=0) sc+=0.4; });
-      if(sc>bs){bs=sc;best=f;}
+    let best=null,bs=0,bfuerte=0;
+    (lista||faqVisible()).forEach(f=>{
+      const keys=norm(f.k).split(" ").filter(k=>k.length>2), qn=norm(f.q);
+      let sc=0, fuertes=0;
+      words.forEach(w=>{
+        /* coincidencia fuerte: la palabra calza con una palabra clave del tema */
+        if(keys.some(k=>k===w||(w.length>=4&&k.indexOf(w)===0)||(k.length>=4&&w.indexOf(k)===0))){ sc+=1; fuertes++; return; }
+        /* coincidencia débil: la palabra aparece dentro del texto de la pregunta tipo */
+        if(w.length>=5 && qn.indexOf(w)>=0) sc+=0.4;
+      });
+      if(sc>bs){bs=sc;best=f;bfuerte=fuertes;}
     });
-    return bs>=1?best:null;
+    /* Solo responde si hubo al menos una coincidencia real de palabra clave,
+       o varias coincidencias débiles que juntas sean significativas. */
+    if(bfuerte>=1 && bs>=1) return best;
+    if(bs>=1.6) return best;
+    return null;
   }
   function addMsg(html,who){const d=document.createElement('div');d.className='cmsg '+who;d.innerHTML=html;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;}
-  function showCats(){chips.innerHTML='';cats.forEach(c=>{const b=document.createElement('button');b.className='cchip';b.textContent=c;b.onclick=()=>showQs(c);chips.appendChild(b);});}
-  function showQs(c){chips.innerHTML='';const back=document.createElement('button');back.className='cchip back';back.textContent='‹ Temas';back.onclick=showCats;chips.appendChild(back);FAQ.filter(f=>f.c===c).forEach(f=>{const b=document.createElement('button');b.className='cchip';b.textContent=f.q;b.onclick=()=>{addMsg(f.q,'user');setTimeout(()=>addMsg(f.a,'bot'),260);};chips.appendChild(b);});}
-  function ask(t){t=(t||"").trim();if(!t)return;addMsg(esc(t),'user');inp.value='';const f=bestFaq(t);setTimeout(()=>{ if(f) addMsg(f.a,'bot'); else addMsg("No encontré una respuesta exacta 🙈. Prueba tocando un tema aquí abajo, o escríbenos al Instagram <b>@ccee.derechouatco</b> o al correo <b>cceedereua@gmail.com</b>.",'bot'); },300);}
-  function openChat(){panel.style.display='flex';fab.style.display='none';if(!greeted){greeted=true;addMsg("¡Hola! 👋 Soy <b>Dona Tech</b>, el asistente del Centro de Estudiantes de Derecho. Pregúntame sobre fechas, inscripción de ramos, reglamento, apoyo, servicios o contactos. Toca un tema o escribe tu duda.",'bot');showCats();}setTimeout(()=>inp.focus(),100);}
+  function showCats(){chips.innerHTML='';const cats=[...new Set(faqVisible().map(f=>f.c))];cats.forEach(c=>{const b=document.createElement('button');b.className='cchip';b.textContent=c;b.onclick=()=>showQs(c);chips.appendChild(b);});}
+  function showQs(c){chips.innerHTML='';const back=document.createElement('button');back.className='cchip back';back.textContent='‹ Temas';back.onclick=showCats;chips.appendChild(back);faqVisible().filter(f=>f.c===c).forEach(f=>{const b=document.createElement('button');b.className='cchip';b.textContent=f.q;b.onclick=()=>{addMsg(f.q,'user');setTimeout(()=>addMsg(f.a,'bot'),260);};chips.appendChild(b);});}
+  /* Registro anónimo de consultas: sirve para saber qué se pregunta y qué falta responder.
+     No guarda identidad, ni sesión, ni dispositivo. Si falla, no interrumpe al usuario. */
+  function logConsulta(pregunta,respondida,tema){
+    try{
+      if(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA)return;
+      if(!sbc||!pregunta)return;
+      var txt=String(pregunta).trim().slice(0,300);
+      if(txt.length<3)return;
+      sbc.from('consultas').insert({
+        pregunta:txt,
+        respondida:!!respondida,
+        tema:tema||null,
+        jornada:(function(){try{return localStorage.getItem("jornada3_v1")||null;}catch(e){return null;}})()
+      }).then(function(r){
+        if(r&&r.error&&window.console)console.warn("[UApp] No se pudo registrar la consulta:",r.error.message||r.error);
+      },function(e){ if(window.console)console.warn("[UApp] Error de red al registrar la consulta:",e&&e.message); });
+    }catch(e){}
+  }
+  function ask(t,esChip){t=(t||"").trim();if(!t)return;addMsg(esc(t),'user');inp.value='';
+    if(typeof logInteraccion==="function")logInteraccion("dona",esChip?"tocar tema":"preguntar");
+    const j=jActual();
+    const f=bestFaq(t);
+    /* Si no calzó nada de su jornada, revisamos si la duda existe pero está
+       cargada para otra: mejor decirlo que responder algo que no le sirve. */
+    let otra=null;
+    if(!f){
+      const ajenas=FAQ.filter(function(x){ return !faqAplica(x,j); });
+      otra=bestFaq(t,ajenas);
+    }
+    if(!esChip)logConsulta(t,!!f,f?f.c:(otra?otra.c:null));
+    setTimeout(()=>{
+      if(f){ addMsg(f.a,'bot'); }
+      else if(otra){ addMsg("Esa información todavía no la tengo cargada para tu jornada 🙏. Lo que sé de ese tema corresponde a otro régimen de estudios y no quiero darte un dato que no te sirva.<br>Puedes revisarlo en el <b>calendario académico oficial</b> de la Universidad, o consultarlo en <b>Registro Curricular</b> o en la <b>Secretaría académica</b>.",'bot'); }
+      else { addMsg("No encontré una respuesta exacta 🙈. Prueba tocando un tema aquí abajo, o escríbenos al Instagram <b>@ccee.derechouatco</b> o al correo <b>cceedereua@gmail.com</b>.",'bot'); }
+    },300);}
+  function openChat(){panel.style.display='flex';fab.style.display='none';if(!greeted){greeted=true;addMsg("¡Hola! 👋 Soy <b>Dona</b>, el asistente de la carrera de Derecho. Pregúntame sobre fechas, inscripción de ramos, reglamento, apoyo, servicios o contactos. Toca un tema o escribe tu duda.<br><span class=\"cnota\">Guardamos las preguntas de forma anónima para mejorar las respuestas. No escribas datos personales.</span>",'bot');showCats();}setTimeout(()=>inp.focus(),100);}
   function closeChat(){panel.style.display='none';fab.style.display='flex';}
   fab.onclick=openChat; closeb.onclick=closeChat;
   sendb.onclick=()=>ask(inp.value);
@@ -1710,7 +2116,7 @@ function importData(file){
 })();
 </script>
 <script>
-if('serviceWorker' in navigator){
+if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA)){
   var __refreshing=false;
   navigator.serviceWorker.addEventListener('controllerchange',function(){
     if(__refreshing)return;__refreshing=true;window.location.reload();
@@ -1778,12 +2184,16 @@ if('serviceWorker' in navigator){
   var tfab=document.getElementById('ttsFab');if(tfab)tfab.onclick=ttsGo;
   document.addEventListener('click',function(e){if(e.target&&e.target.closest&&e.target.closest('.tab'))ttsHalt();},true);
   /* Ventana del aviso completo */
+  var arModal=document.getElementById('archModal'),arX=document.getElementById('archX');
+  if(arX)arX.onclick=function(){ if(window.cerrarHistorial)window.cerrarHistorial(); else { arModal.style.display='none'; document.body.style.overflow=''; } };
+  if(arModal)arModal.onclick=function(e){ if(e.target===arModal){ arModal.style.display='none'; try{document.body.style.overflow='';}catch(x){} } };
+
   var avModal=document.getElementById('avisoModal'),avX=document.getElementById('avisoX');
   function closeAviso(){if(avModal)avModal.style.display='none';try{document.body.style.overflow='';}catch(e){}}
   if(avX)avX.onclick=closeAviso;
   if(avModal)avModal.onclick=function(e){if(e.target===avModal)closeAviso();};
 
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var av=document.getElementById('avisoModal');if(av&&av.style.display==='flex'){av.style.display='none';try{document.body.style.overflow='';}catch(e){}return;}var ac=document.getElementById('allCalcModal');if(ac&&ac.style.display==='flex'){ac.style.display='none';return;}var dm=document.getElementById('docModal');if(dm&&dm.style.display==='flex'){dm.style.display='none';return;}if(panel&&panel.style.display==='flex'){panel.style.display='none';}}});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var ar=document.getElementById('archModal');if(ar&&ar.style.display==='flex'){ar.style.display='none';try{document.body.style.overflow='';}catch(x){}return;}var av=document.getElementById('avisoModal');if(av&&av.style.display==='flex'){av.style.display='none';try{document.body.style.overflow='';}catch(e){}return;}var ac=document.getElementById('allCalcModal');if(ac&&ac.style.display==='flex'){ac.style.display='none';return;}var dm=document.getElementById('docModal');if(dm&&dm.style.display==='flex'){dm.style.display='none';return;}if(panel&&panel.style.display==='flex'){panel.style.display='none';}}});
   if(mq.addEventListener)mq.addEventListener('change',function(){if(prefs.theme==='auto')applyTheme();});
 
   /* --- Ventanitas de documentos: Reglamento y Circular --- */
@@ -1970,9 +2380,23 @@ if('serviceWorker' in navigator){
      Devuelve {anchor, hasAvance} para que Horarios valide el tope de 3 niveles con la misma regla que el planificador. */
   /* ================= SIMULADOR DE NOTAS ================= */
   /* Esquema de un ramo según su plan y ponderaciones. Devuelve {nombre,comp:[{lab,pct}],req,nf,esp,pend} */
-  function esquemaDe(cid,plan){
+  /* Registro de ponderación efectivo según la jornada.
+     TECH (trimestral) usa su propia tabla de la hoja PORCENTAJES:
+       · Asignaturas de departamento (1er año): 35 / 35 + parcial 30
+       · Asignaturas regulares (2º año en adelante): 45 / 45 + parcial 10
+     Las asignaturas especiales conservan su esquema propio. */
+  function ponRec(cid,plan){
     var tabla=(plan==="na")?PON_NA:PON_AJ;
     var p=tabla[String(cid)];
+    if(!p)return null;
+    if(curJornada!=="tech")return p;
+    if(p.esp||p.pend)return p;
+    return /^Departamento/.test(p.n)
+      ? {n:"Departamento TECH",ev:[35,35],p:30}
+      : {n:"Regular TECH",ev:[45,45],p:10};
+  }
+  function esquemaDe(cid,plan){
+    var p=ponRec(cid,plan);
     if(!p)return null;
     if(p.pend)return {nombre:p.n,pend:true};
     var comp=[];
@@ -2091,20 +2515,22 @@ if('serviceWorker' in navigator){
   /* Vista principal: tarjetas de los ramos inscritos */
   window.__renderCalc=function(){
     var host=document.getElementById("calcCards");if(!host)return;
-    if(curJornada==="tech"){ host.innerHTML='<div class="ccempty">El simulador por ramos está disponible en las jornadas semestrales. Usa <b>Todas las calculadoras</b> para calcular cualquier esquema.</div>'; return; }
     var notas=loadNotas();
     var ids=Object.keys(insc);
     if(!ids.length){
       host.innerHTML='<div class="ccempty">Aún no marcaste ramos en <b>Horarios</b>. Ve a Horarios, piquea tus ramos del trimestre y volverán aquí como calculadoras listas para usar.<br><br>También puedes abrir <b>Todas las calculadoras</b> para explorar cualquier esquema.</div>';
       return;
     }
-    var plan=(curMallaSem==="noajustada")?"na":"aj";
-    var byIdMap={};(plan==="na"?COURSES_NASEM:COURSES_SEM).forEach(function(c){byIdMap[c.id]=c;});
+    var esTech=(curJornada==="tech");
+    var plan=((esTech?curMalla:curMallaSem)==="noajustada")?"na":"aj";
+    var byIdMap={};(esTech?(plan==="na"?COURSES_NA:COURSES):(plan==="na"?COURSES_NASEM:COURSES_SEM)).forEach(function(c){byIdMap[c.id]=c;});
     var html=ids.map(function(id){
       var key=insc[id];
-      var pl=(String(key).indexOf("na_")===0)?"na":"aj";
+      var pl=esTech?plan:((String(key).indexOf("na_")===0)?"na":"aj");
       var nm=(byIdMap[id]&&byIdMap[id].n)||"";
-      var m=/_sec(.+?)(?:_alt)?$/.exec(key||"");var secTxt=m?("Sección "+m[1].replace(/_/g,"-")):"";
+      var secTxt="";
+      if(esTech){var mt=/s(\d+)$/.exec(key||"");if(mt)secTxt="Sección "+mt[1];}
+      else{var m=/_sec(.+?)(?:_alt)?$/.exec(key||"");if(m)secTxt="Sección "+m[1].replace(/_/g,"-");}
       return cardCalc(id,pl,nm,notas,"r"+id,secTxt);
     }).join("");
     host.innerHTML=html;
@@ -2119,10 +2545,21 @@ if('serviceWorker' in navigator){
         notas[sid][i]=inp.value;
         saveNotas(notas);
         updateCardResult(inp.closest(".card"),sid);
+        if(inp.value!==""&&!isNaN(parseFloat(inp.value)))marcaCalculo(sid);
       };
     });
   }
   /* Actualiza reloj + mensaje de una tarjeta sin tocar los inputs (preserva foco) */
+  var _calcTimer=null, _calcVistos={};
+  function marcaCalculo(sid){
+    if(_calcVistos[sid]) return;         /* ya se contó este ramo en esta sesión */
+    clearTimeout(_calcTimer);
+    _calcTimer=setTimeout(function(){
+      if(_calcVistos[sid])return;
+      _calcVistos[sid]=true;
+      if(typeof logInteraccion==="function")logInteraccion("simulador","calcular nota");
+    },1200);                              /* espera a que deje de escribir */
+  }
   function updateCardResult(card,sid){
     if(!card)return;
     var cid=sid.replace(/^[ra]/,"");
@@ -2142,13 +2579,13 @@ if('serviceWorker' in navigator){
   window.__renderAllCalc=function(){
     var host=document.getElementById("allCalcList");if(!host)return;
     var notas=loadNotas();
-    var plan=(curMallaSem==="noajustada")?"na":"aj";
+    var plan=((curJornada==="tech"?curMalla:curMallaSem)==="noajustada")?"na":"aj";
     var tabla=(plan==="na")?PON_NA:PON_AJ;
     var Tmap=(plan==="na")?NA_SEM_OF:SEM_OF;
     function firma(p){return JSON.stringify([p.n,p.ev,p.p,p.req,p.nf]);}
     var vistas={}, primero=[], superior=[], especiales=[];
     Object.keys(tabla).forEach(function(cid){
-      var p=tabla[cid];if(!p||p.pend)return;
+      var p=ponRec(cid,plan);if(!p||p.pend)return;
       var f=firma(p);
       if(vistas[f])return;
       vistas[f]=true;
@@ -2395,6 +2832,20 @@ if('serviceWorker' in navigator){
     });
   }
 
+  /* Centra el grupo de pestañas marcando la primera y la última VISIBLE.
+     Los márgenes automáticos reparten el espacio sobrante a ambos lados y,
+     cuando las pestañas no caben, se anulan solos y la barra se desplaza. */
+  function centrarTabs(){
+    var tb=document.querySelector(".tabbar"); if(!tb)return;
+    var todas=[].slice.call(tb.querySelectorAll(".tab"));
+    todas.forEach(function(b){ b.classList.remove("tab-first","tab-last"); });
+    var vis=todas.filter(function(b){ return b.style.display!=="none"; });
+    if(vis.length){
+      vis[0].classList.add("tab-first");
+      vis[vis.length-1].classList.add("tab-last");
+    }
+  }
+
   function applyJornada(j){
     if(!names[j])j="tech";   /* lista blanca: si el valor guardado fue manipulado, caer a un valor seguro */
     curJornada=j;
@@ -2436,6 +2887,19 @@ if('serviceWorker' in navigator){
       showMallaSem(j,sel);
     }
     swapSolic(j!=="tech");
+    /* Solicitudes: por ahora solo en Vespertino TECH. En Diurno y V.Regular la ruta
+       del trámite aún no está definida con la Carrera, así que la pestaña no se
+       muestra en la versión pública para no ofrecer un canal que no existe. */
+    var tabSolic=document.querySelector('.tab[data-tab="solic"]');
+    if(tabSolic){
+      var verSolic=(j==="tech");
+      tabSolic.style.display=verSolic?"":"none";
+      var secSolic=document.getElementById("solic");
+      if(!verSolic && secSolic && secSolic.style.display!=="none" && typeof go==="function"){
+        go("mural");
+      }
+    }
+    centrarTabs();
   }
 
   /* reset consciente de la jornada */
