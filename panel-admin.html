@@ -56,10 +56,17 @@
   .asis summary::before{ content:"▸"; color:var(--wine); font-weight:900; }
   .asis[open] summary::before{ content:"▾"; }
   .asis summary b{ color:var(--wine); }
-  .opts{ display:grid; gap:8px; margin:12px 0 4px; }
-  .opt{ display:flex; gap:9px; align-items:flex-start; background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:10px 12px; cursor:pointer; }
-  .opt input{ margin-top:3px; flex:none; }
-  .opt .hint{ margin:2px 0 0; }
+  .opts{ display:grid; gap:8px; margin:14px 0 4px; }
+  /* La regla global pone width:100% a todo input; aquí hay que devolverle
+     su tamaño natural a la casilla, o se come la fila entera. */
+  .opt{ display:flex; gap:10px; align-items:flex-start; background:var(--soft);
+        border:1px solid var(--line); border-radius:10px; padding:11px 13px;
+        cursor:pointer; margin:0; font-size:.86rem; font-weight:500; color:var(--ink); }
+  .opt input[type="checkbox"]{ width:16px; height:16px; min-width:16px; flex:0 0 16px;
+        margin:1px 0 0; padding:0; border-radius:4px; accent-color:var(--wine); }
+  .opt .otxt{ flex:1 1 auto; min-width:0; }
+  .opt .otit{ display:block; font-weight:700; color:var(--navy); margin-bottom:2px; }
+  .opt .hint{ margin:0; font-size:.76rem; line-height:1.35; }
   .grupo{ font-size:.78rem; font-weight:800; color:var(--wine); text-transform:uppercase; letter-spacing:.04em; margin:16px 0 8px; padding-bottom:5px; border-bottom:2px solid var(--line); display:flex; justify-content:space-between; align-items:center; }
   .grupo span{ font-weight:700; color:var(--muted); text-transform:none; letter-spacing:0; }
   .aviso.vencido{ opacity:.72; border-left-color:#b9b3a7; }
@@ -154,9 +161,11 @@
 
     <div class="opts">
       <label class="opt"><input type="checkbox" id="f_fijado">
-        <span><b>📌 Fijar arriba del mural</b><br><span class="hint">Aparece primero, sobre los demás avisos, sin importar cuándo vence.</span></span></label>
+        <span class="otxt"><span class="otit">📌 Fijar arriba del mural</span>
+        <span class="hint">Aparece primero, sobre los demás avisos, sin importar cuándo vence.</span></span></label>
       <label class="opt"><input type="checkbox" id="f_vervig" checked>
-        <span><b>⏳ Mostrar cuántos días quedan</b><br><span class="hint">Si lo desmarcas, el aviso igual desaparece en la fecha de vencimiento, pero el estudiante no ve la cuenta regresiva.</span></span></label>
+        <span class="otxt"><span class="otit">⏳ Mostrar cuántos días quedan</span>
+        <span class="hint">Si lo desmarcas, el aviso igual desaparece en su fecha, pero el estudiante no ve la cuenta regresiva.</span></span></label>
     </div>
 
     <label>Documento adjunto (opcional)</label>
