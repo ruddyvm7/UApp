@@ -1542,7 +1542,7 @@ async function renderMural(){
         new Promise((_,rej)=>setTimeout(()=>rej(new Error("timeout")),6000))
       ]);
       if(r && !r.error && Array.isArray(r.data)){
-        source=r.data.map(a=>({tipo:TIPO[a.nivel]||"Aviso",nivel:a.nivel||"normal",titulo:a.titulo||"",texto:a.texto||"",hasta:a.hasta||null,desde:a.desde||null,autor:(a.autor||a.publicado_por||a.creado_por||"")||"",fecha:a.created_at||null,cta:(a.doc_url&&String(a.doc_url).trim())?{url:String(a.doc_url).trim(),label:(a.doc_label&&String(a.doc_label).trim())||"📄 Ver documento"}:null}));
+        source=r.data.map(a=>({tipo:TIPO[a.nivel]||"Aviso",nivel:a.nivel||"normal",titulo:a.titulo||"",texto:a.texto||"",hasta:a.hasta||null,desde:a.desde||null,autor:(a.autor||a.publicado_por||a.creado_por||"")||"",fecha:a.created_at||null,fijado:(a.fijado===true),verVig:(a.mostrar_vigencia!==false),cta:(a.doc_url&&String(a.doc_url).trim())?{url:String(a.doc_url).trim(),label:(a.doc_label&&String(a.doc_label).trim())||"📄 Ver documento"}:null}));
       }
     }catch(e){}
   }
@@ -1559,7 +1559,13 @@ async function renderMural(){
   }).filter(a=> a.okDesde);
   const vencidos=items.filter(a=> a.dleft!==null && a.dleft<0).sort((x,y)=> y.dleft-x.dleft);
   items=items.filter(a=> a.dleft===null || a.dleft>=0);
-  items.sort((x,y)=>{ if(x.dleft===null)return 1; if(y.dleft===null)return -1; return x.dleft-y.dleft; });
+  items.sort((x,y)=>{
+    if(x.fijado!==y.fijado) return x.fijado?-1:1;   /* fijados siempre arriba */
+    if(x.dleft===null && y.dleft===null) return 0;
+    if(x.dleft===null) return 1;                    /* sin vencimiento, al final */
+    if(y.dleft===null) return -1;
+    return x.dleft-y.dleft;
+  });
   window.__muralItems=items.concat(vencidos);
   window.__muralPast=vencidos.length;
   /* Sin avisos vigentes: se avisa, pero igual se ofrece el historial si hay vencidos */
@@ -1576,10 +1582,12 @@ async function renderMural(){
   box.innerHTML=items.map((a,ix)=>{
     const n=NIV[a.nivel]||NIV.normal;
     let cd="";
-    if(a.dleft!==null){
+    if(a.fijado){
+      cd='<span class="mcount" style="color:'+n.c+'">📌 Fijado</span>';
+    } else if(a.dleft!==null && a.verVig!==false){
       const t=a.dleft===0?"Último día":a.dleft===1?"Queda 1 día":"Quedan "+a.dleft+" días";
       cd='<span class="mcount" style="color:'+n.c+'">⏳ '+t+'</span>';
-    } else if(a.badge){
+    } else if(a.dleft===null && a.badge){
       cd='<span class="mcount" style="color:'+n.c+'">'+esc(a.badge)+'</span>';
     }
     return '<div class="mcard" data-ix="'+ix+'" tabindex="0" role="button" aria-label="Abrir aviso: '+esc(a.titulo)+'" style="border-left-color:'+n.c+'">'+
@@ -1645,10 +1653,11 @@ function openAviso(ix){
   if(a.autor) meta.push('<div class="avmeta"><span class="avml">Publicado por</span><span class="avmv">'+esc(a.autor)+'</span></div>');
   if(a.fecha) meta.push('<div class="avmeta"><span class="avml">Fecha de publicación</span><span class="avmv">'+esc(fmt(a.fecha))+'</span></div>');
   if(a.desde) meta.push('<div class="avmeta"><span class="avml">Vigente desde</span><span class="avmv">'+esc(fmt(a.desde+"T00:00:00"))+'</span></div>');
-  if(a.hasta){
-    var vig=(a.dleft!==null&&a.dleft<0)?"Venció el":"Vigente hasta";
+  var venc=(a.dleft!==null&&a.dleft<0);
+  if(a.hasta && (a.verVig!==false || venc)){
+    var vig=venc?"Venció el":"Vigente hasta";
     var det="";
-    if(a.dleft!==null&&a.dleft>=0)det=' · '+(a.dleft===0?"último día":a.dleft===1?"queda 1 día":"quedan "+a.dleft+" días");
+    if(a.dleft!==null&&a.dleft>=0&&a.verVig!==false)det=' · '+(a.dleft===0?"último día":a.dleft===1?"queda 1 día":"quedan "+a.dleft+" días");
     meta.push('<div class="avmeta"><span class="avml">'+vig+'</span><span class="avmv">'+esc(fmt(a.hasta+"T00:00:00"))+det+'</span></div>');
   }
   var _safeU=function(u){u=String(u||"").trim();return /^https?:\/\//i.test(u)?u:(/^www\./i.test(u)?"https://"+u:"#");};
