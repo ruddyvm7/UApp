@@ -36,7 +36,7 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom)}
 .serif{font-family:"Fraunces",serif}
-.tabbar{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid #e7e4dd;display:flex;gap:4px;padding:0 8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#c9c2b6 transparent;overscroll-behavior-x:contain}
+.tabbar{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid #e7e4dd;display:flex;justify-content:flex-start;gap:4px;padding:0 8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#c9c2b6 transparent;overscroll-behavior-x:contain}
 .tabbar::-webkit-scrollbar{height:4px}
 .tabbar::-webkit-scrollbar-thumb{background:#c9c2b6;border-radius:4px}
 .tabbar::-webkit-scrollbar-track{background:transparent}
@@ -48,7 +48,7 @@ body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--i
 .brandtxt{display:flex;flex-direction:column;line-height:1.25}
 .brandtxt b{font-size:15px;font-weight:700}
 .brandtxt span{font-size:11px;color:var(--cream);font-weight:600}
-.tab{background:none;border:0;padding:13px 12px 11px;font-family:inherit;font-size:13.5px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2.5px solid transparent;white-space:nowrap}
+.tab{background:none;border:0;padding:13px 12px 11px;font-family:inherit;font-size:13.5px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2.5px solid transparent;white-space:nowrap;flex:1 0 auto;text-align:center}
 .tab.active{color:var(--wine);border-color:var(--gold)}
 .wrap{max-width:760px;margin:0 auto;padding:0 16px}
 .toprule{height:3px;background:var(--wine);border-radius:2px;max-width:760px;margin:18px auto 0}
@@ -1560,9 +1560,19 @@ async function renderMural(){
   const vencidos=items.filter(a=> a.dleft!==null && a.dleft<0).sort((x,y)=> y.dleft-x.dleft);
   items=items.filter(a=> a.dleft===null || a.dleft>=0);
   items.sort((x,y)=>{ if(x.dleft===null)return 1; if(y.dleft===null)return -1; return x.dleft-y.dleft; });
-  if(!items.length){ box.innerHTML='<div class="muralempty">No hay avisos por ahora 🎉</div>'; return; }
   window.__muralItems=items.concat(vencidos);
   window.__muralPast=vencidos.length;
+  /* Sin avisos vigentes: se avisa, pero igual se ofrece el historial si hay vencidos */
+  if(!items.length){
+    box.innerHTML='<div class="muralempty">No hay avisos por ahora 🎉</div>';
+    if(vencidos.length){
+      box.insertAdjacentHTML("beforeend",
+        '<button type="button" class="archbtn" id="archBtn">🗄️ Ver avisos anteriores ('+vencidos.length+')</button>');
+      var ab0=document.getElementById("archBtn");
+      if(ab0)ab0.onclick=function(){ abrirHistorial(0,vencidos); };
+    }
+    return;
+  }
   box.innerHTML=items.map((a,ix)=>{
     const n=NIV[a.nivel]||NIV.normal;
     let cd="";
