@@ -604,9 +604,9 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
 <div class="tabbar">
   <button class="tab active" data-tab="mural">Mural</button>
   <button class="tab" data-tab="malla">Avance Curricular</button>
-  <button class="tab" data-tab="calc">Simulador de Notas</button>
   <button class="tab" data-tab="hor">Horarios</button>
   <button class="tab" data-tab="pru">Pruebas</button>
+  <button class="tab" data-tab="calc">Simulador de Notas</button>
   <button class="tab" data-tab="info">Info</button>
   <button class="tab" data-tab="solic">Solicitudes</button>
 </div>
@@ -2559,6 +2559,18 @@ if('serviceWorker' in navigator){
       showMallaSem(j,sel);
     }
     swapSolic(j!=="tech");
+    /* Solicitudes: por ahora solo en Vespertino TECH. En Diurno y V.Regular la ruta
+       del trámite aún no está definida con la Carrera, así que la pestaña no se
+       muestra en la versión pública para no ofrecer un canal que no existe. */
+    var tabSolic=document.querySelector('.tab[data-tab="solic"]');
+    if(tabSolic){
+      var verSolic=(j==="tech");
+      tabSolic.style.display=verSolic?"":"none";
+      var secSolic=document.getElementById("solic");
+      if(!verSolic && secSolic && secSolic.style.display!=="none" && typeof go==="function"){
+        go("mural");
+      }
+    }
   }
 
   /* reset consciente de la jornada */
