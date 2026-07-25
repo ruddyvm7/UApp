@@ -1125,14 +1125,19 @@ function _diaAb(mmdd){try{var p=String(mmdd).split("-");var d=new Date(new Date(
   return ["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"][d.getDay()];}catch(e){return "";}}
 /* Abrevia nombres de ramos para los cuadritos de la malla */
 function _abrev(n){
-  var w=String(n).replace(/\(.*?\)/g,"").trim().split(/\s+/);
-  var chica={de:1,del:1,la:1,las:1,los:1,y:1,e:1,en:1,a:1,al:1,el:1,su:1,para:1};
-  w=w.filter(function(x){return !chica[x.toLowerCase()];});
-  var s=w.join(" ");
-  if(s.length<=24)return s;
-  /* Inicial + punto en las primeras palabras, conservando las últimas dos */
-  var out=w.map(function(x,i){ if(i<w.length-2&&x.length>3&&!/^[IVX]+$/.test(x))return x[0]+"."; return x; }).join(" ");
-  return out.length<=26?out:out.slice(0,25)+"…";
+  var chica={de:1,del:1,la:1,las:1,los:1,y:1,e:1,en:1,a:1,al:1,el:1,para:1,su:1,sus:1,un:1,una:1};
+  var w=String(n).replace(/\(.*?\)/g,"").trim().split(/\s+/).filter(function(x){return !chica[x.toLowerCase()];});
+  if(!w.length)return String(n).slice(0,14);
+  var rom=/^[IVX]+$/.test(w[w.length-1])?w.pop():null;
+  if(!w.length)return rom||"";
+  if(w.length===1){var u=w[0];return (u.length>13?u.slice(0,12)+".":u)+(rom?" "+rom:"");}
+  /* Primera palabra a 4 letras + punto; se conserva completa la más distintiva del resto */
+  var ab=(w[0].length>5?w[0].slice(0,4)+".":w[0]);
+  var resto=w.slice(1), sig=resto.reduce(function(a,b){return b.length>a.length?b:a;},resto[0]);
+  var out=ab+" "+sig;
+  var tope=16-(rom?rom.length+1:0);
+  if(out.length>tope)out=ab+" "+sig.slice(0,Math.max(3,tope-ab.length-2))+".";
+  return out+(rom?" "+rom:"");
 }
 function imprimirDoc(titulo,sub,cuerpo,piePersonal){
   var css='@page{size:letter;margin:12mm}'+
@@ -1150,8 +1155,8 @@ function imprimirDoc(titulo,sub,cuerpo,piePersonal){
   '.nota{background:#faf7f1;border-left:3px solid #c79a3e;padding:6px 9px;margin:8px 0;font-size:10.6px}'+
   /* --- malla en cuadritos --- */
   '.mg{display:grid;gap:3px;margin:6px 0}'+
-  '.mg .nh{font-size:8.6px;font-weight:bold;color:#8b0c0c;text-align:center;text-transform:uppercase;letter-spacing:.3px;padding:2px 0;border-bottom:2px solid #c79a3e}'+
-  '.cs{border:1px solid #cfc9bd;border-radius:3px;padding:2.5px 3px;font-size:6.6px;line-height:1.22;min-height:23px;background:#f6f3ec;color:#5d584f;text-align:center;display:flex;align-items:center;justify-content:center}'+
+  '.mg{gap:2.5px}.mg .nh{font-size:7.4px;font-weight:bold;color:#8b0c0c;text-align:center;text-transform:uppercase;letter-spacing:.3px;padding:2px 0;border-bottom:2px solid #c79a3e}'+
+  '.cs{border:1px solid #cfc9bd;border-radius:2.5px;padding:2px 2px;font-size:5.8px;line-height:1.2;min-height:20px;background:#f6f3ec;color:#5d584f;text-align:center;display:flex;align-items:center;justify-content:center;overflow-wrap:break-word;overflow:hidden}'+
   '.cs.ok{background:#def0e3;border-color:#1f7a48;color:#14532d;font-weight:bold}'+
   '.cs.no{background:#fbe0dc;border-color:#a33;color:#7a1f14;font-weight:bold}'+
   '.leg{display:flex;gap:14px;font-size:9.6px;color:#6b6660;margin:4px 0 2px}'+
@@ -1191,17 +1196,28 @@ function imprimirDoc(titulo,sub,cuerpo,piePersonal){
     },150);
   }catch(e){}
 }
+/* La malla activa depende de la jornada (trimestral o semestral) y del plan.
+   Cada mundo registra aquí su "instantánea": lista de ramos, estado y prerrequisitos. */
+function __snapTech(){return {reg:"tri",pref:"N",
+  cur:(typeof curMalla!=="undefined"&&curMalla==="noajustada")?"na":"aj",
+  aj:{C:COURSES,S:state,U:isUnlocked},
+  na:{C:COURSES_NA,S:stateNA,U:isUnlockedNA},
+  plan:(typeof curMalla!=="undefined"&&curMalla==="noajustada")?"Plan No Ajustado (Res. 135/2017)":"Plan Ajustado (Res. 165/2022)"};}
+window.__snapTech=__snapTech;
+window.__mallaSnap=__snapTech;
+
+function _snap(){try{return (window.__mallaSnap||__snapTech)();}catch(e){return __snapTech();}}
 function _cursoDe(id,key){
-  var na=String(key||"").indexOf("na_")===0;
-  var lista=na?(typeof COURSES_NA!=="undefined"?COURSES_NA:[]):(typeof COURSES!=="undefined"?COURSES:[]);
+  var P=_snap(), na=String(key||"").indexOf("na_")===0;
+  var lista=(na?P.na:P.aj).C||[];
   var c=null;lista.forEach(function(x){if(x.id===id)c=x;});
-  if(!c){(na?COURSES:COURSES_NA).forEach(function(x){if(x.id===id)c=x;});}
+  if(!c){((na?P.aj:P.na).C||[]).forEach(function(x){if(x.id===id)c=x;});}
   return c;
 }
 function _prerreqOK(id,key){
-  var na=String(key||"").indexOf("na_")===0;
+  var P=_snap(), na=String(key||"").indexOf("na_")===0;
   var c=_cursoDe(id,key); if(!c)return null;
-  try{ return na?isUnlockedNA(c):isUnlocked(c); }catch(e){ return null; }
+  try{ return (na?P.na:P.aj).U(c); }catch(e){ return null; }
 }
 function _inscritosDetalle(){
   var ids=Object.keys(insc).map(Number), out=[];
@@ -1216,30 +1232,25 @@ function _inscritosDetalle(){
 }
 /* Cuadrícula de la malla: columnas = niveles, cuadritos teñidos por estado */
 function _mallaGrid(){
-  var esNA=(typeof curMalla!=="undefined"&&curMalla==="noajustada");
-  var C=esNA?COURSES_NA:COURSES, S=esNA?stateNA:state;
+  var P=_snap(), A=P[P.cur], C=A.C, S=A.S;
   var porNivel={},maxT=0,ap=0,rep=0,pen=0;
   C.forEach(function(c){maxT=Math.max(maxT,c.t);(porNivel[c.t]=porNivel[c.t]||[]).push(c);
     var st=S[c.id]; if(st==="ok")ap++; else if(st==="no")rep++; else pen++;});
   var nivs=[];for(var t=1;t<=maxT;t++)if(porNivel[t])nivs.push(t);
-  function banda(sub){
-    var g='<div class="mg" style="grid-template-columns:repeat('+sub.length+',1fr)">';
-    sub.forEach(function(t){g+='<div class="nh">Niv '+t+'</div>';});
-    var maxF=0;sub.forEach(function(t){maxF=Math.max(maxF,porNivel[t].length);});
-    for(var f=0;f<maxF;f++){
-      sub.forEach(function(t){
-        var c=porNivel[t][f];
-        if(!c){g+='<div></div>';return;}
-        var st=S[c.id]==="ok"?"ok":S[c.id]==="no"?"no":"";
-        g+='<div class="cs '+st+'">'+_e(_abrev(c.n))+'</div>';
-      });
-    }
-    return g+'</div>';
+  /* Una sola fila de niveles a lo ancho de la página */
+  var g='<div class="mg" style="grid-template-columns:repeat('+nivs.length+',minmax(0,1fr))">';
+  nivs.forEach(function(t){g+='<div class="nh">'+P.pref+t+'</div>';});
+  var maxF=0;nivs.forEach(function(t){maxF=Math.max(maxF,porNivel[t].length);});
+  for(var f=0;f<maxF;f++){
+    nivs.forEach(function(t){
+      var c=porNivel[t][f];
+      if(!c){g+='<div></div>';return;}
+      var st=S[c.id]==="ok"?"ok":S[c.id]==="no"?"no":"";
+      g+='<div class="cs '+st+'" title="'+_e(c.n)+'">'+_e(_abrev(c.n))+'</div>';
+    });
   }
-  var html="";
-  if(nivs.length<=8)html=banda(nivs);
-  else{var mitad=Math.ceil(nivs.length/2);html=banda(nivs.slice(0,mitad))+'<div style="height:6px"></div>'+banda(nivs.slice(mitad));}
-  return {html:html,ap:ap,rep:rep,pen:pen,esNA:esNA};
+  g+='</div>';
+  return {html:g,ap:ap,rep:rep,pen:pen,plan:P.plan,reg:P.reg,pref:P.pref,niveles:nivs.length};
 }
 function docHorario(){
   var det=_inscritosDetalle();
@@ -1317,10 +1328,10 @@ function docRespaldo(){
   var mg=_mallaGrid();
   var det=_inscritosDetalle();
   var cuerpo='<h2>1 · Situación curricular declarada</h2>'+
-    '<div class="res"><div><b>'+mg.ap+'</b> aprobadas</div><div><b>'+mg.rep+'</b> reprobadas</div><div><b>'+mg.pen+'</b> pendientes</div><div>Malla: <b>'+(mg.esNA?"Plan No Ajustado (Res. 135/2017)":"Plan Ajustado (Res. 165/2022)")+'</b></div></div>'+
+    '<div class="res"><div><b>'+mg.ap+'</b> aprobadas</div><div><b>'+mg.rep+'</b> reprobadas</div><div><b>'+mg.pen+'</b> pendientes</div><div>Malla: <b>'+mg.plan+'</b></div></div>'+
     '<div class="leg"><span><i style="background:#def0e3;border-color:#1f7a48"></i>Aprobada</span><span><i style="background:#fbe0dc;border-color:#a33"></i>Reprobada</span><span><i style="background:#f6f3ec"></i>Pendiente</span></div>'+
     mg.html+
-    '<div class="nota">Avance <b>declarado por el estudiante</b> en la app. Nombres abreviados por espacio; el detalle completo está en UApp.</div>';
+    '<div class="nota">Avance <b>declarado por el estudiante</b> en la app. '+(mg.pref==="S"?"S = semestre":"N = nivel trimestral")+' · nombres abreviados por espacio; el detalle completo está en UApp.</div>';
   cuerpo+='<h2>2 · Ramos que solicita inscribir</h2>';
   if(!det.length){
     cuerpo+='<div class="nota">El estudiante aún no seleccionó secciones en <b>Horarios</b>. Este documento debe generarse con la combinación elegida.</div>';
@@ -1338,8 +1349,7 @@ function docRespaldo(){
     var sct=0;det.forEach(function(r){sct+=(r.cred||0);});
     var nivs={};det.forEach(function(r){if(r.nivel!=null)nivs[r.nivel]=1;});
     var nNiv=Object.keys(nivs).length;
-    var jor=null;try{jor=localStorage.getItem("jornada3_v1");}catch(e){}
-    var tope=(jor==="tech")?4:3, regla=(jor==="tech")?"Res. de Rectoría 009/2024, art. 17 (régimen trimestral)":"Reglamento General del Estudiante, art. 17 (régimen semestral)";
+    var tope=(mg.reg==="tri")?4:3, regla=(mg.reg==="tri")?"Res. de Rectoría 009/2024, art. 17 (régimen trimestral)":"Reglamento General del Estudiante, art. 17 (régimen semestral)";
     var faltaPr=det.filter(function(r){return r.prerreq===false;}).length;
     cuerpo+='<h2>3 · Verificaciones de la aplicación</h2><table>'+
       '<tr><td>Coincidencias de horario entre las secciones elegidas</td><td>'+(choques.length?'<span class="tag alerta">✗ '+choques.join(" · ")+'</span>':'<span class="tag si">✓ Sin topes</span>')+"</td></tr>"+
@@ -2422,6 +2432,14 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
 
   /* --- Selector de malla (ajustada/no ajustada) para Diurno y V.Regular --- */
   var curMallaSem="ajustada"; /* por jornada */
+  /* Instantánea de la malla activa para los documentos imprimibles */
+  function expSnapSem(){
+    window.__mallaSnap=function(){return {reg:"sem",pref:"S",
+      cur:(curMallaSem==="noajustada")?"na":"aj",
+      aj:{C:COURSES_SEM,S:stateSEM,U:isUnlockedSEM},
+      na:{C:COURSES_NASEM,S:stateNASEM,U:isUnlockedNASEM},
+      plan:(curMallaSem==="noajustada")?"Plan No Ajustado (Res. 135/2017)":"Plan Ajustado (Res. 165/2022)"};};
+  }
   function keyMallaSem(j){return "malla_sel_"+j+"_v1";}
   function showMallaSem(j,sel){
     curMallaSem=(sel==="noajustada")?"noajustada":"ajustada";
@@ -2437,11 +2455,11 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
     if(note){
       note.style.display="";
       if(curMallaSem==="noajustada"){
-        KEY_NASEM="malla_nasem_"+j+"_v1"; loadNASEM();
+        KEY_NASEM="malla_nasem_"+j+"_v1"; loadNASEM(); expSnapSem();
         note.innerHTML="<b>"+nm+" · Malla no ajustada · Plan 2017 (Res. 135/2017), régimen semestral.</b> Solo para estudiantes de ese plan. Ubicación por semestre y prerrequisitos <b>oficiales exactos</b>.";
         renderNASEM();
       }else{
-        KEY_SEM="malla_sem_"+j+"_v1"; loadSEM();
+        KEY_SEM="malla_sem_"+j+"_v1"; loadSEM(); expSnapSem();
         note.innerHTML="<b>"+nm+" · Plan vigente (Res. 165/2022), régimen semestral.</b> Los prerrequisitos son los oficiales del plan.";
         renderSEM();
       }
@@ -2973,6 +2991,7 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
       }
     }
     centrarTabs();
+    if(j==="tech"&&window.__snapTech)window.__mallaSnap=window.__snapTech;
   }
 
   /* reset consciente de la jornada */
