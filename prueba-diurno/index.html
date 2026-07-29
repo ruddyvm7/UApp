@@ -147,6 +147,7 @@ body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--i
 .pctrls select{font-family:inherit;font-size:14px;padding:9px;border:1px solid var(--cb2);border-radius:9px;background:#fff;color:var(--ink)}
 .presum{background:#fbf6ea;border:1px solid #ecdcaf;border-radius:10px;padding:10px 13px;font-size:13px;color:#5a4a1a;margin-bottom:4px}
 .pcard{background:#fff;border:1px solid var(--cb2);border-left:4px solid var(--gold);border-radius:10px;padding:11px 13px;margin-bottom:9px}
+.pcard.fitnote{font-size:.79rem;line-height:1.45;padding:8px 11px;margin-bottom:7px}
 .pcard .pn{font-weight:700;color:var(--wine);font-size:14.5px}
 .pcard .pm{font-size:12.5px;color:#666;margin-top:3px}
 .pcard .pt{font-size:12px;color:#7a6a3a;margin-top:5px}
@@ -517,6 +518,9 @@ body.dark .mallaNote{background:rgba(199,154,62,.12);border-color:#5a4a2a;color:
 .mallaSwitch{display:flex;justify-content:flex-end;margin:10px 0 2px}
 .horBtns{justify-content:flex-start;flex-wrap:wrap;gap:8px;align-items:center}
 .horBtns .pdfBtn{margin-left:auto}
+@media(min-width:700px){.horBtns{display:grid;grid-template-columns:1fr auto 1fr;gap:8px}
+.horBtns>:first-child{justify-self:start}.horBtns>:nth-child(2){justify-self:center}
+.horBtns>:last-child{justify-self:end;margin-left:0}}
 .pdfBtn{font-size:.72rem;padding:4px 10px;gap:4px}
 .mallaSwitch .mSwBtn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid #d8cfba;color:#7a6f57;font:inherit;font-weight:600;font-size:.78rem;padding:6px 12px;border-radius:999px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s,border-color .15s,color .15s}
 .mallaSwitch .mSwBtn:hover{background:#f3efe6}
@@ -697,8 +701,8 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
   <div class="mh serif">Planificador de carga</div>
   <div class="msub">Cruza tu avance con la oferta del trimestre y propone qué tomar, sin choques de horario.</div>
   <div class="disc">⚠️ Propuesta <b>referencial</b>, no es una inscripción oficial. Confirma siempre con tu malla y con Registro Curricular antes de inscribir.</div>
-  <button type="button" class="mSwBtn" id="dlPlan">📄 Respaldo para la toma de carga (PDF)</button>
-  <div class="hint" style="font-size:.72rem;color:var(--muted);margin:4px 0 8px">Genera un documento con tu avance declarado, los ramos que seleccionaste en Horarios y las verificaciones de la app, para adjuntar o llevar impreso a tu solicitud de toma de carga.</div>
+  <div class="mallaSwitch horBtns" style="margin:6px 0 2px"><button type="button" class="mSwBtn pdfBtn" id="dlPlan" title="Generar el respaldo en PDF para tu toma de carga" aria-label="Generar el respaldo en PDF para tu toma de carga">📄 PDF</button></div>
+  <div class="hint" style="font-size:.72rem;color:var(--muted);margin:2px 0 8px">El botón <b>PDF</b> genera el respaldo de tu toma de carga: tu avance declarado, los ramos que seleccionaste en Horarios y las verificaciones de la app, para adjuntar o llevar impreso a tu solicitud.</div>
   <div id="planOut" style="margin-top:6px"></div>
   <div class="note" style="margin-top:12px"><b>📌 A tener en cuenta:</b> se priorizan los ramos <b>reprobados</b> y los del <b>nivel más bajo pendiente</b>, respetando prerrequisitos y los topes de <b id="planNivTope">4 niveles consecutivos</b> y <b>30 créditos</b>.</div>
   <div class="note" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px">La carga se rige por: <a class="doclink" id="lnkReg" href="javascript:void(0)">📖 Reglamento del Estudiante</a> <a class="doclink" id="lnkCirc" href="javascript:void(0)">📄 Circular N°03/2026</a></div>
@@ -1205,7 +1209,7 @@ function imprimirDoc(titulo,sub,cuerpo,piePersonal){
   '.evrow{display:flex;justify-content:space-between;border-bottom:1px dashed #e3ddd2;padding:3px 0;font-size:10.6px}'+
   '.evrow:last-child{border-bottom:0}.evrow .fecha{font-weight:bold}.evrow .fecha small{color:#8b0c0c;font-weight:bold;margin-right:3px}'+
   '.pnote{font-size:8.8px;color:#6b6660;padding:2px 8px 6px}';
-  var html='<!doctype html><html><head><meta charset="utf-8"><title>'+_e(titulo)+'</title><style>'+css+'</style></head><body>'+
+  var html='<!doctype html><html><head><meta charset="utf-8"><title>UApp - '+_e(titulo)+'</title><style>'+css+'</style></head><body>'+
     '<div class="top"><div class="brand">U<span>App</span> · Derecho · UA Temuco</div>'+
     '<div class="tt">'+_e(titulo)+'</div><div class="sub">'+_e(sub)+' · Generado el '+_e(_fGen())+'</div></div>'+
     cuerpo+(piePersonal||'')+
@@ -1213,6 +1217,18 @@ function imprimirDoc(titulo,sub,cuerpo,piePersonal){
     'No es un certificado ni reemplaza al registro académico oficial de la Universidad. Ante cualquier diferencia, prima la información de Registro Curricular.</div>'+
     '</body></html>';
   try{ window.__lastPrint={titulo:titulo,html:html}; }catch(e){}
+  /* El navegador no permite forzar el destino: se abre su cuadro de impresión,
+     donde "Guardar como PDF" es una de las opciones. Se explica la primera vez. */
+  var espera=0;
+  try{
+    if(localStorage.getItem("pdf_tip_v1")!=="1"){
+      localStorage.setItem("pdf_tip_v1","1");
+      if(typeof showHorMsg==="function"){
+        showHorMsg('📄 Se abrirá el cuadro de tu dispositivo: elige <b>“Guardar como PDF”</b> en <b>Destino</b> para descargar el documento.','info');
+        espera=1600;
+      }
+    }
+  }catch(e){}
   try{
     var fr=document.createElement("iframe");
     fr.style.cssText="position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden";
@@ -1224,7 +1240,7 @@ function imprimirDoc(titulo,sub,cuerpo,piePersonal){
       try{ fr.contentWindow.focus(); fr.contentWindow.print(); }catch(e){}
       if(fr.contentWindow && "onafterprint" in fr.contentWindow){ fr.contentWindow.onafterprint=done; setTimeout(done,120000); }
       else setTimeout(done,120000);
-    },150);
+    },150+espera);
   }catch(e){}
 }
 /* La malla activa depende de la jornada (trimestral o semestral) y del plan.
@@ -1525,7 +1541,16 @@ function buildTable(data,key,sel){
   let firstRow=0, lastRow=maxRow, found=false;
   for(let i=0;i<=maxRow;i++){const any=Object.keys(DIAS).some(d=>grid[d][i]);if(any){if(!found){firstRow=i;found=true;}lastRow=i;}}
   if(!found){firstRow=0;lastRow=-1;}
-  let h='<div class="hwrap"><table class="hortbl"><thead><tr><th class="th-h">Hora</th>';
+  /* Reparto de ancho: los días sin sesiones quedan angostos y los que sí tienen
+     clases se reparten el espacio sobrante en partes iguales. */
+  const _dias=Object.keys(DIAS);
+  const _usado={}; _dias.forEach(d=>{_usado[d]=grid[d].some(c=>c);});
+  const _nU=_dias.filter(d=>_usado[d]).length||_dias.length;
+  const _nV=_dias.length-_nU;
+  const _wV=5, _wU=(91-_wV*_nV)/_nU;
+  let h='<div class="hwrap"><table class="hortbl"><colgroup><col style="width:9%">'+
+        _dias.map(d=>'<col style="width:'+((_usado[d]||_nU===_dias.length)?_wU:_wV).toFixed(2)+'%">').join("")+
+        '</colgroup><thead><tr><th class="th-h">Hora</th>';
   Object.values(DIAS).forEach(n=>h+=`<th>${n}</th>`);
   h+='</tr></thead><tbody>';
   for(let i=firstRow;i<=lastRow;i++){
@@ -1655,17 +1680,17 @@ function renderFitHor(){
   var cab, filtro;
 
   if(!conf){
-    cab='<div class="pcard">Mostrando la oferta del <b>'+etqPlan+'</b>, que es la malla que tienes activa. '+
+    cab='<div class="pcard fitnote">Mostrando la oferta del <b>'+etqPlan+'</b>, que es la malla que tienes activa. '+
         'Para afinar por tu avance, revisa tu progreso en <b>Avance Curricular</b>.</div>';
     filtro=function(k){ return soloPlan(k); };
   }else if(!a.hasAvance){
-    cab='<div class="pcard">Para mostrarte <b>solo lo que puedes tomar</b>, primero marca tu avance en <b>Avance Curricular</b>: toca los ramos que ya aprobaste.<br>'+
+    cab='<div class="pcard fitnote">Para mostrarte <b>solo lo que puedes tomar</b>, primero marca tu avance en <b>Avance Curricular</b>: toca los ramos que ya aprobaste.<br>'+
         'Por ahora ves toda la oferta del <b>'+etqPlan+'</b>.'+
         '<br><button type="button" class="mSwBtn" id="toMalla" style="margin-top:8px">📚 Ir a Avance Curricular</button></div>';
     filtro=function(k){ return soloPlan(k); };
   }else{
     var hasta=a.anchor+a.tope-1, N=(a.pref==="S"?"semestre":"nivel");
-    cab='<div class="pcard">Oferta del <b>'+etqPlan+'</b> que <b>puedes tomar</b> según tu avance: desde el <b>'+N+' '+a.anchor+'</b> hasta el <b>'+N+' '+hasta+'</b> ('+a.tope+' consecutivos). '+
+    cab='<div class="pcard fitnote">Oferta del <b>'+etqPlan+'</b> que <b>puedes tomar</b> según tu avance: desde el <b>'+N+' '+a.anchor+'</b> hasta el <b>'+N+' '+hasta+'</b> ('+a.tope+' consecutivos). '+
         'Se ocultan los ramos aprobados y los que aún no tienen prerrequisitos cumplidos; los reprobados sí aparecen.</div>';
     filtro=function(k,se){ return soloPlan(k) && _porQueNo(k,se,a)===null; };
   }
@@ -1673,7 +1698,7 @@ function renderFitHor(){
   renderAllHor(filtro,cab);
   var bm=document.getElementById("toMalla"); if(bm)bm.onclick=function(){go("malla");};
   if(!horList.querySelector("td.selc")){
-    horList.innerHTML=cab+'<div class="pcard">No quedan ramos disponibles con tu avance actual. Abre <b>“Todos los horarios”</b> arriba, o consulta en la Dirección de Carrera.</div>';
+    horList.innerHTML=cab+'<div class="pcard fitnote">No quedan ramos disponibles con tu avance actual. Abre <b>“Todos los horarios”</b> arriba, o consulta en la Dirección de Carrera.</div>';
   }
   renderHorTally();
   renderMiniHor();
