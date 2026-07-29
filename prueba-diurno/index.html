@@ -670,7 +670,8 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
     <button type="button" class="mSwBtn" id="toPlan">🧭 Planificador de carga</button> <button type="button" class="mSwBtn" id="dlHor">🖨️ Horario en PDF</button>
   </div>
   <div class="seg" id="horSeg" style="max-width:560px">
-    <button class="on" data-h="all">Todos los horarios</button>
+    <button class="on" data-h="fit">✅ Puedo tomar</button>
+    <button data-h="all">Todos los horarios</button>
     <button data-h="mine">Mi horario</button>
   </div>
   <p class="boardhint" id="horHint">Toca los ramos que inscribiste para marcarlos. Luego revisa "Mi horario" y se reflejarán en Mis pruebas.</p>
@@ -1207,6 +1208,55 @@ window.__snapTech=__snapTech;
 window.__mallaSnap=__snapTech;
 
 function _snap(){try{return (window.__mallaSnap||__snapTech)();}catch(e){return __snapTech();}}
+/* ===== Filtro "lo que puedo tomar" =====
+   Cruza el avance declarado con la oferta: descarta aprobados, exige
+   prerrequisitos y respeta el tope de niveles desde el ramo más atrasado. */
+function _sidSes(se){ try{ return (se[6]!=null)?se[6]:(typeof OFER!=="undefined"?OFER[se[3]]:null); }catch(e){ return null; } }
+/* Mundo (plan) contra el que se resuelven los ids de un bloque horario:
+   en régimen semestral lo indica la clave (aj_/na_); en trimestral la
+   oferta mapea siempre contra la malla vigente. */
+function _mundoDe(key){
+  var P=_snap();
+  if(P.reg==="sem") return (String(key||"").indexOf("na_")===0)?"na":"aj";
+  return "aj";
+}
+function _ancla(){
+  var P=_snap(), A=P[P.cur], C=A.C||[], S=A.S||{};
+  var marcados=0, pendMin=99;
+  C.forEach(function(c){
+    var s=S[c.id];
+    if(s==="ok"||s==="no")marcados++;
+    if(s!=="ok"&&c.t<pendMin)pendMin=c.t;
+  });
+  var tope=(P.reg==="tri")?4:3;
+  if(!marcados) return {hasAvance:false,anchor:null,tope:tope,reg:P.reg,pref:P.pref};
+  return {hasAvance:true,anchor:(pendMin===99?1:pendMin),tope:tope,reg:P.reg,pref:P.pref};
+}
+/* ¿El filtro es confiable? Solo si el plan activo del alumno coincide con
+   el plan contra el que se resuelve la oferta. Si no, se muestra todo. */
+function _fitAplicable(){
+  var P=_snap();
+  if(P.reg==="sem") return true;          /* cada bloque trae su plan en la clave */
+  return P.cur==="aj";                    /* trimestral: la oferta apunta a la malla vigente */
+}
+function _estadoRamo(key,sid){
+  var P=_snap(), W=P[_mundoDe(key)];
+  var c=null;(W.C||[]).forEach(function(x){if(x.id===sid)c=x;});
+  if(!c) return null;
+  return {curso:c, st:(W.S||{})[sid]||null, libre:(function(){try{return W.U(c);}catch(e){return true;}})()};
+}
+/* Devuelve el motivo por el que NO se puede tomar, o null si sí se puede */
+function _porQueNo(key,se,a){
+  var sid=_sidSes(se);
+  if(sid==null) return null;              /* sin id: ante la duda, se muestra */
+  var E=_estadoRamo(key,sid);
+  if(!E) return null;
+  if(E.st==="ok") return "aprobado";
+  if(E.st!=="no" && !E.libre) return "prerrequisito";
+  if(a.hasAvance && a.anchor!=null && E.curso.t > a.anchor + a.tope - 1) return "tope";
+  return null;
+}
+
 function _cursoDe(id,key){
   var P=_snap(), na=String(key||"").indexOf("na_")===0;
   var lista=(na?P.na:P.aj).C||[];
@@ -1433,10 +1483,10 @@ function renderHorTally(){
     if(!Object.keys(insc).length)return;
     insc={};saveInsc();
     if(typeof showHorMsg==='function')showHorMsg("🧹 Selección vaciada. Puedes empezar de nuevo.","info");
-    renderAllHor();renderHorTally();
+    refrescaHor();renderHorTally();
   };
 }
-let horMode="all";
+let horMode="fit";
 /* --- Detección de coincidencia horaria entre ramos piqueados (bloqueo total) --- */
 function _pmH(t){const p=String(t).split(":");return (+p[0])*60+(+p[1]);}
 function sessionsOf(id,key){const blk=HOR[key];if(!blk)return [];return blk.s.filter(se=>{const sid=(se[6]!=null)?se[6]:OFER[se[3]];return sid===id;});}
@@ -1465,16 +1515,22 @@ function showHorMsg(txt,kind){
   box.classList.remove("show");void box.offsetWidth;box.classList.add("show");
   clearTimeout(showHorMsg._t);showHorMsg._t=setTimeout(()=>{box.classList.remove("show");},4200);
 }
-function renderAllHor(){
-  let h="";Object.keys(HOR).forEach(k=>{h+=`<div class="hgrp serif">${HOR[k].l}</div>`+buildTable(HOR[k].s,k,true)+(HOR[k].note?`<div class="hnote">${HOR[k].note}</div>`:"");});
+function renderAllHor(filtro,encabezado){
+  let h=(encabezado||""),ocultos=0;
+  Object.keys(HOR).forEach(k=>{
+    var ses=HOR[k].s;
+    if(filtro){ ses=ses.filter(se=>filtro(k,se)); if(!ses.length){ocultos++;return;} }
+    h+=`<div class="hgrp serif">${HOR[k].l}</div>`+buildTable(ses,k,true)+(HOR[k].note?`<div class="hnote">${HOR[k].note}</div>`:"");
+  });
+  if(filtro&&ocultos)h+=`<div class="hnote">Se ocultaron ${ocultos} bloque${ocultos===1?"":"s"} de horario que no corresponden a tu situación. Toca <b>“Todos los horarios”</b> para verlos.</div>`;
   horList.innerHTML=h;
   horList.querySelectorAll("td.selc").forEach(td=>{
     td.onclick=()=>{
     const id=+td.dataset.id,key=td.dataset.key;
-    if(insc[id]===key){delete insc[id];saveInsc();renderAllHor();renderHorTally();return;}
+    if(insc[id]===key){delete insc[id];saveInsc();refrescaHor();renderHorTally();return;}
     const cl=clashOf(id,key);
     if(cl){showHorMsg(`⚠️ <b>Coincidencia horaria.</b> Choca con <b>${cl.nm}</b> (${cl.day} ${cl.t0}–${cl.t1}). Debes quitar el otro ramo para inscribir este.`,"warn");return;}
-    insc[id]=key;saveInsc();renderAllHor();renderHorTally();
+    insc[id]=key;saveInsc();refrescaHor();renderHorTally();
     if(typeof logInteraccion==="function")logInteraccion("horarios","inscribir ramo");
     /* avisos flotantes informativos (no bloquean): exceso de créditos y exceso de niveles */
     var tot=0;Object.keys(insc).forEach(function(x){tot+=creditsForSel(+x,insc[x]);});
@@ -1505,11 +1561,41 @@ function renderMineHor(){
   let ses=[];ids.forEach(id=>{const blk=HOR[insc[id]];if(!blk)return;blk.s.forEach(se=>{const sid=(se[6]!=null)?se[6]:OFER[se[3]];if(sid===id)ses.push(se);});});
   horList.innerHTML=`<div class="hgrp serif">Mi horario</div>`+buildTable(ses,null,false);
 }
+/* Vista principal: solo la oferta que el estudiante está en condiciones de tomar */
+function renderFitHor(){
+  var a=_ancla();
+  var cab="";
+  if(!_fitAplicable()){
+    cab='<div class="pcard">Estás viendo la <b>malla no ajustada</b>. Para ese plan, la oferta se revisa completa: toca <b>“Todos los horarios”</b>.</div>';
+    renderAllHor(null,cab); renderHorTally(); return;
+  }
+  if(!a.hasAvance){
+    cab='<div class="pcard">Para mostrarte <b>solo lo que puedes tomar</b>, primero marca tu avance en <b>Avance Curricular</b>: toca los ramos que ya aprobaste. '+
+        'Mientras tanto, esta es la oferta completa.<br><button type="button" class="mSwBtn" id="toMalla" style="margin-top:8px">📚 Ir a Avance Curricular</button></div>';
+    renderAllHor(null,cab); renderHorTally();
+    var bm=document.getElementById("toMalla"); if(bm)bm.onclick=function(){go("malla");};
+    return;
+  }
+  var hasta=a.anchor+a.tope-1, N=(a.pref==="S"?"semestre":"nivel");
+  cab='<div class="pcard">Mostrando <b>lo que puedes tomar</b> según tu avance: desde el <b>'+N+' '+a.anchor+'</b> hasta el <b>'+N+' '+hasta+'</b> ('+a.tope+' consecutivos). '+
+      'Se ocultan los ramos aprobados y los que aún no tienen prerrequisitos cumplidos; los reprobados sí aparecen.</div>';
+  renderAllHor(function(k,se){ return _porQueNo(k,se,a)===null; },cab);
+  if(!horList.querySelector("td.selc")){
+    horList.innerHTML=cab+'<div class="pcard">No quedan ramos disponibles con tu avance actual. Revisa <b>“Todos los horarios”</b> o consulta en la Dirección de Carrera.</div>';
+  }
+  renderHorTally();
+}
+function refrescaHor(){
+  if(horMode==="mine"){renderMineHor();return;}
+  if(horMode==="fit"){renderFitHor();return;}
+  renderAllHor();
+}
 function renderHorView(mode){
   horMode=mode;
   document.querySelectorAll("#horSeg button").forEach(b=>b.classList.toggle("on",b.dataset.h===mode));
-  const hint=document.getElementById("horHint");if(hint)hint.style.display=mode==="all"?"":"none";
-  if(mode==="all"){renderAllHor();renderHorTally();}
+  const hint=document.getElementById("horHint");if(hint)hint.style.display=(mode==="mine")?"none":"";
+  if(mode==="fit"){renderFitHor();}
+  else if(mode==="all"){renderAllHor();renderHorTally();}
   else{renderMineHor();var box=document.getElementById("horTally");if(box)box.style.display="none";}
 }
 document.querySelectorAll("#horSeg button").forEach(b=>b.onclick=()=>renderHorView(b.dataset.h));
@@ -1731,7 +1817,7 @@ function renderPru(mode){
 }
 document.querySelectorAll("#pruSeg button").forEach(b=>b.onclick=()=>renderPru(b.dataset.m));
 renderPru("all");
-renderHorView("all");
+renderHorView("fit");
 
 /* ===== Mural de avisos (editar esta lista para publicar/quitar avisos) ===== */
 const AVISOS=[
@@ -2954,7 +3040,7 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
     var motto=document.querySelector("footer .motto"); if(motto)motto.style.display=(j==="tech")?"":"none";
     /* secciones sin datos propios: mensaje pendiente */
     setPend(j,nm);
-    if(typeof renderHorView==='function' && document.getElementById("hor")){ try{renderHorView(typeof horMode!=='undefined'?horMode:"all");}catch(e){} }
+    if(typeof renderHorView==='function' && document.getElementById("hor")){ try{renderHorView(typeof horMode!=='undefined'?horMode:"fit");}catch(e){} }
     if(typeof planPropose==='function'){ try{planPropose();}catch(e){} }
     if(typeof renderPru==='function'){ try{renderPru(typeof pruMode!=='undefined'?pruMode:"all");}catch(e){} }
     /* rótulos del período según régimen */
