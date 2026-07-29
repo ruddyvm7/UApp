@@ -206,6 +206,9 @@ body.reduce .progfill{transition:none}
 .ring-pct{font-family:"Fraunces",serif;font-size:36px;font-weight:800;color:var(--wine);line-height:1}
 .ring-sub{font-size:10.5px;color:var(--muted);font-weight:700;margin-top:3px;text-transform:uppercase;letter-spacing:.6px}
 .boardhint{text-align:center;color:var(--muted);font-size:12px;font-weight:600;margin:8px 0 0}
+.ynav{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 4px}
+.ynav button{background:var(--soft,#f3f1ec);border:1px solid var(--cb2,#d8cfba);color:var(--muted,#6b6660);font:inherit;font-weight:700;font-size:.72rem;padding:5px 11px;border-radius:999px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ynav button.on{background:var(--wine,#8b0c0c);border-color:var(--wine,#8b0c0c);color:#fff}
 .board{display:flex;gap:11px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 2px 18px;scroll-snap-type:x proximity}
 .lvl{flex:0 0 156px;scroll-snap-align:start}
 .lvl.ystart{border-left:2px dashed #e7d9bf;padding-left:11px}
@@ -273,6 +276,16 @@ body.reduce .progfill{transition:none}
 #miniPill{position:fixed;right:10px;bottom:96px;z-index:46;display:none;background:var(--wine,#8b0c0c);color:#fff;border:0;border-radius:20px;padding:6px 11px;font:700 11px/1 Inter,system-ui,sans-serif;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.2)}
 #miniPill.on{display:block}
 @media(min-width:820px){#miniHor{width:184px;bottom:104px}}
+#allHorModal .a11y-box{max-width:min(97vw,1120px);border-radius:16px;padding:20px 16px}
+#allHorModal .hortbl{min-width:0;font-size:10px}
+#allHorModal .hortbl th{padding:6px 3px;font-size:9.5px;letter-spacing:.2px}
+#allHorModal .hortbl td{padding:3px 2px;height:auto}
+#allHorModal .hortbl td.tm2{font-size:8.6px;width:44px}
+#allHorModal .hortbl .cr{font-size:9.6px;line-height:1.15}
+#allHorModal .hortbl .cs,#allHorModal .hortbl .cp{font-size:8.4px;line-height:1.15}
+#allHorModal .hgrp{font-size:12.5px;margin-top:10px}
+#allHorModal .hwrap{overflow-x:visible}
+@media(max-width:700px){#allHorModal .hwrap{overflow-x:auto}#allHorModal .hortbl{min-width:560px}}
 .cnota{display:block;margin-top:6px;font-size:10.5px;opacity:.72;line-height:1.4}
 .mlink{color:var(--wine,#8b0c0c);font-weight:700;text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere;word-break:break-word}
 .mlink:hover,.mlink:focus-visible{color:var(--gold2,#a8801f)}
@@ -410,6 +423,8 @@ td.cell.selon{background:#eaf6ee !important;outline:2px solid #1f6b3a;outline-of
 .mtext b{color:var(--wine)}
 .mcta{display:inline-block;margin-top:11px;color:#fff;font-weight:700;font-size:13px;padding:9px 16px;border-radius:999px;text-decoration:none}
 .mcta:active{opacity:.85}
+.discrow{display:flex;gap:10px;align-items:center;margin:8px 0 4px}
+.discrow .pdfBtn{flex:none}
 .disc{background:#fff7e6;border:1px solid #f0d9a6;border-radius:10px;padding:9px 12px;font-size:12.5px;color:#6a5320;line-height:1.45;margin:8px 0 4px}
 .disc b{color:#8a6d1a}
 .solbox{background:#fffdf8;border:1.5px solid var(--gold);border-radius:16px;padding:20px 18px;text-align:center;margin-top:6px}
@@ -650,7 +665,8 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
       <span><i class="lg" style="background:#1f6b3a;border-color:#175a30"></i>APROBADO</span>
       <span><i class="lg" style="background:#8b0c0c;border-color:#6c0909"></i>REPROBADO</span>
     </div>
-    <p class="boardhint">Desliza para recorrer los niveles →</p>
+    <p class="boardhint">Desliza para recorrer los niveles → o salta con los botones</p>
+    <div class="ynav" id="ynav" role="group" aria-label="Ir a un año de la carrera"></div>
     <div id="years" class="board"></div>
     <div class="bkrow">
       <button class="bkbtn" id="bkExp">⬇️ Respaldar mi avance</button>
@@ -700,9 +716,10 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
 <section id="plan" style="display:none"><div class="wrap">
   <div class="mh serif">Planificador de carga</div>
   <div class="msub">Cruza tu avance con la oferta del trimestre y propone qué tomar, sin choques de horario.</div>
-  <div class="disc">⚠️ Propuesta <b>referencial</b>, no es una inscripción oficial. Confirma siempre con tu malla y con Registro Curricular antes de inscribir.</div>
-  <div class="mallaSwitch horBtns" style="margin:6px 0 2px"><button type="button" class="mSwBtn pdfBtn" id="dlPlan" title="Generar el respaldo en PDF para tu toma de carga" aria-label="Generar el respaldo en PDF para tu toma de carga">📄 PDF</button></div>
-  <div class="hint" style="font-size:.72rem;color:var(--muted);margin:2px 0 8px">El botón <b>PDF</b> genera el respaldo de tu toma de carga: tu avance declarado, los ramos que seleccionaste en Horarios y las verificaciones de la app, para adjuntar o llevar impreso a tu solicitud.</div>
+  <div class="discrow">
+    <div class="disc" style="margin:0;flex:1">⚠️ Propuesta <b>referencial</b>, no es una inscripción oficial. Confirma siempre con tu malla y con Registro Curricular antes de inscribir.</div>
+    <button type="button" class="mSwBtn pdfBtn" id="dlPlan" title="Generar el respaldo en PDF de tu toma de carga: avance declarado, ramos elegidos y verificaciones" aria-label="Generar el respaldo en PDF de tu toma de carga">📄 PDF</button>
+  </div>
   <div id="planOut" style="margin-top:6px"></div>
   <div class="note" style="margin-top:12px"><b>📌 A tener en cuenta:</b> se priorizan los ramos <b>reprobados</b> y los del <b>nivel más bajo pendiente</b>, respetando prerrequisitos y los topes de <b id="planNivTope">4 niveles consecutivos</b> y <b>30 créditos</b>.</div>
   <div class="note" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px">La carga se rige por: <a class="doclink" id="lnkReg" href="javascript:void(0)">📖 Reglamento del Estudiante</a> <a class="doclink" id="lnkCirc" href="javascript:void(0)">📄 Circular N°03/2026</a></div>
@@ -2017,6 +2034,51 @@ function renderPru(mode){
 }
 document.querySelectorAll("#pruSeg button").forEach(b=>b.onclick=()=>renderPru(b.dataset.m));
 renderPru("all");
+/* Navegación rápida por año sobre el tablero de avance.
+   Se repinta sola cada vez que el tablero se vuelve a dibujar. */
+(function(){
+  var nav=document.getElementById("ynav"), board=document.getElementById("years");
+  if(!nav||!board)return;
+  var items=[];
+  function irA(el){
+    var r1=el.getBoundingClientRect(), r0=board.getBoundingClientRect();
+    var dest=board.scrollLeft+(r1.left-r0.left)-6;
+    try{ board.scrollTo({left:dest,behavior:"smooth"}); }catch(e){ board.scrollLeft=dest; }
+  }
+  function marca(i){ [].forEach.call(nav.children,function(b,k){ b.classList.toggle("on",k===i); }); }
+  function pinta(){
+    var cols=[].slice.call(board.querySelectorAll(".lvl"));
+    var vistos={}; items=[];
+    cols.forEach(function(c){
+      var e=c.querySelector(".lvl-eyebrow"); if(!e)return;
+      var t=(e.textContent||"").trim(); if(!t||vistos[t])return;
+      vistos[t]=1; items.push({t:t,el:c});
+    });
+    nav.innerHTML="";
+    if(items.length<2)return;
+    items.forEach(function(it,i){
+      var b=document.createElement("button");
+      b.type="button"; b.textContent=it.t;
+      b.setAttribute("aria-label","Ir a "+it.t);
+      b.onclick=function(){ irA(it.el); marca(i); };
+      nav.appendChild(b);
+    });
+    marca(0);
+  }
+  var tm=null;
+  board.addEventListener("scroll",function(){
+    clearTimeout(tm);
+    tm=setTimeout(function(){
+      if(!items.length)return;
+      var r0=board.getBoundingClientRect(), best=0;
+      items.forEach(function(it,i){ if(it.el.getBoundingClientRect().left-r0.left<=24)best=i; });
+      marca(best);
+    },90);
+  });
+  try{ new MutationObserver(pinta).observe(board,{childList:true}); }catch(e){}
+  pinta();
+})();
+
 renderHorView("fit");
 
 /* ===== Mural de avisos (editar esta lista para publicar/quitar avisos) ===== */
