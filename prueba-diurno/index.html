@@ -260,6 +260,17 @@ body.reduce .progfill{transition:none}
 .elab{flex:0 0 88px;color:#8a7b5e;font-weight:700}
 .edates{color:#2a2118;display:flex;flex-direction:column;gap:2px}
 .ecols{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:9px}
+#miniHor{position:fixed;right:10px;bottom:96px;z-index:46;width:150px;background:var(--card,#fff);border:1px solid var(--line,#e0dcd4);border-radius:11px;box-shadow:0 6px 20px rgba(0,0,0,.16);padding:7px 8px 8px;display:none;font-size:11px}
+#miniHor.on{display:block}
+#miniHor .mhh{display:flex;align-items:center;justify-content:space-between;gap:6px;font-weight:800;font-size:10.5px;color:var(--wine,#8b0c0c);margin-bottom:5px}
+#miniHor .mhh button{background:none;border:0;color:var(--muted,#6b6660);font-size:12px;line-height:1;cursor:pointer;padding:0 2px}
+#miniHor .mgd{display:grid;gap:1.5px}
+#miniHor .mgc{height:7px;border-radius:2px;background:var(--soft,#f3f1ec)}
+#miniHor .mgh{font-size:7.6px;font-weight:700;color:var(--muted,#6b6660);text-align:center;line-height:1}
+#miniHor .mhf{margin-top:6px;font-size:9.6px;color:var(--muted,#6b6660);line-height:1.3;cursor:pointer;text-decoration:underline}
+#miniPill{position:fixed;right:10px;bottom:96px;z-index:46;display:none;background:var(--wine,#8b0c0c);color:#fff;border:0;border-radius:20px;padding:6px 11px;font:700 11px/1 Inter,system-ui,sans-serif;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+#miniPill.on{display:block}
+@media(min-width:820px){#miniHor{width:184px;bottom:104px}}
 .cnota{display:block;margin-top:6px;font-size:10.5px;opacity:.72;line-height:1.4}
 .mlink{color:var(--wine,#8b0c0c);font-weight:700;text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere;word-break:break-word}
 .mlink:hover,.mlink:focus-visible{color:var(--gold2,#a8801f)}
@@ -667,11 +678,10 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
 <section id="hor" style="display:none"><div class="wrap">
   <div class="mh serif">Horario del trimestre</div><div class="msub">Otoño 2026 · 2º trimestre.</div>
   <div class="mallaSwitch">
-    <button type="button" class="mSwBtn" id="toPlan">🧭 Planificador de carga</button> <button type="button" class="mSwBtn" id="dlHor">🖨️ Horario en PDF</button>
+    <button type="button" class="mSwBtn" id="toAllHor">📋 Todos los horarios</button> <button type="button" class="mSwBtn" id="toPlan">🧭 Planificador de carga</button> <button type="button" class="mSwBtn" id="dlHor">🖨️ Horario en PDF</button>
   </div>
-  <div class="seg" id="horSeg" style="max-width:560px">
-    <button class="on" data-h="fit">✅ Puedo tomar</button>
-    <button data-h="all">Todos los horarios</button>
+  <div class="seg" id="horSeg" style="max-width:460px">
+    <button class="on" data-h="fit">Disponibles para mí</button>
     <button data-h="mine">Mi horario</button>
   </div>
   <p class="boardhint" id="horHint">Toca los ramos que inscribiste para marcarlos. Luego revisa "Mi horario" y se reflejarán en Mis pruebas.</p>
@@ -900,6 +910,22 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
   </div>
 </div>
 
+<div id="allHorModal" class="a11y-ov" style="display:none">
+  <div class="a11y-box" style="max-height:86vh;overflow-y:auto">
+    <button class="a11y-x" id="allHorX" aria-label="Cerrar">✕</button>
+    <div class="a11y-title serif">Todos los horarios</div>
+    <p class="lead" style="margin:2px 0 10px">La oferta completa del período, de ambos planes. Puedes marcar ramos aquí igual que en la vista principal.</p>
+    <div id="allHorList"></div>
+  </div>
+</div>
+
+<button type="button" id="miniPill">🗓️ Ver mi horario</button>
+<div id="miniHor" aria-hidden="true">
+  <div class="mhh"><span id="miniTit">Tu horario</span><button type="button" id="miniX" aria-label="Ocultar miniatura">✕</button></div>
+  <div id="miniGrid"></div>
+  <div class="mhf" id="miniPie"></div>
+</div>
+
 <div id="allCalcModal" class="a11y-ov" style="display:none">
   <div class="a11y-box" style="max-height:84vh;overflow-y:auto">
     <button class="a11y-x" id="allCalcX" aria-label="Cerrar">✕</button>
@@ -1103,7 +1129,7 @@ document.getElementById("reset").onclick=()=>{if(confirm("¿Reiniciar todo tu pr
 const SECS=["mural","malla","calc","hor","plan","pru","info","solic"];
 function go(tab){var _hl=(tab==="plan")?"hor":tab;/* el Planificador se abre desde Horarios: esa pestaña queda marcada */
   if(typeof logInteraccion==="function")logInteraccion(tab==="plan"?"planificador":tab,"ver seccion");
-  document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===_hl));SECS.forEach(s=>document.getElementById(s).style.display=s===tab?"":"none");if(tab==="plan")planPropose();if(tab==="hor")renderHorView(horMode);if(tab==="pru")renderPru(pruMode);if(tab==="calc"&&window.__renderCalc)window.__renderCalc();if(tab==="mural")renderMural();window.scrollTo(0,0);var _at=document.querySelector(".tab.active");if(_at&&typeof _at.scrollIntoView==="function"){try{_at.scrollIntoView({inline:"center",block:"nearest"});}catch(e){}}}
+  document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===_hl));SECS.forEach(s=>document.getElementById(s).style.display=s===tab?"":"none");if(tab==="plan")planPropose();if(tab==="hor")renderHorView(horMode);else if(typeof renderMiniHor==="function")renderMiniHor();if(tab==="pru")renderPru(pruMode);if(tab==="calc"&&window.__renderCalc)window.__renderCalc();if(tab==="mural")renderMural();window.scrollTo(0,0);var _at=document.querySelector(".tab.active");if(_at&&typeof _at.scrollIntoView==="function"){try{_at.scrollIntoView({inline:"center",block:"nearest"});}catch(e){}}}
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>go(b.dataset.tab));
 /* La rueda del mouse desplaza la barra de pestañas horizontalmente (computadores) */
 (function(){var tb=document.querySelector(".tabbar");if(!tb)return;tb.addEventListener("wheel",function(e){if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){tb.scrollLeft+=e.deltaY;e.preventDefault();}},{passive:false});})();
@@ -1215,10 +1241,14 @@ function _sidSes(se){ try{ return (se[6]!=null)?se[6]:(typeof OFER!=="undefined"
 /* Mundo (plan) contra el que se resuelven los ids de un bloque horario:
    en régimen semestral lo indica la clave (aj_/na_); en trimestral la
    oferta mapea siempre contra la malla vigente. */
+function _planBloque(k){
+  k=String(k||"");
+  return (k.indexOf("na_")===0 || k.indexOf("pna")>=0) ? "na" : "aj";
+}
 function _mundoDe(key){
   var P=_snap();
-  if(P.reg==="sem") return (String(key||"").indexOf("na_")===0)?"na":"aj";
-  return "aj";
+  if(P.reg==="sem") return _planBloque(key);
+  return "aj";   /* trimestral: la oferta se resuelve contra la malla vigente */
 }
 function _ancla(){
   var P=_snap(), A=P[P.cur], C=A.C||[], S=A.S||{};
@@ -1234,10 +1264,12 @@ function _ancla(){
 }
 /* ¿El filtro es confiable? Solo si el plan activo del alumno coincide con
    el plan contra el que se resuelve la oferta. Si no, se muestra todo. */
-function _fitAplicable(){
+/* ¿Se puede evaluar el estado de los ramos con confianza?
+   En trimestral la oferta se resuelve contra la malla vigente, así que
+   para plan no ajustado solo se filtra por plan, no por avance. */
+function _fitEstadoConfiable(){
   var P=_snap();
-  if(P.reg==="sem") return true;          /* cada bloque trae su plan en la clave */
-  return P.cur==="aj";                    /* trimestral: la oferta apunta a la malla vigente */
+  return P.reg==="sem" || P.cur==="aj";
 }
 function _estadoRamo(key,sid){
   var P=_snap(), W=P[_mundoDe(key)];
@@ -1524,7 +1556,10 @@ function renderAllHor(filtro,encabezado){
   });
   if(filtro&&ocultos)h+=`<div class="hnote">Se ocultaron ${ocultos} bloque${ocultos===1?"":"s"} de horario que no corresponden a tu situación. Toca <b>“Todos los horarios”</b> para verlos.</div>`;
   horList.innerHTML=h;
-  horList.querySelectorAll("td.selc").forEach(td=>{
+  bindHorCells(horList);
+}
+function bindHorCells(root){
+  root.querySelectorAll("td.selc").forEach(td=>{
     td.onclick=()=>{
     const id=+td.dataset.id,key=td.dataset.key;
     if(insc[id]===key){delete insc[id];saveInsc();refrescaHor();renderHorTally();return;}
@@ -1563,42 +1598,131 @@ function renderMineHor(){
 }
 /* Vista principal: solo la oferta que el estudiante está en condiciones de tomar */
 function renderFitHor(){
-  var a=_ancla();
-  var cab="";
-  if(!_fitAplicable()){
-    cab='<div class="pcard">Estás viendo la <b>malla no ajustada</b>. Para ese plan, la oferta se revisa completa: toca <b>“Todos los horarios”</b>.</div>';
-    renderAllHor(null,cab); renderHorTally(); return;
+  var P=_snap(), a=_ancla(), conf=_fitEstadoConfiable();
+  var soloPlan=function(k){ return _planBloque(k)===P.cur; };
+  var etqPlan=(P.cur==="na")?"Plan No Ajustado":"Plan Ajustado";
+  var cab, filtro;
+
+  if(!conf){
+    cab='<div class="pcard">Mostrando la oferta del <b>'+etqPlan+'</b>, que es la malla que tienes activa. '+
+        'Para afinar por tu avance, revisa tu progreso en <b>Avance Curricular</b>.</div>';
+    filtro=function(k){ return soloPlan(k); };
+  }else if(!a.hasAvance){
+    cab='<div class="pcard">Para mostrarte <b>solo lo que puedes tomar</b>, primero marca tu avance en <b>Avance Curricular</b>: toca los ramos que ya aprobaste.<br>'+
+        'Por ahora ves toda la oferta del <b>'+etqPlan+'</b>.'+
+        '<br><button type="button" class="mSwBtn" id="toMalla" style="margin-top:8px">📚 Ir a Avance Curricular</button></div>';
+    filtro=function(k){ return soloPlan(k); };
+  }else{
+    var hasta=a.anchor+a.tope-1, N=(a.pref==="S"?"semestre":"nivel");
+    cab='<div class="pcard">Oferta del <b>'+etqPlan+'</b> que <b>puedes tomar</b> según tu avance: desde el <b>'+N+' '+a.anchor+'</b> hasta el <b>'+N+' '+hasta+'</b> ('+a.tope+' consecutivos). '+
+        'Se ocultan los ramos aprobados y los que aún no tienen prerrequisitos cumplidos; los reprobados sí aparecen.</div>';
+    filtro=function(k,se){ return soloPlan(k) && _porQueNo(k,se,a)===null; };
   }
-  if(!a.hasAvance){
-    cab='<div class="pcard">Para mostrarte <b>solo lo que puedes tomar</b>, primero marca tu avance en <b>Avance Curricular</b>: toca los ramos que ya aprobaste. '+
-        'Mientras tanto, esta es la oferta completa.<br><button type="button" class="mSwBtn" id="toMalla" style="margin-top:8px">📚 Ir a Avance Curricular</button></div>';
-    renderAllHor(null,cab); renderHorTally();
-    var bm=document.getElementById("toMalla"); if(bm)bm.onclick=function(){go("malla");};
-    return;
-  }
-  var hasta=a.anchor+a.tope-1, N=(a.pref==="S"?"semestre":"nivel");
-  cab='<div class="pcard">Mostrando <b>lo que puedes tomar</b> según tu avance: desde el <b>'+N+' '+a.anchor+'</b> hasta el <b>'+N+' '+hasta+'</b> ('+a.tope+' consecutivos). '+
-      'Se ocultan los ramos aprobados y los que aún no tienen prerrequisitos cumplidos; los reprobados sí aparecen.</div>';
-  renderAllHor(function(k,se){ return _porQueNo(k,se,a)===null; },cab);
+
+  renderAllHor(filtro,cab);
+  var bm=document.getElementById("toMalla"); if(bm)bm.onclick=function(){go("malla");};
   if(!horList.querySelector("td.selc")){
-    horList.innerHTML=cab+'<div class="pcard">No quedan ramos disponibles con tu avance actual. Revisa <b>“Todos los horarios”</b> o consulta en la Dirección de Carrera.</div>';
+    horList.innerHTML=cab+'<div class="pcard">No quedan ramos disponibles con tu avance actual. Abre <b>“Todos los horarios”</b> arriba, o consulta en la Dirección de Carrera.</div>';
   }
   renderHorTally();
+  renderMiniHor();
 }
 function refrescaHor(){
-  if(horMode==="mine"){renderMineHor();return;}
+  /* Si la ventana de oferta completa está abierta, se repinta para reflejar la marca */
+  if(typeof allHorModal!=="undefined"&&allHorModal&&allHorModal.style.display==="flex")pintaAllHor();
+  if(horMode==="mine"){renderMineHor();renderMiniHor();return;}
   if(horMode==="fit"){renderFitHor();return;}
-  renderAllHor();
+  renderAllHor();renderMiniHor();
 }
 function renderHorView(mode){
   horMode=mode;
   document.querySelectorAll("#horSeg button").forEach(b=>b.classList.toggle("on",b.dataset.h===mode));
   const hint=document.getElementById("horHint");if(hint)hint.style.display=(mode==="mine")?"none":"";
   if(mode==="fit"){renderFitHor();}
-  else if(mode==="all"){renderAllHor();renderHorTally();}
-  else{renderMineHor();var box=document.getElementById("horTally");if(box)box.style.display="none";}
+  else{renderMineHor();var box=document.getElementById("horTally");if(box)box.style.display="none";renderMiniHor();}
 }
 document.querySelectorAll("#horSeg button").forEach(b=>b.onclick=()=>renderHorView(b.dataset.h));
+
+/* ---------- Todos los horarios (oferta completa, en ventana) ---------- */
+var allHorModal=document.getElementById("allHorModal");
+function pintaAllHor(){
+  var box=document.getElementById("allHorList"); if(!box)return;
+  var h="";
+  Object.keys(HOR).forEach(function(k){
+    h+='<div class="hgrp serif">'+HOR[k].l+'</div>'+buildTable(HOR[k].s,k,true)+(HOR[k].note?'<div class="hnote">'+HOR[k].note+'</div>':"");
+  });
+  box.innerHTML=h;
+  bindHorCells(box);
+}
+function abrirAllHor(){
+  if(!allHorModal)return;
+  pintaAllHor();
+  allHorModal.style.display="flex";
+  var x=document.getElementById("allHorX"); if(x)x.focus();
+  if(typeof logInteraccion==="function")logInteraccion("horarios","ver oferta completa");
+}
+function cerrarAllHor(){ if(allHorModal)allHorModal.style.display="none"; }
+(function(){
+  var b=document.getElementById("toAllHor"); if(b)b.onclick=abrirAllHor;
+  var x=document.getElementById("allHorX"); if(x)x.onclick=cerrarAllHor;
+  if(allHorModal)allHorModal.onclick=function(e){ if(e.target===allHorModal)cerrarAllHor(); };
+})();
+
+/* ---------- Miniatura del horario que se va armando ---------- */
+var MINI_COL=["#8b0c0c","#1f6b3a","#1d4ed8","#c79a3e","#7c3aed","#0e7490","#b45309","#be185d"];
+var miniOculta=false;
+function _mmin(t){var p=String(t).split(":");return (+p[0])*60+(+p[1]);}
+function _iniBL(t){for(var i=0;i<BL.length;i++)if(_mmin(BL[i][0])===_mmin(t))return i;return -1;}
+function _finBL(t){var e=-1;for(var i=0;i<BL.length;i++)if(_mmin(BL[i][0])<_mmin(t))e=i;return e;}
+function renderMiniHor(){
+  var box=document.getElementById("miniHor"), pill=document.getElementById("miniPill");
+  if(!box||!pill)return;
+  var sec=document.getElementById("hor");
+  var enHor=sec&&sec.style.display!=="none";
+  var ids=Object.keys(insc).map(Number);
+  if(!enHor||horMode!=="fit"||!ids.length){ box.classList.remove("on"); pill.classList.remove("on"); return; }
+  if(miniOculta){ box.classList.remove("on"); pill.classList.add("on"); return; }
+  pill.classList.remove("on");
+
+  var dias=Object.keys(DIAS);
+  var grid={}; dias.forEach(function(d){ grid[d]=Array(BL.length).fill(null); });
+  var ci=0;
+  ids.forEach(function(id){
+    var blk=HOR[insc[id]]; if(!blk)return;
+    var col=MINI_COL[(ci++)%MINI_COL.length];
+    blk.s.forEach(function(se){
+      var sid=_sidSes(se); if(sid!==id)return;
+      var a=_iniBL(se[1]), b=_finBL(se[2]); if(a<0)return; if(b<a)b=a;
+      for(var i=a;i<=b;i++){ if(grid[se[0]])grid[se[0]][i]=col; }
+    });
+  });
+  var pri=-1,ult=-1;
+  for(var i=0;i<BL.length;i++){ if(dias.some(function(d){return grid[d][i];})){ if(pri<0)pri=i; ult=i; } }
+  if(pri<0){ box.classList.remove("on"); pill.classList.remove("on"); return; }
+
+  var g='<div class="mgd" style="grid-template-columns:repeat('+dias.length+',1fr)">';
+  dias.forEach(function(d){ g+='<div class="mgh">'+String(DIAS[d]).slice(0,1)+'</div>'; });
+  for(var f=pri;f<=ult;f++){
+    dias.forEach(function(d){
+      var c=grid[d][f];
+      g+='<div class="mgc"'+(c?' style="background:'+c+'"':"")+'></div>';
+    });
+  }
+  g+='</div>';
+  document.getElementById("miniGrid").innerHTML=g;
+  document.getElementById("miniTit").textContent="Tu horario · "+ids.length;
+  var tot=0; ids.forEach(function(x){ tot+=creditsForSel(+x,insc[x]); });
+  document.getElementById("miniPie").textContent=tot+" SCT · ver completo";
+  box.classList.add("on");
+}
+(function(){
+  var x=document.getElementById("miniX");
+  if(x)x.onclick=function(){ miniOculta=true; renderMiniHor(); };
+  var p=document.getElementById("miniPill");
+  if(p)p.onclick=function(){ miniOculta=false; renderMiniHor(); };
+  var pie=document.getElementById("miniPie");
+  if(pie)pie.onclick=function(){ renderHorView("mine"); };
+})();
 
 /* Planificador de carga */
 const OFER_TECH={"Teoría de la Ley y las Personas":7,"Historia Institucional de Chile":5,"Historia y Evolución de las Instituciones":6,"Comunicación y Argumentación":8,"Teoría del Proceso":17,"Teoría de la Reacción Penal":19,"Derecho Constitucional Orgánico":18,"Aprendizaje Activo":20,"Fuentes de las Obligaciones":28,"Delitos en Particular II":30,"Derecho Individual del Trabajo":29,"Desarrollo Personal y Plan de Vida":31,"Contratación Mercantil":41,"Derecho Procesal Penal":43,"Derecho Sucesorio":40,"Derecho Administrativo I":42,"Derecho Sociedades":38,"Responsabilidad Social e Innovación":35,"Recursos":50,"Optativo de Especialidad I":48,"Reorganización y Liquidación Patrimonial":49,"Derecho Tributario I":46,"Taller de Integración III":54,"Seminario de Investigación Jurídica":51,"Redacción Forense":null,"Introducción al Derecho":3,"Historia del Derecho":1,"Derecho Político":2,"Procedimientos Civiles de Cognición":26};
@@ -2362,7 +2486,7 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
   if(avX)avX.onclick=closeAviso;
   if(avModal)avModal.onclick=function(e){if(e.target===avModal)closeAviso();};
 
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var ar=document.getElementById('archModal');if(ar&&ar.style.display==='flex'){ar.style.display='none';try{document.body.style.overflow='';}catch(x){}return;}var av=document.getElementById('avisoModal');if(av&&av.style.display==='flex'){av.style.display='none';try{document.body.style.overflow='';}catch(e){}return;}var ac=document.getElementById('allCalcModal');if(ac&&ac.style.display==='flex'){ac.style.display='none';return;}var dm=document.getElementById('docModal');if(dm&&dm.style.display==='flex'){dm.style.display='none';return;}if(panel&&panel.style.display==='flex'){panel.style.display='none';}}});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var ah=document.getElementById('allHorModal');if(ah&&ah.style.display==='flex'){ah.style.display='none';return;}var ar=document.getElementById('archModal');if(ar&&ar.style.display==='flex'){ar.style.display='none';try{document.body.style.overflow='';}catch(x){}return;}var av=document.getElementById('avisoModal');if(av&&av.style.display==='flex'){av.style.display='none';try{document.body.style.overflow='';}catch(e){}return;}var ac=document.getElementById('allCalcModal');if(ac&&ac.style.display==='flex'){ac.style.display='none';return;}var dm=document.getElementById('docModal');if(dm&&dm.style.display==='flex'){dm.style.display='none';return;}if(panel&&panel.style.display==='flex'){panel.style.display='none';}}});
   if(mq.addEventListener)mq.addEventListener('change',function(){if(prefs.theme==='auto')applyTheme();});
 
   /* --- Ventanitas de documentos: Reglamento y Circular --- */
