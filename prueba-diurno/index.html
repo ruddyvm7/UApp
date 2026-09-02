@@ -700,7 +700,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
 </section>
 
 <section id="hor" style="display:none"><div class="wrap">
-  <div class="mh serif">Horario del trimestre</div><div class="msub">Otoño 2026 · 2º trimestre.</div>
+  <div class="mh serif">Horario del trimestre</div><div class="msub">3er trimestre 2026.</div>
   <div class="mallaSwitch horBtns">
     <button type="button" class="mSwBtn" id="toAllHor">📋 Todos los horarios</button> <button type="button" class="mSwBtn" id="toPlan">🧭 Planificador de carga</button> <button type="button" class="mSwBtn pdfBtn" id="dlHor" title="Generar un PDF con tu horario" aria-label="Generar un PDF con tu horario">📄 PDF</button>
   </div>
@@ -727,7 +727,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
 
 <section id="pru" style="display:none"><div class="wrap">
   <div class="mh serif">Calendario de pruebas</div>
-  <div class="msub">Otoño 2026 · 2º trimestre · solemnes y exámenes finales.</div>
+  <div class="msub">3er trimestre 2026 · solemnes y exámenes finales.</div>
   <div class="mallaSwitch horBtns" style="margin:10px 0 4px">
     <button type="button" class="mSwBtn" id="toAllPru">📋 Todas las pruebas</button>
     <button type="button" class="mSwBtn pdfBtn" id="dlPru" title="Generar un PDF del calendario" aria-label="Generar un PDF del calendario">📄 PDF</button>
@@ -1312,11 +1312,26 @@ function _planBloque(k){
   k=String(k||"");
   return (k.indexOf("na_")===0 || k.indexOf("pna")>=0) ? "na" : "aj";
 }
-function _mundoDe(key){
+/* Regla de la Carrera para la toma de carga:
+   · Plan Ajustado (malla nueva)     → solo puede inscribir ramos de su propia malla.
+   · Plan No Ajustado (malla antigua) → puede inscribir de su malla Y de la ajustada.
+   Confirmado por Secretaría Académica tras la toma de carga del 2º semestre diurno. */
+function _bloqueAdmitido(k){
   var P=_snap();
-  if(P.reg==="sem") return _planBloque(key);
-  return "aj";   /* trimestral: la oferta se resuelve contra la malla vigente */
+  if(P.cur==="na") return true;            /* el plan antiguo ve ambas ofertas */
+  return _planBloque(k)==="aj";            /* el plan nuevo, solo la suya */
 }
+/* Mismo ramo en la otra malla (los ids difieren entre planes) */
+function _nrmRamo(s){
+  return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/\(.*?\)/g,"").replace(/[^a-z0-9 ]/g," ").replace(/\s+/g," ").trim();
+}
+function _equivEn(c,W){
+  var k=_nrmRamo(c&&c.n), out=null;
+  (W&&W.C||[]).forEach(function(x){ if(!out && _nrmRamo(x.n)===k) out=x; });
+  return out;
+}
+function _mundoDe(key){ return _planBloque(key); }
 function _ancla(){
   var P=_snap(), A=P[P.cur], C=A.C||[], S=A.S||{};
   var marcados=0, pendMin=99;
@@ -1331,18 +1346,22 @@ function _ancla(){
 }
 /* ¿El filtro es confiable? Solo si el plan activo del alumno coincide con
    el plan contra el que se resuelve la oferta. Si no, se muestra todo. */
-/* ¿Se puede evaluar el estado de los ramos con confianza?
-   En trimestral la oferta se resuelve contra la malla vigente, así que
-   para plan no ajustado solo se filtra por plan, no por avance. */
-function _fitEstadoConfiable(){
-  var P=_snap();
-  return P.reg==="sem" || P.cur==="aj";
-}
+/* Con los ids de ramo incluidos en la oferta, el avance se evalúa
+   con confianza en ambos planes y en las dos jornadas. */
+function _fitEstadoConfiable(){ return true; }
 function _estadoRamo(key,sid){
-  var P=_snap(), W=P[_mundoDe(key)];
+  var P=_snap(), mb=_mundoDe(key), W=P[mb], A=P[P.cur];
   var c=null;(W.C||[]).forEach(function(x){if(x.id===sid)c=x;});
   if(!c) return null;
-  return {curso:c, st:(W.S||{})[sid]||null, libre:(function(){try{return W.U(c);}catch(e){return true;}})()};
+  /* Si el bloque pertenece a la otra malla, se evalúa con el ramo equivalente
+     en la del alumno: así un ramo ya aprobado no reaparece por tener otro id. */
+  var ce=c, Wa=W;
+  if(mb!==P.cur){
+    var eq=_equivEn(c,A);
+    if(eq){ ce=eq; Wa=A; }
+  }
+  return {curso:ce, st:(Wa.S||{})[ce.id]||null,
+          libre:(function(){try{return Wa.U(ce);}catch(e){return true;}})()};
 }
 /* Devuelve el motivo por el que NO se puede tomar, o null si sí se puede */
 function _porQueNo(key,se,a){
@@ -1361,7 +1380,7 @@ function _ofertados(){
   var P=_snap(), set={};
   try{
     Object.keys(HOR).forEach(function(k){
-      if(_planBloque(k)!==P.cur)return;
+      if(!_bloqueAdmitido(k))return;
       HOR[k].s.forEach(function(se){ var sid=_sidSes(se); if(sid!=null)set[sid]=true; });
     });
   }catch(e){}
@@ -1564,22 +1583,23 @@ function docRespaldo(){
 }
 const BL_TECH=[["19:10","19:50"],["19:50","20:30"],["20:40","21:20"],["21:20","22:00"],["22:10","22:50"]];
 const HOR_TECH={
- n2s1:{l:"1er año (Nivel 2) · Sección 1",s:[["L","19:10","21:20","Teoría de la Ley y las Personas","SH-32","Hernán Parada Sotomayor"],["M","19:10","20:30","Historia Institucional de Chile","SH-32","Mauricio Silva Kachele"],["M","20:40","22:00","Historia y Evolución de las Instituciones","SH-32","Jorge Reinoso Elgueda"],["X","19:10","21:20","Teoría de la Ley y las Personas","SH-32","Hernán Parada Sotomayor"],["J","19:10","20:30","Historia y Evolución de las Instituciones","SH-32","Jorge Reinoso Elgueda"],["J","20:40","22:00","Historia Institucional de Chile","SH-32","Mauricio Silva Kachele"],["V","19:10","21:20","Comunicación y Argumentación","—","—"]]},
- n2s2:{l:"1er año (Nivel 2) · Sección 2",s:[["L","19:10","20:30","Historia Institucional de Chile","SH-33","Mauricio Silva Kachele"],["L","20:40","22:00","Teoría de la Ley y las Personas","SH-33","Carlos Manque Pérez"],["M","19:10","20:30","Historia y Evolución de las Instituciones","SH-33","Eliada Cid Sandoval"],["M","20:40","22:00","Teoría de la Ley y las Personas","SH-33","Carlos Manque Pérez"],["X","19:10","20:30","Historia y Evolución de las Instituciones","SH-33","Eliada Cid Sandoval"],["X","20:40","22:00","Teoría de la Ley y las Personas","SH-33","Carlos Manque Pérez"],["J","19:10","20:30","Historia Institucional de Chile","SH-33","Mauricio Silva Kachele"],["V","19:10","21:20","Comunicación y Argumentación","—","—"]]},
- n2s3:{l:"1er año (Nivel 2) · Sección 3",s:[["L","19:10","22:00","Historia y Evolución de las Instituciones","SH-34","Jorge Roa Rioseco"],["M","19:10","22:00","Teoría de la Ley y las Personas","SH-34","Daniel Sánchez Carrasco"],["X","19:10","20:30","Teoría de la Ley y las Personas","SH-34","Daniel Sánchez Carrasco"],["J","19:10","22:00","Historia Institucional de Chile","SC-27","Jorge Reinoso Méndez"],["V","19:10","20:30","Comunicación y Argumentación","SC-27","—"]]},
- n5s1:{l:"2º año (Nivel 5) · Sección 1",s:[["L","19:10","20:30","Teoría del Proceso","SH-41","Andrés Celedón Baeza"],["L","20:40","22:00","Teoría de la Reacción Penal","SH-41","Klaus Contreras Sierra"],["M","19:10","20:30","Teoría del Proceso","SH-41","Andrés Celedón Baeza"],["M","20:40","22:00","Derecho Constitucional Orgánico","SH-41","Sahady Espinoza Soto"],["X","19:50","22:00","Teoría de la Reacción Penal","SH-41","Klaus Contreras Sierra"],["J","19:10","20:30","Teoría del Proceso","—","Andrés Celedón Baeza"],["J","20:40","22:00","Derecho Constitucional Orgánico","—","Sahady Espinoza Soto"],["V","19:10","21:20","Aprendizaje Activo","—","—"]]},
- n5s2:{l:"2º año (Nivel 5) · Sección 2",s:[["L","19:10","22:00","Teoría del Proceso","SH-42","Francisca Game Musante"],["M","19:10","20:30","Teoría del Proceso","SH-42","Francisca Game Musante"],["M","20:40","22:00","Teoría de la Reacción Penal","SH-42","Camila Fernández Rodríguez"],["X","19:10","22:00","Derecho Constitucional Orgánico","SH-42","Sergio Arévalo Waddington"],["J","19:10","21:20","Teoría de la Reacción Penal","—","Camila Fernández Rodríguez"],["V","19:10","21:20","Aprendizaje Activo","—","—"]]},
- n8s1:{l:"3er año (Nivel 8) · Sección 1",s:[["L","19:10","22:00","Fuentes de las Obligaciones","SH-43","Daniel Sánchez Carrasco"],["M","19:10","22:00","Delitos en Particular II","SH-43","Fernando Cartes Sepúlveda"],["X","19:10","22:00","Derecho Individual del Trabajo","SH-43","Genoveva Gutiérrez Sepúlveda"],["J","19:10","20:30","Delitos en Particular II","—","Fernando Cartes Sepúlveda"],["J","20:40","22:00","Fuentes de las Obligaciones","—","Daniel Sánchez Carrasco"],["V","19:10","21:20","Desarrollo Personal y Plan de Vida","—","—"]]},
- n8s2:{l:"3er año (Nivel 8) · Sección 2",s:[["L","19:10","22:00","Fuentes de las Obligaciones","TEC SH-22","Marcelo Neculmán Muñoz"],["M","19:10","22:00","Delitos en Particular II","mismo Sec 1","Fernando Cartes Sepúlveda"],["X","19:10","22:00","Derecho Individual del Trabajo","TEC SH-22","Cristián Larraguibel Aravena"],["J","19:10","20:30","Delitos en Particular II","mismo Sec 1","Fernando Cartes Sepúlveda"],["J","20:40","22:00","Fuentes de las Obligaciones","—","Marcelo Neculmán Muñoz"]]},
- n8pna:{l:"3er año (Nivel 8) · Plan No Ajustado",s:[["V","19:10","21:20","Redacción Forense","—","Orlando Alarcón Iturriaga"]]},
- n11s1:{l:"4º año (Nivel 11) · Plan Ajustado · Sec 1",s:[["L","19:10","22:00","Contratación Mercantil","SH-45","Jean Paul Thiers Thiers"],["M","19:10","20:30","Derecho Procesal Penal","SH-45","Reinaldo Osorio Ulloa"],["M","20:40","22:00","Derecho Administrativo I","SH-45","Roberto Contreras Eddinger"],["X","19:10","20:30","Derecho Sucesorio","TEC SH-23","Marcia Molina Pezoa"],["X","20:40","22:00","Derecho Administrativo I","TEC SH-23","Roberto Contreras Eddinger"],["J","19:10","21:20","Derecho Sucesorio","—","Marcia Molina Pezoa"],["V","19:10","22:00","Derecho Procesal Penal","—","Reinaldo Osorio Ulloa"]]},
- n11pna:{l:"4º año (Nivel 11) · Plan No Ajustado",s:[["L","19:10","22:00","Derecho Sociedades","TEE SH-42","Felipe Maturana Ortiz"],["J","21:20","22:00","Derecho Sociedades","—","Felipe Maturana Ortiz"],["V","19:10","21:20","Responsabilidad Social e Innovación","—","—"]]},
- n14pna:{l:"5º año (Nivel 14) · Plan No Ajustado",s:[["L","19:10","22:00","Recursos","SH-44","Francisco Ljubetic Romero"],["M","19:10","22:00","Optativo de Especialidad I","SH-44","Marcelo Neculmán Muñoz"],["X","19:10","20:30","Reorganización y Liquidación Patrimonial","SH-44","Gonzalo Meza Osses"],["X","20:40","22:00","Derecho Tributario I","SH-44","Roxana Obreque Espinoza"],["J","19:10","21:20","Derecho Tributario I","—","Roxana Obreque Espinoza"],["J","21:20","22:00","Recursos","SH-32","Francisco Ljubetic Romero"],["V","19:10","20:30","Reorganización y Liquidación Patrimonial","—","Gonzalo Meza Osses"]]},
- n14s1:{l:"5º año (Nivel 14) · Plan Ajustado · Sec 1",s:[["L","19:10","22:00","Taller de Integración III","SC-35","Carlos Durán y Juan Castro"],["M","19:10","22:00","Taller de Integración III","TEC SH-22","Carlos Durán y Juan Castro"],["J","19:10","22:50","Seminario de Investigación Jurídica","—","Valeska Rivas Arias"],["V","19:10","22:00","Taller de Integración III","—","Carlos Durán y Juan Castro"]]},
- n14s2:{l:"5º año (Nivel 14) · Plan Ajustado · Sec 2",s:[["J","19:10","22:50","Seminario de Investigación Jurídica","—","Francisca Game Musante"]]},
- n1alt:{l:"1er año (Nivel 1) · Alterno · Sección 1",s:[["L","19:10","20:30","Introducción al Derecho","TEE SC-24","Carlos Manque Pérez"],["M","19:10","20:30","Introducción al Derecho","TEE SC-24","Carlos Manque Pérez"],["J","19:10","20:30","Introducción al Derecho","—","Carlos Manque Pérez"],["L","20:40","22:00","Historia del Derecho","TEE SH-11","Mauricio Silva Kachele"],["V","19:10","20:30","Historia del Derecho","—","Mauricio Silva Kachele"],["M","20:40","22:00","Derecho Político","TEE SC-24","Cristián Brito Valdebenito"],["X","20:40","22:00","Derecho Político","TEE SH-43","Cristián Brito Valdebenito"]]},
- n7alt:{l:"3er año (Nivel 7) · Alterno · Sección 1",s:[["L","19:10","21:20","Procedimientos Civiles de Cognición","TEE SH-33","Felipe Núñez Méndez"],["X","19:10","21:20","Procedimientos Civiles de Cognición","TEA SH-34","Felipe Núñez Méndez"]]}
+ n3s1:{l:"2º año (Nivel 3) · Sección 1",s:[["L","19:10","21:20","Argumentación Jurídica y Debate","TEA SH-32","Roa Rioseco Jorge",12],["M","19:10","22:00","Introducción a la Economía","TEA SH-32","Brito Valdebenito Cristian",10],["X","19:10","22:00","Teoría Constitucional","TEA SH-32","Espinoza Soto Sahady",11],["J","19:10","22:00","Fundamentos Filosóficos del Derecho","—","Reinoso Elgueda Jorge",9],["V","19:10","20:30","Teoría Constitucional","—","Espinoza Soto Sahady",11]]},
+ n3s2:{l:"2º año (Nivel 3) · Sección 2",s:[["L","19:10","22:00","Introducción a la Economía","TEA SH-33","Brito Valdebenito Cristian",10],["M","19:10","21:20","Teoría Constitucional","TEA SH-33","Arévalo Waddington Sergio",11],["X","19:10","21:20","Teoría Constitucional","TEA SH-33","Arévalo Waddington Sergio",11],["J","19:10","22:00","Fundamentos Filosóficos del Derecho","—","Reinoso Mendez Jorge",9],["V","19:10","21:20","Argumentación Jurídica y Debate","—","Roa Rioseco Jorge",12]]},
+ n3s3:{l:"2º año (Nivel 3) · Sección 3",s:[["L","19:10","22:00","Fundamentos Filosóficos del Derecho","TEA SH-34","Reinoso Mendez Jorge",9],["M","19:10","21:20","Argumentación Jurídica y Debate","TEA SH-34","Roa Rioseco Jorge",12],["X","20:40","22:00","Argumentación Jurídica y Debate","TEA SH-34","Larraguibel Aravena Cristian",12],["J","19:10","22:00","Introducción a la Economía","—","Brito Valdebenito Cristian",10],["V","19:10","19:50","Argumentación Jurídica y Debate","—","Larraguibel Aravena Cristian",12]]},
+ n5alt:{l:"2º año (Nivel 5) · Alterna",s:[["M","19:10","22:00","Teoría del Proceso","TEC SH-23","Nuñez Mendez Felipe Alejandro",17],["J","19:10","20:30","Teoría del Proceso","—","Nuñez Mendez Felipe Alejandro",17]]},
+ n6s1:{l:"2º año (Nivel 6) · Sección 1",s:[["L","19:10","22:00","Derechos y Garantías Constitucionales","TEA SH-41","Espinoza Soto Sahady",22],["M","19:10","21:20","Derecho Internacional Público","TEA SH-41","Vallejos Roa Liz",23],["X","19:10","20:30","Taller de Integración I (Ev. Ciclo)","TEA SH-41","192930715 Rodriguez Cañete Paula",24],["X","20:40","22:00","Bienes","TEA SH-41","Castro Saavedra Juan",21],["J","19:10","22:00","Bienes","—","Castro Saavedra Juan",21],["V","19:10","22:00","Taller de Integración I (Ev. Ciclo)","—","192930715 Rodriguez Cañete Paula",24]]},
+ n6s2:{l:"2º año (Nivel 6) · Sección 2",s:[["L","19:10","22:00","Taller de Integración I (Ev. Ciclo)","TEA SH-42","181983574 Game Musante Francisca",24],["M","19:10","20:30","Bienes","TEA SH-42","Neculmán Muñoz Marcelo",21],["M","20:40","22:00","Taller de Integración I (Ev. Ciclo)","TEA SH-42","181983574 Game Musante Francisca",24],["X","19:10","21:20","Derecho Internacional Público","TEA SH-42","Vallejos Roa Liz",23],["J","19:10","22:00","Derechos y Garantías Constitucionales","—","Espinoza Soto Sahady",22],["V","19:10","22:00","Bienes","—","Neculmán Muñoz Marcelo",21]]},
+ n6pna:{l:"2º año (Nivel 6) · Plan No Ajustado",s:[["X","19:10","21:20","Electivo de Desarrollo Personal","VIRTUAL","—",24]]},
+ n9s1:{l:"3er año (Nivel 9) · Sección 1",s:[["L","19:10","22:00","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-43","Gutiérrez Sepúlveda Genoveva",34],["M","19:10","21:20","Procedimientos de Ejecución y Cautela","TEA SH-43","Celedón Baeza Andrés",32],["X","19:10","22:00","Derecho Mercantil","TEA SH-43","Jean Paul Thiers Thiers",33],["J","19:10","21:20","Procedimientos de Ejecución y Cautela","—","Celedón Baeza Andrés",32],["V","19:10","21:20","Electivo de Responsabilidad Social","VIRTUAL","—",35]]},
+ n9s2:{l:"3er año (Nivel 9) · Sección 2",s:[["L","19:10","22:00","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-44","Sáez Paredes Fernando",34],["M","19:10","21:20","Procedimientos de Ejecución y Cautela","TEA SH-44","Osorio Ulloa Reinaldo",32],["J","19:10","21:20","Procedimientos de Ejecución y Cautela","—","Osorio Ulloa Reinaldo",32]]},
+ n9pna:{l:"3er año (Nivel 9) · Plan No Ajustado",s:[["L","19:10","22:00","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-43","Gutiérrez Sepúlveda Genoveva",34],["M","19:10","21:20","Procedimientos de Ejecución y Cautela","TEA SH-44","Osorio Ulloa Reinaldo",32],["X","19:10","22:00","Derecho Económico","TEA SH-44","Maturana Ortiz Felipe",33],["J","19:10","21:20","Procedimientos de Ejecución y Cautela","—","Osorio Ulloa Reinaldo",32],["V","19:10","21:20","Electivo de Ética","VIRTUAL","—",30]]},
+ n12s1:{l:"4º año (Nivel 12) · Plan Ajustado",s:[["L","19:10","21:20","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45],["M","19:10","21:20","Procedimientos Especiales Orales","TEA SH-45","—",44],["M","21:20","22:00","Optativo de Especialidad I","TEA SH-45","Neculman Muñoz Marcelo",48],["X","19:10","22:00","Taller de Integración II (Ev. Ciclo)","TEA SH-45","120475894 Molina Pezoa Marcia",47],["J","19:10","21:20","Derecho Tributario I","—","Maturana Lanza Carlos",46],["J","21:20","22:50","Optativo de Especialidad I","—","Neculman Muñoz Marcelo",48],["V","19:10","20:30","Taller de Integración II (Ev. Ciclo)","—","120475894 Molina Pezoa Marcia",47],["V","20:40","22:00","Procedimientos Especiales Orales","—","—",44]]},
+ n12pna:{l:"4º año (Nivel 12) · Plan No Ajustado",s:[["L","19:10","21:20","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45],["M","19:10","21:20","Procedimientos Especiales Orales (Ev. Ciclo)","TEA SH-45","—",43],["X","19:10","22:00","Derecho Sucesorio","TEC SH-21","Pacheco Cornejo Hellen",42],["J","19:10","21:20","Taller de Litigación","—","Alarcón Iturriaga Orlando",46],["V","19:10","20:30","Taller de Litigación","—","Alarcón Iturriaga Orlando",46],["V","20:40","22:00","Procedimientos Especiales Orales (Ev. Ciclo)","—","—",43]]},
+ n15s1:{l:"5º año (Nivel 15) · Plan Ajustado",s:[["L","19:10","22:00","Taller de Integración III (Ev. Ciclo)","TEC SH-21","174914125 Castro Saavedra Juan",54],["M","19:10","22:00","Taller de Integración III (Ev. Ciclo)","TEC SH-21","174914125 Castro Saavedra Juan",54],["V","19:10","22:00","Taller de Integración III (Ev. Ciclo)","VIRTUAL","174914125 Castro Saavedra Juan",54]]},
+ n15pna:{l:"5º año (Nivel 15) · Plan No Ajustado",s:[["L","19:10","22:00","Taller de Litigación Avanzada (Ev. Ciclo)","TEC SH-22","69588441 Ljubetic Romero Francisco",58],["M","19:10","21:20","Seminario de Tesis","SALA VIRTUAL","Leon Silva Glorimar",55],["X","19:10","22:00","Optativo de Especialidad II","TEC SH-22","Celedón Baeza Andrés",54],["J","19:10","22:00","Derecho Tributario II","—","Roxana Obreque Espinoza",57],["V","19:10","19:50","Derecho Tributario II","—","Roxana Obreque Espinoza",57],["V","19:50","22:00","Seminario de Tesis","SALA VIRTUAL","Leon Silva Glorimar",55]]},
+ n15tes:{l:"5º año (Nivel 15) · Solo Seminario de Tesis",s:[["L","19:10","21:20","Seminario de Tesis","SALA VIRTUAL","El Fakih Rodriguez Fatima",55],["M","19:10","21:20","Seminario de Tesis","SALA VIRTUAL","Oñate Henriquez Jaime",55],["X","19:10","21:20","Seminario de Tesis","SALA VIRTUAL","Fernandez Miguez Sheila",55],["J","19:10","21:20","Seminario de Tesis","SALA VIRTUAL","Buendia Molina Paloma",55],["V","19:10","21:20","Seminario de Tesis","SALA VIRTUAL","Lopez Hernandez Hernan",55]]}
 };
+
 const horList=document.getElementById("horList");
 function buildTable(data,key,sel){
   const _m=t=>{const p=String(t).split(":");return (+p[0])*60+(+p[1]);};
@@ -1727,8 +1747,9 @@ function renderMineHor(){
 /* Vista principal: solo la oferta que el estudiante está en condiciones de tomar */
 function renderFitHor(){
   var P=_snap(), a=_ancla(), conf=_fitEstadoConfiable();
-  var soloPlan=function(k){ return _planBloque(k)===P.cur; };
+  var soloPlan=function(k){ return _bloqueAdmitido(k); };
   var etqPlan=(P.cur==="na")?"Plan No Ajustado":"Plan Ajustado";
+  var notaPlan=(P.cur==="na")?' Como estás en el <b>Plan No Ajustado</b>, también puedes inscribir ramos ofrecidos para el Plan Ajustado.':'';
   var cab, filtro;
 
   if(!conf){
@@ -1737,20 +1758,30 @@ function renderFitHor(){
     filtro=function(k){ return soloPlan(k); };
   }else if(!a.hasAvance){
     cab='<div class="pcard fitnote">Para mostrarte <b>solo lo que puedes tomar</b>, primero marca tu avance en <b>Avance Curricular</b>: toca los ramos que ya aprobaste.<br>'+
-        'Por ahora ves toda la oferta del <b>'+etqPlan+'</b>.'+
+        'Por ahora ves toda la oferta del <b>'+etqPlan+'</b>.'+notaPlan+
         '<br><button type="button" class="mSwBtn" id="toMalla" style="margin-top:8px">📚 Ir a Avance Curricular</button></div>';
     filtro=function(k){ return soloPlan(k); };
   }else{
     var hasta=a.anchor+a.tope-1, N=(a.pref==="S"?"semestre":"nivel");
     cab='<div class="pcard fitnote">Oferta del <b>'+etqPlan+'</b> que <b>puedes tomar</b> según tu avance: desde el <b>'+N+' '+a.anchor+'</b> hasta el <b>'+N+' '+hasta+'</b> ('+a.tope+' consecutivos). '+
-        'Se ocultan los ramos aprobados y los que aún no tienen prerrequisitos cumplidos; los reprobados sí aparecen.</div>';
+        'Se ocultan los ramos aprobados y los que aún no tienen prerrequisitos cumplidos; los reprobados sí aparecen.'+notaPlan+'</div>';
     filtro=function(k,se){ return soloPlan(k) && _porQueNo(k,se,a)===null; };
   }
 
   renderAllHor(filtro,cab);
   var bm=document.getElementById("toMalla"); if(bm)bm.onclick=function(){go("malla");};
   if(!horList.querySelector("td.selc")){
-    horList.innerHTML=cab+'<div class="pcard fitnote">No quedan ramos disponibles con tu avance actual. Abre <b>“Todos los horarios”</b> arriba, o consulta en la Dirección de Carrera.</div>';
+    /* Distinguimos por qué quedó vacío: sin oferta de tu plan, o sin ramos que calcen con tu avance */
+    var hayAlgo=false, hayOtroPlan=false;
+    Object.keys(HOR).forEach(function(k){
+      if(!HOR[k].s.length)return;
+      if(_bloqueAdmitido(k))hayAlgo=true; else hayOtroPlan=true;
+    });
+    var msg = !hayAlgo && hayOtroPlan
+      ? 'Toda la oferta de este período corresponde al <b>'+(P.cur==="na"?"Plan Ajustado":"Plan No Ajustado")+'</b>, distinto al que tienes seleccionado.<br>'+
+        'Si ese es tu plan, cámbialo en <b>Avance Curricular</b> con el botón de malla. También puedes ver la oferta completa en <b>“Todos los horarios”</b>.'
+      : 'No quedan ramos disponibles con tu avance actual. Abre <b>“Todos los horarios”</b> arriba, o consulta en la Dirección de Carrera.';
+    horList.innerHTML=cab+'<div class="pcard fitnote">'+msg+'</div>';
   }
   renderHorTally();
   renderMiniHor();
@@ -3385,7 +3416,7 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
     /* rótulos del período según régimen */
     var sem=(j!=="tech");
     var hm=document.querySelector('#hor .mh');if(hm)hm.textContent=sem?"Horario del semestre":"Horario del trimestre";
-    var hs=document.querySelector('#hor .msub');if(hs)hs.textContent=sem?"Primavera 2026 · 2º semestre.":"Otoño 2026 · 2º trimestre.";
+    var hs=document.querySelector('#hor .msub');if(hs)hs.textContent=sem?"Primavera 2026 · 2º semestre.":"3er trimestre 2026.";
     var pm=document.querySelector('#pru .mh');if(pm)pm.textContent=sem?"Pruebas del semestre":"Pruebas del trimestre";
     var ps=document.querySelector('#pru .msub');
     if(ps){
