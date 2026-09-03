@@ -1920,6 +1920,10 @@ function renderMineHor(){
 }
 /* Vista principal: solo la oferta que el estudiante está en condiciones de tomar */
 function renderFitHor(){
+  if(window.__inscArchivada){
+    window.__inscArchivada=false;
+    try{ if(typeof showHorMsg==="function")showHorMsg("🗓️ Empezó un nuevo período: tu selección de ramos anterior se archivó. Elige aquí los ramos de este período.","info"); }catch(e){}
+  }
   var P=_snap(), a=_ancla(), conf=_fitEstadoConfiable();
   var soloPlan=function(k){ return _bloqueAdmitido(k); };
   var etqPlan=(P.cur==="na")?"Plan No Ajustado":"Plan Ajustado";
@@ -2089,13 +2093,45 @@ var HOR_VESP={
 };
 var OFER_VESP={"Derecho Sucesorio": 42, "Taller de Litigaci\u00f3n Avanzada (Ev. Ciclo)": 58, "Optativo de Especialidad II": 54, "Optativo de Especialidad I": 53, "Derecho Tributario II": 57, "Reorganizaci\u00f3n y Liquidaci\u00f3n Patrimonial": 56, "Seminario de Tesis": 55};
 /* --- Punteros activos: el motor de horarios usa la rejilla/oferta de la jornada activa --- */
+/* Período al que corresponde la oferta cargada de cada jornada.
+   Cuando cambia (nuevo trimestre o semestre), la selección de secciones
+   del período anterior deja de aplicar y se archiva sola. */
+var PERIODO={ tech:"2026-T3", diurno:"2026-S2", vregular:"2026-S2" };
 var BL=BL_TECH, HOR=HOR_TECH, OFER=OFER_TECH;
 function setHorJornada(j){
   if(j==="diurno"){ BL=BL_DIURNO; HOR=HOR_DIURNO; OFER=OFER_DIURNO; }
   else if(j==="vregular"){ BL=BL_VESP; HOR=HOR_VESP; OFER=OFER_VESP; }
   else { BL=BL_TECH; HOR=HOR_TECH; OFER=OFER_TECH; }
-  INSC_KEY=(j==="tech"||!j)?"insc_sec_v1":"insc_sec_"+j+"_v1";
+  var jj=(j==="tech"||!j)?"tech":j;
+  var base=(jj==="tech")?"insc_sec_v1":"insc_sec_"+jj+"_v1";
+  INSC_KEY=base+"_"+PERIODO[jj];
+  /* Selecciones de períodos anteriores: se archivan y se avisa una vez */
+  try{
+    var vieja=localStorage.getItem(base);
+    if(vieja){
+      var ant=JSON.parse(vieja||"{}");
+      if(ant&&Object.keys(ant).length){
+        localStorage.setItem(base+"_archivo",vieja);
+        window.__inscArchivada=true;
+      }
+      localStorage.removeItem(base);
+    }
+    /* claves de otros períodos de esta misma jornada */
+    for(var i=localStorage.length-1;i>=0;i--){
+      var k=localStorage.key(i);
+      if(k&&k.indexOf(base+"_")===0&&k!==INSC_KEY&&!/_archivo$/.test(k)){
+        localStorage.setItem(base+"_archivo",localStorage.getItem(k)||"{}");
+        localStorage.removeItem(k); window.__inscArchivada=true;
+      }
+    }
+  }catch(e){}
   loadInsc();
+  /* Y si algo guardado apunta a un bloque que ya no existe en la oferta, se descarta */
+  try{
+    var cambio=false;
+    Object.keys(insc).forEach(function(id){ if(!HOR[insc[id]]){ delete insc[id]; cambio=true; } });
+    if(cambio)saveInsc();
+  }catch(e){}
   if(j==="diurno"){ EVALS=EVALS_SEM_VIE; PRU_REG="sem"; PRU_NOTE="Calendario oficial de evaluaciones · Primavera 2026. La jornada <b>Diurna</b> rinde los <b>viernes</b>. "+PRU_DIURNO_NOTE; }
   else if(j==="vregular"){ EVALS=EVALS_SEM_SAB; PRU_REG="sem"; PRU_NOTE="Calendario oficial de evaluaciones · Primavera 2026. La jornada <b>Vespertina</b> rinde los <b>sábados</b> (las evaluaciones de ciclo, SENA y entregas se rinden en la misma fecha en todas las jornadas). "+PRU_DIURNO_NOTE; }
   else { EVALS=EVALS_TECH; PRU_REG="tri"; PRU_NOTE=""; }
