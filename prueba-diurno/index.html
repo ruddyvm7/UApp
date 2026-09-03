@@ -1025,13 +1025,16 @@ var SOLICITUD={
     cedula:      "rbab2a24149af4f4d82ad96ab2b1804a3",
     anio1:       "r08026cf5377649978f0eccc97fa3da2e",
     anio2:       "rf361ddedfc664bb08bcba380d886ac9a",
-    anio3:       "",
-    anio4:       "",
-    anio5:       "",
-    alternas:    "",
+    anio3:       "r121ec63cdf7647308a7bd4850170c9ac",
+    anio4:       "r53ed779ac09046bba47ad169647a8b03",
+    anio5:       "r6acd965335274a1387a50dd5659b34ed",
+    alternas:    "ra1bafc95efcf4e699b3307ab68126fce",
     verificacion:"r3bc45319b5c748a19a2e8db798014755",
     peticiones:  "rc448ca04eff942c1ab0538dc51e14836"
-  }
+  },
+  /* Preguntas configuradas con "Varias respuestas". La de alternas quedó de
+     respuesta única: si más adelante se activa como múltiple, poner true. */
+  multiple:{ anio1:true, anio2:true, anio3:true, anio4:true, anio5:true, alternas:false }
 };
 function pruebasVisibles(){
   var j=null;
@@ -1694,7 +1697,7 @@ function _opcionForm(r){
   var prof="";
   (r.ses||[]).some(function(s){ if(s[5]&&s[5]!=="—"){prof=s[5];return true;} return false; });
   var partes=[_anioDe(r.nivel||1)+"° AÑO"];
-  if(!alterna&&nrc)partes.push(nrc);
+  if(nrc)partes.push(nrc);
   partes.push(String(r.nombre).toUpperCase());
   if(prof)partes.push(String(prof).toUpperCase());
   return partes.join(" ");
@@ -1748,10 +1751,16 @@ function _urlSolicitud(){
     var k=/altern/i.test(etq)?"alternas":("anio"+_anioDe(r.nivel||1));
     (porAnio[k]=porAnio[k]||[]).push(_opcionForm(r));
   });
-  var sinCampo=[];
+  var sinCampo=[], M=SOLICITUD.multiple||{};
   Object.keys(porAnio).forEach(function(k){
-    if(C[k]) p.push(encodeURIComponent(C[k])+"="+encodeURIComponent(JSON.stringify(JSON.stringify(porAnio[k]))));
-    else sinCampo=sinCampo.concat(porAnio[k]);
+    if(!C[k]){ sinCampo=sinCampo.concat(porAnio[k]); return; }
+    if(M[k]===false){
+      /* pregunta de respuesta única: va un solo texto y el resto se avisa aparte */
+      p.push(encodeURIComponent(C[k])+"="+encodeURIComponent(JSON.stringify(porAnio[k][0])));
+      if(porAnio[k].length>1) sinCampo=sinCampo.concat(porAnio[k].slice(1));
+    }else{
+      p.push(encodeURIComponent(C[k])+"="+encodeURIComponent(JSON.stringify(JSON.stringify(porAnio[k]))));
+    }
   });
   var txt=_textoVerificacion();
   if(sinCampo.length) txt="OJO - MARCAR A MANO ESTOS RAMOS EN EL FORMULARIO:\n"+
