@@ -147,6 +147,11 @@ body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--i
 .pctrls select{font-family:inherit;font-size:14px;padding:9px;border:1px solid var(--cb2);border-radius:9px;background:#fff;color:var(--ink)}
 .presum{background:#fbf6ea;border:1px solid #ecdcaf;border-radius:10px;padding:10px 13px;font-size:13px;color:#5a4a1a;margin-bottom:4px}
 .pcard{background:#fff;border:1px solid var(--cb2);border-left:4px solid var(--gold);border-radius:10px;padding:11px 13px;margin-bottom:9px}
+.popt{border:1px solid var(--cb2,#d8cfba);border-radius:8px;padding:6px 9px;margin-top:5px;background:var(--soft,#f7f4ee)}
+.popt-on{border-color:#1f6b3a;background:#eaf6ee}
+.popt .pm{margin:0}.popt .pt{margin-top:2px}
+.pnrc{color:var(--gold,#c79a3e);font-weight:800}
+.pflag3{font-size:.66rem;background:#1f6b3a;color:#fff;border-radius:10px;padding:1px 7px;margin-left:4px;font-weight:700}
 .pcard.fitnote{font-size:.79rem;line-height:1.45;padding:8px 11px;margin-bottom:7px}
 .pcard .pn{font-weight:700;color:var(--wine);font-size:14.5px}
 .pcard .pm{font-size:12.5px;color:#666;margin-top:3px}
@@ -745,8 +750,8 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
   </div>
   <div id="inscBox" class="inscbox" style="display:none"></div>
   <div id="pruList"></div>
-  <div class="pinfo" style="margin-top:14px"><b>Fechas relevantes del trimestre.</b> Inicio de clases: 1 jun · Fin del período lectivo: 28 ago · Receso: 13–17 jul · Feriados: 29 jun, 16 jul, 15 ago · Evaluaciones finales: 31 ago – 2 sep.</div>
-  <p class="note">Fechas oficiales de la Carrera (TECH · 2º trimestre 2026). Algunas asignaturas tienen distinta fecha según sección (S1/S2/S3); revisa la tuya. La actividad acumulativa no tiene fecha fija.</p>
+  <div class="pinfo" style="margin-top:14px"><b>Fechas relevantes del 3er trimestre 2026.</b> Inicio de clases: lun 7 sep · Modificación de inscripción: 7–11 sep · Receso de Fiestas Patrias: 14–17 sep · Feriados: 18 sep, 12 oct, 8 dic · Solicitudes de rebaja de carga: 9–13 nov · Plazo 2ª evaluación regular: 6 nov · Última evaluación regular y fin del período lectivo: vie 4 dic · Examen de repetición: 9–11 dic.<br><span style="font-size:.72rem;opacity:.8">Fuente: Calendario Académico 2026, Resolución de Rectoría N°289/2025.</span></div>
+  <p class="note">Fechas oficiales de la Carrera (TECH · 3er trimestre 2026). Algunas asignaturas tienen distinta fecha según sección (S1/S2/S3); revisa la tuya. La actividad acumulativa no tiene fecha fija.</p>
 </div></section>
 
 <section id="info" style="display:none"><div class="wrap">
@@ -987,7 +992,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
            (los datos siguen cargados en el código; nada se pierde)
    PARA PUBLICAR una jornada: cambiar su valor a true y subir el archivo.
    ══════════════════════════════════════════════════════════════ */
-var PRUEBAS_VISIBLES={ tech:true, diurno:false, vregular:false };
+var PRUEBAS_VISIBLES={ tech:false, diurno:false, vregular:false };   /* TECH: a la espera del calendario del 3er trimestre */
 function pruebasVisibles(){
   var j=null;
   try{ j=localStorage.getItem("jornada3_v1"); }catch(e){}
@@ -1233,26 +1238,26 @@ function _abrev(n){
   return out+(rom?" "+rom:"");
 }
 function imprimirDoc(titulo,sub,cuerpo,piePersonal){
-  var css='@page{size:letter;margin:12mm}'+
-  '*{box-sizing:border-box}body{font-family:Georgia,\'Times New Roman\',serif;color:#2b2724;margin:0;font-size:12px;line-height:1.45;-webkit-print-color-adjust:exact;print-color-adjust:exact}'+
-  '.top{border-bottom:3px solid #8b0c0c;padding-bottom:8px;margin-bottom:12px}'+
-  '.brand{font-size:19px;font-weight:bold;color:#8b0c0c}.brand span{color:#c79a3e}'+
-  '.tt{font-size:16px;font-weight:bold;margin-top:2px}.sub{color:#6b6660;font-size:11px;margin-top:2px}'+
-  'h2{font-size:13px;color:#8b0c0c;border-bottom:1px solid #c79a3e;padding-bottom:3px;margin:13px 0 7px}'+
-  'table{width:100%;border-collapse:collapse;margin:6px 0}th,td{border:1px solid #d8d2c6;padding:5px 7px;text-align:left;vertical-align:top}'+
-  'th{background:#f4efe6;font-size:10.5px;text-transform:uppercase;letter-spacing:.4px}'+
+  var css='@page{size:letter;margin:9mm 10mm}'+
+  '*{box-sizing:border-box}body{font-family:Georgia,\'Times New Roman\',serif;color:#2b2724;margin:0;font-size:10.2px;line-height:1.32;-webkit-print-color-adjust:exact;print-color-adjust:exact}'+
+  '.top{border-bottom:2px solid #8b0c0c;padding-bottom:4px;margin-bottom:7px}'+
+  '.brand{font-size:15px;font-weight:bold;color:#8b0c0c}.brand span{color:#c79a3e}'+
+  '.tt{font-size:13px;font-weight:bold;margin-top:1px}.sub{color:#6b6660;font-size:9.4px;margin-top:1px}'+
+  'h2{font-size:10.8px;color:#8b0c0c;border-bottom:1px solid #c79a3e;padding-bottom:2px;margin:8px 0 4px}'+
+  'table{width:100%;border-collapse:collapse;margin:4px 0}th,td{border:1px solid #d8d2c6;padding:2.5px 5px;text-align:left;vertical-align:top;line-height:1.25}'+
+  'th{background:#f4efe6;font-size:8.6px;text-transform:uppercase;letter-spacing:.3px;padding:3px 5px}'+
   '.tag{font-weight:bold}.tag.si{color:#1f7a48}.tag.alerta{color:#a33}'+
-  '.res{display:flex;gap:14px;margin:6px 0;flex-wrap:wrap}.res b{font-size:16px}'+
-  '.firma{margin-top:20px;display:flex;gap:26px}.firma div{flex:1;border-top:1px solid #2b2724;padding-top:4px;font-size:11px;text-align:center}'+
-  '.pie{margin-top:14px;border-top:1px solid #d8d2c6;padding-top:7px;font-size:9.6px;color:#6b6660}'+
-  '.nota{background:#faf7f1;border-left:3px solid #c79a3e;padding:6px 9px;margin:8px 0;font-size:10.6px}'+'.sello{border-radius:6px;padding:7px 10px;margin:8px 0 2px;font-size:11.4px;font-weight:bold}'+'.sello.ok{background:#e7f3ea;border:1px solid #1f7a48;color:#14532d}'+'.sello.alerta{background:#fbe6e2;border:1px solid #a33;color:#7a1f14}'+'.obs{margin:3px 0 0;padding-left:15px;font-size:10.4px}'+'.obs li{margin:1px 0}'+
+  '.res{display:flex;gap:12px;margin:3px 0;flex-wrap:wrap}.res b{font-size:13px}'+
+  '.firma{margin-top:12px;display:flex;gap:24px}.firma div{flex:1;border-top:1px solid #2b2724;padding-top:3px;font-size:9.4px;text-align:center}'+
+  '.pie{margin-top:8px;border-top:1px solid #d8d2c6;padding-top:4px;font-size:8.2px;color:#6b6660;line-height:1.3}'+
+  '.nota{background:#faf7f1;border-left:3px solid #c79a3e;padding:4px 8px;margin:5px 0;font-size:8.9px;line-height:1.3}'+'.sello{border-radius:5px;padding:5px 9px;margin:4px 0 2px;font-size:9.8px;font-weight:bold}'+'.sello.ok{background:#e7f3ea;border:1px solid #1f7a48;color:#14532d}'+'.sello.alerta{background:#fbe6e2;border:1px solid #a33;color:#7a1f14}'+'.obs{margin:2px 0 0;padding-left:13px;font-size:8.8px}'+'.obs li{margin:1px 0}'+
   /* --- malla en cuadritos --- */
   '.mg{display:grid;gap:3px;margin:6px 0}'+
-  '.mg{gap:2.5px}.mg .nh{font-size:7.4px;font-weight:bold;color:#8b0c0c;text-align:center;text-transform:uppercase;letter-spacing:.3px;padding:2px 0;border-bottom:2px solid #c79a3e}'+
-  '.cs{border:1px solid #cfc9bd;border-radius:2.5px;padding:2px 2px;font-size:5.8px;line-height:1.2;min-height:20px;background:#f6f3ec;color:#5d584f;text-align:center;display:flex;align-items:center;justify-content:center;overflow-wrap:break-word;overflow:hidden}'+
+  '.mg{gap:2px}.mg .nh{font-size:6.8px;font-weight:bold;color:#8b0c0c;text-align:center;text-transform:uppercase;letter-spacing:.3px;padding:2px 0;border-bottom:2px solid #c79a3e}'+
+  '.cs{border:1px solid #cfc9bd;border-radius:2px;padding:1.5px 2px;font-size:5.4px;line-height:1.15;min-height:17px;background:#f6f3ec;color:#5d584f;text-align:center;display:flex;align-items:center;justify-content:center;overflow-wrap:break-word;overflow:hidden}'+
   '.cs.ok{background:#def0e3;border-color:#1f7a48;color:#14532d;font-weight:bold}'+
   '.cs.no{background:#fbe0dc;border-color:#a33;color:#7a1f14;font-weight:bold}'+
-  '.leg{display:flex;gap:14px;font-size:9.6px;color:#6b6660;margin:4px 0 2px}'+
+  '.leg{display:flex;gap:12px;font-size:8.4px;color:#6b6660;margin:2px 0 1px}'+
   '.leg i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px;vertical-align:-1px;border:1px solid #999}'+
   /* --- horario en grilla semanal --- */
   '.gh th{text-align:center}.gh td{padding:0;vertical-align:top}'+
@@ -1682,12 +1687,13 @@ function docRespaldo(){
     var filas="";det.forEach(function(r){
       var pr=(r.estado==="ok")?'<span class="tag alerta">✗ ya aprobado</span>'
              :(r.prerreq===null)?"—":(r.prerreq?'<span class="tag si">✓ cumple</span>':'<span class="tag alerta">✗ revisar</span>');
-      var hor=sinClases(r.ses)?'<i style="color:#6b6660">Sin horario de clases · actividad autónoma</i>'
-              :r.ses.map(function(se){return (DIAS[se[0]]||se[0]).slice(0,3)+" "+se[1]+"–"+se[2];}).join(" · ");
+      var esAuto=sinClases(r.ses);
+      var hor=esAuto?'<i style="color:#6b6660">Sin horario de clases · actividad autónoma</i>'
+              :_e(r.ses.map(function(se){return (DIAS[se[0]]||se[0]).slice(0,3)+" "+se[1]+"–"+se[2];}).join(" · ")||"—");
       var nrcTxt=(r.nrc&&r.nrc.length)?r.nrc.join(" / "):'<span style="color:#a33">por asignar</span>';
       var modTxt=(r.mods&&r.mods.length)?' <span style="font-size:9px;color:#6b6660">'+_e(r.mods.join("+"))+"</span>":"";
       var anio=(r.nivel!=null)?Math.ceil(r.nivel/(mg.reg==="tri"?3:2)):null;
-      filas+="<tr><td><b>"+nrcTxt+"</b>"+modTxt+"</td><td>"+_e(r.nombre)+"</td><td>"+_e(r.nivel==null?"—":r.nivel)+(anio?'<br><span style="font-size:9px;color:#6b6660">'+anio+"º año</span>":"")+"</td><td>"+_e(r.cred||"—")+"</td><td>"+_e(hor||"—")+"</td><td>"+pr+"</td></tr>";
+      filas+="<tr><td><b>"+nrcTxt+"</b>"+modTxt+"</td><td>"+_e(r.nombre)+"</td><td>"+_e(r.nivel==null?"—":r.nivel)+(anio?'<br><span style="font-size:9px;color:#6b6660">'+anio+"º año</span>":"")+"</td><td>"+_e(r.cred||"—")+"</td><td>"+hor+"</td><td>"+pr+"</td></tr>";
     });
     cuerpo+='<table><tr><th style="width:64px">NRC</th><th>Asignatura</th><th>Nivel</th><th>SCT</th><th>Horario</th><th>Prerrequisitos</th></tr>'+filas+"</table>"+
       '<div class="nota">El <b>NRC</b> es el código con el que se inscribe cada sección en el sistema de la Universidad. Cuando un ramo tiene dos, corresponden a sus componentes presencial y online: se inscriben ambos.</div>';
@@ -2183,7 +2189,19 @@ function planProposeTECH(){
   let h="";
   if(chosen.length){
     h+=`<div class="hgrp serif">Ramos propuestos (${chosen.length})</div>`;
-    chosen.forEach(({c,o})=>{const horas=o.sessions.map(se=>`${DIAS[se[0]].slice(0,3)} ${se[1]}–${se[2]}`).join(" · ");const sala=o.sessions[0][4],profe=o.sessions[0][5];const rep=S_[c.id]==="no"?' <span class="pflag">repite · obligatorio</span>':(c.t===anchor?' <span class="pflag2">nivel obligatorio</span>':'');h+=`<div class="pcard"><div class="pn">${c.n}${rep}</div><div class="pm">Nivel ${c.t} · ${o.label.split(" · ").slice(-1)[0]}</div><div class="pt">${horas}${sala&&sala!=="—"?" · "+sala:""}${profe&&profe!=="—"?" · "+profe:""}</div></div>`;});
+    chosen.forEach(({c,o})=>{
+      const rep=S_[c.id]==="no"?' <span class="pflag">repite · obligatorio</span>':(c.t===anchor?' <span class="pflag2">nivel obligatorio</span>':'');
+      const todas=offById[c.id]||[o];
+      const pinta=(op,dest)=>{
+        const horas=op.sessions.map(se=>`${DIAS[se[0]].slice(0,3)} ${se[1]}–${se[2]}`).join(" · ");
+        const sala=op.sessions[0][4],profe=op.sessions[0][5];
+        const nrcs=[...new Set(op.sessions.map(se=>se[7]).filter(Boolean))];
+        return `<div class="${dest?'popt popt-on':'popt'}"><div class="pm">${op.label.split(" · ").slice(-1)[0]}${nrcs.length?' · <span class="pnrc">NRC '+nrcs.join(" / ")+'</span>':''}${dest?' <span class="pflag3">propuesta</span>':''}</div><div class="pt">${horas}${sala&&sala!=="—"?" · "+sala:""}${profe&&profe!=="—"?" · "+profe:""}</div></div>`;
+      };
+      const otras=todas.filter(x=>x!==o);
+      h+=`<div class="pcard"><div class="pn">${c.n}${rep}</div><div class="pm" style="margin-bottom:4px">Nivel ${c.t}${otras.length?' · <b>'+todas.length+' secciones disponibles</b>, elige la que te acomode:':''}</div>`+
+         pinta(o,true)+otras.map(x=>pinta(x,false)).join("")+`</div>`;
+    });
     h+=`<div class="hgrp serif">Horario propuesto</div>`+buildTable([].concat(...chosen.map(x=>x.o.sessions)));
   }else h+=`<div class="pcard">No hay ramos para proponer con las reglas actuales. Marca tu avance en Avance Curricular.</div>`;
   if(excl.length){h+=`<div class="hgrp serif">No incluidos</div>`;excl.forEach(({c,r})=>h+=`<div class="pexc">• <b>${c.n}</b> (nivel ${c.t}) — ${r}</div>`);}
@@ -2295,9 +2313,9 @@ function renderPru(mode,dest){
   if(!dest && typeof aplicaVisPru==="function")aplicaVisPru();
   if(!pruebasVisibles()){
     if(ib){ib.style.display="none";ib.innerHTML="";}
-    if(el)el.innerHTML='<div class="pcard"><b>📅 El calendario de evaluaciones todavía no está publicado.</b><br>'+
+    if(el)el.innerHTML='<div class="pcard"><b>📅 El calendario de evaluaciones de este período todavía no está publicado.</b><br>'+
       'La Carrera lo dará a conocer más adelante y, cuando eso ocurra, aparecerá aquí con las fechas de cada ramo.<br>'+
-      'Mantente atento al <b>Mural</b>: ahí se avisan las novedades oficiales.</div>';
+      'Mientras tanto, abajo tienes las <b>fechas generales del período</b> según el calendario académico oficial. Mantente atento al <b>Mural</b>.</div>';
     return;
   }
   if(!dest){
@@ -2363,7 +2381,8 @@ function aplicaVisPru(){
   var on=pruebasVisibles(), sec=document.getElementById("pru");
   if(!sec)return on;
   var barra=sec.querySelector(".horBtns"); if(barra)barra.style.display=on?"":"none";
-  sec.querySelectorAll(".pinfo, .note").forEach(function(x){ x.style.display=on?"":"none"; });
+  sec.querySelectorAll(".note").forEach(function(x){ x.style.display=on?"":"none"; });
+  sec.querySelectorAll(".pinfo").forEach(function(x){ x.style.display=""; });   /* las fechas del período siempre se ven */
   var sub=sec.querySelector(".msub");
   if(sub){
     if(sub.textContent!==MSG_PRU_PEND)sub.dataset.orig=sub.textContent;
