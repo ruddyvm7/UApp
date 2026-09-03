@@ -149,6 +149,10 @@ body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--i
 .pcard{background:#fff;border:1px solid var(--cb2);border-left:4px solid var(--gold);border-radius:10px;padding:11px 13px;margin-bottom:9px}
 .popt{border:1px solid var(--cb2,#d8cfba);border-radius:8px;padding:6px 9px;margin-top:5px;background:var(--soft,#f7f4ee)}
 .popt-on{border-color:#1f6b3a;background:#eaf6ee}
+.pcard-sol{border-left:4px solid #1d4ed8}
+.pautor{margin-top:6px;background:#eef2fa;border:1px solid #c7d5f5;border-radius:8px;padding:7px 9px;font-size:.76rem;line-height:1.45;color:#1e3a72}
+body.dark .pautor{background:#1a2338;border-color:#33507f;color:#cfe0ff}
+.pdesc{font-size:.78rem;color:var(--muted,#6b6660);line-height:1.45;margin:2px 0 6px}
 .popt .pm{margin:0}.popt .pt{margin-top:2px}
 .pnrc{color:var(--gold,#c79a3e);font-weight:800}
 .pflag3{font-size:.66rem;background:#1f6b3a;color:#fff;border-radius:10px;padding:1px 7px;margin-left:4px;font-weight:700}
@@ -2236,7 +2240,33 @@ function planProposeTECH(){
   cand.sort((a,b)=>{const ma=(S_[a.id]==="no"||a.t===anchor)?0:1,mb=(S_[b.id]==="no"||b.t===anchor)?0:1;return ma-mb||a.t-b.t||a.id-b.id;});
   const occ=new Set(),chosen=[],conf=[];
   for(const c of cand){if(chosen.length>=maxR)break;let placed=false;for(const o of offById[c.id]){const cs=cellsOf(o.sessions);if(cs.some(x=>occ.has(x)))continue;cs.forEach(x=>occ.add(x));chosen.push({c,o});placed=true;break;}if(!placed)conf.push(c);}
-  const chosenIds=new Set(chosen.map(x=>x.c.id));
+
+  /* Segunda pasada: los que quedaron fuera solo por horario pueden entrar igual si
+     su tope es de los que la normativa permite solicitar (online y ≤50% de ambas).
+     Se ofrecen aparte, porque exigen toma de carga manual. */
+  const extra=[];
+  if(chosen.length<maxR){
+    for(const c of conf.slice()){
+      if(chosen.length+extra.length>=maxR)break;
+      let mejor=null;
+      for(const o of (offById[c.id]||[])){
+        var topes=[],ok=true;
+        for(const el of chosen.concat(extra)){
+          var cr=cruceEntre(o.sessions,el.o.sessions);
+          if(!cr)continue;
+          if(cr.tipo!=="solicitable"){ok=false;break;}
+          topes.push({con:el.c.n,min:cr.min,dias:cr.dias.map(function(x){return DIAS[x]||x;}).join(", "),
+                      t0:cr.t0,t1:cr.t1,pct:Math.round(Math.max(cr.pctA,cr.pctB))});
+        }
+        if(ok&&topes.length){ mejor={o:o,topes:topes}; break; }
+      }
+      if(mejor){
+        extra.push({c:c,o:mejor.o,topes:mejor.topes});
+        conf.splice(conf.indexOf(c),1);
+      }
+    }
+  }
+  const chosenIds=new Set(chosen.concat(extra).map(x=>x.c.id));
   const excl=[];
   offIds.map(id=>bId[id]).forEach(c=>{if(!c||c.id===51||S_[c.id]==="ok"||chosenIds.has(c.id))return;let r;if(!(function(){try{return U_(c);}catch(e){return true;}})())r="faltan prerrequisitos";else if(c.t-anchor>maxDif)r="supera el tope de niveles";else if(conf.includes(c))r="choca de horario con un ramo más antiguo";else r="quedó fuera por el máximo de ramos";excl.push({c,r});});
   excl.sort((a,b)=>a.c.t-b.c.t);
@@ -2244,7 +2274,7 @@ function planProposeTECH(){
   let h="";
   if(chosen.length){
     h+=`<div class="hgrp serif">Ramos propuestos (${chosen.length})</div>`;
-    chosen.forEach(({c,o})=>{
+    const pintaRamo=({c,o,topes})=>{
       const rep=S_[c.id]==="no"?' <span class="pflag">repite · obligatorio</span>':(c.t===anchor?' <span class="pflag2">nivel obligatorio</span>':'');
       const todas=offById[c.id]||[o];
       const pinta=(op,dest)=>{
@@ -2253,10 +2283,19 @@ function planProposeTECH(){
         const nrcs=[...new Set(op.sessions.map(se=>se[7]).filter(Boolean))];
         return `<div class="${dest?'popt popt-on':'popt'}"><div class="pm">${op.label.split(" · ").slice(-1)[0]}${nrcs.length?' · <span class="pnrc">NRC '+nrcs.join(" / ")+'</span>':''}${dest?' <span class="pflag3">propuesta</span>':''}</div><div class="pt">${horas}${sala&&sala!=="—"?" · "+sala:""}${profe&&profe!=="—"?" · "+profe:""}</div></div>`;
       };
-      const otras=todas.filter(x=>x!==o);
-      h+=`<div class="pcard"><div class="pn">${c.n}${rep}</div><div class="pm" style="margin-bottom:4px">Nivel ${c.t}${otras.length?' · <b>'+todas.length+' secciones disponibles</b>, elige la que te acomode:':''}</div>`+
-         pinta(o,true)+otras.map(x=>pinta(x,false)).join("")+`</div>`;
-    });
+      const otras=topes?[]:todas.filter(x=>x!==o);
+      const av=topes?('<div class="pautor">📝 <b>Requiere toma de carga manual.</b> '+
+        topes.map(function(t){return "Tope de <b>"+t.min+" min</b> con <b>"+t.con+"</b> ("+t.dias+" "+t.t0+"–"+t.t1+", ambos online · "+t.pct+"% de la asignatura).";}).join(" ")+
+        ' Está dentro de lo que la normativa permite solicitar. Genera el <b>respaldo en PDF</b> y preséntalo con tu solicitud.</div>'):"";
+      h+=`<div class="pcard${topes?' pcard-sol':''}"><div class="pn">${c.n}${rep}</div><div class="pm" style="margin-bottom:4px">Nivel ${c.t}${otras.length?' · <b>'+todas.length+' secciones disponibles</b>, elige la que te acomode:':''}</div>`+
+         pinta(o,true)+otras.map(x=>pinta(x,false)).join("")+av+`</div>`;
+    };
+    chosen.forEach(pintaRamo);
+    if(extra.length){
+      h+=`<div class="hgrp serif" style="margin-top:12px">Además puedes solicitar (${extra.length})</div>`+
+         `<div class="pdesc">Estos ramos abren un tope de horario que <b>la normativa permite autorizar</b>: ocurren en bloques online y no superan el 50% de las horas semanales. No se inscriben en Banner: se piden por <b>toma de carga manual</b>.</div>`;
+      extra.forEach(pintaRamo);
+    }
     h+=`<div class="hgrp serif">Horario propuesto</div>`+buildTable([].concat(...chosen.map(x=>x.o.sessions)));
   }else h+=`<div class="pcard">No hay ramos para proponer con las reglas actuales. Marca tu avance en Avance Curricular.</div>`;
   if(excl.length){h+=`<div class="hgrp serif">No incluidos</div>`;excl.forEach(({c,r})=>h+=`<div class="pexc">• <b>${c.n}</b> (nivel ${c.t}) — ${r}</div>`);}
