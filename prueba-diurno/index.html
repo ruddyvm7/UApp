@@ -179,6 +179,17 @@ body.dark .palt{color:#8fd0a5}
 .hortbl td.tm2{background:#f4f1ee;color:#777;font-weight:700;font-size:10px;white-space:nowrap;width:58px}
 .hortbl td.cell{background:#fbf6ea;border-color:#ecdcaf;position:relative}
 .hortbl .cr{display:block;font-weight:700;color:var(--wine);line-height:1.2}
+.hortbl .cn{display:block;font-size:9.4px;font-weight:700;color:var(--gold,#c79a3e);letter-spacing:.2px;line-height:1.25;margin-top:1px}
+.autobox{background:var(--soft,#f4f1ea);border:1px dashed var(--cb2,#cfc9bd);border-radius:10px;padding:9px 11px;margin:6px 0 12px;font-size:.78rem;line-height:1.45;color:var(--muted,#6b6660)}
+.autobox b{color:var(--ink,#2b2724)}
+.autochips{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.autochip{background:#fff;border:1.5px solid var(--cb2,#cfc9bd);border-radius:9px;padding:6px 10px;font:600 .76rem/1.3 inherit;color:var(--ink,#2b2724);cursor:pointer;text-align:left}
+.autochip.on{border-color:#1f6b3a;background:#eaf6ee}
+.autochip .ac-nrc{color:var(--gold,#c79a3e);font-weight:800}
+.autochip .ac-sct{color:var(--muted,#6b6660);font-weight:600}
+body.dark .autochip{background:#221f1c;color:#eee}
+body.dark .autochip.on{background:#1e3327}
+body.dark .hortbl .cn{color:#d9b871}
 .hortbl .cs{display:block;color:#8a7a4a;font-size:10px;margin-top:3px}
 .hortbl .cp{display:block;color:#9a6b72;font-size:9.5px;margin-top:2px;font-style:italic;line-height:1.15}
 footer{background:var(--navy);color:#cdd5e3;text-align:center;padding:26px 18px 30px;margin-top:10px}
@@ -1247,6 +1258,7 @@ function imprimirDoc(titulo,sub,cuerpo,piePersonal){
   '.gh th{text-align:center}.gh td{padding:0;vertical-align:top}'+
   '.sesion{margin:3px;border-radius:5px;padding:4px 5px;background:#fbf6ea;border:1px solid #e3d3a4;font-size:9.6px;line-height:1.3}'+
   '.sesion b{display:block;font-size:10px}.sesion .hr{color:#8b0c0c;font-weight:bold}.sesion .sl{color:#6b6660;font-size:9px}'+
+  '.sesion .nrc{display:block;font-size:9px;font-weight:bold;color:#8a6d1f}'+
   /* --- pruebas en tarjetas --- */
   '.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}'+
   '.pcardd{border:1px solid #d8d2c6;border-radius:7px;overflow:hidden;break-inside:avoid}'+
@@ -1256,19 +1268,53 @@ function imprimirDoc(titulo,sub,cuerpo,piePersonal){
   '.evrow{display:flex;justify-content:space-between;border-bottom:1px dashed #e3ddd2;padding:3px 0;font-size:10.6px}'+
   '.evrow:last-child{border-bottom:0}.evrow .fecha{font-weight:bold}.evrow .fecha small{color:#8b0c0c;font-weight:bold;margin-right:3px}'+
   '.pnote{font-size:8.8px;color:#6b6660;padding:2px 8px 6px}';
-  var html='<!doctype html><html><head><meta charset="utf-8"><title>UApp - '+_e(titulo)+'</title><style>'+css+'</style></head><body>'+
+  var html='<!doctype html><html><head><meta charset="utf-8"><title>UApp - '+_e(titulo)+'</title><style>'+css+'</style></head><body><div id="hoja">'+
     '<div class="top"><div class="brand">U<span>App</span> · Derecho · UA Temuco</div>'+
     '<div class="tt">'+_e(titulo)+'</div><div class="sub">'+_e(sub)+' · Generado el '+_e(_fGen())+'</div></div>'+
     cuerpo+(piePersonal||'')+
     '<div class="pie">Documento <b>informativo</b> generado por el propio estudiante en UApp (miuapp.cl) a partir de la información que él registra en su dispositivo. '+
     'No es un certificado ni reemplaza al registro académico oficial de la Universidad. Ante cualquier diferencia, prima la información de Registro Curricular.</div>'+
-    '</body></html>';
-  try{ window.__lastPrint={titulo:titulo,html:html}; }catch(e){}
-  /* El navegador no permite forzar el destino: se abre su cuadro de impresión,
-     donde "Guardar como PDF" es una de las opciones. Se explica la primera vez. */
+    '</div></body></html>';
+  var interno='<div class="top"><div class="brand">U<span>App</span> · Derecho · UA Temuco</div>'+
+    '<div class="tt">'+_e(titulo)+'</div><div class="sub">'+_e(sub)+' · Generado el '+_e(_fGen())+'</div></div>'+
+    cuerpo+(piePersonal||'')+
+    '<div class="pie">Documento <b>informativo</b> generado por el propio estudiante en UApp (miuapp.cl) a partir de la información que él registra en su dispositivo. '+
+    'No es un certificado ni reemplaza al registro académico oficial de la Universidad. Ante cualquier diferencia, prima la información de Registro Curricular.</div>';
+  try{ window.__lastPrint={titulo:titulo,html:html,css:css,body:interno}; }catch(e){}
+  /* Primero se intenta descargar el PDF directamente; si no se puede,
+     se recurre al cuadro de impresión del dispositivo. */
+  descargarPDF(titulo,css,interno,html);
+}
+
+/* ── Descarga directa del PDF ──────────────────────────────────────────
+   La librería se trae solo cuando alguien pide un documento, para no
+   cargarla en cada visita. Si no llega (sin conexión, bloqueo), se usa
+   el cuadro de impresión de siempre. */
+var _pdfLib=null;
+function cargaPDFLib(){
+  if(window.html2pdf) return Promise.resolve(true);
+  if(_pdfLib) return _pdfLib;
+  _pdfLib=new Promise(function(res){
+    try{
+      var s=document.createElement("script");
+      s.src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.2/dist/html2pdf.bundle.min.js";
+      s.integrity="sha384-aBc0BOllaGWrQx51DYt978St/L7B+21jzNGc4N/jnGD0NxGwj8S/ftRgW0AkXIak";
+      s.crossOrigin="anonymous"; s.referrerPolicy="no-referrer";
+      s.onload=function(){ res(!!window.html2pdf); };
+      s.onerror=function(){ res(false); };
+      document.head.appendChild(s);
+      setTimeout(function(){ res(!!window.html2pdf); },15000);
+    }catch(e){ res(false); }
+  });
+  return _pdfLib;
+}
+function _nombreArchivo(t){
+  return ("UApp - "+String(t)).replace(/[\/:*?"<>|]/g,"").replace(/\s+/g," ").trim()+".pdf";
+}
+function imprimirNativo(html,tip){
   var espera=0;
   try{
-    if(localStorage.getItem("pdf_tip_v1")!=="1"){
+    if(tip && localStorage.getItem("pdf_tip_v1")!=="1"){
       localStorage.setItem("pdf_tip_v1","1");
       if(typeof showHorMsg==="function"){
         showHorMsg('📄 Se abrirá el cuadro de tu dispositivo: elige <b>“Guardar como PDF”</b> en <b>Destino</b> para descargar el documento.','info');
@@ -1289,6 +1335,56 @@ function imprimirDoc(titulo,sub,cuerpo,piePersonal){
       else setTimeout(done,120000);
     },150+espera);
   }catch(e){}
+}
+function descargarPDF(titulo,css,interno,htmlCompleto){
+  var aviso=function(t,k){ try{ if(typeof showHorMsg==="function")showHorMsg(t,k||"info"); }catch(e){} };
+  cargaPDFLib().then(function(ok){
+    if(!ok){ imprimirNativo(htmlCompleto,true); return; }
+    var fr=null, velo=null;
+    var limpia=function(){ [fr,velo].forEach(function(x){ try{ if(x&&x.parentNode)x.parentNode.removeChild(x); }catch(e){} }); };
+    try{
+      /* El documento se arma en un marco con tamaño de carta. Al capturarlo,
+         se le vuelven a inyectar sus estilos al clon (onclone). */
+      fr=document.createElement("iframe");
+      fr.setAttribute("aria-hidden","true");
+      fr.style.cssText="position:fixed;left:0;top:0;width:816px;height:1056px;border:0;background:#fff;pointer-events:none;z-index:9998";
+      document.body.appendChild(fr);
+      var doc=fr.contentDocument||fr.contentWindow.document;
+      doc.open(); doc.write(htmlCompleto); doc.close();
+
+      velo=document.createElement("div");
+      velo.style.cssText="position:fixed;inset:0;z-index:9999;background:rgba(20,16,14,.88);display:flex;align-items:center;justify-content:center;color:#fff;font:600 15px/1.6 Inter,system-ui,sans-serif;text-align:center;padding:24px";
+      velo.innerHTML="<div>📄<br>Generando tu PDF…<br><span style='font-weight:400;font-size:13px;opacity:.85'>Se descargará en unos segundos</span></div>";
+      document.body.appendChild(velo);
+
+      setTimeout(function(){
+        try{
+          /* La altura se ajusta al contenido real para no dejar páginas en blanco */
+          var hoja=doc.getElementById("hoja")||doc.body;
+          var altoReal=Math.ceil(hoja.getBoundingClientRect().height)+8;
+          fr.style.height=altoReal+"px";
+          try{ doc.body.style.height=altoReal+"px"; doc.documentElement.style.height=altoReal+"px"; }catch(e){}
+          window.html2pdf().set({
+            margin:[10,10,12,10],
+            filename:_nombreArchivo(titulo),
+            image:{type:"jpeg",quality:0.97},
+            html2canvas:{scale:2,useCORS:true,backgroundColor:"#ffffff",logging:false,
+              height:altoReal,windowHeight:altoReal,
+              onclone:function(cd){
+                try{
+                  var st=cd.createElement("style"); st.textContent=css;
+                  (cd.head||cd.documentElement).appendChild(st);
+                }catch(e){}
+              }},
+            jsPDF:{unit:"mm",format:"letter",orientation:"portrait"},
+            pagebreak:{mode:["css","legacy"]}
+          }).from(hoja).save().then(function(){
+            limpia(); aviso("✅ PDF descargado. Búscalo en tus descargas.");
+          },function(){ limpia(); imprimirNativo(htmlCompleto,true); });
+        }catch(e){ limpia(); imprimirNativo(htmlCompleto,true); }
+      },420);
+    }catch(e){ limpia(); imprimirNativo(htmlCompleto,true); }
+  },function(){ imprimirNativo(htmlCompleto,true); });
 }
 /* La malla activa depende de la jornada (trimestral o semestral) y del plan.
    Cada mundo registra aquí su "instantánea": lista de ramos, estado y prerrequisitos. */
@@ -1420,9 +1516,18 @@ function _inscritosDetalle(){
   var ids=Object.keys(insc).map(Number), out=[];
   ids.forEach(function(id){
     var key=insc[id], ses=sessionsOf(id,key), c=_cursoDe(id,key);
+    var nrcs=[],mods={};
+    ses.forEach(function(se){
+      if(se[7]&&nrcs.indexOf(se[7])<0)nrcs.push(se[7]);
+      if(se[8])mods[se[8]]=1;
+    });
+    var E=_estadoRamo(key,id);
     out.push({id:id,key:key,nombre:c?c.n:(ses[0]?ses[0][3]:("Ramo "+id)),nivel:c?c.t:null,
               cred:(typeof creditsForSel==="function"?creditsForSel(id,key):0),
-              ses:ses,prerreq:_prerreqOK(id,key)});
+              ses:ses,prerreq:_prerreqOK(id,key),
+              estado:E?E.st:null,
+              nrc:nrcs,mods:Object.keys(mods),
+              seccion:(typeof HOR!=="undefined"&&HOR[key]?HOR[key].l:"")});
   });
   out.sort(function(a,b){return (a.nivel||99)-(b.nivel||99)||a.id-b.id;});
   return out;
@@ -1453,22 +1558,29 @@ function docHorario(){
   var det=_inscritosDetalle();
   if(!det.length){ imprimirDoc("Mi horario semanal",_jLabel(),
     '<div class="nota">Aún no has seleccionado ramos. Ve a <b>Horarios</b>, toca las secciones que vas a cursar y vuelve a generar este documento.</div>'); return; }
+  var conClase=det.filter(function(r){return !sinClases(r.ses);});
+  var autonomos=det.filter(function(r){return sinClases(r.ses);});
   var dias=["L","M","X","J","V","S"].filter(function(d){
-    return det.some(function(r){return r.ses.some(function(se){return se[0]===d;});});
+    return conClase.some(function(r){return r.ses.some(function(se){return se[0]===d;});});
   });
   var head="<tr>"+dias.map(function(d){return "<th>"+_e(DIAS[d]||d)+"</th>";}).join("")+"</tr>";
   var fila="<tr>"+dias.map(function(d){
     var del=[];
-    det.forEach(function(r){r.ses.forEach(function(se){if(se[0]===d)del.push({se:se,n:r.nombre});});});
+    conClase.forEach(function(r){r.ses.forEach(function(se){if(se[0]===d)del.push({se:se,n:r.nombre});});});
     del.sort(function(a,b){return _minutos(a.se[1])-_minutos(b.se[1]);});
     var td=del.map(function(x){
-      return '<div class="sesion"><span class="hr">'+_e(x.se[1])+"–"+_e(x.se[2])+'</span><b>'+_e(x.n)+'</b><span class="sl">'+_e(x.se[4]||"—")+' · '+_e(x.se[5]||"—")+'</span></div>';
+      var etq=(x.se[7]?"NRC "+x.se[7]:"")+(x.se[8]?(x.se[7]?" · ":"")+x.se[8]:"");
+      return '<div class="sesion"><span class="hr">'+_e(x.se[1])+"–"+_e(x.se[2])+'</span><b>'+_e(x.n)+'</b>'+
+             (etq?'<span class="nrc">'+_e(etq)+'</span>':"")+
+             '<span class="sl">'+_e(x.se[4]||"—")+' · '+_e(x.se[5]||"—")+'</span></div>';
     }).join("");
     return '<td style="width:'+(100/dias.length)+'%">'+td+"</td>";
   }).join("")+"</tr>";
   var sct=0,horas=0;det.forEach(function(r){sct+=(r.cred||0);r.ses.forEach(function(se){horas+=(_minutos(se[2])-_minutos(se[1]))/60;});});
   var cuerpo='<div class="res"><div><b>'+det.length+'</b> ramos</div><div><b>'+sct+'</b> SCT</div><div><b>'+(Math.round(horas*10)/10)+'</b> h semanales</div></div>'+
-    '<table class="gh">'+head+fila+"</table>";
+    (dias.length?'<table class="gh">'+head+fila+"</table>":"")+
+    (autonomos.length?'<div class="nota"><b>Sin horario de clases</b> (se inscriben igual y suman créditos): '+
+       autonomos.map(function(r){return _e(r.nombre)+(r.nrc&&r.nrc.length?" · NRC "+_e(r.nrc.join("/")):"");}).join(" · ")+'</div>':"");
   imprimirDoc("Mi horario semanal",_jLabel(),cuerpo);
   if(typeof logInteraccion==="function")logInteraccion("horarios","descargar horario");
 }
@@ -1530,14 +1642,34 @@ function docRespaldo(){
   var mg=_mallaGrid();
   var det=_inscritosDetalle();
   var obs=_observaciones(det);
+
+  /* ── Todas las verificaciones se calculan antes de escribir nada ── */
+  var V={choques:[],faltaPr:0,yaAprob:[],nNiv:0,tope:(mg.reg==="tri")?4:3,sct:0,excedeSCT:false,excedeNiv:false};
+  if(det.length){
+    for(var i=0;i<det.length;i++)for(var j=i+1;j<det.length;j++){
+      if(sinClases(det[i].ses)||sinClases(det[j].ses))continue;
+      det[i].ses.forEach(function(a){det[j].ses.forEach(function(b){ if(overlaps(a,b))V.choques.push(_e(det[i].nombre)+" ↔ "+_e(det[j].nombre)+" ("+(DIAS[a[0]]||a[0])+")"); });});
+    }
+    V.faltaPr=det.filter(function(r){return r.prerreq===false;}).length;
+    V.yaAprob=det.filter(function(r){return r.estado==="ok";});
+    det.forEach(function(r){V.sct+=(r.cred||0);});
+    var nivs={};det.forEach(function(r){if(r.nivel!=null)nivs[r.nivel]=1;});
+    V.nNiv=Object.keys(nivs).length;
+    V.excedeSCT=V.sct>30;
+    V.excedeNiv=V.nNiv>V.tope;
+  }
+  /* Conteo total de observaciones: omisiones + verificaciones fallidas */
+  var nObs=obs.total+(V.choques.length?1:0)+(V.faltaPr?1:0)+(V.yaAprob.length?1:0)+(V.excedeSCT?1:0)+(V.excedeNiv?1:0);
+
   var sello;
   if(!det.length){
     sello='<div class="sello alerta">⚠ DOCUMENTO INCOMPLETO — el estudiante no ha seleccionado los ramos que solicita inscribir.</div>';
-  }else if(obs.total===0){
-    sello='<div class="sello ok">✓ SIN OBSERVACIONES — la selección respeta las verificaciones de la aplicación y no omite ramos prioritarios con oferta.</div>';
+  }else if(nObs===0){
+    sello='<div class="sello ok">✓ SIN OBSERVACIONES — la selección cumple todas las verificaciones de la aplicación y no omite ramos prioritarios con oferta.</div>';
   }else{
-    sello='<div class="sello alerta">⚠ '+obs.total+' OBSERVACIÓN'+(obs.total===1?"":"ES")+' — la selección omite ramos que el reglamento manda priorizar. Revisar la sección 3 antes de autorizar.</div>';
+    sello='<div class="sello alerta">⚠ '+nObs+' OBSERVACIÓN'+(nObs===1?"":"ES")+' — la solicitud no cumple todas las directrices de toma de carga. Revisar la sección 3 antes de autorizar.</div>';
   }
+
   var cuerpo=sello+'<h2>1 · Situación curricular declarada</h2>'+
     '<div class="res"><div><b>'+mg.ap+'</b> aprobadas</div><div><b>'+mg.rep+'</b> reprobadas</div><div><b>'+mg.pen+'</b> pendientes</div><div>Malla: <b>'+mg.plan+'</b></div></div>'+
     '<div class="leg"><span><i style="background:#def0e3;border-color:#1f7a48"></i>Aprobada</span><span><i style="background:#fbe0dc;border-color:#a33"></i>Reprobada</span><span><i style="background:#f6f3ec"></i>Pendiente</span></div>'+
@@ -1548,25 +1680,26 @@ function docRespaldo(){
     cuerpo+='<div class="nota">El estudiante aún no seleccionó secciones en <b>Horarios</b>. Este documento debe generarse con la combinación elegida.</div>';
   }else{
     var filas="";det.forEach(function(r){
-      var pr=(r.prerreq===null)?"—":(r.prerreq?'<span class="tag si">✓ cumple</span>':'<span class="tag alerta">✗ revisar</span>');
-      var hor=r.ses.map(function(se){return (DIAS[se[0]]||se[0]).slice(0,3)+" "+se[1]+"–"+se[2];}).join(" · ");
-      filas+="<tr><td>"+_e(r.nombre)+"</td><td>"+_e(r.nivel==null?"—":r.nivel)+"</td><td>"+_e(r.cred||"—")+"</td><td>"+_e(hor||"—")+"</td><td>"+pr+"</td></tr>";
+      var pr=(r.estado==="ok")?'<span class="tag alerta">✗ ya aprobado</span>'
+             :(r.prerreq===null)?"—":(r.prerreq?'<span class="tag si">✓ cumple</span>':'<span class="tag alerta">✗ revisar</span>');
+      var hor=sinClases(r.ses)?'<i style="color:#6b6660">Sin horario de clases · actividad autónoma</i>'
+              :r.ses.map(function(se){return (DIAS[se[0]]||se[0]).slice(0,3)+" "+se[1]+"–"+se[2];}).join(" · ");
+      var nrcTxt=(r.nrc&&r.nrc.length)?r.nrc.join(" / "):'<span style="color:#a33">por asignar</span>';
+      var modTxt=(r.mods&&r.mods.length)?' <span style="font-size:9px;color:#6b6660">'+_e(r.mods.join("+"))+"</span>":"";
+      var anio=(r.nivel!=null)?Math.ceil(r.nivel/(mg.reg==="tri"?3:2)):null;
+      filas+="<tr><td><b>"+nrcTxt+"</b>"+modTxt+"</td><td>"+_e(r.nombre)+"</td><td>"+_e(r.nivel==null?"—":r.nivel)+(anio?'<br><span style="font-size:9px;color:#6b6660">'+anio+"º año</span>":"")+"</td><td>"+_e(r.cred||"—")+"</td><td>"+_e(hor||"—")+"</td><td>"+pr+"</td></tr>";
     });
-    cuerpo+='<table><tr><th>Asignatura</th><th>Nivel</th><th>SCT</th><th>Horario</th><th>Prerrequisitos</th></tr>'+filas+"</table>";
-    var choques=[];
-    for(var i=0;i<det.length;i++)for(var j=i+1;j<det.length;j++){
-      det[i].ses.forEach(function(a){det[j].ses.forEach(function(b){ if(overlaps(a,b))choques.push(_e(det[i].nombre)+" ↔ "+_e(det[j].nombre)+" ("+(DIAS[a[0]]||a[0])+")"); });});
-    }
-    var sct=0;det.forEach(function(r){sct+=(r.cred||0);});
-    var nivs={};det.forEach(function(r){if(r.nivel!=null)nivs[r.nivel]=1;});
-    var nNiv=Object.keys(nivs).length;
-    var tope=(mg.reg==="tri")?4:3, regla=(mg.reg==="tri")?"Res. de Rectoría 009/2024, art. 17 (régimen trimestral)":"Reglamento General del Estudiante, art. 17 (régimen semestral)";
-    var faltaPr=det.filter(function(r){return r.prerreq===false;}).length;
+    cuerpo+='<table><tr><th style="width:64px">NRC</th><th>Asignatura</th><th>Nivel</th><th>SCT</th><th>Horario</th><th>Prerrequisitos</th></tr>'+filas+"</table>"+
+      '<div class="nota">El <b>NRC</b> es el código con el que se inscribe cada sección en el sistema de la Universidad. Cuando un ramo tiene dos, corresponden a sus componentes presencial y online: se inscriben ambos.</div>';
+
+    var regla=(mg.reg==="tri")?"Res. de Rectoría 009/2024, art. 17 (régimen trimestral)":"Reglamento General del Estudiante, art. 17 (régimen semestral)";
     cuerpo+='<h2>3 · Verificaciones de la aplicación</h2><table>'+
-      '<tr><td>Coincidencias de horario entre las secciones elegidas</td><td>'+(choques.length?'<span class="tag alerta">✗ '+choques.join(" · ")+'</span>':'<span class="tag si">✓ Sin topes</span>')+"</td></tr>"+
-      '<tr><td>Prerrequisitos según el avance declarado</td><td>'+(faltaPr?'<span class="tag alerta">✗ '+faltaPr+' ramo(s) por revisar</span>':'<span class="tag si">✓ Todos cumplen</span>')+"</td></tr>"+
-      '<tr><td>Niveles distintos en la selección ('+nNiv+') — tope '+tope+' · '+_e(regla)+'</td><td>'+(nNiv<=tope?'<span class="tag si">✓ Dentro del tope</span>':'<span class="tag alerta">✗ Excede el tope</span>')+"</td></tr>"+
-      '<tr><td>Créditos seleccionados</td><td><b>'+sct+' SCT</b>'+(sct>30?' <span class="tag alerta">— sobre el máximo de 30 SCT del período (Circular N°03/2026)</span>':' <span class="tag si">✓ dentro del máximo del período (30 SCT)</span>')+"</td></tr>"+
+      '<tr><td>Coincidencias de horario entre las secciones elegidas</td><td>'+(V.choques.length?'<span class="tag alerta">✗ '+V.choques.join(" · ")+'</span>':'<span class="tag si">✓ Sin topes</span>')+"</td></tr>"+
+      '<tr><td>Prerrequisitos según el avance declarado</td><td>'+(V.faltaPr?'<span class="tag alerta">✗ '+V.faltaPr+' ramo(s) por revisar</span>':'<span class="tag si">✓ Todos cumplen</span>')+"</td></tr>"+
+      '<tr><td><b>Ramos solicitados que ya figuran aprobados en el avance declarado</b><br><span style="font-size:9.6px;color:#6b6660">Inconsistencia entre lo declarado y lo solicitado: revisar con el registro académico.</span></td><td>'+
+        (V.yaAprob.length?'<span class="tag alerta">✗ '+V.yaAprob.length+'</span><ul class="obs">'+V.yaAprob.map(function(r){return "<li>"+_e(r.nombre)+"</li>";}).join("")+"</ul>":'<span class="tag si">✓ Ninguno</span>')+"</td></tr>"+
+      '<tr><td>Niveles distintos en la selección ('+V.nNiv+') — tope '+V.tope+' · '+_e(regla)+'</td><td>'+(V.excedeNiv?'<span class="tag alerta">✗ Excede el tope</span>':'<span class="tag si">✓ Dentro del tope</span>')+"</td></tr>"+
+      '<tr><td>Créditos seleccionados</td><td><b>'+V.sct+' SCT</b>'+(V.excedeSCT?' <span class="tag alerta">— sobre el máximo de 30 SCT del período (Circular N°03/2026)</span>':' <span class="tag si">✓ dentro del máximo del período (30 SCT)</span>')+"</td></tr>"+
       '<tr><td><b>Ramos reprobados con oferta que no está reinscribiendo</b><br><span style="font-size:9.6px;color:#6b6660">Los ramos reprobados tienen prioridad sobre cualquier otro en la toma de carga.</span></td><td>'+
         (obs.repro.length
           ? '<span class="tag alerta">✗ '+obs.repro.length+' omitido'+(obs.repro.length===1?"":"s")+'</span><ul class="obs">'+obs.repro.map(function(c){return "<li>"+_e(c.n)+" ("+(mg.pref==="S"?"semestre ":"nivel ")+c.t+")</li>";}).join("")+"</ul>"
@@ -1575,30 +1708,36 @@ function docRespaldo(){
         (obs.atras.length
           ? '<span class="tag alerta">✗ '+obs.atras.length+' sin inscribir</span><ul class="obs">'+obs.atras.map(function(c){return "<li>"+_e(c.n)+"</li>";}).join("")+"</ul>"
           : '<span class="tag si">✓ Ninguno</span>')+"</td></tr></table>"+
-      (obs.total?'<div class="nota"><b>Lectura de las observaciones:</b> la aplicación no impide presentar esta solicitud, pero deja constancia de que la combinación elegida deja fuera ramos que el reglamento manda priorizar. Corresponde a la Dirección de Carrera resolver si autoriza la excepción.</div>':"");
+      (nObs?'<div class="nota"><b>Lectura de las observaciones:</b> la aplicación no impide presentar esta solicitud, pero deja constancia de lo que no calza con las directrices de toma de carga. Corresponde a la Dirección de Carrera resolver si autoriza la excepción.</div>':"");
   }
+  try{ window.__lastRespaldo={det:det,V:V,obs:obs,nObs:nObs,mg:mg}; }catch(e){}
   var firma='<div class="firma"><div>Nombre del estudiante</div><div>RUT</div><div>Firma</div></div>';
   imprimirDoc("Respaldo de planificación de carga académica",_jLabel(),cuerpo,firma);
   if(typeof logInteraccion==="function")logInteraccion("planificador","descargar respaldo");
 }
 const BL_TECH=[["19:10","19:50"],["19:50","20:30"],["20:40","21:20"],["21:20","22:00"],["22:10","22:50"]];
 const HOR_TECH={
- n3s1:{l:"2º año (Nivel 3) · Sección 1",s:[["L","19:10","21:20","Argumentación Jurídica y Debate","TEA SH-32","Roa Rioseco Jorge",12],["M","19:10","22:00","Introducción a la Economía","TEA SH-32","Brito Valdebenito Cristian",10],["X","19:10","22:00","Teoría Constitucional","TEA SH-32","Espinoza Soto Sahady",11],["J","19:10","22:00","Fundamentos Filosóficos del Derecho","—","Reinoso Elgueda Jorge",9],["V","19:10","20:30","Teoría Constitucional","—","Espinoza Soto Sahady",11]]},
- n3s2:{l:"2º año (Nivel 3) · Sección 2",s:[["L","19:10","22:00","Introducción a la Economía","TEA SH-33","Brito Valdebenito Cristian",10],["M","19:10","21:20","Teoría Constitucional","TEA SH-33","Arévalo Waddington Sergio",11],["X","19:10","21:20","Teoría Constitucional","TEA SH-33","Arévalo Waddington Sergio",11],["J","19:10","22:00","Fundamentos Filosóficos del Derecho","—","Reinoso Mendez Jorge",9],["V","19:10","21:20","Argumentación Jurídica y Debate","—","Roa Rioseco Jorge",12]]},
- n3s3:{l:"2º año (Nivel 3) · Sección 3",s:[["L","19:10","22:00","Fundamentos Filosóficos del Derecho","TEA SH-34","Reinoso Mendez Jorge",9],["M","19:10","21:20","Argumentación Jurídica y Debate","TEA SH-34","Roa Rioseco Jorge",12],["X","20:40","22:00","Argumentación Jurídica y Debate","TEA SH-34","Larraguibel Aravena Cristian",12],["J","19:10","22:00","Introducción a la Economía","—","Brito Valdebenito Cristian",10],["V","19:10","19:50","Argumentación Jurídica y Debate","—","Larraguibel Aravena Cristian",12]]},
- n5alt:{l:"2º año (Nivel 5) · Alterna",s:[["M","19:10","22:00","Teoría del Proceso","TEC SH-23","Nuñez Mendez Felipe Alejandro",17],["J","19:10","20:30","Teoría del Proceso","—","Nuñez Mendez Felipe Alejandro",17]]},
- n6s1:{l:"2º año (Nivel 6) · Sección 1",s:[["L","19:10","22:00","Derechos y Garantías Constitucionales","TEA SH-41","Espinoza Soto Sahady",22],["M","19:10","21:20","Derecho Internacional Público","TEA SH-41","Vallejos Roa Liz",23],["X","19:10","20:30","Taller de Integración I (Ev. Ciclo)","TEA SH-41","192930715 Rodriguez Cañete Paula",24],["X","20:40","22:00","Bienes","TEA SH-41","Castro Saavedra Juan",21],["J","19:10","22:00","Bienes","—","Castro Saavedra Juan",21],["V","19:10","22:00","Taller de Integración I (Ev. Ciclo)","—","192930715 Rodriguez Cañete Paula",24]]},
- n6s2:{l:"2º año (Nivel 6) · Sección 2",s:[["L","19:10","22:00","Taller de Integración I (Ev. Ciclo)","TEA SH-42","181983574 Game Musante Francisca",24],["M","19:10","20:30","Bienes","TEA SH-42","Neculmán Muñoz Marcelo",21],["M","20:40","22:00","Taller de Integración I (Ev. Ciclo)","TEA SH-42","181983574 Game Musante Francisca",24],["X","19:10","21:20","Derecho Internacional Público","TEA SH-42","Vallejos Roa Liz",23],["J","19:10","22:00","Derechos y Garantías Constitucionales","—","Espinoza Soto Sahady",22],["V","19:10","22:00","Bienes","—","Neculmán Muñoz Marcelo",21]]},
- n6pna:{l:"2º año (Nivel 6) · Plan No Ajustado",s:[["X","19:10","21:20","Electivo de Desarrollo Personal","VIRTUAL","—",24]]},
- n9s1:{l:"3er año (Nivel 9) · Sección 1",s:[["L","19:10","22:00","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-43","Gutiérrez Sepúlveda Genoveva",34],["M","19:10","21:20","Procedimientos de Ejecución y Cautela","TEA SH-43","Celedón Baeza Andrés",32],["X","19:10","22:00","Derecho Mercantil","TEA SH-43","Jean Paul Thiers Thiers",33],["J","19:10","21:20","Procedimientos de Ejecución y Cautela","—","Celedón Baeza Andrés",32],["V","19:10","21:20","Electivo de Responsabilidad Social","VIRTUAL","—",35]]},
- n9s2:{l:"3er año (Nivel 9) · Sección 2",s:[["L","19:10","22:00","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-44","Sáez Paredes Fernando",34],["M","19:10","21:20","Procedimientos de Ejecución y Cautela","TEA SH-44","Osorio Ulloa Reinaldo",32],["J","19:10","21:20","Procedimientos de Ejecución y Cautela","—","Osorio Ulloa Reinaldo",32]]},
- n9pna:{l:"3er año (Nivel 9) · Plan No Ajustado",s:[["L","19:10","22:00","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-43","Gutiérrez Sepúlveda Genoveva",34],["M","19:10","21:20","Procedimientos de Ejecución y Cautela","TEA SH-44","Osorio Ulloa Reinaldo",32],["X","19:10","22:00","Derecho Económico","TEA SH-44","Maturana Ortiz Felipe",33],["J","19:10","21:20","Procedimientos de Ejecución y Cautela","—","Osorio Ulloa Reinaldo",32],["V","19:10","21:20","Electivo de Ética","VIRTUAL","—",30]]},
- n12s1:{l:"4º año (Nivel 12) · Plan Ajustado",s:[["L","19:10","21:20","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45],["M","19:10","21:20","Procedimientos Especiales Orales","TEA SH-45","—",44],["M","21:20","22:00","Optativo de Especialidad I","TEA SH-45","Neculman Muñoz Marcelo",48],["X","19:10","22:00","Taller de Integración II (Ev. Ciclo)","TEA SH-45","120475894 Molina Pezoa Marcia",47],["J","19:10","21:20","Derecho Tributario I","—","Maturana Lanza Carlos",46],["J","21:20","22:50","Optativo de Especialidad I","—","Neculman Muñoz Marcelo",48],["V","19:10","20:30","Taller de Integración II (Ev. Ciclo)","—","120475894 Molina Pezoa Marcia",47],["V","20:40","22:00","Procedimientos Especiales Orales","—","—",44]]},
- n12pna:{l:"4º año (Nivel 12) · Plan No Ajustado",s:[["L","19:10","21:20","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45],["M","19:10","21:20","Procedimientos Especiales Orales (Ev. Ciclo)","TEA SH-45","—",43],["X","19:10","22:00","Derecho Sucesorio","TEC SH-21","Pacheco Cornejo Hellen",42],["J","19:10","21:20","Taller de Litigación","—","Alarcón Iturriaga Orlando",46],["V","19:10","20:30","Taller de Litigación","—","Alarcón Iturriaga Orlando",46],["V","20:40","22:00","Procedimientos Especiales Orales (Ev. Ciclo)","—","—",43]]},
- n15s1:{l:"5º año (Niveles 14-15) · Plan Ajustado",note:"El Taller de Integración III se cursa a lo largo de dos trimestres (14 y 15).",s:[["L","19:10","22:00","Taller de Integración III (Ev. Ciclo)","TEC SH-21","174914125 Castro Saavedra Juan",54],["M","19:10","22:00","Taller de Integración III (Ev. Ciclo)","TEC SH-21","174914125 Castro Saavedra Juan",54],["V","19:10","22:00","Taller de Integración III (Ev. Ciclo)","VIRTUAL","174914125 Castro Saavedra Juan",54]]},
- n15pna:{l:"5º año (Niveles 14-15) · Plan No Ajustado",s:[["L","19:10","22:00","Taller de Litigación Avanzada (Ev. Ciclo)","TEC SH-22","69588441 Ljubetic Romero Francisco",58],["M","19:10","21:20","Seminario de Tesis","SALA VIRTUAL","Leon Silva Glorimar",55],["X","19:10","22:00","Optativo de Especialidad II","TEC SH-22","Celedón Baeza Andrés",54],["J","19:10","22:00","Derecho Tributario II","—","Roxana Obreque Espinoza",57],["V","19:10","19:50","Derecho Tributario II","—","Roxana Obreque Espinoza",57],["V","19:50","22:00","Seminario de Tesis","SALA VIRTUAL","Leon Silva Glorimar",55]]},
- n15tes:{l:"5º año (Niveles 14-15) · Solo Seminario de Tesis",s:[["L","19:10","21:20","Seminario de Tesis","SALA VIRTUAL","El Fakih Rodriguez Fatima",55],["M","19:10","21:20","Seminario de Tesis","SALA VIRTUAL","Oñate Henriquez Jaime",55],["X","19:10","21:20","Seminario de Tesis","SALA VIRTUAL","Fernandez Miguez Sheila",55],["J","19:10","21:20","Seminario de Tesis","SALA VIRTUAL","Buendia Molina Paloma",55],["V","19:10","21:20","Seminario de Tesis","SALA VIRTUAL","Lopez Hernandez Hernan",55]]}
+ n3s1:{l:"2º año (Nivel 3) · Sección 1",s:[["L","19:10","21:20","Argumentación Jurídica y Debate","TEA SH-32","Roa Rioseco Jorge",12,"11409","Presencial"],["M","19:10","20:30","Introducción a la Economía","TEA SH-32","Brito Valdebenito Cristian",10,"11418","Presencial"],["M","20:40","22:00","Introducción a la Economía","TEA SH-32","Brito Valdebenito Cristian",10,"11419","Presencial"],["X","19:10","22:00","Teoría Constitucional","TEA SH-32","Espinoza Soto Sahady",11,"11424","Presencial"],["J","19:10","21:20","Fundamentos Filosóficos del Derecho","—","Reinoso Elgueda Jorge",9,"11416","Online"],["J","21:20","22:00","Fundamentos Filosóficos del Derecho","—","Reinoso Elgueda Jorge",9,"11417","Online"],["V","19:10","20:30","Teoría Constitucional","—","Espinoza Soto Sahady",11,"11425","Online"]]},
+ n3s2:{l:"2º año (Nivel 3) · Sección 2",s:[["L","19:10","20:30","Introducción a la Economía","TEA SH-33","Brito Valdebenito Cristian",10,"11420","Presencial"],["L","20:40","22:00","Introducción a la Economía","TEA SH-33","Brito Valdebenito Cristian",10,"11421","Presencial"],["M","19:10","21:20","Teoría Constitucional","TEA SH-33","Arévalo Waddington Sergio",11,"11426","Presencial"],["X","19:10","19:50","Teoría Constitucional","TEA SH-33","Arévalo Waddington Sergio",11,"11426","Presencial"],["X","19:50","21:20","Teoría Constitucional","TEA SH-33","Arévalo Waddington Sergio",11,"11427","Presencial"],["J","19:10","21:20","Fundamentos Filosóficos del Derecho","—","Reinoso Mendez Jorge",9,"11412","Online"],["J","21:20","22:00","Fundamentos Filosóficos del Derecho","—","Reinoso Mendez Jorge",9,"11413","Online"],["V","19:10","21:20","Argumentación Jurídica y Debate","—","Roa Rioseco Jorge",12,"11410","Online"]]},
+ n3s3:{l:"2º año (Nivel 3) · Sección 3",s:[["L","19:10","21:20","Fundamentos Filosóficos del Derecho","TEA SH-34","Reinoso Mendez Jorge",9,"11414","Presencial"],["L","21:20","22:00","Fundamentos Filosóficos del Derecho","TEA SH-34","Reinoso Mendez Jorge",9,"11415","Presencial"],["M","19:10","21:20","Argumentación Jurídica y Debate","TEA SH-34","Roa Rioseco Jorge",12,"11411","Presencial"],["X","20:40","22:00","Argumentación Jurídica y Debate","TEA SH-34","Larraguibel Aravena Cristian",12,"11408","Presencial"],["J","19:10","20:30","Introducción a la Economía","—","Brito Valdebenito Cristian",10,"11422","Online"],["J","20:40","22:00","Introducción a la Economía","—","Brito Valdebenito Cristian",10,"11423","Online"],["V","19:10","19:50","Argumentación Jurídica y Debate","—","Larraguibel Aravena Cristian",12,"11408","Online"]]},
+ n5alt:{l:"2º año (Nivel 5) · Alterna",s:[["L","19:10","20:30","Teoría del Proceso","TEC SH-23","Nuñez Mendez Felipe Alejandro",17,"12220","Presencial"],["X","19:10","20:30","Teoría del Proceso","TEE SH-51","Nuñez Mendez Felipe Alejandro",17,"12220","Presencial"],["V","19:10","20:30","Teoría del Proceso","—","Nuñez Mendez Felipe Alejandro",17,"12220","Online"]]},
+ n6s1:{l:"2º año (Nivel 6) · Sección 1",s:[["L","19:10","20:30","Derechos y Garantías Constitucionales","TEA SH-41","Espinoza Soto Sahady",22,"11434","Presencial"],["L","20:40","22:00","Derechos y Garantías Constitucionales","TEA SH-41","Espinoza Soto Sahady",22,"11435","Presencial"],["M","19:10","21:20","Derecho Internacional Público","TEA SH-41","Vallejos Roa Liz",23,"11432","Presencial"],["X","19:10","20:30","Taller de Integración I (Ev. Ciclo)","TEA SH-41","181983574 Game Musante Francisca",24,"11438","Presencial"],["X","20:40","22:00","Bienes","TEA SH-41","Castro Saavedra Juan",21,"11430","Presencial"],["J","19:10","20:30","Bienes","—","Castro Saavedra Juan",21,"11430","Online"],["J","20:40","22:00","Bienes","—","Castro Saavedra Juan",21,"11431","Online"],["V","19:10","22:00","Taller de Integración I (Ev. Ciclo)","—","181983574 Game Musante Francisca",24,"11438","Online"]]},
+ n6s2:{l:"2º año (Nivel 6) · Sección 2",s:[["L","19:10","22:00","Taller de Integración I (Ev. Ciclo)","TEA SH-42","192930715 Rodriguez Cañete Paula",24,"11439","Presencial"],["M","19:10","20:30","Bienes","TEA SH-42","Neculmán Muñoz Marcelo",21,"11428","Presencial"],["M","20:40","22:00","Taller de Integración I (Ev. Ciclo)","TEA SH-42","192930715 Rodriguez Cañete Paula",24,"11439","Presencial"],["X","19:10","21:20","Derecho Internacional Público","TEA SH-42","Vallejos Roa Liz",23,"11433","Presencial"],["J","19:10","20:30","Derechos y Garantías Constitucionales","—","Espinoza Soto Sahady",22,"11436","Online"],["J","20:40","22:00","Derechos y Garantías Constitucionales","—","Espinoza Soto Sahady",22,"11437","Online"],["V","19:10","19:50","Bienes","—","Neculmán Muñoz Marcelo",21,"11428","Online"],["V","19:50","22:00","Bienes","—","Neculmán Muñoz Marcelo",21,"11429","Online"]]},
+ n6pna:{l:"2º año (Nivel 6) · Plan No Ajustado",s:[["X","19:10","21:20","Electivo de Desarrollo Personal","VIRTUAL","—",24,"11388","Sin clases"]]},
+ n9s1:{l:"3er año (Nivel 9) · Sección 1",s:[["L","19:10","20:30","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-43","Gutiérrez Sepúlveda Genoveva",34,"11440","Presencial"],["L","20:40","22:00","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-43","Gutiérrez Sepúlveda Genoveva",34,"11441","Presencial"],["M","19:10","21:20","Procedimientos de Ejecución y Cautela","TEA SH-43","Celedón Baeza Andrés",32,"11448","Presencial"],["X","19:10","20:30","Derecho Mercantil","TEA SH-43","Jean Paul Thiers Thiers",33,"11446","Presencial"],["X","20:40","22:00","Derecho Mercantil","TEA SH-43","Jean Paul Thiers Thiers",33,"11447","Presencial"],["J","19:10","21:20","Procedimientos de Ejecución y Cautela","—","Celedón Baeza Andrés",32,"11449","Online"],["V","19:10","20:30","Electivo de Responsabilidad Social","VIRTUAL","—",35,"11452","Sin clases"],["V","20:40","21:20","Electivo de Responsabilidad Social","VIRTUAL","—",35,"11453","Sin clases"]]},
+ n9s2:{l:"3er año (Nivel 9) · Sección 2",s:[["L","19:10","20:30","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-44","Sáez Paredes Fernando",34,"11442","Presencial"],["L","20:40","22:00","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-44","Sáez Paredes Fernando",34,"11443","Presencial"],["M","19:10","21:20","Procedimientos de Ejecución y Cautela","TEA SH-44","Osorio Ulloa Reinaldo",32,"11450","Presencial"],["J","19:10","21:20","Procedimientos de Ejecución y Cautela","—","Osorio Ulloa Reinaldo",32,"11451","Online"]]},
+ n9pna:{l:"3er año (Nivel 9) · Plan No Ajustado",s:[["L","19:10","20:30","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-43","Gutiérrez Sepúlveda Genoveva",34,"11440","Presencial"],["L","20:40","22:00","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-43","Gutiérrez Sepúlveda Genoveva",34,"11441","Presencial"],["M","19:10","21:20","Procedimientos de Ejecución y Cautela","TEA SH-44","Osorio Ulloa Reinaldo",32,"11450","Presencial"],["X","19:10","20:30","Derecho Económico","TEA SH-44","Maturana Ortiz Felipe",33,"11444","Presencial"],["X","20:40","22:00","Derecho Económico","TEA SH-44","Maturana Ortiz Felipe",33,"11445","Presencial"],["J","19:10","21:20","Procedimientos de Ejecución y Cautela","—","Osorio Ulloa Reinaldo",32,"11451","Online"],["V","19:10","21:20","Electivo de Ética","VIRTUAL","—",30,"11392","Sin clases"]]},
+ n12s1:{l:"4º año (Nivel 12) · Plan Ajustado",s:[["L","19:10","20:30","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45,"11454","Presencial"],["L","20:40","21:20","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45,"11455","Presencial"],["M","19:10","21:20","Procedimientos Especiales Orales","TEA SH-45","Alarcón Iturriaga Orlando",44,"11461","Presencial"],["M","21:20","22:00","Optativo de Especialidad I","TEA SH-45","Neculman Muñoz Marcelo",48,"11460","Presencial"],["X","19:10","22:00","Taller de Integración II (Ev. Ciclo)","TEA SH-45","120475894 Molina Pezoa Marcia",47,"11463","Presencial"],["J","19:10","20:30","Derecho Tributario I","—","Maturana Lanza Carlos",46,"11458","Online"],["J","20:40","21:20","Derecho Tributario I","—","Maturana Lanza Carlos",46,"11459","Online"],["J","21:20","22:50","Optativo de Especialidad I","—","Neculman Muñoz Marcelo",48,"11460","Online"],["V","19:10","20:30","Taller de Integración II (Ev. Ciclo)","—","120475894 Molina Pezoa Marcia",47,"11463","Online"],["V","20:40","22:00","Procedimientos Especiales Orales","—","Alarcón Iturriaga Orlando",44,"11462","Online"]]},
+ n12pna:{l:"4º año (Nivel 12) · Plan No Ajustado",s:[["L","19:10","20:30","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45,"11454","Presencial"],["L","20:40","21:20","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45,"11455","Presencial"],["M","19:10","21:20","Procedimientos Especiales Orales (Ev. Ciclo)","TEA SH-45","Alarcón Iturriaga Orlando",43,"11461","Presencial"],["X","19:10","20:30","Derecho Sucesorio","TEC SH-21","Pacheco Cornejo Hellen",42,"11456","Presencial"],["X","20:40","22:00","Derecho Sucesorio","TEC SH-21","Pacheco Cornejo Hellen",42,"11457","Presencial"],["J","19:10","20:30","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11464","Online"],["J","20:40","21:20","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11465","Online"],["V","19:10","19:50","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11465","Online"],["V","19:50","20:30","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11466","Online"],["V","20:40","22:00","Procedimientos Especiales Orales (Ev. Ciclo)","—","Alarcón Iturriaga Orlando",43,"11462","Online"]]},
+ n15s1:{l:"5º año (Niveles 14-15) · Plan Ajustado",note:"El Taller de Integración III se cursa a lo largo de dos trimestres (14 y 15).",s:[["L","19:10","22:00","Taller de Integración III (Ev. Ciclo)","TEC SH-21","174914125 Castro Saavedra Juan",54,"12412","Presencial"],["M","19:10","22:00","Taller de Integración III (Ev. Ciclo)","TEC SH-21","174914125 Castro Saavedra Juan",54,"12412","Presencial"],["V","19:10","22:00","Taller de Integración III (Ev. Ciclo)","VIRTUAL","174914125 Castro Saavedra Juan",54,"12412","Online"]]},
+ n15pna:{l:"5º año (Niveles 14-15) · Plan No Ajustado",s:[["L","19:10","20:30","Taller de Litigación Avanzada (Ev. Ciclo)","TEC SH-22","173708831 Contreras Sierra Klaus Evelyn",58,"11475","Presencial"],["L","20:40","22:00","Taller de Litigación Avanzada (Ev. Ciclo)","TEC SH-22","173708831 Contreras Sierra Klaus Evelyn",58,"11476","Presencial"],["M","19:10","21:20","Seminario de Tesis","SALA VIRTUAL","Leon Silva Glorimar",55,"11471","Online"],["X","19:10","20:30","Optativo de Especialidad II","TEC SH-22","Celedón Baeza Andrés",54,"11469","Presencial"],["X","20:40","22:00","Optativo de Especialidad II","TEC SH-22","Celedón Baeza Andrés",54,"11470","Presencial"],["J","19:10","21:20","Derecho Tributario II","—","Roxana Obreque Espinoza",57,"11467","Online"],["J","21:20","22:00","Derecho Tributario II","—","Roxana Obreque Espinoza",57,"11468","Online"],["V","19:10","19:50","Derecho Tributario II","—","Roxana Obreque Espinoza",57,"11468","Online"],["V","19:50","22:00","Seminario de Tesis","SALA VIRTUAL","Leon Silva Glorimar",55,"11473","Online"]]},
+ n15tes:{l:"5º año (Niveles 14-15) · Solo Seminario de Tesis",s:[["L","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","El Fakih Rodriguez Fatima",55,"11850","Online"],["L","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","El Fakih Rodriguez Fatima",55,"11851","Online"],["M","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","Oñate Henriquez Jaime",55,"11852","Online"],["M","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","Oñate Henriquez Jaime",55,"11853","Online"],["X","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","Fernandez Miguez Sheila",55,"11854","Online"],["X","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","Fernandez Miguez Sheila",55,"11855","Online"],["J","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","Ojeda Zavala Nicolas",55,"11856","Online"],["J","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","Ojeda Zavala Nicolas",55,"11857","Online"],["V","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","Lopez Hernandez Hernan",55,"11858","Online"],["V","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","Lopez Hernandez Hernan",55,"11859","Online"]]}
 };
+
+
+
+
+
 
 const horList=document.getElementById("horList");
 function buildTable(data,key,sel){
@@ -1608,7 +1747,7 @@ function buildTable(data,key,sel){
   const endIdx=t=>{let e=-1;BL.forEach((b,i)=>{if(_m(b[0])<_m(t))e=i;});return e;};
   let maxRow=0;
   const grid={};Object.keys(DIAS).forEach(d=>grid[d]=Array(BL.length).fill(null));
-  data.forEach(([d,ini,fin,ramo,sala,profe,sid])=>{const a=idx(ini);let b=endIdx(fin);if(a<0)return;if(b<a)b=a;maxRow=Math.max(maxRow,b);grid[d][a]={ramo,sala,profe,sid,span:b-a+1};for(let k=a+1;k<=b;k++)grid[d][k]={cont:true};});
+  data.forEach(([d,ini,fin,ramo,sala,profe,sid,nrc,mod])=>{if(mod==="Sin clases")return;const a=idx(ini);let b=endIdx(fin);if(a<0)return;if(b<a)b=a;maxRow=Math.max(maxRow,b);grid[d][a]={ramo,sala,profe,sid,nrc,mod,span:b-a+1};for(let k=a+1;k<=b;k++)grid[d][k]={cont:true};});
   /* recorte visual: primera y última fila con algún contenido (evita mostrar mañanas/tardes vacías) */
   let firstRow=0, lastRow=maxRow, found=false;
   for(let i=0;i<=maxRow;i++){const any=Object.keys(DIAS).some(d=>grid[d][i]);if(any){if(!found){firstRow=i;found=true;}lastRow=i;}}
@@ -1627,7 +1766,7 @@ function buildTable(data,key,sel){
   h+='</tr></thead><tbody>';
   for(let i=firstRow;i<=lastRow;i++){
     h+=`<tr><td class="th-h tm2">${BL[i][0]}<br>${BL[i][1]}</td>`;
-    Object.keys(DIAS).forEach(d=>{const c=grid[d][i];if(c&&c.cont)return;if(c){const id=sel?((c.sid!=null)?c.sid:OFER[c.ramo]):undefined;const selc=sel&&id!=null;const on=selc&&insc[id]===key;h+=`<td rowspan="${c.span}" class="cell${selc?' selc':''}${on?' selon':''}"${selc?` data-id="${id}" data-key="${key}" tabindex="0" role="button" aria-pressed="${on?'true':'false'}" aria-label="${c.ramo}. ${DIAS[d]} de ${BL[i][0]} a ${BL[i+c.span-1][1]}. ${on?'Seleccionado':'Tocar para seleccionar'}"`:''}>${on?'<span class="selck">✓</span>':''}<span class="cr">${c.ramo}</span>${c.sala&&c.sala!=="—"?`<span class="cs">${c.sala}</span>`:""}${c.profe&&c.profe!=="—"?`<span class="cp">${c.profe}</span>`:""}</td>`;}else h+="<td></td>";});
+    Object.keys(DIAS).forEach(d=>{const c=grid[d][i];if(c&&c.cont)return;if(c){const id=sel?((c.sid!=null)?c.sid:OFER[c.ramo]):undefined;const selc=sel&&id!=null;const on=selc&&insc[id]===key;h+=`<td rowspan="${c.span}" class="cell${selc?' selc':''}${on?' selon':''}"${selc?` data-id="${id}" data-key="${key}" tabindex="0" role="button" aria-pressed="${on?'true':'false'}" aria-label="${c.ramo}. ${DIAS[d]} de ${BL[i][0]} a ${BL[i+c.span-1][1]}. ${on?'Seleccionado':'Tocar para seleccionar'}"`:''}>${on?'<span class="selck">✓</span>':''}<span class="cr">${c.ramo}</span>${c.nrc?`<span class="cn">NRC ${c.nrc}${c.mod?" · "+c.mod:""}</span>`:(c.mod?`<span class="cn">${c.mod}</span>`:"")}${c.sala&&c.sala!=="—"?`<span class="cs">${c.sala}</span>`:""}${c.profe&&c.profe!=="—"?`<span class="cp">${c.profe}</span>`:""}</td>`;}else h+="<td></td>";});
     h+="</tr>";
   }
   return h+"</tbody></table></div>";
@@ -1670,14 +1809,22 @@ let horMode="fit";
 /* --- Detección de coincidencia horaria entre ramos piqueados (bloqueo total) --- */
 function _pmH(t){const p=String(t).split(":");return (+p[0])*60+(+p[1]);}
 function sessionsOf(id,key){const blk=HOR[key];if(!blk)return [];return blk.s.filter(se=>{const sid=(se[6]!=null)?se[6]:OFER[se[3]];return sid===id;});}
-function overlaps(a,b){return a[0]===b[0] && _pmH(a[1])<_pmH(b[2]) && _pmH(b[1])<_pmH(a[2]);}
+function overlaps(a,b){
+  if(a&&a[8]==="Sin clases")return false;
+  if(b&&b[8]==="Sin clases")return false;return a[0]===b[0] && _pmH(a[1])<_pmH(b[2]) && _pmH(b[1])<_pmH(a[2]);}
 /* devuelve el primer ramo ya inscrito que choca con (id,key), o null */
+/* Los electivos de formación general aparecen en el horario solo para recordar
+   que hay que inscribirlos: son actividades autónomas, sin clase en sala.
+   Por eso no ocupan el bloque y no pueden chocar con otro ramo. */
+function sinClases(ses){ return Array.isArray(ses)&&ses.length>0&&ses.every(function(s){ return s[8]==="Sin clases"; }); }
 function clashOf(id,key){
   const mine=sessionsOf(id,key);
+  if(sinClases(mine))return null;
   const ids=Object.keys(insc).map(Number);
   for(const oid of ids){
     if(oid===id)continue;
     const other=sessionsOf(oid,insc[oid]);
+    if(sinClases(other))continue;
     for(const s1 of mine)for(const s2 of other){
       if(overlaps(s1,s2)){
         const nm=(other[0]&&other[0][3])||"otro ramo";
@@ -1700,13 +1847,40 @@ function renderAllHor(filtro,encabezado){
   Object.keys(HOR).forEach(k=>{
     var ses=HOR[k].s;
     if(filtro){ ses=ses.filter(se=>filtro(k,se)); if(!ses.length){ocultos++;return;} }
-    h+=`<div class="hgrp serif">${HOR[k].l}</div>`+buildTable(ses,k,true)+(HOR[k].note?`<div class="hnote">${HOR[k].note}</div>`:"");
+    h+=`<div class="hgrp serif">${HOR[k].l}</div>`+buildTable(ses,k,true)+notaAutonomos(k,ses)+(HOR[k].note?`<div class="hnote">${HOR[k].note}</div>`:"");
   });
   if(filtro&&ocultos)h+=`<div class="hnote">Se ocultaron ${ocultos} bloque${ocultos===1?"":"s"} de horario que no corresponden a tu situación. Toca <b>“Todos los horarios”</b> para verlos.</div>`;
   horList.innerHTML=h;
   bindHorCells(horList);
 }
+/* Ramos que se inscriben pero no tienen clase en sala: se listan aparte */
+function notaAutonomos(k,ses){
+  var vistos={},chips=[];
+  (ses||[]).forEach(function(se){
+    if(se[8]!=="Sin clases")return;
+    var id=(se[6]!=null)?se[6]:(typeof OFER!=="undefined"?OFER[se[3]]:null);
+    if(id==null||vistos[id])return; vistos[id]=1;
+    var cr=(typeof creditsForSel==="function")?creditsForSel(id,k):0;
+    var on=insc[id]===k;
+    chips.push('<button type="button" class="autochip'+(on?" on":"")+'" data-id="'+id+'" data-key="'+k+'"'+
+      ' aria-pressed="'+(on?"true":"false")+'">'+(on?'<span class="selck">✓</span> ':"")+escHtml(se[3])+
+      (se[7]?' <span class="ac-nrc">NRC '+escHtml(se[7])+'</span>':"")+
+      (cr?' <span class="ac-sct">'+cr+' SCT</span>':"")+'</button>');
+  });
+  if(!chips.length)return "";
+  return '<div class="autobox"><b>📌 Sin horario de clases</b> — se inscriben igual y <b>suman créditos</b>; '+
+         'son actividades que se realizan de forma autónoma. Tócalos para marcarlos.'+
+         '<div class="autochips">'+chips.join("")+'</div></div>';
+}
 function bindHorCells(root){
+  root.querySelectorAll(".autochip").forEach(function(b){
+    b.onclick=function(){
+      var id=+b.dataset.id,key=b.dataset.key;
+      if(insc[id]===key){delete insc[id];}else{insc[id]=key;}
+      saveInsc(); refrescaHor(); renderHorTally();
+      if(typeof logInteraccion==="function")logInteraccion("horarios","inscribir ramo");
+    };
+  });
   root.querySelectorAll("td.selc").forEach(td=>{
     td.onclick=()=>{
     const id=+td.dataset.id,key=td.dataset.key;
@@ -1808,7 +1982,7 @@ function pintaAllHor(){
   var box=document.getElementById("allHorList"); if(!box)return;
   var h="";
   Object.keys(HOR).forEach(function(k){
-    h+='<div class="hgrp serif">'+HOR[k].l+'</div>'+buildTable(HOR[k].s,k,true)+(HOR[k].note?'<div class="hnote">'+HOR[k].note+'</div>':"");
+    h+='<div class="hgrp serif">'+HOR[k].l+'</div>'+buildTable(HOR[k].s,k,true)+notaAutonomos(k,HOR[k].s)+(HOR[k].note?'<div class="hnote">'+HOR[k].note+'</div>':"");
   });
   box.innerHTML=h;
   bindHorCells(box);
