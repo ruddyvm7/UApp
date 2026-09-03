@@ -1250,7 +1250,7 @@ function imprimirDoc(titulo,sub,cuerpo,piePersonal){
   '.res{display:flex;gap:12px;margin:3px 0;flex-wrap:wrap}.res b{font-size:13px}'+
   '.firma{margin-top:12px;display:flex;gap:24px}.firma div{flex:1;border-top:1px solid #2b2724;padding-top:3px;font-size:9.4px;text-align:center}'+
   '.pie{margin-top:8px;border-top:1px solid #d8d2c6;padding-top:4px;font-size:8.2px;color:#6b6660;line-height:1.3}'+
-  '.nota{background:#faf7f1;border-left:3px solid #c79a3e;padding:4px 8px;margin:5px 0;font-size:8.9px;line-height:1.3}'+'.sello{border-radius:5px;padding:5px 9px;margin:4px 0 2px;font-size:9.8px;font-weight:bold}'+'.sello.ok{background:#e7f3ea;border:1px solid #1f7a48;color:#14532d}'+'.sello.alerta{background:#fbe6e2;border:1px solid #a33;color:#7a1f14}'+'.obs{margin:2px 0 0;padding-left:13px;font-size:8.8px}'+'.obs li{margin:1px 0}'+
+  '.nota{background:#faf7f1;border-left:3px solid #c79a3e;padding:4px 8px;margin:5px 0;font-size:8.9px;line-height:1.3}'+'.sello{border-radius:5px;padding:5px 9px;margin:4px 0 2px;font-size:9.8px;font-weight:bold}'+'.sello.ok{background:#e7f3ea;border:1px solid #1f7a48;color:#14532d}'+'.sello.alerta{background:#fbe6e2;border:1px solid #a33;color:#7a1f14}'+'.sello.sol{background:#eef2fa;border:1px solid #1d4ed8;color:#12306e}'+'.tag.sol{font-weight:bold;color:#1d4ed8}'+'.obs{margin:2px 0 0;padding-left:13px;font-size:8.8px}'+'.obs li{margin:1px 0}'+
   /* --- malla en cuadritos --- */
   '.mg{display:grid;gap:3px;margin:6px 0}'+
   '.mg{gap:2px}.mg .nh{font-size:6.8px;font-weight:bold;color:#8b0c0c;text-align:center;text-transform:uppercase;letter-spacing:.3px;padding:2px 0;border-bottom:2px solid #c79a3e}'+
@@ -1649,11 +1649,20 @@ function docRespaldo(){
   var obs=_observaciones(det);
 
   /* ── Todas las verificaciones se calculan antes de escribir nada ── */
-  var V={choques:[],faltaPr:0,yaAprob:[],nNiv:0,tope:(mg.reg==="tri")?4:3,sct:0,excedeSCT:false,excedeNiv:false};
+  var V={choques:[],solic:[],faltaPr:0,yaAprob:[],nNiv:0,tope:(mg.reg==="tri")?4:3,sct:0,excedeSCT:false,excedeNiv:false};
   if(det.length){
     for(var i=0;i<det.length;i++)for(var j=i+1;j<det.length;j++){
       if(sinClases(det[i].ses)||sinClases(det[j].ses))continue;
-      det[i].ses.forEach(function(a){det[j].ses.forEach(function(b){ if(overlaps(a,b))V.choques.push(_e(det[i].nombre)+" ↔ "+_e(det[j].nombre)+" ("+(DIAS[a[0]]||a[0])+")"); });});
+      var cr=cruceEntre(det[i].ses,det[j].ses);
+      if(!cr)continue;
+      var etq=_e(det[i].nombre)+" ↔ "+_e(det[j].nombre);
+      var dd=cr.dias.map(function(x){return DIAS[x]||x;}).join(", ");
+      if(cr.tipo==="solicitable"){
+        V.solic.push({txt:etq,min:cr.min,dias:dd,t0:cr.t0,t1:cr.t1,
+                      pct:Math.round(Math.max(cr.pctA,cr.pctB))});
+      }else{
+        V.choques.push(etq+" ("+dd+" "+cr.t0+"–"+cr.t1+" · "+cr.min+" min"+(cr.tipo==="presencial"?" presencial":" online, "+Math.round(Math.max(cr.pctA,cr.pctB))+"%")+")");
+      }
     }
     V.faltaPr=det.filter(function(r){return r.prerreq===false;}).length;
     V.yaAprob=det.filter(function(r){return r.estado==="ok";});
@@ -1669,6 +1678,9 @@ function docRespaldo(){
   var sello;
   if(!det.length){
     sello='<div class="sello alerta">⚠ DOCUMENTO INCOMPLETO — el estudiante no ha seleccionado los ramos que solicita inscribir.</div>';
+  }else if(nObs===0&&V.solic.length){
+    sello='<div class="sello sol">📝 REQUIERE AUTORIZACIÓN — la selección cumple todas las directrices, pero incluye '+V.solic.length+' tope'+(V.solic.length===1?"":"s")+
+      ' de horario que la normativa permite solicitar. Detalle en la sección 3.</div>';
   }else if(nObs===0){
     sello='<div class="sello ok">✓ SIN OBSERVACIONES — la selección cumple todas las verificaciones de la aplicación y no omite ramos prioritarios con oferta.</div>';
   }else{
@@ -1700,7 +1712,11 @@ function docRespaldo(){
 
     var regla=(mg.reg==="tri")?"Res. de Rectoría 009/2024, art. 17 (régimen trimestral)":"Reglamento General del Estudiante, art. 17 (régimen semestral)";
     cuerpo+='<h2>3 · Verificaciones de la aplicación</h2><table>'+
-      '<tr><td>Coincidencias de horario entre las secciones elegidas</td><td>'+(V.choques.length?'<span class="tag alerta">✗ '+V.choques.join(" · ")+'</span>':'<span class="tag si">✓ Sin topes</span>')+"</td></tr>"+
+      '<tr><td>Coincidencias de horario no autorizables</td><td>'+(V.choques.length?'<span class="tag alerta">✗ '+V.choques.join(" · ")+'</span>':'<span class="tag si">✓ Ninguna</span>')+"</td></tr>"+
+      (V.solic.length?'<tr><td><b>Topes de horario que requieren autorización</b><br><span style="font-size:9.6px;color:#6b6660">Ocurren íntegramente en bloques online y no superan el 50% de las horas semanales de ninguna de las dos asignaturas: la normativa permite solicitarlos en toma de carga manual.</span></td><td>'+
+        '<span class="tag sol">📝 '+V.solic.length+' por autorizar</span><ul class="obs">'+
+        V.solic.map(function(s){return "<li>"+s.txt+"<br><span style='color:#6b6660'>"+s.dias+" "+s.t0+"–"+s.t1+" · "+s.min+" min online · "+s.pct+"% de la asignatura · dentro del 50% permitido</span></li>";}).join("")+
+        "</ul></td></tr>":"")+
       '<tr><td>Prerrequisitos según el avance declarado</td><td>'+(V.faltaPr?'<span class="tag alerta">✗ '+V.faltaPr+' ramo(s) por revisar</span>':'<span class="tag si">✓ Todos cumplen</span>')+"</td></tr>"+
       '<tr><td><b>Ramos solicitados que ya figuran aprobados en el avance declarado</b><br><span style="font-size:9.6px;color:#6b6660">Inconsistencia entre lo declarado y lo solicitado: revisar con el registro académico.</span></td><td>'+
         (V.yaAprob.length?'<span class="tag alerta">✗ '+V.yaAprob.length+'</span><ul class="obs">'+V.yaAprob.map(function(r){return "<li>"+_e(r.nombre)+"</li>";}).join("")+"</ul>":'<span class="tag si">✓ Ninguno</span>')+"</td></tr>"+
@@ -1714,6 +1730,7 @@ function docRespaldo(){
         (obs.atras.length
           ? '<span class="tag alerta">✗ '+obs.atras.length+' sin inscribir</span><ul class="obs">'+obs.atras.map(function(c){return "<li>"+_e(c.n)+"</li>";}).join("")+"</ul>"
           : '<span class="tag si">✓ Ninguno</span>')+"</td></tr></table>"+
+      (V.solic.length&&!nObs?'<div class="nota"><b>Lectura:</b> la selección respeta todas las directrices de toma de carga. El único punto pendiente es la autorización del tope de horario indicado, que la normativa contempla expresamente para el ciclo correspondiente. Corresponde a la Dirección de Carrera resolverlo.</div>':"")+
       (nObs?'<div class="nota"><b>Lectura de las observaciones:</b> la aplicación no impide presentar esta solicitud, pero deja constancia de lo que no calza con las directrices de toma de carga. Corresponde a la Dirección de Carrera resolver si autoriza la excepción.</div>':"");
   }
   try{ window.__lastRespaldo={det:det,V:V,obs:obs,nObs:nObs,mg:mg}; }catch(e){}
@@ -1823,6 +1840,39 @@ function overlaps(a,b){
    que hay que inscribirlos: son actividades autónomas, sin clase en sala.
    Por eso no ocupan el bloque y no pueden chocar con otro ramo. */
 function sinClases(ses){ return Array.isArray(ses)&&ses.length>0&&ses.every(function(s){ return s[8]==="Sin clases"; }); }
+/* Minutos semanales de una selección (para el criterio del 50%) */
+function _minSem(ses){
+  var t=0;(ses||[]).forEach(function(s){ if(s[8]!=="Sin clases")t+=_pmH(s[2])-_pmH(s[1]); });
+  return t||1;
+}
+/* Clasifica el cruce entre dos ramos según las directrices de la Carrera:
+   · presencial (lun–mié)  → no autorizable fuera de 5º año  → bloquea
+   · online y ≤50% semanal de ambos → tope solicitable       → permite con aviso
+   · online pero >50%      → deja una asignatura tapada      → bloquea */
+function cruceEntre(mine,other){
+  var pres=0,onl=0,dias={},t0=null,t1=null;
+  for(var i=0;i<mine.length;i++)for(var j=0;j<other.length;j++){
+    var s1=mine[i],s2=other[j];
+    if(s1[8]==="Sin clases"||s2[8]==="Sin clases")continue;
+    if(s1[0]!==s2[0])continue;
+    var a=Math.max(_pmH(s1[1]),_pmH(s2[1])), b=Math.min(_pmH(s1[2]),_pmH(s2[2]));
+    if(b>a){
+      var esOnl=(s1[0]==="J"||s1[0]==="V");
+      if(esOnl)onl+=b-a; else pres+=b-a;
+      dias[s1[0]]=1;
+      var f=function(m){return Math.floor(m/60)+":"+("0"+(m%60)).slice(-2);};
+      if(t0===null||a<t0)t0=a; if(t1===null||b>t1)t1=b;
+    }
+  }
+  if(pres+onl===0)return null;
+  var pa=(pres+onl)/_minSem(mine)*100, pb=(pres+onl)/_minSem(other)*100;
+  var f=function(m){return Math.floor(m/60)+":"+("0"+(m%60)).slice(-2);};
+  var info={min:pres+onl,pres:pres,onl:onl,pctA:pa,pctB:pb,
+            dias:Object.keys(dias),t0:f(t0),t1:f(t1)};
+  if(pres>0){ info.tipo="presencial"; return info; }
+  info.tipo=(pa<=50&&pb<=50)?"solicitable":"excede";
+  return info;
+}
 function clashOf(id,key){
   const mine=sessionsOf(id,key);
   if(sinClases(mine))return null;
@@ -1831,11 +1881,11 @@ function clashOf(id,key){
     if(oid===id)continue;
     const other=sessionsOf(oid,insc[oid]);
     if(sinClases(other))continue;
-    for(const s1 of mine)for(const s2 of other){
-      if(overlaps(s1,s2)){
-        const nm=(other[0]&&other[0][3])||"otro ramo";
-        return {nm,day:DIAS[s1[0]],t0:(_pmH(s1[1])>_pmH(s2[1])?s1[1]:s2[1]),t1:(_pmH(s1[2])<_pmH(s2[2])?s1[2]:s2[2])};
-      }
+    var c=cruceEntre(mine,other);
+    if(c){
+      c.nm=(other[0]&&other[0][3])||"otro ramo";
+      c.day=(c.dias.length?DIAS[c.dias[0]]:"");
+      return c;
     }
   }
   return null;
@@ -1892,8 +1942,13 @@ function bindHorCells(root){
     const id=+td.dataset.id,key=td.dataset.key;
     if(insc[id]===key){delete insc[id];saveInsc();refrescaHor();renderHorTally();return;}
     const cl=clashOf(id,key);
-    if(cl){showHorMsg(`⚠️ <b>Coincidencia horaria.</b> Choca con <b>${cl.nm}</b> (${cl.day} ${cl.t0}–${cl.t1}). Debes quitar el otro ramo para inscribir este.`,"warn");return;}
+    if(cl&&cl.tipo==="presencial"){
+      showHorMsg(`⛔ <b>Tope presencial con ${cl.nm}</b> (${cl.day} ${cl.t0}–${cl.t1}). Los topes en días presenciales no se autorizan fuera de 5º año: debes quitar el otro ramo.`,"warn");return;}
+    if(cl&&cl.tipo==="excede"){
+      showHorMsg(`⛔ <b>El tope con ${cl.nm} es demasiado grande</b> (${cl.min} min, ${Math.round(Math.max(cl.pctA,cl.pctB))}% de una de las asignaturas). Se autoriza hasta el 50%: debes quitar el otro ramo.`,"warn");return;}
     insc[id]=key;saveInsc();refrescaHor();renderHorTally();
+    if(cl&&cl.tipo==="solicitable"){
+      showHorMsg(`📝 <b>Tope de ${cl.min} min con ${cl.nm}</b> (${cl.day} ${cl.t0}–${cl.t1}, ambos online · ${Math.round(Math.max(cl.pctA,cl.pctB))}% de la asignatura).<br>Está <b>dentro de lo autorizable</b>, pero requiere <b>toma de carga manual</b>: genera el respaldo en PDF desde el Planificador y preséntalo con tu solicitud.`,"info");}
     if(typeof logInteraccion==="function")logInteraccion("horarios","inscribir ramo");
     /* avisos flotantes informativos (no bloquean): exceso de créditos y exceso de niveles */
     var tot=0;Object.keys(insc).forEach(function(x){tot+=creditsForSel(+x,insc[x]);});
