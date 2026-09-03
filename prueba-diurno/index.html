@@ -156,6 +156,10 @@ body.dark .pautor{background:#1a2338;border-color:#33507f;color:#cfe0ff}
 .solicbox .sb-t{font-weight:800;color:#1e3a72;font-size:.92rem;margin-bottom:4px}
 .solicbox .sb-p{font-size:.8rem;line-height:1.5;color:#2b3d63;margin:0 0 6px}
 .solicbox .sb-l{font-size:.8rem;line-height:1.6;color:#2b3d63;margin:0 0 9px;padding-left:18px}
+.solicbox .sb-rut{display:block;font-size:.74rem;font-weight:700;color:#1e3a72;margin:2px 0 3px}
+.solicbox .sb-rut span{font-weight:400;opacity:.8}
+.solicbox .sb-in{width:150px;padding:7px 10px;border:1.5px solid #c7d5f5;border-radius:9px;font:600 .86rem inherit;background:#fff;color:#1e3a72;margin-bottom:8px;display:block}
+body.dark .solicbox .sb-in{background:#0f1728;color:#cfe0ff;border-color:#33507f}
 .solicbox .sb-btn{background:#1d4ed8;border-color:#1d4ed8;color:#fff;font-weight:700}
 .solicbox .sb-n{font-size:.72rem;color:#4a5a7d;margin-top:7px;line-height:1.4}
 body.dark .solicbox{background:#16203a;border-color:#2f4676}
@@ -1762,6 +1766,8 @@ function _urlSolicitud(){
       p.push(encodeURIComponent(C[k])+"="+encodeURIComponent(JSON.stringify(JSON.stringify(porAnio[k]))));
     }
   });
+  var rut=_rutGuardado();
+  if(rut&&C.cedula) p.push(encodeURIComponent(C.cedula)+"="+encodeURIComponent(rut));
   var txt=_textoVerificacion();
   if(sinCampo.length) txt="OJO - MARCAR A MANO ESTOS RAMOS EN EL FORMULARIO:\n"+
       sinCampo.map(function(x){return "- "+x;}).join("\n")+"\n\n"+txt;
@@ -1769,6 +1775,8 @@ function _urlSolicitud(){
   var sep=SOLICITUD.url.indexOf("?")>=0?"&":"?";
   return SOLICITUD.url+(p.length?sep+p.join("&"):"");
 }
+function _rutGuardado(){ try{ return localStorage.getItem("rut_v1")||""; }catch(e){ return ""; } }
+function _guardaRut(v){ try{ v=String(v||"").replace(/[^0-9kK]/g,""); if(v)localStorage.setItem("rut_v1",v); else localStorage.removeItem("rut_v1"); }catch(e){} }
 function solicitudVigente(){
   if(!SOLICITUD.activo)return false;
   try{
@@ -2174,16 +2182,25 @@ function pintaSolicitud(){
     '<ol class="sb-l"><li><b>Genera el respaldo</b> con el botón 📄 PDF de arriba y guárdalo.</li>'+
     '<li><b>Abre el formulario</b>: ya vendrá con tus '+det.length+' ramo(s) marcados.</li>'+
     '<li><b>Adjunta el PDF</b> y envía.</li></ol>'+
-    '<button type="button" class="mSwBtn sb-btn" id="btnSolic">📤 Solicitar toma de carga</button>'+
+    '<label class="sb-rut" for="inpRut">Tu RUT <span>(sin puntos ni guión · queda solo en este dispositivo)</span></label>'+
+    '<input id="inpRut" class="sb-in" type="text" inputmode="numeric" maxlength="10" placeholder="163175371" value="'+escHtml(_rutGuardado())+'">'+
+    '<button type="button" class="mSwBtn sb-btn" id="btnSolic">📤 Generar respaldo y solicitar</button>'+
     '<div class="sb-n">Revisa que tu avance en <b>Avance Curricular</b> esté al día antes de enviar: el documento lo declara tal como lo marcaste.</div>'+
     '</div>';
+  var inp=document.getElementById("inpRut");
+  if(inp)inp.oninput=function(){ inp.value=inp.value.replace(/[^0-9kK]/g,""); _guardaRut(inp.value); };
   var b=document.getElementById("btnSolic");
   if(b)b.onclick=function(){
     try{
+      if(inp)_guardaRut(inp.value);
       var u=_urlSolicitud();
       if(typeof logInteraccion==="function")logInteraccion("planificador","solicitar toma de carga");
-      window.open(u,"_blank","noopener");
-    }catch(e){ if(typeof showHorMsg==="function")showHorMsg("No se pudo abrir el formulario. Inténtalo de nuevo.","warn"); }
+      /* El respaldo se genera primero para que PDF y formulario reflejen la misma
+         selección, y para que el estudiante ya lo tenga a mano al adjuntarlo. */
+      try{ docRespaldo(); }catch(e){}
+      if(typeof showHorMsg==="function")showHorMsg("📄 Generando tu respaldo… en unos segundos se abre el formulario con tus ramos ya marcados.","info");
+      setTimeout(function(){ try{ window.open(u,"_blank","noopener"); }catch(e){} },2600);
+    }catch(e){ if(typeof showHorMsg==="function")showHorMsg("No se pudo preparar la solicitud. Inténtalo de nuevo.","warn"); }
   };
 }
 function refrescaHor(){
