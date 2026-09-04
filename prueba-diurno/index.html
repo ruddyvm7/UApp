@@ -762,7 +762,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
   <div id="solicBox" style="display:none"></div>
   <div id="planOut" style="margin-top:6px"></div>
   <div class="note" style="margin-top:12px"><b>📌 A tener en cuenta:</b> se priorizan los ramos <b>reprobados</b> y los del <b>nivel más bajo pendiente</b>, respetando prerrequisitos y los topes de <b id="planNivTope">4 niveles consecutivos</b> y <b>30 créditos</b>.</div>
-  <div class="note" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px">La carga se rige por: <a class="doclink" id="lnkReg" href="javascript:void(0)">📖 Reglamento del Estudiante</a> <a class="doclink" id="lnkCirc" href="javascript:void(0)">📄 Circular N°03/2026</a></div>
+  <div class="note" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px">La carga se rige por: <a class="doclink" id="lnkReg" href="javascript:void(0)">📖 Reglamento del Estudiante</a> <a class="doclink" id="lnkCirc" href="javascript:void(0)">📄 Circular N°05/2026</a></div>
 </div></section>
 
 <section id="pru" style="display:none"><div class="wrap">
@@ -1335,7 +1335,7 @@ function imprimirDoc(titulo,sub,cuerpo,piePersonal){
     '<div class="tt">'+_e(titulo)+'</div><div class="sub">'+_e(sub)+' · Generado el '+_e(_fGen())+'</div></div>'+
     cuerpo+(piePersonal||'')+
     '<div class="pie">Documento <b>informativo</b> generado por el propio estudiante en UApp (miuapp.cl) a partir de la información que él registra en su dispositivo. '+
-    'No es un certificado ni reemplaza al registro académico oficial de la Universidad. Ante cualquier diferencia, prima la información de Registro Curricular.</div>'+
+    'Verificaciones conforme a la <b>Circular N°05/2026</b> del Consejo de Carrera. No es un certificado ni reemplaza al registro académico oficial de la Universidad. Ante cualquier diferencia, prima la información de Registro Curricular.</div>'+
     '</div></body></html>';
   var interno='<div class="top"><div class="brand">U<span>App</span> · Derecho · UA Temuco</div>'+
     '<div class="tt">'+_e(titulo)+'</div><div class="sub">'+_e(sub)+' · Generado el '+_e(_fGen())+'</div></div>'+
@@ -1898,23 +1898,26 @@ function docRespaldo(){
     var regla=(mg.reg==="tri")?"Res. de Rectoría 009/2024, art. 17 (régimen trimestral)":"Reglamento General del Estudiante, art. 17 (régimen semestral)";
     cuerpo+='<h2>3 · Verificaciones de la aplicación</h2><table>'+
       '<tr><td>Coincidencias de horario no autorizables</td><td>'+(V.choques.length?'<span class="tag alerta">✗ '+V.choques.join(" · ")+'</span>':'<span class="tag si">✓ Ninguna</span>')+"</td></tr>"+
-      (V.solic.length?'<tr><td><b>Topes de horario que requieren autorización</b><br><span style="font-size:9.6px;color:#6b6660">Ocurren íntegramente en bloques online y no superan el 50% de las horas semanales de ninguna de las dos asignaturas: la normativa permite solicitarlos en toma de carga manual.</span></td><td>'+
+      (V.solic.length?'<tr><td><b>Coincidencia horaria que requiere autorización</b><br><span style="font-size:9.6px;color:#6b6660">Circular N°05/2026, art. 7 — se autoriza excepcionalmente una coincidencia, presencial o sincrónica, con límite del 50% de las horas semanales de ambas asignaturas.</span></td><td>'+
         '<span class="tag sol">📝 '+V.solic.length+' por autorizar</span><ul class="obs">'+
-        V.solic.map(function(s){return "<li>"+s.txt+"<br><span style='color:#6b6660'>"+s.dias+" "+s.t0+"–"+s.t1+" · "+s.min+" min online · "+s.pct+"% de la asignatura · dentro del 50% permitido</span></li>";}).join("")+
+        V.solic.map(function(s){return "<li>"+s.txt+"<br><span style='color:#6b6660'>"+s.dias+" "+s.t0+"–"+s.t1+" · "+s.min+" min · "+s.pct+"% de la asignatura · dentro del 50% permitido</span></li>";}).join("")+
         "</ul></td></tr>":"")+
-      '<tr><td>Prerrequisitos según el avance declarado</td><td>'+(V.faltaPr?'<span class="tag alerta">✗ '+V.faltaPr+' ramo(s) por revisar</span>':'<span class="tag si">✓ Todos cumplen</span>')+"</td></tr>"+
+      '<tr><td>Prerrequisitos según el avance declarado<br><span style="font-size:9.6px;color:#6b6660">Circular N°05/2026, art. 4 — solo se aceptan solicitudes que cumplan íntegramente los prerrequisitos</span></td><td>'+(V.faltaPr?'<span class="tag alerta">✗ '+V.faltaPr+' ramo(s) por revisar</span>':'<span class="tag si">✓ Todos cumplen</span>')+"</td></tr>"+
       '<tr><td><b>Ramos solicitados que ya figuran aprobados en el avance declarado</b><br><span style="font-size:9.6px;color:#6b6660">Inconsistencia entre lo declarado y lo solicitado: revisar con el registro académico.</span></td><td>'+
         (V.yaAprob.length?'<span class="tag alerta">✗ '+V.yaAprob.length+'</span><ul class="obs">'+V.yaAprob.map(function(r){return "<li>"+_e(r.nombre)+"</li>";}).join("")+"</ul>":'<span class="tag si">✓ Ninguno</span>')+"</td></tr>"+
       '<tr><td>Niveles distintos en la selección ('+V.nNiv+') — tope '+V.tope+' · '+_e(regla)+'</td><td>'+(V.excedeNiv?'<span class="tag alerta">✗ Excede el tope</span>':'<span class="tag si">✓ Dentro del tope</span>')+"</td></tr>"+
-      '<tr><td>Créditos seleccionados</td><td><b>'+V.sct+' SCT</b>'+(V.excedeSCT?' <span class="tag alerta">— sobre el máximo de 30 SCT del período (Circular N°03/2026)</span>':' <span class="tag si">✓ dentro del máximo del período (30 SCT)</span>')+"</td></tr>"+
-      '<tr><td><b>Ramos reprobados con oferta que no está reinscribiendo</b><br><span style="font-size:9.6px;color:#6b6660">Los ramos reprobados tienen prioridad sobre cualquier otro en la toma de carga.</span></td><td>'+
+      '<tr><td>Créditos seleccionados<br><span style="font-size:9.6px;color:#6b6660">Circular N°05/2026, art. 10 — máximo 30 SCT, sujeto a autorización</span></td><td><b>'+V.sct+' SCT</b>'+(V.excedeSCT?' <span class="tag alerta">— sobre el máximo de 30 SCT</span>':' <span class="tag si">✓ dentro del máximo</span>')+"</td></tr>"+
+      '<tr><td><b>Ramos reprobados con oferta que no está reinscribiendo</b><br><span style="font-size:9.6px;color:#6b6660">Circular N°05/2026, art. 3 — las asignaturas reprobadas que se oferten deben inscribirse obligatoriamente.</span></td><td>'+
         (obs.repro.length
           ? '<span class="tag alerta">✗ '+obs.repro.length+' omitido'+(obs.repro.length===1?"":"s")+'</span><ul class="obs">'+obs.repro.map(function(c){return "<li>"+_e(c.n)+" ("+(mg.pref==="S"?"semestre ":"nivel ")+c.t+")</li>";}).join("")+"</ul>"
           : '<span class="tag si">✓ Ninguno</span>')+"</td></tr>"+
-      '<tr><td><b>Ramos pendientes del '+(mg.pref==="S"?"semestre":"nivel")+' más atrasado que no incluye</b><br><span style="font-size:9.6px;color:#6b6660">Con requisitos cumplidos y horario ofrecido este período.</span></td><td>'+
+      '<tr><td><b>Ramos pendientes del '+(mg.pref==="S"?"semestre":"nivel")+' más atrasado que no incluye</b><br><span style="font-size:9.6px;color:#6b6660">Circular N°05/2026, art. 2 — deben inscribirse en primer término las asignaturas pendientes del nivel más bajo.</span></td><td>'+
         (obs.atras.length
           ? '<span class="tag alerta">✗ '+obs.atras.length+' sin inscribir</span><ul class="obs">'+obs.atras.map(function(c){return "<li>"+_e(c.n)+"</li>";}).join("")+"</ul>"
           : '<span class="tag si">✓ Ninguno</span>')+"</td></tr></table>"+
+      (function(){ var T=_tercerasGuardadas().filter(function(x){return det.some(function(r){return r.id===x;});});
+         return T.length?'<div class="nota" style="border-left-color:#a33"><b>Tercera oportunidad declarada</b> (Circular N°05/2026, art. 8 — sin coincidencias): '+
+           T.map(function(id){var r=det.filter(function(x){return x.id===id;})[0];return r?_e(r.nombre):"";}).filter(Boolean).join(", ")+'</div>':""; })()+
       (V.solic.length&&!nObs?'<div class="nota"><b>Lectura:</b> la selección respeta todas las directrices de toma de carga. El único punto pendiente es la autorización del tope de horario indicado, que la normativa contempla expresamente para el ciclo correspondiente. Corresponde a la Dirección de Carrera resolverlo.</div>':"")+
       (nObs?'<div class="nota"><b>Lectura de las observaciones:</b> la aplicación no impide presentar esta solicitud, pero deja constancia de lo que no calza con las directrices de toma de carga. Corresponde a la Dirección de Carrera resolver si autoriza la excepción.</div>':"");
   }
@@ -2149,7 +2152,8 @@ function bindHorCells(root){
       showHorMsg(`⛔ <b>El tope con ${cl.nm} es demasiado grande</b> (${cl.min} min, ${Math.round(Math.max(cl.pctA,cl.pctB))}% de una de las asignaturas). Se autoriza hasta el 50%: debes quitar el otro ramo.`,"warn");return;}
     insc[id]=key;saveInsc();refrescaHor();renderHorTally();
     if(cl&&cl.tipo==="solicitable"){
-      showHorMsg(`📝 <b>Tope de ${cl.min} min con ${cl.nm}</b> (${cl.day} ${cl.t0}–${cl.t1}, ambos online · ${Math.round(Math.max(cl.pctA,cl.pctB))}% de la asignatura).<br>Está <b>dentro de lo autorizable</b>, pero requiere <b>toma de carga manual</b>: genera el respaldo en PDF desde el Planificador y preséntalo con tu solicitud.`,"info");}
+      var modo=(cl.pres>0&&cl.onl>0)?"parte presencial":(cl.pres>0?"presencial":"online");
+      showHorMsg(`📝 <b>Tope de ${cl.min} min con ${cl.nm}</b> (${cl.day} ${cl.t0}–${cl.t1}, ${modo} · ${Math.round(Math.max(cl.pctA,cl.pctB))}% de la asignatura).<br>La <b>Circular N°05/2026</b> permite solicitar una coincidencia de hasta el 50%: genera el respaldo en PDF desde el Planificador y preséntalo con tu solicitud.`,"info");}
     if(typeof logInteraccion==="function")logInteraccion("horarios","inscribir ramo");
     /* avisos flotantes informativos (no bloquean): exceso de créditos y exceso de niveles */
     var tot=0;Object.keys(insc).forEach(function(x){tot+=creditsForSel(+x,insc[x]);});
@@ -2542,7 +2546,7 @@ function planProposeTECH(){
       };
       const otras=topes?[]:todas.filter(x=>x!==o);
       const av=topes?('<div class="pautor">📝 <b>Requiere toma de carga manual.</b> '+
-        topes.map(function(t){return "Tope de <b>"+t.min+" min</b> con <b>"+t.con+"</b> ("+t.dias+" "+t.t0+"–"+t.t1+", ambos online · "+t.pct+"% de la asignatura).";}).join(" ")+
+        topes.map(function(t){return "Tope de <b>"+t.min+" min</b> con <b>"+t.con+"</b> ("+t.dias+" "+t.t0+"–"+t.t1+" · "+t.pct+"% de la asignatura).";}).join(" ")+
         ' Está dentro de lo que la normativa permite solicitar. Genera el <b>respaldo en PDF</b> y preséntalo con tu solicitud.</div>'):"";
       h+=`<div class="pcard${topes?' pcard-sol':''}"><div class="pn">${c.n}${rep}</div><div class="pm" style="margin-bottom:4px">Nivel ${c.t}${otras.length?' · <b>'+todas.length+' secciones disponibles</b>, elige la que te acomode:':''}</div>`+
          pinta(o,true)+otras.map(x=>pinta(x,false)).join("")+av+`</div>`;
