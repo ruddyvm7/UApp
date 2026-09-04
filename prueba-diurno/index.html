@@ -156,6 +156,13 @@ body.dark .pautor{background:#1a2338;border-color:#33507f;color:#cfe0ff}
 .solicbox .sb-t{font-weight:800;color:#1e3a72;font-size:.92rem;margin-bottom:4px}
 .solicbox .sb-p{font-size:.8rem;line-height:1.5;color:#2b3d63;margin:0 0 6px}
 .solicbox .sb-l{font-size:.8rem;line-height:1.6;color:#2b3d63;margin:0 0 9px;padding-left:18px}
+.solicbox .sb-3a{background:#fff;border:1px solid #c7d5f5;border-radius:9px;padding:9px 11px;margin:2px 0 10px;font-size:.78rem;line-height:1.45}
+.solicbox .sb-3a b{display:block;color:#1e3a72;font-size:.82rem}
+.solicbox .sb-3a span{display:block;color:#4a5a7d;font-size:.72rem;margin:2px 0 6px}
+.solicbox .sb-ck{display:flex;gap:7px;align-items:flex-start;padding:3px 0;color:#2b3d63;cursor:pointer}
+.solicbox .sb-ck input{margin-top:2px}
+body.dark .solicbox .sb-3a{background:#0f1728;border-color:#33507f}
+body.dark .solicbox .sb-3a b{color:#cfe0ff}body.dark .solicbox .sb-ck{color:#b8c8e8}
 .solicbox .sb-rut{display:block;font-size:.74rem;font-weight:700;color:#1e3a72;margin:2px 0 3px}
 .solicbox .sb-rut span{font-weight:400;opacity:.8}
 .solicbox .sb-in{width:150px;padding:7px 10px;border:1.5px solid #c7d5f5;border-radius:9px;font:600 .86rem inherit;background:#fff;color:#1e3a72;margin-bottom:8px;display:block}
@@ -1023,18 +1030,21 @@ var PRUEBAS_VISIBLES={ tech:false, diurno:false, vregular:false };   /* TECH: a 
    ══════════════════════════════════════════════════════════════ */
 var SOLICITUD={
   activo:true,
+  /* VENTANA DE SOLICITUD
+     ─────────────────────────────────────────────────────────────
+     AHORA (ambiente de prueba): vacías, el botón se ve siempre.
+     AL PASAR A PRODUCCIÓN, poner las fechas de la Circular 05/2026:
+         desde:"2026-09-07", hasta:"2026-09-11",
+     Así el botón aparece solo durante la modificación de carga. */
   desde:"", hasta:"",
-  url:"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=ucHaYEdgmkihNLBwOGzM9zd5fBL1S_BAlkEUyVEDZaBURFJHR0Y4RkxVVkw2QjBWTkM5NVhZN1FWTS4u",
-  campos:{
-    cedula:      "rbab2a24149af4f4d82ad96ab2b1804a3",
-    anio1:       "r08026cf5377649978f0eccc97fa3da2e",
-    anio2:       "rf361ddedfc664bb08bcba380d886ac9a",
-    anio3:       "r121ec63cdf7647308a7bd4850170c9ac",
-    anio4:       "r53ed779ac09046bba47ad169647a8b03",
-    anio5:       "r6acd965335274a1387a50dd5659b34ed",
-    alternas:    "ra1bafc95efcf4e699b3307ab68126fce",
-    verificacion:"r3bc45319b5c748a19a2e8db798014755",
-    peticiones:  "rc448ca04eff942c1ab0538dc51e14836"
+  /* Formulario oficial de la Carrera. Los identificadores de cada pregunta
+     se obtienen con "Obtener URL previamente rellenada" desde el propio
+     formulario; mientras estén vacíos, la app abre el formulario sin
+     prellenar y deja los ramos escritos en el resumen. */
+  url:"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=ucHaYEdgmkihNLBwOGzM977P_dy_581AsijJOgLfgENUREY1VlhPODRES01EQTBSVjhVQTk2U05LQSQlQCNjPTEu",
+  campos:{        /* ← pendientes: pedirlos a la Carrera */
+    cedula:"", anio1:"", anio2:"", anio3:"", anio4:"", anio5:"",
+    alternas:"", verificacion:"", peticiones:""
   },
   /* Preguntas configuradas con "Varias respuestas". La de alternas quedó de
      respuesta única: si más adelante se activa como múltiple, poner true. */
@@ -1517,6 +1527,14 @@ function _porQueNo(key,se,a){
   if(sid==null) return null;              /* sin id: ante la duda, se muestra */
   var E=_estadoRamo(key,sid);
   if(!E) return null;
+  /* Circular N°05/2026 art. 6: las secciones alternas solo están disponibles
+     para quienes reprobaron la asignatura o son convalidantes. */
+  try{
+    var etq=(typeof HOR!=="undefined"&&HOR[key])?HOR[key].l:"";
+    if(/altern/i.test(etq)&&E.st!=="no") return "alterna";
+  }catch(e){}
+  /* art. 9: el Seminario de Tesis lo inscribe la Carrera */
+  if(/Seminario de Tesis/i.test(E.curso&&E.curso.n||"")) return "carrera";
   if(E.st==="ok") return "aprobado";
   if(E.st!=="no" && !E.libre) return "prerrequisito";
   if(a.hasAvance && a.anchor!=null && E.curso.t > a.anchor + a.tope - 1) return "tope";
@@ -1745,6 +1763,17 @@ function _textoVerificacion(){
     });
   }
   L.push("");
+  var T=_tercerasGuardadas().filter(function(x){ return det.some(function(r){return r.id===x;}); });
+  if(T.length){
+    L.push("");
+    L.push("TERCERA OPORTUNIDAD declarada por el estudiante (Circular 05/2026 art. 8 - sin coincidencias):");
+    T.forEach(function(id){
+      var r=det.filter(function(x){return x.id===id;})[0];
+      if(r)L.push("- "+r.nombre);
+    });
+  }
+  L.push("");
+  L.push("Verificado contra la Circular N 05/2026 (Consejo de Carrera).");
   L.push("Generado por UApp (miuapp.cl) el "+_fGen()+". Respaldo en PDF adjunto.");
   return L.join("\n");
 }
@@ -1771,10 +1800,22 @@ function _urlSolicitud(){
   var txt=_textoVerificacion();
   if(sinCampo.length) txt="OJO - MARCAR A MANO ESTOS RAMOS EN EL FORMULARIO:\n"+
       sinCampo.map(function(x){return "- "+x;}).join("\n")+"\n\n"+txt;
-  if(C.verificacion) p.push(encodeURIComponent(C.verificacion)+"="+encodeURIComponent(txt));
+  var destino=C.verificacion||C.peticiones;
+  if(destino) p.push(encodeURIComponent(destino)+"="+encodeURIComponent(txt));
   var sep=SOLICITUD.url.indexOf("?")>=0?"&":"?";
   return SOLICITUD.url+(p.length?sep+p.join("&"):"");
 }
+/* Circular N°05/2026 art. 8: no se autorizan coincidencias en asignaturas que
+   el estudiante rinde por TERCERA oportunidad. La app no puede saberlo por sí
+   sola —solo conoce aprobado/reprobado—, así que el estudiante lo declara y
+   queda registrado en el respaldo. */
+function _tercerasGuardadas(){
+  try{ var v=JSON.parse(localStorage.getItem("tercera_v1")||"[]"); return Array.isArray(v)?v:[]; }catch(e){ return []; }
+}
+function _guardaTerceras(arr){
+  try{ localStorage.setItem("tercera_v1",JSON.stringify(arr||[])); }catch(e){}
+}
+function esTercera(id){ return _tercerasGuardadas().indexOf(+id)>=0; }
 function _rutGuardado(){ try{ return localStorage.getItem("rut_v1")||""; }catch(e){ return ""; } }
 function _guardaRut(v){ try{ v=String(v||"").replace(/[^0-9kK]/g,""); if(v)localStorage.setItem("rut_v1",v); else localStorage.removeItem("rut_v1"); }catch(e){} }
 function solicitudVigente(){
@@ -2014,9 +2055,21 @@ function cruceEntre(mine,other){
   var f=function(m){return Math.floor(m/60)+":"+("0"+(m%60)).slice(-2);};
   var info={min:pres+onl,pres:pres,onl:onl,pctA:pa,pctB:pb,
             dias:Object.keys(dias),t0:f(t0),t1:f(t1)};
-  if(pres>0){ info.tipo="presencial"; return info; }
+  /* Circular N°05/2026, art. 7: se autoriza excepcionalmente UNA coincidencia,
+     presencial o sincrónica, con límite del 50% de las horas semanales de ambas. */
   info.tipo=(pa<=50&&pb<=50)?"solicitable":"excede";
   return info;
+}
+/* Topes ya presentes en la selección actual (Circular art. 7: máximo uno) */
+function topesActuales(){
+  var ids=Object.keys(insc).map(Number), out=[];
+  for(var i=0;i<ids.length;i++)for(var j=i+1;j<ids.length;j++){
+    var s1=sessionsOf(ids[i],insc[ids[i]]), s2=sessionsOf(ids[j],insc[ids[j]]);
+    if(sinClases(s1)||sinClases(s2))continue;
+    var c=cruceEntre(s1,s2);
+    if(c&&c.tipo==="solicitable")out.push({a:(s1[0]&&s1[0][3])||"",b:(s2[0]&&s2[0][3])||"",min:c.min});
+  }
+  return out;
 }
 function clashOf(id,key){
   const mine=sessionsOf(id,key);
@@ -2029,6 +2082,7 @@ function clashOf(id,key){
     var c=cruceEntre(mine,other);
     if(c){
       c.nm=(other[0]&&other[0][3])||"otro ramo";
+      c.oid=oid;
       c.day=(c.dias.length?DIAS[c.dias[0]]:"");
       return c;
     }
@@ -2087,8 +2141,10 @@ function bindHorCells(root){
     const id=+td.dataset.id,key=td.dataset.key;
     if(insc[id]===key){delete insc[id];saveInsc();refrescaHor();renderHorTally();return;}
     const cl=clashOf(id,key);
-    if(cl&&cl.tipo==="presencial"){
-      showHorMsg(`⛔ <b>Tope presencial con ${cl.nm}</b> (${cl.day} ${cl.t0}–${cl.t1}). Los topes en días presenciales no se autorizan fuera de 5º año: debes quitar el otro ramo.`,"warn");return;}
+    if(cl&&cl.tipo==="solicitable"&&(esTercera(id)||esTercera(cl.oid))){
+      showHorMsg(`⛔ <b>Sin coincidencias en tercera oportunidad.</b> Declaraste que cursas por tercera vez una de estas asignaturas. La Circular N°05/2026 no autoriza topes en ese caso.`,"warn");return;}
+    if(cl&&cl.tipo==="solicitable"&&topesActuales().length>=1){
+      showHorMsg(`⛔ <b>Solo se autoriza una coincidencia.</b> Ya tienes un tope entre <b>${topesActuales()[0].a}</b> y <b>${topesActuales()[0].b}</b>. La Circular N°05/2026 permite un máximo de una, entre dos asignaturas.`,"warn");return;}
     if(cl&&cl.tipo==="excede"){
       showHorMsg(`⛔ <b>El tope con ${cl.nm} es demasiado grande</b> (${cl.min} min, ${Math.round(Math.max(cl.pctA,cl.pctB))}% de una de las asignaturas). Se autoriza hasta el 50%: debes quitar el otro ramo.`,"warn");return;}
     insc[id]=key;saveInsc();refrescaHor();renderHorTally();
@@ -2170,6 +2226,17 @@ function renderFitHor(){
   renderHorTally();
   renderMiniHor();
 }
+/* Casillas para declarar qué asignaturas se cursan por tercera vez */
+function _bloqueTerceras(det){
+  var rep=(det||[]).filter(function(r){ return r.estado==="no"; });
+  if(!rep.length)return "";
+  var T=_tercerasGuardadas();
+  return '<div class="sb-3a"><b>¿Alguna de estas la cursas por tercera vez?</b>'+
+    '<span>La Circular N°05/2026 no autoriza coincidencias de horario en asignaturas de tercera oportunidad.</span>'+
+    rep.map(function(r){
+      return '<label class="sb-ck"><input type="checkbox" class="ck3" data-id="'+r.id+'"'+(T.indexOf(r.id)>=0?' checked':'')+'> '+escHtml(r.nombre)+'</label>';
+    }).join("")+'</div>';
+}
 function pintaSolicitud(){
   var box=document.getElementById("solicBox"); if(!box)return;
   if(!solicitudVigente()||!Object.keys(insc).length){ box.style.display="none"; box.innerHTML=""; return; }
@@ -2182,13 +2249,29 @@ function pintaSolicitud(){
     '<ol class="sb-l"><li><b>Genera el respaldo</b> con el botón 📄 PDF de arriba y guárdalo.</li>'+
     '<li><b>Abre el formulario</b>: ya vendrá con tus '+det.length+' ramo(s) marcados.</li>'+
     '<li><b>Adjunta el PDF</b> y envía.</li></ol>'+
-    '<label class="sb-rut" for="inpRut">Tu RUT <span>(sin puntos ni guión · queda solo en este dispositivo)</span></label>'+
+    _bloqueTerceras(det)+
+    '<label class="sb-rut" for="inpRut">Tu RUT <span>(sin puntos ni guión, queda solo en este dispositivo)</span></label>'+
     '<input id="inpRut" class="sb-in" type="text" inputmode="numeric" maxlength="10" placeholder="163175371" value="'+escHtml(_rutGuardado())+'">'+
     '<button type="button" class="mSwBtn sb-btn" id="btnSolic">📤 Generar respaldo y solicitar</button>'+
     '<div class="sb-n">Revisa que tu avance en <b>Avance Curricular</b> esté al día antes de enviar: el documento lo declara tal como lo marcaste.</div>'+
     '</div>';
+  box.querySelectorAll(".ck3").forEach(function(c){
+    c.onchange=function(){
+      var T=_tercerasGuardadas(), id=+c.dataset.id, i=T.indexOf(id);
+      if(c.checked){ if(i<0)T.push(id); } else if(i>=0)T.splice(i,1);
+      _guardaTerceras(T);
+      if(typeof refrescaHor==="function")refrescaHor();
+      pintaSolicitud();
+    };
+  });
   var inp=document.getElementById("inpRut");
   if(inp)inp.oninput=function(){ inp.value=inp.value.replace(/[^0-9kK]/g,""); _guardaRut(inp.value); };
+  var listo=!!(SOLICITUD.campos&&SOLICITUD.campos.anio1);
+  if(!listo){
+    var n=document.createElement("div"); n.className="sb-n";
+    n.innerHTML="⚠️ El formulario de la Carrera todavía no está enlazado: se abrirá en blanco y tendrás que marcar tus ramos a mano. El resumen de verificación queda en el respaldo PDF.";
+    box.querySelector(".solicbox").appendChild(n);
+  }
   var b=document.getElementById("btnSolic");
   if(b)b.onclick=function(){
     try{
@@ -2400,7 +2483,7 @@ function planProposeTECH(){
         id=eq.id;
       }
       if(!bId[id])return;
-      if(alterno&&S_[id]!=="no")return;
+      if(alterno&&S_[id]!=="no")return;   /* art. 6: alterna solo si la reprobó */
       (offById[id]=offById[id]||[]).push({label:HOR[k].l,sessions:g[name]});
     });
   });
