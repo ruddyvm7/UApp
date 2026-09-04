@@ -1495,6 +1495,23 @@ function _equivEn(c,W){
   return out;
 }
 function _mundoDe(key){ return _planBloque(key); }
+/* ─────────────────────────────────────────────────────────────
+   INTERPRETACIÓN DEL ART. 17 (Reglamento del Estudiante de Pregrado)
+   La Dirección de Carrera fija una lectura restrictiva: el rango de
+   niveles consecutivos existe para que el estudiante RECUPERE lo que
+   arrastra, no para adelantar asignaturas de niveles que aún no le
+   corresponden. En consecuencia, el techo no es solo "ancla + 3":
+   además no puede superar su nivel de avance curricular.
+   Para volver a la lectura amplia, poner SIN_ADELANTO en false.
+   ───────────────────────────────────────────────────────────── */
+var SIN_ADELANTO=true;
+/* Nivel de avance: el más alto donde tiene alguna asignatura aprobada,
+   más uno. Es el nivel que le corresponde cursar. */
+function _nivelAvance(){
+  var P=_snap(), A=P[P.cur], C=A.C||[], S=A.S||{}, maxAp=0, maxT=1;
+  C.forEach(function(c){ if(c.t>maxT)maxT=c.t; if(S[c.id]==="ok"&&c.t>maxAp)maxAp=c.t; });
+  return Math.min(maxAp+1,maxT);
+}
 function _ancla(){
   var P=_snap(), A=P[P.cur], C=A.C||[], S=A.S||{};
   var marcados=0, pendMin=99;
@@ -1504,8 +1521,15 @@ function _ancla(){
     if(s!=="ok"&&c.t<pendMin)pendMin=c.t;
   });
   var tope=(P.reg==="tri")?4:3;
-  if(!marcados) return {hasAvance:false,anchor:null,tope:tope,reg:P.reg,pref:P.pref};
-  return {hasAvance:true,anchor:(pendMin===99?1:pendMin),tope:tope,reg:P.reg,pref:P.pref};
+  if(!marcados) return {hasAvance:false,anchor:null,tope:tope,reg:P.reg,pref:P.pref,techo:null};
+  var anchor=(pendMin===99?1:pendMin);
+  var techoRegl=anchor+tope-1;                 /* art. 17: niveles consecutivos */
+  var nivAv=_nivelAvance();
+  /* con lectura restrictiva, nunca por sobre el nivel que le corresponde */
+  var techo=SIN_ADELANTO?Math.min(techoRegl,Math.max(nivAv,anchor)):techoRegl;
+  return {hasAvance:true,anchor:anchor,tope:tope,reg:P.reg,pref:P.pref,
+          techo:techo,techoRegl:techoRegl,nivelAvance:nivAv,
+          limitado:(techo<techoRegl)};
 }
 /* ¿El filtro es confiable? Solo si el plan activo del alumno coincide con
    el plan contra el que se resuelve la oferta. Si no, se muestra todo. */
@@ -1542,7 +1566,7 @@ function _porQueNo(key,se,a){
   if(/Seminario de Tesis/i.test(E.curso&&E.curso.n||"")) return "carrera";
   if(E.st==="ok") return "aprobado";
   if(E.st!=="no" && !E.libre) return "prerrequisito";
-  if(a.hasAvance && a.anchor!=null && E.curso.t > a.anchor + a.tope - 1) return "tope";
+  if(a.hasAvance && a.anchor!=null && E.curso.t > (a.techo!=null?a.techo:(a.anchor+a.tope-1))) return "tope";
   return null;
 }
 
@@ -1757,7 +1781,9 @@ function _textoVerificacion(){
   L.push("- Coincidencias no autorizables: "+(V.choques.length?V.choques.join(" / "):"ninguna"));
   L.push("- Prerrequisitos: "+(V.faltaPr?V.faltaPr+" ramo(s) por revisar":"todos cumplen"));
   L.push("- Ramos ya aprobados solicitados: "+(V.yaAprob.length?V.yaAprob.map(function(x){return x.nombre;}).join(", "):"ninguno"));
-  L.push("- Niveles distintos: "+V.nNiv+" (tope "+V.tope+") - "+(V.excedeNiv?"EXCEDE":"dentro del tope"));
+  L.push("- Niveles distintos: "+V.nNiv+" (tope "+V.tope+") - "+
+    ((V.adelantados&&V.adelantados.length)?"INCLUYE "+V.adelantados.length+" ASIGNATURA(S) SOBRE EL NIVEL QUE CURSA: "+V.adelantados.map(function(r){return r.nombre;}).join(", ")
+     :(V.nNiv>V.tope?"EXCEDE":"dentro del tope")));
   L.push("- Creditos: "+V.sct+" SCT - "+(V.excedeSCT?"EXCEDE el maximo de 30":"dentro del maximo de 30"));
   L.push("- Reprobados con oferta no reinscritos: "+(obs.repro.length?obs.repro.map(function(c){return c.n;}).join(", "):"ninguno"));
   if(V.solic&&V.solic.length){
@@ -1859,8 +1885,15 @@ function docRespaldo(){
     det.forEach(function(r){V.sct+=(r.cred||0);});
     var nivs={};det.forEach(function(r){if(r.nivel!=null)nivs[r.nivel]=1;});
     V.nNiv=Object.keys(nivs).length;
+    /* Lectura restrictiva del art. 17: ningún ramo por sobre el nivel que cursa */
+    try{
+      var _a=_ancla();
+      V.techo=(_a.techo!=null)?_a.techo:null;
+      V.limitado=!!_a.limitado;
+      V.adelantados=det.filter(function(r){ return V.techo!=null && r.nivel!=null && r.nivel>V.techo; });
+    }catch(e){ V.adelantados=[]; }
     V.excedeSCT=V.sct>30;
-    V.excedeNiv=V.nNiv>V.tope;
+    V.excedeNiv=(V.nNiv>V.tope)||(V.adelantados&&V.adelantados.length>0);
   }
   /* Conteo total de observaciones: omisiones + verificaciones fallidas */
   var nObs=obs.total+(V.choques.length?1:0)+(V.faltaPr?1:0)+(V.yaAprob.length?1:0)+(V.excedeSCT?1:0)+(V.excedeNiv?1:0);
@@ -1910,7 +1943,12 @@ function docRespaldo(){
       '<tr><td>Prerrequisitos según el avance declarado<br><span style="font-size:9.6px;color:#6b6660">Circular N°05/2026, art. 4 — solo se aceptan solicitudes que cumplan íntegramente los prerrequisitos</span></td><td>'+(V.faltaPr?'<span class="tag alerta">✗ '+V.faltaPr+' ramo(s) por revisar</span>':'<span class="tag si">✓ Todos cumplen</span>')+"</td></tr>"+
       '<tr><td><b>Ramos solicitados que ya figuran aprobados en el avance declarado</b><br><span style="font-size:9.6px;color:#6b6660">Inconsistencia entre lo declarado y lo solicitado: revisar con el registro académico.</span></td><td>'+
         (V.yaAprob.length?'<span class="tag alerta">✗ '+V.yaAprob.length+'</span><ul class="obs">'+V.yaAprob.map(function(r){return "<li>"+_e(r.nombre)+"</li>";}).join("")+"</ul>":'<span class="tag si">✓ Ninguno</span>')+"</td></tr>"+
-      '<tr><td>Niveles distintos en la selección ('+V.nNiv+') — tope '+V.tope+' · '+_e(regla)+'</td><td>'+(V.excedeNiv?'<span class="tag alerta">✗ Excede el tope</span>':'<span class="tag si">✓ Dentro del tope</span>')+"</td></tr>"+
+      '<tr><td>Niveles distintos en la selección ('+V.nNiv+') — tope '+V.tope+'<br><span style="font-size:9.6px;color:#6b6660">'+_e(regla)+
+        '. El rango de niveles consecutivos está previsto para recuperar asignaturas pendientes, no para adelantar niveles superiores al que se cursa.</span></td><td>'+
+        (V.adelantados&&V.adelantados.length
+          ? '<span class="tag alerta">✗ '+V.adelantados.length+' por sobre el nivel que cursa</span><ul class="obs">'+
+            V.adelantados.map(function(r){return "<li>"+_e(r.nombre)+" (nivel "+r.nivel+")</li>";}).join("")+"</ul>"
+          : (V.nNiv>V.tope?'<span class="tag alerta">✗ Excede el tope</span>':'<span class="tag si">✓ Dentro del tope</span>'))+"</td></tr>"+
       '<tr><td>Créditos seleccionados<br><span style="font-size:9.6px;color:#6b6660">Circular N°05/2026, art. 10 — máximo 30 SCT, sujeto a autorización</span></td><td><b>'+V.sct+' SCT</b>'+(V.excedeSCT?' <span class="tag alerta">— sobre el máximo de 30 SCT</span>':' <span class="tag si">✓ dentro del máximo</span>')+"</td></tr>"+
       '<tr><td><b>Ramos reprobados con oferta que no está reinscribiendo</b><br><span style="font-size:9.6px;color:#6b6660">Circular N°05/2026, art. 3 — las asignaturas reprobadas que se oferten deben inscribirse obligatoriamente.</span></td><td>'+
         (obs.repro.length
@@ -2211,9 +2249,12 @@ function renderFitHor(){
         '<br><button type="button" class="mSwBtn" id="toMalla" style="margin-top:8px">📚 Ir a Avance Curricular</button></div>';
     filtro=function(k){ return soloPlan(k); };
   }else{
-    var hasta=a.anchor+a.tope-1, N=(a.pref==="S"?"semestre":"nivel");
-    cab='<div class="pcard fitnote">Oferta del <b>'+etqPlan+'</b> que <b>puedes tomar</b> según tu avance: desde el <b>'+N+' '+a.anchor+'</b> hasta el <b>'+N+' '+hasta+'</b> ('+a.tope+' consecutivos). '+
-        'Se ocultan los ramos aprobados y los que aún no tienen prerrequisitos cumplidos; los reprobados sí aparecen.'+notaPlan+'</div>';
+    var hasta=(a.techo!=null?a.techo:(a.anchor+a.tope-1)), N=(a.pref==="S"?"semestre":"nivel");
+    var rango=(a.anchor===hasta)?('el <b>'+N+' '+a.anchor+'</b>'):('desde el <b>'+N+' '+a.anchor+'</b> hasta el <b>'+N+' '+hasta+'</b>');
+    cab='<div class="pcard fitnote">Oferta del <b>'+etqPlan+'</b> que <b>puedes tomar</b> según tu avance: '+rango+'. '+
+        'Se ocultan los ramos aprobados y los que aún no tienen prerrequisitos cumplidos; los reprobados sí aparecen.'+
+        (a.limitado?' <b>No se ofrecen asignaturas de niveles superiores al que cursas</b>: el rango del art. 17 está previsto para recuperar lo pendiente, no para adelantar.':'')+
+        notaPlan+'</div>';
     filtro=function(k,se){ return soloPlan(k) && _porQueNo(k,se,a)===null; };
   }
 
@@ -2502,7 +2543,8 @@ function planProposeTECH(){
   const _pm=t=>{const p=String(t).split(":");return (+p[0])*60+(+p[1]);};
   const idxOf=t=>BL.findIndex(b=>_pm(b[0])===_pm(t)), endOf=t=>{let e=-1;BL.forEach((b,i)=>{if(_pm(b[0])<_pm(t))e=i;});return e;};
   const cellsOf=ss=>{const cs=[];ss.forEach(se=>{const a=idxOf(se[1]);let b=endOf(se[2]);if(a<0)return;if(b<a)b=a;for(let i=a;i<=b;i++)cs.push(se[0]+i);});return cs;};
-  let cand=offIds.map(id=>bId[id]).filter(c=>c&&c.id!==51&&S_[c.id]!=="ok"&&(function(){try{return U_(c);}catch(e){return true;}})()&&(c.t-anchor)<=maxDif);
+  const _tch=(function(){ try{ var aa=_ancla(); return (aa.techo!=null)?aa.techo:(anchor+maxDif); }catch(e){ return anchor+maxDif; } })();
+  let cand=offIds.map(id=>bId[id]).filter(c=>c&&c.id!==51&&S_[c.id]!=="ok"&&(function(){try{return U_(c);}catch(e){return true;}})()&&c.t<=_tch);
   cand.sort((a,b)=>{const ma=(S_[a.id]==="no"||a.t===anchor)?0:1,mb=(S_[b.id]==="no"||b.t===anchor)?0:1;return ma-mb||a.t-b.t||a.id-b.id;});
   const occ=new Set(),chosen=[],conf=[];
   for(const c of cand){if(chosen.length>=maxR)break;let placed=false;for(const o of offById[c.id]){const cs=cellsOf(o.sessions);if(cs.some(x=>occ.has(x)))continue;cs.forEach(x=>occ.add(x));chosen.push({c,o});placed=true;break;}if(!placed)conf.push(c);}
@@ -3146,7 +3188,7 @@ function importData(file){
    {c:"📖 Reglamento",q:"¿Cuándo me entregan las notas y cómo pido recorrección?",k:"notas plazo entrega recorreccion revision recorregir reclamar dias publican",a:"El docente informa la nota en un máximo de <b>10 días corridos</b> tras la evaluación. Desde que se publica, tienes <b>3 días corridos</b> para pedirle la revisión de tu evaluación."},
    {c:"📖 Reglamento",q:"¿Cuántas veces puedo reprobar un ramo antes de que me eliminen?",k:"reprobar reprobado eliminacion eliminado cuantas veces repetir eliminan tres",a:"Puedes cursar una asignatura hasta <b>3 veces</b>. Te eliminan de la carrera si: (a) repruebas <b>3 veces la misma asignatura</b>, o (b) repruebas el <b>50% de las asignaturas</b> cursadas al término del <b>8º nivel</b> (régimen trimestral).",j:"tech"},
    {c:"📖 Reglamento",q:"Si repruebo un ramo, ¿qué tengo que hacer?",k:"reprobe reprobado ramo repetir volver cursar siguiente obligatorio inscribir arrastro",a:"El ramo reprobado debes cursarlo en el <b>período siguiente en que se dicte</b>, y la carrera lo inscribe <b>obligatoriamente</b> (sin derecho a sacarlo de tu carga)."},
-   {c:"📖 Reglamento",q:"¿Cuántos niveles puedo tomar al mismo tiempo?",k:"niveles cuantos ramos tomar inscribir adelantar consecutivos carga cruzar",a:"En régimen trimestral puedes inscribir asignaturas de <b>hasta 4 niveles distintos y consecutivos</b>, partiendo del nivel más bajo que tengas pendiente y cumpliendo los prerrequisitos. Casos excepcionales (más niveles o hasta 24 créditos) se solicitan a la Dirección de Carrera.",j:"tech"},
+   {c:"📖 Reglamento",q:"¿Cuántos niveles puedo tomar al mismo tiempo?",k:"niveles cuantos ramos tomar inscribir adelantar consecutivos carga cruzar",a:"En régimen trimestral el reglamento permite inscribir asignaturas de <b>hasta 4 niveles distintos y consecutivos</b> (art. 17), partiendo del nivel más bajo que tengas pendiente y cumpliendo los prerrequisitos.<br><b>Ojo:</b> la Dirección de Carrera interpreta ese rango como una vía para <b>recuperar asignaturas pendientes</b>, no para adelantar. Por eso <b>no se autorizan asignaturas de niveles superiores al que cursas</b>. Casos excepcionales se solicitan a la Dirección de Carrera.",j:"tech"},
    {c:"📖 Reglamento",q:"¿Puedo bajar mi carga académica si me enfermo?",k:"bajar rebajar disminuir carga academica enfermedad enfermo reducir rebaja",a:"Sí. Por enfermedad certificada u otra causa grave puedes pedir disminuir tu carga <b>hasta en un 50%</b> a la Dirección de Carrera, a más tardar <b>4 semanas antes del término del trimestre</b>.",j:"tech"},
    {c:"📖 Reglamento",q:"¿Qué son la suspensión, anulación y retiro?",k:"suspension anulacion retiro abandono interrupcion congelar pausar dejar estudios",a:"<b>Suspensión:</b> pausar tus estudios un tiempo (antes de tomar carga). <b>Anulación:</b> dejar sin efecto todos los ramos inscritos (en la fecha del calendario). <b>Retiro:</b> dejar la carrera; no borra notas ni carga. Suspensión y anulación: hasta 2 veces cada una, máx. 1 año por vez."},
    {c:"📖 Reglamento",q:"Si me eliminan, ¿puedo seguir estudiando?",k:"eliminado eliminacion continuidad seguir continuar gracia apelar solicitud comision",a:"El estudiante eliminado puede pedir <b>continuidad de estudios</b> por causa grave justificada, dentro de los plazos del calendario. Lo resuelve la <b>Comisión de Gracia</b> de Sede y su decisión es inapelable."},
@@ -3173,7 +3215,7 @@ function importData(file){
    /* --- Equivalentes para régimen SEMESTRAL (Diurno y Vespertino Regular) --- */
    {c:"📖 Reglamento",q:"¿Cómo se calcula la nota final del ramo?",k:"nota final calculo calcula ponderacion ponderaciones evaluaciones porcentaje acumulativa promedio",a:"En ramos <b>semestrales</b> depende de las horas de la asignatura (Reglamento General del Estudiante, art. 25):<br>• <b>72 horas o menos:</b> 2 evaluaciones regulares = 70% + 1 acumulativa = 30%.<br>• <b>108 horas o más:</b> 3 evaluaciones regulares = 70% + 1 acumulativa = 30%.<br>La acumulativa reúne foros, quiz, ensayos y trabajos similares. El syllabus puede fijar otro sistema, así que revísalo siempre.",j:"sem"},
    {c:"📖 Reglamento",q:"¿Cuántas veces puedo reprobar un ramo antes de que me eliminen?",k:"reprobar reprobado veces eliminan eliminacion elimina tres oportunidades cuantas",a:"Puedes cursar una asignatura hasta <b>3 veces</b>. Te eliminan de la carrera si (art. 44):<br>• repruebas <b>3 veces la misma asignatura</b>, o<br>• repruebas el <b>50% de las asignaturas cursadas al término del 6º nivel</b> (régimen semestral).<br>Si te eliminan, puedes pedir continuación de estudios a la Comisión de Gracia de Sede dentro de los plazos del calendario académico.",j:"sem"},
-   {c:"📖 Reglamento",q:"¿Cuántos niveles puedo tomar al mismo tiempo?",k:"niveles nivel simultaneo mismo tiempo cuantos tomar inscribir distintos consecutivos",a:"En régimen <b>semestral</b> puedes inscribir asignaturas de <b>hasta 3 niveles distintos y consecutivos</b> (art. 17), partiendo del nivel más bajo que tengas pendiente y cumpliendo los prerrequisitos. Excepcionalmente puedes pedir a la Dirección de Carrera cursar hasta <b>36 créditos semestrales</b> o ramos de niveles superiores, con causa grave justificada.",j:"sem"},
+   {c:"📖 Reglamento",q:"¿Cuántos niveles puedo tomar al mismo tiempo?",k:"niveles nivel simultaneo mismo tiempo cuantos tomar inscribir distintos consecutivos",a:"En régimen <b>semestral</b> el reglamento permite inscribir asignaturas de <b>hasta 3 niveles distintos y consecutivos</b> (art. 17), partiendo del nivel más bajo que tengas pendiente y cumpliendo los prerrequisitos. La Dirección de Carrera interpreta ese rango para <b>recuperar lo pendiente</b>, no para adelantar niveles superiores. Excepcionalmente puedes pedir a la Dirección de Carrera cursar hasta <b>36 créditos semestrales</b> o ramos de niveles superiores, con causa grave justificada.",j:"sem"},
    {c:"📖 Reglamento",q:"¿Puedo bajar mi carga académica si me enfermo?",k:"bajar disminuir carga academica enfermo enfermedad reducir menos ramos",a:"Sí. Por enfermedad certificada u otra causa grave puedes solicitar al Director de Carrera disminuir tu carga <b>hasta en un 50%</b>, a más tardar <b>6 semanas antes del término del semestre</b> (art. 16).",j:"sem"},
    {c:"📖 Reglamento",q:"¿Cuánta asistencia necesito?",k:"asistencia asistir faltas porcentaje minima minimo cuanta necesito",a:"Asistencia mínima: <b>70% en primer año</b> y <b>60% en cursos superiores</b> (art. 21). En componentes prácticos —talleres, laboratorios, prácticas— la asistencia exigida es del <b>100%</b>. El syllabus de cada ramo puede fijar un porcentaje distinto.",j:"sem"},
    {c:"👤 Autoridades",q:"Tengo un problema con un profesor o un ramo, ¿a quién acudo?",k:"problema profesor docente ramo conflicto reclamo queja acudo quien hablar",a:"Primero conversa con el <b>docente</b>. Si no se resuelve, acude a la <b>Secretaría académica</b> o a la <b>Dirección de Carrera de Derecho</b>, que es la instancia que resuelve estas situaciones.",j:"sem"}
