@@ -147,6 +147,35 @@ body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--i
 .pctrls select{font-family:inherit;font-size:14px;padding:9px;border:1px solid var(--cb2);border-radius:9px;background:#fff;color:var(--ink)}
 .presum{background:#fbf6ea;border:1px solid #ecdcaf;border-radius:10px;padding:10px 13px;font-size:13px;color:#5a4a1a;margin-bottom:4px}
 .pcard{background:#fff;border:1px solid var(--cb2);border-left:4px solid var(--gold);border-radius:10px;padding:11px 13px;margin-bottom:9px}
+.popt{border:1px solid var(--cb2,#d8cfba);border-radius:8px;padding:6px 9px;margin-top:5px;background:var(--soft,#f7f4ee)}
+.popt-on{border-color:#1f6b3a;background:#eaf6ee}
+.pcard-sol{border-left:4px solid #1d4ed8}
+.pautor{margin-top:6px;background:#eef2fa;border:1px solid #c7d5f5;border-radius:8px;padding:7px 9px;font-size:.76rem;line-height:1.45;color:#1e3a72}
+body.dark .pautor{background:#1a2338;border-color:#33507f;color:#cfe0ff}
+.solicbox{background:#eef2fa;border:1px solid #c7d5f5;border-radius:12px;padding:12px 14px;margin:10px 0 4px}
+.solicbox .sb-t{font-weight:800;color:#1e3a72;font-size:.92rem;margin-bottom:4px}
+.solicbox .sb-p{font-size:.8rem;line-height:1.5;color:#2b3d63;margin:0 0 6px}
+.solicbox .sb-l{font-size:.8rem;line-height:1.6;color:#2b3d63;margin:0 0 9px;padding-left:18px}
+.solicbox .sb-3a{background:#fff;border:1px solid #c7d5f5;border-radius:9px;padding:9px 11px;margin:2px 0 10px;font-size:.78rem;line-height:1.45}
+.solicbox .sb-3a b{display:block;color:#1e3a72;font-size:.82rem}
+.solicbox .sb-3a span{display:block;color:#4a5a7d;font-size:.72rem;margin:2px 0 6px}
+.solicbox .sb-ck{display:flex;gap:7px;align-items:flex-start;padding:3px 0;color:#2b3d63;cursor:pointer}
+.solicbox .sb-ck input{margin-top:2px}
+body.dark .solicbox .sb-3a{background:#0f1728;border-color:#33507f}
+body.dark .solicbox .sb-3a b{color:#cfe0ff}body.dark .solicbox .sb-ck{color:#b8c8e8}
+.solicbox .sb-rut{display:block;font-size:.74rem;font-weight:700;color:#1e3a72;margin:2px 0 3px}
+.solicbox .sb-rut span{font-weight:400;opacity:.8}
+.solicbox .sb-in{width:150px;padding:7px 10px;border:1.5px solid #c7d5f5;border-radius:9px;font:600 .86rem inherit;background:#fff;color:#1e3a72;margin-bottom:8px;display:block}
+body.dark .solicbox .sb-in{background:#0f1728;color:#cfe0ff;border-color:#33507f}
+.solicbox .sb-btn{background:#1d4ed8;border-color:#1d4ed8;color:#fff;font-weight:700}
+.solicbox .sb-n{font-size:.72rem;color:#4a5a7d;margin-top:7px;line-height:1.4}
+body.dark .solicbox{background:#16203a;border-color:#2f4676}
+body.dark .solicbox .sb-t{color:#cfe0ff}body.dark .solicbox .sb-p,body.dark .solicbox .sb-l{color:#b8c8e8}
+.pdesc{font-size:.78rem;color:var(--muted,#6b6660);line-height:1.45;margin:2px 0 6px}
+.popt .pm{margin:0}.popt .pt{margin-top:2px}
+.pnrc{color:var(--gold,#c79a3e);font-weight:800}
+.pflag3{font-size:.66rem;background:#1f6b3a;color:#fff;border-radius:10px;padding:1px 7px;margin-left:4px;font-weight:700}
+.pcard.fitnote{font-size:.79rem;line-height:1.45;padding:8px 11px;margin-bottom:7px}
 .pcard .pn{font-weight:700;color:var(--wine);font-size:14.5px}
 .pcard .pm{font-size:12.5px;color:#666;margin-top:3px}
 .pcard .pt{font-size:12px;color:#7a6a3a;margin-top:5px}
@@ -170,13 +199,25 @@ body.dark .palt{color:#8fd0a5}
 .pflag2{background:var(--gold);color:#fff;font-size:10px;padding:1px 7px;border-radius:8px;vertical-align:middle;font-weight:600}
 .pexc{font-size:12.5px;color:#777;margin:5px 0;padding-left:2px}
 .pinfo{background:#eef3fb;border:1px solid #cdd9ee;border-radius:10px;padding:9px 12px;font-size:12.5px;color:#2f3f63;margin:6px 0}
-.hortbl{border-collapse:collapse;width:100%;min-width:680px;font-size:11.5px}
+.hortbl{border-collapse:collapse;width:100%;min-width:680px;font-size:11.5px;table-layout:fixed}
+.hortbl td.cell .cr,.hortbl td.cell .cs,.hortbl td.cell .cp{overflow-wrap:anywhere;hyphens:auto}
 .hortbl th{background:var(--wine);color:#fff;font-weight:700;padding:9px 6px;font-size:11px;letter-spacing:.4px;text-align:center;border:1px solid #7d3340}
 .hortbl th.th-h{background:var(--navy);width:58px}
 .hortbl td{border:1px solid var(--cb2);padding:5px;vertical-align:middle;text-align:center;height:34px}
 .hortbl td.tm2{background:#f4f1ee;color:#777;font-weight:700;font-size:10px;white-space:nowrap;width:58px}
 .hortbl td.cell{background:#fbf6ea;border-color:#ecdcaf;position:relative}
 .hortbl .cr{display:block;font-weight:700;color:var(--wine);line-height:1.2}
+.hortbl .cn{display:block;font-size:9.4px;font-weight:700;color:var(--gold,#c79a3e);letter-spacing:.2px;line-height:1.25;margin-top:1px}
+.autobox{background:var(--soft,#f4f1ea);border:1px dashed var(--cb2,#cfc9bd);border-radius:10px;padding:9px 11px;margin:6px 0 12px;font-size:.78rem;line-height:1.45;color:var(--muted,#6b6660)}
+.autobox b{color:var(--ink,#2b2724)}
+.autochips{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.autochip{background:#fff;border:1.5px solid var(--cb2,#cfc9bd);border-radius:9px;padding:6px 10px;font:600 .76rem/1.3 inherit;color:var(--ink,#2b2724);cursor:pointer;text-align:left}
+.autochip.on{border-color:#1f6b3a;background:#eaf6ee}
+.autochip .ac-nrc{color:var(--gold,#c79a3e);font-weight:800}
+.autochip .ac-sct{color:var(--muted,#6b6660);font-weight:600}
+body.dark .autochip{background:#221f1c;color:#eee}
+body.dark .autochip.on{background:#1e3327}
+body.dark .hortbl .cn{color:#d9b871}
 .hortbl .cs{display:block;color:#8a7a4a;font-size:10px;margin-top:3px}
 .hortbl .cp{display:block;color:#9a6b72;font-size:9.5px;margin-top:2px;font-style:italic;line-height:1.15}
 footer{background:var(--navy);color:#cdd5e3;text-align:center;padding:26px 18px 30px;margin-top:10px}
@@ -204,6 +245,9 @@ body.reduce .progfill{transition:none}
 .ring-pct{font-family:"Fraunces",serif;font-size:36px;font-weight:800;color:var(--wine);line-height:1}
 .ring-sub{font-size:10.5px;color:var(--muted);font-weight:700;margin-top:3px;text-transform:uppercase;letter-spacing:.6px}
 .boardhint{text-align:center;color:var(--muted);font-size:12px;font-weight:600;margin:8px 0 0}
+.ynav{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 4px}
+.ynav button{background:var(--soft,#f3f1ec);border:1px solid var(--cb2,#d8cfba);color:var(--muted,#6b6660);font:inherit;font-weight:700;font-size:.72rem;padding:5px 11px;border-radius:999px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ynav button.on{background:var(--wine,#8b0c0c);border-color:var(--wine,#8b0c0c);color:#fff}
 .board{display:flex;gap:11px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 2px 18px;scroll-snap-type:x proximity}
 .lvl{flex:0 0 156px;scroll-snap-align:start}
 .lvl.ystart{border-left:2px dashed #e7d9bf;padding-left:11px}
@@ -260,6 +304,27 @@ body.reduce .progfill{transition:none}
 .elab{flex:0 0 88px;color:#8a7b5e;font-weight:700}
 .edates{color:#2a2118;display:flex;flex-direction:column;gap:2px}
 .ecols{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:9px}
+#miniHor{position:fixed;right:10px;bottom:96px;z-index:46;width:150px;background:var(--card,#fff);border:1px solid var(--line,#e0dcd4);border-radius:11px;box-shadow:0 6px 20px rgba(0,0,0,.16);padding:7px 8px 8px;display:none;font-size:11px}
+#miniHor.on{display:block}
+#miniHor .mhh{display:flex;align-items:center;justify-content:space-between;gap:6px;font-weight:800;font-size:10.5px;color:var(--wine,#8b0c0c);margin-bottom:5px}
+#miniHor .mhh button{background:none;border:0;color:var(--muted,#6b6660);font-size:12px;line-height:1;cursor:pointer;padding:0 2px}
+#miniHor .mgd{display:grid;gap:1.5px}
+#miniHor .mgc{height:7px;border-radius:2px;background:var(--soft,#f3f1ec)}
+#miniHor .mgh{font-size:7.6px;font-weight:700;color:var(--muted,#6b6660);text-align:center;line-height:1}
+#miniHor .mhf{margin-top:6px;font-size:9.6px;color:var(--muted,#6b6660);line-height:1.3;cursor:pointer;text-decoration:underline}
+#miniPill{position:fixed;right:10px;bottom:96px;z-index:46;display:none;background:var(--wine,#8b0c0c);color:#fff;border:0;border-radius:20px;padding:6px 11px;font:700 11px/1 Inter,system-ui,sans-serif;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+#miniPill.on{display:block}
+@media(min-width:820px){#miniHor{width:184px;bottom:104px}}
+#allHorModal .a11y-box{max-width:min(97vw,1120px);border-radius:16px;padding:20px 16px}
+#allHorModal .hortbl{min-width:0;font-size:10px}
+#allHorModal .hortbl th{padding:6px 3px;font-size:9.5px;letter-spacing:.2px}
+#allHorModal .hortbl td{padding:3px 2px;height:auto}
+#allHorModal .hortbl td.tm2{font-size:8.6px;width:44px}
+#allHorModal .hortbl .cr{font-size:9.6px;line-height:1.15}
+#allHorModal .hortbl .cs,#allHorModal .hortbl .cp{font-size:8.4px;line-height:1.15}
+#allHorModal .hgrp{font-size:12.5px;margin-top:10px}
+#allHorModal .hwrap{overflow-x:visible}
+@media(max-width:700px){#allHorModal .hwrap{overflow-x:auto}#allHorModal .hortbl{min-width:560px}}
 .cnota{display:block;margin-top:6px;font-size:10.5px;opacity:.72;line-height:1.4}
 .mlink{color:var(--wine,#8b0c0c);font-weight:700;text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere;word-break:break-word}
 .mlink:hover,.mlink:focus-visible{color:var(--gold2,#a8801f)}
@@ -397,6 +462,12 @@ td.cell.selon{background:#eaf6ee !important;outline:2px solid #1f6b3a;outline-of
 .mtext b{color:var(--wine)}
 .mcta{display:inline-block;margin-top:11px;color:#fff;font-weight:700;font-size:13px;padding:9px 16px;border-radius:999px;text-decoration:none}
 .mcta:active{opacity:.85}
+.volver{background:none;border:0;color:var(--wine,#8b0c0c);font:inherit;font-size:.82rem;font-weight:600;padding:6px 2px;margin:0 0 4px;cursor:pointer;display:inline-flex;align-items:center;gap:2px;-webkit-tap-highlight-color:transparent}
+.volver:hover{text-decoration:underline}
+.volver:active{opacity:.6}
+body.dark .volver{color:#e0a0a0}
+.discrow{display:flex;gap:10px;align-items:center;margin:8px 0 4px}
+.discrow .pdfBtn{flex:none}
 .disc{background:#fff7e6;border:1px solid #f0d9a6;border-radius:10px;padding:9px 12px;font-size:12.5px;color:#6a5320;line-height:1.45;margin:8px 0 4px}
 .disc b{color:#8a6d1a}
 .solbox{background:#fffdf8;border:1.5px solid var(--gold);border-radius:16px;padding:20px 18px;text-align:center;margin-top:6px}
@@ -503,6 +574,12 @@ body.dark .mallaNote{background:rgba(199,154,62,.12);border-color:#5a4a2a;color:
 
 /* selector de malla (Avance Curricular) */
 .mallaSwitch{display:flex;justify-content:flex-end;margin:10px 0 2px}
+.horBtns{justify-content:flex-start;flex-wrap:wrap;gap:8px;align-items:center}
+.horBtns .pdfBtn{margin-left:auto}
+@media(min-width:700px){.horBtns{display:grid;grid-template-columns:1fr auto 1fr;gap:8px}
+.horBtns>:first-child{justify-self:start}.horBtns>:nth-child(2){justify-self:center}
+.horBtns>:last-child{justify-self:end;margin-left:0}}
+.pdfBtn{font-size:.72rem;padding:4px 10px;gap:4px}
 .mallaSwitch .mSwBtn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid #d8cfba;color:#7a6f57;font:inherit;font-weight:600;font-size:.78rem;padding:6px 12px;border-radius:999px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s,border-color .15s,color .15s}
 .mallaSwitch .mSwBtn:hover{background:#f3efe6}
 .mallaSwitch .mSwBtn.na{background:#fbf4e9;border-color:var(--gold,#c79a3e);color:#8a6d1f;font-weight:700}
@@ -631,7 +708,8 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
       <span><i class="lg" style="background:#1f6b3a;border-color:#175a30"></i>APROBADO</span>
       <span><i class="lg" style="background:#8b0c0c;border-color:#6c0909"></i>REPROBADO</span>
     </div>
-    <p class="boardhint">Desliza para recorrer los niveles →</p>
+    <p class="boardhint">Desliza para recorrer los niveles → o salta con los botones</p>
+    <div class="ynav" id="ynav" role="group" aria-label="Ir a un año de la carrera"></div>
     <div id="years" class="board"></div>
     <div class="bkrow">
       <button class="bkbtn" id="bkExp">⬇️ Respaldar mi avance</button>
@@ -665,12 +743,12 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
 </section>
 
 <section id="hor" style="display:none"><div class="wrap">
-  <div class="mh serif">Horario del trimestre</div><div class="msub">Otoño 2026 · 2º trimestre.</div>
-  <div class="mallaSwitch">
-    <button type="button" class="mSwBtn" id="toPlan">🧭 Planificador de carga</button>
+  <div class="mh serif">Horario del trimestre</div><div class="msub">3er trimestre 2026.</div>
+  <div class="mallaSwitch horBtns">
+    <button type="button" class="mSwBtn" id="toAllHor">📋 Todos los horarios</button> <button type="button" class="mSwBtn" id="toPlan">🧭 Planificador de carga</button> <button type="button" class="mSwBtn pdfBtn" id="dlHor" title="Generar un PDF con tu horario" aria-label="Generar un PDF con tu horario">📄 PDF</button>
   </div>
-  <div class="seg" id="horSeg" style="max-width:560px">
-    <button class="on" data-h="all">Todos los horarios</button>
+  <div class="seg" id="horSeg" style="max-width:460px">
+    <button class="on" data-h="fit">Disponibles para mí</button>
     <button data-h="mine">Mi horario</button>
   </div>
   <p class="boardhint" id="horHint">Toca los ramos que inscribiste para marcarlos. Luego revisa "Mi horario" y se reflejarán en Mis pruebas.</p>
@@ -679,25 +757,30 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
 </div></section>
 
 <section id="plan" style="display:none"><div class="wrap">
+  <button type="button" class="volver" id="planVolver">← Volver a Horarios</button>
   <div class="mh serif">Planificador de carga</div>
   <div class="msub">Cruza tu avance con la oferta del trimestre y propone qué tomar, sin choques de horario.</div>
-  <div class="disc">⚠️ Propuesta <b>referencial</b>, no es una inscripción oficial. Confirma siempre con tu malla y con Registro Curricular antes de inscribir.</div>
+  <div class="discrow">
+    <div class="disc" style="margin:0;flex:1">⚠️ Propuesta <b>referencial</b>, no es una inscripción oficial. Confirma siempre con tu malla y con Registro Curricular antes de inscribir.</div>
+    <button type="button" class="mSwBtn pdfBtn" id="dlPlan" title="Generar el respaldo en PDF de tu toma de carga: avance declarado, ramos elegidos y verificaciones" aria-label="Generar el respaldo en PDF de tu toma de carga">📄 PDF</button>
+  </div>
+  <div id="solicBox" style="display:none"></div>
   <div id="planOut" style="margin-top:6px"></div>
   <div class="note" style="margin-top:12px"><b>📌 A tener en cuenta:</b> se priorizan los ramos <b>reprobados</b> y los del <b>nivel más bajo pendiente</b>, respetando prerrequisitos y los topes de <b id="planNivTope">4 niveles consecutivos</b> y <b>30 créditos</b>.</div>
-  <div class="note" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px">La carga se rige por: <a class="doclink" id="lnkReg" href="javascript:void(0)">📖 Reglamento del Estudiante</a> <a class="doclink" id="lnkCirc" href="javascript:void(0)">📄 Circular N°03/2026</a></div>
+  <div class="note" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px">La carga se rige por: <a class="doclink" id="lnkReg" href="javascript:void(0)">📖 Reglamento del Estudiante</a> <a class="doclink" id="lnkCirc" href="javascript:void(0)">📄 Circular N°05/2026</a></div>
 </div></section>
 
 <section id="pru" style="display:none"><div class="wrap">
   <div class="mh serif">Calendario de pruebas</div>
-  <div class="msub">Otoño 2026 · 2º trimestre · solemnes y exámenes finales.</div>
-  <div class="seg" id="pruSeg" style="max-width:560px">
-    <button class="on" data-m="all">Todas las pruebas</button>
-    <button data-m="mine">Mis ramos inscritos</button>
+  <div class="msub">3er trimestre 2026 · solemnes y exámenes finales.</div>
+  <div class="mallaSwitch horBtns" style="margin:10px 0 4px">
+    <button type="button" class="mSwBtn" id="toAllPru">📋 Todas las pruebas</button>
+    <button type="button" class="mSwBtn pdfBtn" id="dlPru" title="Generar un PDF del calendario" aria-label="Generar un PDF del calendario">📄 PDF</button>
   </div>
   <div id="inscBox" class="inscbox" style="display:none"></div>
   <div id="pruList"></div>
-  <div class="pinfo" style="margin-top:14px"><b>Fechas relevantes del trimestre.</b> Inicio de clases: 1 jun · Fin del período lectivo: 28 ago · Receso: 13–17 jul · Feriados: 29 jun, 16 jul, 15 ago · Evaluaciones finales: 31 ago – 2 sep.</div>
-  <p class="note">Fechas oficiales de la Carrera (TECH · 2º trimestre 2026). Algunas asignaturas tienen distinta fecha según sección (S1/S2/S3); revisa la tuya. La actividad acumulativa no tiene fecha fija.</p>
+  <div class="pinfo" style="margin-top:14px"><b>Fechas relevantes del 3er trimestre 2026.</b> Inicio de clases: lun 7 sep · Modificación de inscripción: 7–11 sep · Receso de Fiestas Patrias: 14–17 sep · Feriados: 18 sep, 12 oct, 8 dic · Solicitudes de rebaja de carga: 9–13 nov · Plazo 2ª evaluación regular: 6 nov · Última evaluación regular y fin del período lectivo: vie 4 dic · Examen de repetición: 9–11 dic.<br><span style="font-size:.72rem;opacity:.8">Fuente: Calendario Académico 2026, Resolución de Rectoría N°289/2025.</span></div>
+  <p class="note">Fechas oficiales de la Carrera (TECH · 3er trimestre 2026). Algunas asignaturas tienen distinta fecha según sección (S1/S2/S3); revisa la tuya. La actividad acumulativa no tiene fecha fija.</p>
 </div></section>
 
 <section id="info" style="display:none"><div class="wrap">
@@ -896,6 +979,31 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
   </div>
 </div>
 
+<div id="allPruModal" class="a11y-ov" style="display:none">
+  <div class="a11y-box" style="max-height:86vh;overflow-y:auto">
+    <button class="a11y-x" id="allPruX" aria-label="Cerrar">✕</button>
+    <div class="a11y-title serif">Todas las pruebas</div>
+    <p class="lead" style="margin:2px 0 10px">El calendario completo del período, con todos los ramos y secciones.</p>
+    <div id="allPruList"></div>
+  </div>
+</div>
+
+<div id="allHorModal" class="a11y-ov" style="display:none">
+  <div class="a11y-box" style="max-height:86vh;overflow-y:auto">
+    <button class="a11y-x" id="allHorX" aria-label="Cerrar">✕</button>
+    <div class="a11y-title serif">Todos los horarios</div>
+    <p class="lead" style="margin:2px 0 10px">La oferta completa del período, de ambos planes. Puedes marcar ramos aquí igual que en la vista principal.</p>
+    <div id="allHorList"></div>
+  </div>
+</div>
+
+<button type="button" id="miniPill">🗓️ Ver mi horario</button>
+<div id="miniHor" aria-hidden="true">
+  <div class="mhh"><span id="miniTit">Tu horario</span><button type="button" id="miniX" aria-label="Ocultar miniatura">✕</button></div>
+  <div id="miniGrid"></div>
+  <div class="mhf" id="miniPie"></div>
+</div>
+
 <div id="allCalcModal" class="a11y-ov" style="display:none">
   <div class="a11y-box" style="max-height:84vh;overflow-y:auto">
     <button class="a11y-x" id="allCalcX" aria-label="Cerrar">✕</button>
@@ -913,7 +1021,44 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
            (los datos siguen cargados en el código; nada se pierde)
    PARA PUBLICAR una jornada: cambiar su valor a true y subir el archivo.
    ══════════════════════════════════════════════════════════════ */
-var PRUEBAS_VISIBLES={ tech:true, diurno:false, vregular:false };
+var PRUEBAS_VISIBLES={ tech:false, diurno:false, vregular:false };   /* TECH: a la espera del calendario del 3er trimestre */
+
+/* ══════════════════════════════════════════════════════════════
+   SOLICITUD DE TOMA DE CARGA MANUAL
+   Enlaza con el formulario de la Carrera, prellenado con la
+   selección del estudiante y el resultado de las verificaciones.
+   · url     = enlace del formulario ("Rellenar formulario")
+   · campos  = identificadores de cada pregunta, obtenidos con
+               "Obtener dirección URL rellenada previamente"
+   · desde/hasta = ventana en que aparece el botón (AAAA-MM-DD);
+               si van vacías, se muestra siempre.
+   ══════════════════════════════════════════════════════════════ */
+var SOLICITUD={
+  /* ═══════════════════════════════════════════════════════════
+     SOLICITUD DE TOMA DE CARGA · APAGADA EN PRODUCCIÓN
+     La función está completa pero desactivada: el bloque no
+     aparece en el Planificador. Se sigue afinando en el ambiente
+     de prueba (falta enlazar los identificadores del formulario
+     de la Carrera).
+     PARA ENCENDERLA: poner activo en true. Las fechas ya están
+     puestas, así que el botón aparecerá solo del 7 al 11 de
+     septiembre, según la Circular N°05/2026.
+     ═══════════════════════════════════════════════════════════ */
+  activo:false,
+  desde:"2026-09-07", hasta:"2026-09-11",
+  /* Formulario oficial de la Carrera. Los identificadores de cada pregunta
+     se obtienen con "Obtener URL previamente rellenada" desde el propio
+     formulario; mientras estén vacíos, la app abre el formulario sin
+     prellenar y deja los ramos escritos en el resumen. */
+  url:"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=ucHaYEdgmkihNLBwOGzM977P_dy_581AsijJOgLfgENUREY1VlhPODRES01EQTBSVjhVQTk2U05LQSQlQCNjPTEu",
+  campos:{        /* ← pendientes: pedirlos a la Carrera */
+    cedula:"", anio1:"", anio2:"", anio3:"", anio4:"", anio5:"",
+    alternas:"", verificacion:"", peticiones:""
+  },
+  /* Preguntas configuradas con "Varias respuestas". La de alternas quedó de
+     respuesta única: si más adelante se activa como múltiple, poner true. */
+  multiple:{ anio1:true, anio2:true, anio3:true, anio4:true, anio5:true, alternas:false }
+};
 function pruebasVisibles(){
   var j=null;
   try{ j=localStorage.getItem("jornada3_v1"); }catch(e){}
@@ -926,19 +1071,6 @@ function pruebasVisibles(){
     }catch(e){}
   }
   return PRUEBAS_VISIBLES[j||"tech"]!==false;
-}
-var MSG_PRU_PEND="Se publicará cuando la Carrera lo informe.";
-function aplicaVisPru(){
-  var on=pruebasVisibles(), sec=document.getElementById("pru");
-  if(!sec)return on;
-  var seg=sec.querySelector("#pruSeg"); if(seg)seg.style.display=on?"":"none";
-  sec.querySelectorAll(".pinfo, .note").forEach(function(x){ x.style.display=on?"":"none"; });
-  var sub=sec.querySelector(".msub");
-  if(sub){
-    if(sub.textContent!==MSG_PRU_PEND)sub.dataset.orig=sub.textContent;
-    sub.textContent=on?(sub.dataset.orig||sub.textContent):MSG_PRU_PEND;
-  }
-  return on;
 }
 
 /* Barra de avance curricular (reemplaza al anillo: ocupa menos alto en pantalla) */
@@ -1134,7 +1266,7 @@ document.getElementById("reset").onclick=()=>{if(confirm("¿Reiniciar todo tu pr
 const SECS=["mural","malla","calc","hor","plan","pru","info","solic"];
 function go(tab){var _hl=(tab==="plan")?"hor":tab;/* el Planificador se abre desde Horarios: esa pestaña queda marcada */
   if(typeof logInteraccion==="function")logInteraccion(tab==="plan"?"planificador":tab,"ver seccion");
-  document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===_hl));SECS.forEach(s=>document.getElementById(s).style.display=s===tab?"":"none");if(tab==="plan")planPropose();if(tab==="hor")renderHorView(horMode);if(tab==="pru")renderPru(pruMode);if(tab==="calc"&&window.__renderCalc)window.__renderCalc();if(tab==="mural")renderMural();window.scrollTo(0,0);var _at=document.querySelector(".tab.active");if(_at&&typeof _at.scrollIntoView==="function"){try{_at.scrollIntoView({inline:"center",block:"nearest"});}catch(e){}}}
+  document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===_hl));SECS.forEach(s=>document.getElementById(s).style.display=s===tab?"":"none");if(tab==="plan")planPropose();if(tab==="hor")renderHorView(horMode);else if(typeof renderMiniHor==="function")renderMiniHor();if(tab==="pru")renderPru(pruMode);if(tab==="calc"&&window.__renderCalc)window.__renderCalc();if(tab==="mural")renderMural();window.scrollTo(0,0);var _at=document.querySelector(".tab.active");if(_at&&typeof _at.scrollIntoView==="function"){try{_at.scrollIntoView({inline:"center",block:"nearest"});}catch(e){}}}
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>go(b.dataset.tab));
 /* La rueda del mouse desplaza la barra de pestañas horizontalmente (computadores) */
 (function(){var tb=document.querySelector(".tabbar");if(!tb)return;tb.addEventListener("wheel",function(e){if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){tb.scrollLeft+=e.deltaY;e.preventDefault();}},{passive:false});})();
@@ -1142,25 +1274,730 @@ document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>go(b.dataset.tab));
 function escHtml(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");}
 
 /* Horarios Otoño 2026 · 2º trimestre (por nivel y sección) */
-const DIAS={L:"Lunes",M:"Martes",X:"Miércoles",J:"Jueves",V:"Viernes"};
+const DIAS={L:"Lunes",M:"Martes",X:"Miércoles",J:"Jueves",V:"Viernes",S:"Sábado"};
+
+/* ================= Documentos imprimibles (PDF vía diálogo del sistema) =================
+   Genera un documento limpio en un iframe oculto y abre el diálogo de impresión:
+   ahí el estudiante elige "Guardar como PDF" o imprime directo. Sin dependencias. */
+function _e(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function _jLabel(){var j=null;try{j=localStorage.getItem("jornada3_v1");}catch(e){}
+  return j==="diurno"?"Jornada Diurna":j==="vregular"?"Jornada Vespertina Regular":"Jornada Vespertina TECH";}
+function _fGen(){try{return new Date().toLocaleString("es-CL",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});}catch(e){return new Date().toISOString().slice(0,16).replace("T"," ");}}
+function _minutos(t){var p=String(t).split(":");return (+p[0])*60+(+p[1]);}
+/* Día de la semana (abreviado) para una fecha MM-DD del año académico en curso */
+function _diaAb(mmdd){try{var p=String(mmdd).split("-");var d=new Date(new Date().getFullYear(),(+p[0])-1,+p[1]);
+  return ["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"][d.getDay()];}catch(e){return "";}}
+/* Abrevia nombres de ramos para los cuadritos de la malla */
+function _abrev(n){
+  var chica={de:1,del:1,la:1,las:1,los:1,y:1,e:1,en:1,a:1,al:1,el:1,para:1,su:1,sus:1,un:1,una:1};
+  var w=String(n).replace(/\(.*?\)/g,"").trim().split(/\s+/).filter(function(x){return !chica[x.toLowerCase()];});
+  if(!w.length)return String(n).slice(0,14);
+  var rom=/^[IVX]+$/.test(w[w.length-1])?w.pop():null;
+  if(!w.length)return rom||"";
+  if(w.length===1){var u=w[0];return (u.length>13?u.slice(0,12)+".":u)+(rom?" "+rom:"");}
+  /* Primera palabra a 4 letras + punto; se conserva completa la más distintiva del resto */
+  var ab=(w[0].length>5?w[0].slice(0,4)+".":w[0]);
+  var resto=w.slice(1), sig=resto.reduce(function(a,b){return b.length>a.length?b:a;},resto[0]);
+  var out=ab+" "+sig;
+  var tope=16-(rom?rom.length+1:0);
+  if(out.length>tope)out=ab+" "+sig.slice(0,Math.max(3,tope-ab.length-2))+".";
+  return out+(rom?" "+rom:"");
+}
+function imprimirDoc(titulo,sub,cuerpo,piePersonal){
+  var css='@page{size:letter;margin:9mm 10mm}'+
+  '*{box-sizing:border-box}body{font-family:Georgia,\'Times New Roman\',serif;color:#2b2724;margin:0;font-size:10.2px;line-height:1.32;-webkit-print-color-adjust:exact;print-color-adjust:exact}'+
+  '.top{border-bottom:2px solid #8b0c0c;padding-bottom:4px;margin-bottom:7px}'+
+  '.brand{font-size:15px;font-weight:bold;color:#8b0c0c}.brand span{color:#c79a3e}'+
+  '.tt{font-size:13px;font-weight:bold;margin-top:1px}.sub{color:#6b6660;font-size:9.4px;margin-top:1px}'+
+  'h2{font-size:10.8px;color:#8b0c0c;border-bottom:1px solid #c79a3e;padding-bottom:2px;margin:8px 0 4px}'+
+  'table{width:100%;border-collapse:collapse;margin:4px 0}th,td{border:1px solid #d8d2c6;padding:2.5px 5px;text-align:left;vertical-align:top;line-height:1.25}'+
+  'th{background:#f4efe6;font-size:8.6px;text-transform:uppercase;letter-spacing:.3px;padding:3px 5px}'+
+  '.tag{font-weight:bold}.tag.si{color:#1f7a48}.tag.alerta{color:#a33}'+
+  '.res{display:flex;gap:12px;margin:3px 0;flex-wrap:wrap}.res b{font-size:13px}'+
+  '.firma{margin-top:12px;display:flex;gap:24px}.firma div{flex:1;border-top:1px solid #2b2724;padding-top:3px;font-size:9.4px;text-align:center}'+
+  '.pie{margin-top:8px;border-top:1px solid #d8d2c6;padding-top:4px;font-size:8.2px;color:#6b6660;line-height:1.3}'+
+  '.nota{background:#faf7f1;border-left:3px solid #c79a3e;padding:4px 8px;margin:5px 0;font-size:8.9px;line-height:1.3}'+'.sello{border-radius:5px;padding:5px 9px;margin:4px 0 2px;font-size:9.8px;font-weight:bold}'+'.sello.ok{background:#e7f3ea;border:1px solid #1f7a48;color:#14532d}'+'.sello.alerta{background:#fbe6e2;border:1px solid #a33;color:#7a1f14}'+'.sello.sol{background:#eef2fa;border:1px solid #1d4ed8;color:#12306e}'+'.tag.sol{font-weight:bold;color:#1d4ed8}'+'.obs{margin:2px 0 0;padding-left:13px;font-size:8.8px}'+'.obs li{margin:1px 0}'+
+  /* --- malla en cuadritos --- */
+  '.mg{display:grid;gap:3px;margin:6px 0}'+
+  '.mg{gap:2px}.mg .nh{font-size:6.8px;font-weight:bold;color:#8b0c0c;text-align:center;text-transform:uppercase;letter-spacing:.3px;padding:2px 0;border-bottom:2px solid #c79a3e}'+
+  '.cs{border:1px solid #cfc9bd;border-radius:2px;padding:1.5px 2px;font-size:5.4px;line-height:1.15;min-height:17px;background:#f6f3ec;color:#5d584f;text-align:center;display:flex;align-items:center;justify-content:center;overflow-wrap:break-word;overflow:hidden}'+
+  '.cs.ok{background:#def0e3;border-color:#1f7a48;color:#14532d;font-weight:bold}'+
+  '.cs.no{background:#fbe0dc;border-color:#a33;color:#7a1f14;font-weight:bold}'+
+  '.leg{display:flex;gap:12px;font-size:8.4px;color:#6b6660;margin:2px 0 1px}'+
+  '.leg i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px;vertical-align:-1px;border:1px solid #999}'+
+  /* --- horario en grilla semanal --- */
+  '.gh th{text-align:center}.gh td{padding:0;vertical-align:top}'+
+  '.sesion{margin:3px;border-radius:5px;padding:4px 5px;background:#fbf6ea;border:1px solid #e3d3a4;font-size:9.6px;line-height:1.3}'+
+  '.sesion b{display:block;font-size:10px}.sesion .hr{color:#8b0c0c;font-weight:bold}.sesion .sl{color:#6b6660;font-size:9px}'+
+  '.sesion .nrc{display:block;font-size:9px;font-weight:bold;color:#8a6d1f}'+
+  /* --- pruebas en tarjetas --- */
+  '.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}'+
+  '.pcardd{border:1px solid #d8d2c6;border-radius:7px;overflow:hidden;break-inside:avoid}'+
+  '.pcardd .ph{background:#8b0c0c;color:#fff;padding:5px 8px;font-weight:bold;font-size:11px}'+
+  '.pcardd .ph small{color:#e8caa0;font-weight:normal;font-size:9px}'+
+  '.pcardd .pb{padding:6px 8px}'+
+  '.evrow{display:flex;justify-content:space-between;border-bottom:1px dashed #e3ddd2;padding:3px 0;font-size:10.6px}'+
+  '.evrow:last-child{border-bottom:0}.evrow .fecha{font-weight:bold}.evrow .fecha small{color:#8b0c0c;font-weight:bold;margin-right:3px}'+
+  '.pnote{font-size:8.8px;color:#6b6660;padding:2px 8px 6px}';
+  var html='<!doctype html><html><head><meta charset="utf-8"><title>UApp - '+_e(titulo)+'</title><style>'+css+'</style></head><body><div id="hoja">'+
+    '<div class="top"><div class="brand">U<span>App</span> · Derecho · UA Temuco</div>'+
+    '<div class="tt">'+_e(titulo)+'</div><div class="sub">'+_e(sub)+' · Generado el '+_e(_fGen())+'</div></div>'+
+    cuerpo+(piePersonal||'')+
+    '<div class="pie">Documento <b>informativo</b> generado por el propio estudiante en UApp (miuapp.cl) a partir de la información que él registra en su dispositivo. '+
+    'Verificaciones conforme a la <b>Circular N°05/2026</b> del Consejo de Carrera. No es un certificado ni reemplaza al registro académico oficial de la Universidad. Ante cualquier diferencia, prima la información de Registro Curricular.</div>'+
+    '</div></body></html>';
+  var interno='<div class="top"><div class="brand">U<span>App</span> · Derecho · UA Temuco</div>'+
+    '<div class="tt">'+_e(titulo)+'</div><div class="sub">'+_e(sub)+' · Generado el '+_e(_fGen())+'</div></div>'+
+    cuerpo+(piePersonal||'')+
+    '<div class="pie">Documento <b>informativo</b> generado por el propio estudiante en UApp (miuapp.cl) a partir de la información que él registra en su dispositivo. '+
+    'No es un certificado ni reemplaza al registro académico oficial de la Universidad. Ante cualquier diferencia, prima la información de Registro Curricular.</div>';
+  try{ window.__lastPrint={titulo:titulo,html:html,css:css,body:interno}; }catch(e){}
+  /* Primero se intenta descargar el PDF directamente; si no se puede,
+     se recurre al cuadro de impresión del dispositivo. */
+  descargarPDF(titulo,css,interno,html);
+}
+
+/* ── Descarga directa del PDF ──────────────────────────────────────────
+   La librería se trae solo cuando alguien pide un documento, para no
+   cargarla en cada visita. Si no llega (sin conexión, bloqueo), se usa
+   el cuadro de impresión de siempre. */
+var _pdfLib=null;
+function cargaPDFLib(){
+  if(window.html2pdf) return Promise.resolve(true);
+  if(_pdfLib) return _pdfLib;
+  _pdfLib=new Promise(function(res){
+    try{
+      var s=document.createElement("script");
+      s.src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.2/dist/html2pdf.bundle.min.js";
+      s.integrity="sha384-aBc0BOllaGWrQx51DYt978St/L7B+21jzNGc4N/jnGD0NxGwj8S/ftRgW0AkXIak";
+      s.crossOrigin="anonymous"; s.referrerPolicy="no-referrer";
+      s.onload=function(){ res(!!window.html2pdf); };
+      s.onerror=function(){ res(false); };
+      document.head.appendChild(s);
+      setTimeout(function(){ res(!!window.html2pdf); },15000);
+    }catch(e){ res(false); }
+  });
+  return _pdfLib;
+}
+function _nombreArchivo(t){
+  return ("UApp - "+String(t)).replace(/[\/:*?"<>|]/g,"").replace(/\s+/g," ").trim()+".pdf";
+}
+function imprimirNativo(html,tip){
+  var espera=0;
+  try{
+    if(tip && localStorage.getItem("pdf_tip_v1")!=="1"){
+      localStorage.setItem("pdf_tip_v1","1");
+      if(typeof showHorMsg==="function"){
+        showHorMsg('📄 Se abrirá el cuadro de tu dispositivo: elige <b>“Guardar como PDF”</b> en <b>Destino</b> para descargar el documento.','info');
+        espera=1600;
+      }
+    }
+  }catch(e){}
+  try{
+    var fr=document.createElement("iframe");
+    fr.style.cssText="position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden";
+    document.body.appendChild(fr);
+    var d=fr.contentDocument||fr.contentWindow.document;
+    d.open();d.write(html);d.close();
+    var done=function(){ try{document.body.removeChild(fr);}catch(e){} };
+    setTimeout(function(){
+      try{ fr.contentWindow.focus(); fr.contentWindow.print(); }catch(e){}
+      if(fr.contentWindow && "onafterprint" in fr.contentWindow){ fr.contentWindow.onafterprint=done; setTimeout(done,120000); }
+      else setTimeout(done,120000);
+    },150+espera);
+  }catch(e){}
+}
+function descargarPDF(titulo,css,interno,htmlCompleto){
+  var aviso=function(t,k){ try{ if(typeof showHorMsg==="function")showHorMsg(t,k||"info"); }catch(e){} };
+  cargaPDFLib().then(function(ok){
+    if(!ok){ imprimirNativo(htmlCompleto,true); return; }
+    var fr=null, velo=null;
+    var limpia=function(){ [fr,velo].forEach(function(x){ try{ if(x&&x.parentNode)x.parentNode.removeChild(x); }catch(e){} }); };
+    try{
+      /* El documento se arma en un marco con tamaño de carta. Al capturarlo,
+         se le vuelven a inyectar sus estilos al clon (onclone). */
+      fr=document.createElement("iframe");
+      fr.setAttribute("aria-hidden","true");
+      fr.style.cssText="position:fixed;left:0;top:0;width:816px;height:1056px;border:0;background:#fff;pointer-events:none;z-index:9998";
+      document.body.appendChild(fr);
+      var doc=fr.contentDocument||fr.contentWindow.document;
+      doc.open(); doc.write(htmlCompleto); doc.close();
+
+      velo=document.createElement("div");
+      velo.style.cssText="position:fixed;inset:0;z-index:9999;background:rgba(20,16,14,.88);display:flex;align-items:center;justify-content:center;color:#fff;font:600 15px/1.6 Inter,system-ui,sans-serif;text-align:center;padding:24px";
+      velo.innerHTML="<div>📄<br>Generando tu PDF…<br><span style='font-weight:400;font-size:13px;opacity:.85'>Se descargará en unos segundos</span></div>";
+      document.body.appendChild(velo);
+
+      setTimeout(function(){
+        try{
+          /* La altura se ajusta al contenido real para no dejar páginas en blanco */
+          var hoja=doc.getElementById("hoja")||doc.body;
+          var altoReal=Math.ceil(hoja.getBoundingClientRect().height)+8;
+          fr.style.height=altoReal+"px";
+          try{ doc.body.style.height=altoReal+"px"; doc.documentElement.style.height=altoReal+"px"; }catch(e){}
+          window.html2pdf().set({
+            margin:[10,10,12,10],
+            filename:_nombreArchivo(titulo),
+            image:{type:"jpeg",quality:0.97},
+            html2canvas:{scale:2,useCORS:true,backgroundColor:"#ffffff",logging:false,
+              height:altoReal,windowHeight:altoReal,
+              onclone:function(cd){
+                try{
+                  var st=cd.createElement("style"); st.textContent=css;
+                  (cd.head||cd.documentElement).appendChild(st);
+                }catch(e){}
+              }},
+            jsPDF:{unit:"mm",format:"letter",orientation:"portrait"},
+            pagebreak:{mode:["css","legacy"]}
+          }).from(hoja).save().then(function(){
+            limpia(); aviso("✅ PDF descargado. Búscalo en tus descargas.");
+          },function(){ limpia(); imprimirNativo(htmlCompleto,true); });
+        }catch(e){ limpia(); imprimirNativo(htmlCompleto,true); }
+      },420);
+    }catch(e){ limpia(); imprimirNativo(htmlCompleto,true); }
+  },function(){ imprimirNativo(htmlCompleto,true); });
+}
+/* La malla activa depende de la jornada (trimestral o semestral) y del plan.
+   Cada mundo registra aquí su "instantánea": lista de ramos, estado y prerrequisitos. */
+function __snapTech(){return {reg:"tri",pref:"N",
+  cur:(typeof curMalla!=="undefined"&&curMalla==="noajustada")?"na":"aj",
+  aj:{C:COURSES,S:state,U:isUnlocked},
+  na:{C:COURSES_NA,S:stateNA,U:isUnlockedNA},
+  plan:(typeof curMalla!=="undefined"&&curMalla==="noajustada")?"Plan No Ajustado (Res. 135/2017)":"Plan Ajustado (Res. 165/2022)"};}
+window.__snapTech=__snapTech;
+window.__mallaSnap=__snapTech;
+
+function _snap(){try{return (window.__mallaSnap||__snapTech)();}catch(e){return __snapTech();}}
+/* ===== Filtro "lo que puedo tomar" =====
+   Cruza el avance declarado con la oferta: descarta aprobados, exige
+   prerrequisitos y respeta el tope de niveles desde el ramo más atrasado. */
+function _sidSes(se){ try{ return (se[6]!=null)?se[6]:(typeof OFER!=="undefined"?OFER[se[3]]:null); }catch(e){ return null; } }
+/* Mundo (plan) contra el que se resuelven los ids de un bloque horario:
+   en régimen semestral lo indica la clave (aj_/na_); en trimestral la
+   oferta mapea siempre contra la malla vigente. */
+function _planBloque(k){
+  k=String(k||"");
+  return (k.indexOf("na_")===0 || k.indexOf("pna")>=0) ? "na" : "aj";
+}
+/* Regla de la Carrera para la toma de carga:
+   · Plan Ajustado (malla nueva)     → solo puede inscribir ramos de su propia malla.
+   · Plan No Ajustado (malla antigua) → puede inscribir de su malla Y de la ajustada.
+   Confirmado por Secretaría Académica tras la toma de carga del 2º semestre diurno. */
+function _bloqueAdmitido(k){
+  var P=_snap();
+  if(P.cur==="na") return true;            /* el plan antiguo ve ambas ofertas */
+  return _planBloque(k)==="aj";            /* el plan nuevo, solo la suya */
+}
+/* Mismo ramo en la otra malla (los ids difieren entre planes) */
+function _nrmRamo(s){
+  return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/\(.*?\)/g,"").replace(/[^a-z0-9 ]/g," ").replace(/\s+/g," ").trim();
+}
+function _equivEn(c,W){
+  var k=_nrmRamo(c&&c.n), out=null;
+  (W&&W.C||[]).forEach(function(x){ if(!out && _nrmRamo(x.n)===k) out=x; });
+  return out;
+}
+function _mundoDe(key){ return _planBloque(key); }
+/* ─────────────────────────────────────────────────────────────
+   INTERPRETACIÓN DEL ART. 17 (Reglamento del Estudiante de Pregrado)
+   La Dirección de Carrera fija una lectura restrictiva: el rango de
+   niveles consecutivos existe para que el estudiante RECUPERE lo que
+   arrastra, no para adelantar asignaturas de niveles que aún no le
+   corresponden. En consecuencia, el techo no es solo "ancla + 3":
+   además no puede superar su nivel de avance curricular.
+   Para volver a la lectura amplia, poner SIN_ADELANTO en false.
+   ───────────────────────────────────────────────────────────── */
+var SIN_ADELANTO=true;
+/* Nivel de avance: el más alto donde tiene alguna asignatura aprobada,
+   más uno. Es el nivel que le corresponde cursar. */
+function _nivelAvance(){
+  var P=_snap(), A=P[P.cur], C=A.C||[], S=A.S||{}, maxAp=0, maxT=1;
+  C.forEach(function(c){ if(c.t>maxT)maxT=c.t; if(S[c.id]==="ok"&&c.t>maxAp)maxAp=c.t; });
+  return Math.min(maxAp+1,maxT);
+}
+function _ancla(){
+  var P=_snap(), A=P[P.cur], C=A.C||[], S=A.S||{};
+  var marcados=0, pendMin=99;
+  C.forEach(function(c){
+    var s=S[c.id];
+    if(s==="ok"||s==="no")marcados++;
+    if(s!=="ok"&&c.t<pendMin)pendMin=c.t;
+  });
+  var tope=(P.reg==="tri")?4:3;
+  if(!marcados) return {hasAvance:false,anchor:null,tope:tope,reg:P.reg,pref:P.pref,techo:null};
+  var anchor=(pendMin===99?1:pendMin);
+  var techoRegl=anchor+tope-1;                 /* art. 17: niveles consecutivos */
+  var nivAv=_nivelAvance();
+  /* con lectura restrictiva, nunca por sobre el nivel que le corresponde */
+  var techo=SIN_ADELANTO?Math.min(techoRegl,Math.max(nivAv,anchor)):techoRegl;
+  return {hasAvance:true,anchor:anchor,tope:tope,reg:P.reg,pref:P.pref,
+          techo:techo,techoRegl:techoRegl,nivelAvance:nivAv,
+          limitado:(techo<techoRegl)};
+}
+/* ¿El filtro es confiable? Solo si el plan activo del alumno coincide con
+   el plan contra el que se resuelve la oferta. Si no, se muestra todo. */
+/* Con los ids de ramo incluidos en la oferta, el avance se evalúa
+   con confianza en ambos planes y en las dos jornadas. */
+function _fitEstadoConfiable(){ return true; }
+function _estadoRamo(key,sid){
+  var P=_snap(), mb=_mundoDe(key), W=P[mb], A=P[P.cur];
+  var c=null;(W.C||[]).forEach(function(x){if(x.id===sid)c=x;});
+  if(!c) return null;
+  /* Si el bloque pertenece a la otra malla, se evalúa con el ramo equivalente
+     en la del alumno: así un ramo ya aprobado no reaparece por tener otro id. */
+  var ce=c, Wa=W;
+  if(mb!==P.cur){
+    var eq=_equivEn(c,A);
+    if(eq){ ce=eq; Wa=A; }
+  }
+  return {curso:ce, st:(Wa.S||{})[ce.id]||null,
+          libre:(function(){try{return Wa.U(ce);}catch(e){return true;}})()};
+}
+/* Devuelve el motivo por el que NO se puede tomar, o null si sí se puede */
+function _porQueNo(key,se,a){
+  var sid=_sidSes(se);
+  if(sid==null) return null;              /* sin id: ante la duda, se muestra */
+  var E=_estadoRamo(key,sid);
+  if(!E) return null;
+  /* Circular N°05/2026 art. 6: las secciones alternas solo están disponibles
+     para quienes reprobaron la asignatura o son convalidantes. */
+  try{
+    var etq=(typeof HOR!=="undefined"&&HOR[key])?HOR[key].l:"";
+    if(/altern/i.test(etq)&&E.st!=="no") return "alterna";
+  }catch(e){}
+  /* art. 9: el Seminario de Tesis lo inscribe la Carrera */
+  if(/Seminario de Tesis/i.test(E.curso&&E.curso.n||"")) return "carrera";
+  if(E.st==="ok") return "aprobado";
+  if(E.st!=="no" && !E.libre) return "prerrequisito";
+  if(a.hasAvance && a.anchor!=null && E.curso.t > (a.techo!=null?a.techo:(a.anchor+a.tope-1))) return "tope";
+  return null;
+}
+
+/* Ramos con oferta de horario este período, dentro del plan activo */
+function _ofertados(){
+  var P=_snap(), set={};
+  try{
+    Object.keys(HOR).forEach(function(k){
+      if(!_bloqueAdmitido(k))return;
+      HOR[k].s.forEach(function(se){ var sid=_sidSes(se); if(sid!=null)set[sid]=true; });
+    });
+  }catch(e){}
+  return set;
+}
+/* Omisiones relevantes: lo que el reglamento manda priorizar y no está en la selección.
+   repro = reprobados con oferta que no está reinscribiendo (prioridad máxima)
+   atras = ramos pendientes del nivel más atrasado, con requisitos cumplidos y oferta */
+function _observaciones(det){
+  var P=_snap(), A=P[P.cur], C=A.C||[], S=A.S||{}, a=_ancla();
+  var of=_ofertados(), dentro={};
+  (det||[]).forEach(function(r){ dentro[r.id]=true; });
+  var repro=[], atras=[];
+  C.forEach(function(c){
+    var st=S[c.id];
+    if(st==="ok"||dentro[c.id]||!of[c.id])return;
+    if(st==="no"){ repro.push(c); return; }
+    var libre=true; try{ libre=A.U(c); }catch(e){}
+    if(libre && a.hasAvance && a.anchor!=null && c.t===a.anchor) atras.push(c);
+  });
+  return {repro:repro, atras:atras, total:repro.length+atras.length, ancla:a};
+}
+
+function _cursoDe(id,key){
+  var P=_snap(), na=String(key||"").indexOf("na_")===0;
+  var lista=(na?P.na:P.aj).C||[];
+  var c=null;lista.forEach(function(x){if(x.id===id)c=x;});
+  if(!c){((na?P.aj:P.na).C||[]).forEach(function(x){if(x.id===id)c=x;});}
+  return c;
+}
+function _prerreqOK(id,key){
+  var P=_snap(), na=String(key||"").indexOf("na_")===0;
+  var c=_cursoDe(id,key); if(!c)return null;
+  try{ return (na?P.na:P.aj).U(c); }catch(e){ return null; }
+}
+function _inscritosDetalle(){
+  var ids=Object.keys(insc).map(Number), out=[];
+  ids.forEach(function(id){
+    var key=insc[id], ses=sessionsOf(id,key), c=_cursoDe(id,key);
+    var nrcs=[],mods={};
+    ses.forEach(function(se){
+      if(se[7]&&nrcs.indexOf(se[7])<0)nrcs.push(se[7]);
+      if(se[8])mods[se[8]]=1;
+    });
+    var E=_estadoRamo(key,id);
+    out.push({id:id,key:key,nombre:c?c.n:(ses[0]?ses[0][3]:("Ramo "+id)),nivel:c?c.t:null,
+              cred:(typeof creditsForSel==="function"?creditsForSel(id,key):0),
+              ses:ses,prerreq:_prerreqOK(id,key),
+              estado:E?E.st:null,
+              nrc:nrcs,mods:Object.keys(mods),
+              seccion:(typeof HOR!=="undefined"&&HOR[key]?HOR[key].l:"")});
+  });
+  out.sort(function(a,b){return (a.nivel||99)-(b.nivel||99)||a.id-b.id;});
+  return out;
+}
+/* Cuadrícula de la malla: columnas = niveles, cuadritos teñidos por estado */
+function _mallaGrid(){
+  var P=_snap(), A=P[P.cur], C=A.C, S=A.S;
+  var porNivel={},maxT=0,ap=0,rep=0,pen=0;
+  C.forEach(function(c){maxT=Math.max(maxT,c.t);(porNivel[c.t]=porNivel[c.t]||[]).push(c);
+    var st=S[c.id]; if(st==="ok")ap++; else if(st==="no")rep++; else pen++;});
+  var nivs=[];for(var t=1;t<=maxT;t++)if(porNivel[t])nivs.push(t);
+  /* Una sola fila de niveles a lo ancho de la página */
+  var g='<div class="mg" style="grid-template-columns:repeat('+nivs.length+',minmax(0,1fr))">';
+  nivs.forEach(function(t){g+='<div class="nh">'+P.pref+t+'</div>';});
+  var maxF=0;nivs.forEach(function(t){maxF=Math.max(maxF,porNivel[t].length);});
+  for(var f=0;f<maxF;f++){
+    nivs.forEach(function(t){
+      var c=porNivel[t][f];
+      if(!c){g+='<div></div>';return;}
+      var st=S[c.id]==="ok"?"ok":S[c.id]==="no"?"no":"";
+      g+='<div class="cs '+st+'" title="'+_e(c.n)+'">'+_e(_abrev(c.n))+'</div>';
+    });
+  }
+  g+='</div>';
+  return {html:g,ap:ap,rep:rep,pen:pen,plan:P.plan,reg:P.reg,pref:P.pref,niveles:nivs.length};
+}
+function docHorario(){
+  var det=_inscritosDetalle();
+  if(!det.length){ imprimirDoc("Mi horario semanal",_jLabel(),
+    '<div class="nota">Aún no has seleccionado ramos. Ve a <b>Horarios</b>, toca las secciones que vas a cursar y vuelve a generar este documento.</div>'); return; }
+  var conClase=det.filter(function(r){return !sinClases(r.ses);});
+  var autonomos=det.filter(function(r){return sinClases(r.ses);});
+  var dias=["L","M","X","J","V","S"].filter(function(d){
+    return conClase.some(function(r){return r.ses.some(function(se){return se[0]===d;});});
+  });
+  var head="<tr>"+dias.map(function(d){return "<th>"+_e(DIAS[d]||d)+"</th>";}).join("")+"</tr>";
+  var fila="<tr>"+dias.map(function(d){
+    var del=[];
+    conClase.forEach(function(r){r.ses.forEach(function(se){if(se[0]===d)del.push({se:se,n:r.nombre});});});
+    del.sort(function(a,b){return _minutos(a.se[1])-_minutos(b.se[1]);});
+    var td=del.map(function(x){
+      var etq=(x.se[7]?"NRC "+x.se[7]:"")+(x.se[8]?(x.se[7]?" · ":"")+x.se[8]:"");
+      return '<div class="sesion"><span class="hr">'+_e(x.se[1])+"–"+_e(x.se[2])+'</span><b>'+_e(x.n)+'</b>'+
+             (etq?'<span class="nrc">'+_e(etq)+'</span>':"")+
+             '<span class="sl">'+_e(x.se[4]||"—")+' · '+_e(x.se[5]||"—")+'</span></div>';
+    }).join("");
+    return '<td style="width:'+(100/dias.length)+'%">'+td+"</td>";
+  }).join("")+"</tr>";
+  var sct=0,horas=0;det.forEach(function(r){sct+=(r.cred||0);r.ses.forEach(function(se){horas+=(_minutos(se[2])-_minutos(se[1]))/60;});});
+  var cuerpo='<div class="res"><div><b>'+det.length+'</b> ramos</div><div><b>'+sct+'</b> SCT</div><div><b>'+(Math.round(horas*10)/10)+'</b> h semanales</div></div>'+
+    (dias.length?'<table class="gh">'+head+fila+"</table>":"")+
+    (autonomos.length?'<div class="nota"><b>Sin horario de clases</b> (se inscriben igual y suman créditos): '+
+       autonomos.map(function(r){return _e(r.nombre)+(r.nrc&&r.nrc.length?" · NRC "+_e(r.nrc.join("/")):"");}).join(" · ")+'</div>':"");
+  imprimirDoc("Mi horario semanal",_jLabel(),cuerpo);
+  if(typeof logInteraccion==="function")logInteraccion("horarios","descargar horario");
+}
+function docPruebas(){
+  if(!pruebasVisibles()){
+    imprimirDoc("Calendario de evaluaciones",_jLabel(),
+      '<div class="nota">El calendario de evaluaciones aún no ha sido publicado por la Carrera. Cuando se publique, este documento incluirá las fechas de cada ramo.</div>');
+    return;
+  }
+  var ids=Object.keys(insc).map(Number);
+  var lista=EVALS.slice(), mios=false;
+  if(ids.length){
+    var f=lista.filter(function(e){
+      if(PRU_REG==="sem")return ids.some(function(id){var p=String(insc[id]||"").indexOf("na_")===0?"na":"aj";return (e[p]||[]).indexOf(id)>=0;});
+      return ids.indexOf(e.id)>=0;
+    });
+    if(f.length){lista=f;mios=true;}
+  }
+  lista.sort(function(a,b){return a.niv-b.niv||String(a.asig).localeCompare(String(b.asig));});
+  function fchip(lbl,mmdd){return '<div class="evrow"><span>'+_e(lbl)+'</span><span class="fecha"><small>'+_e(_diaAb(mmdd))+'</small>'+_e(mmdd)+"</span></div>";}
+  /* En TECH, si el ramo está inscrito conocemos la sección (n2s1 → S1) y mostramos SU fecha */
+  function miSec(id){var k=String(insc[id]||"");var m=k.match(/s(\d)/);return m?+m[1]:null;}
+  function tarjeta(e){
+    var filas="";
+    if(PRU_REG==="sem"){
+      ["e1","e2","e3"].forEach(function(k,i){(e[k]||[]).forEach(function(d){filas+=fchip("Evaluación "+(i+1),d);});});
+      if(e.noExam)filas+='<div class="evrow"><span>Examen</span><span>No rinde</span></div>';
+    }else{
+      var sec=miSec(e.id);
+      var p1=(e.p1||[]).filter(function(p){return sec==null||p[1]===sec;});
+      var p2=(e.p2||[]).filter(function(p){return sec==null||p[1]===sec;});
+      if(!p1.length)p1=e.p1||[]; if(!p2.length)p2=e.p2||[];
+      p1.forEach(function(p){filas+=fchip("Prueba 1"+(sec==null&&e.p1.length>1?" · S"+p[1]:""),p[0]);});
+      p2.forEach(function(p){filas+=fchip("Prueba 2"+(sec==null&&e.p2.length>1?" · S"+p[1]:""),p[0]);});
+      if(e.fin)filas+=fchip("Examen final",e.fin);
+      if(e.act)filas+='<div class="evrow"><span>Acumulativa</span><span class="fecha">'+_e(e.act)+"</span></div>";
+    }
+    return '<div class="pcardd"><div class="ph">'+_e(e.asig)+' <small>Nivel '+_e(e.niv)+(e.plan==="na"?" · Plan No Ajustado":"")+'</small></div>'+
+      '<div class="pb">'+filas+"</div>"+(e.note?'<div class="pnote">'+_e(e.note)+"</div>":"")+"</div>";
+  }
+  var cuerpo;
+  if(lista.length<=8){
+    cuerpo=(mios?'<div class="nota">Mostrando <b>solo tus ramos inscritos</b> en Horarios ('+lista.length+'). El calendario completo está en la app.</div>':"")+
+      '<div class="pgrid">'+lista.map(tarjeta).join("")+"</div>";
+  }else{
+    var filas="";
+    lista.forEach(function(e){
+      var fech=[];
+      if(PRU_REG==="sem"){["e1","e2","e3"].forEach(function(k,i){(e[k]||[]).forEach(function(d){fech.push("Ev."+(i+1)+": "+_diaAb(d)+" "+d);});});if(e.noExam)fech.push("Sin examen");}
+      else{(e.p1||[]).forEach(function(p){fech.push("S"+p[1]+" P1: "+_diaAb(p[0])+" "+p[0]);});(e.p2||[]).forEach(function(p){fech.push("S"+p[1]+" P2: "+_diaAb(p[0])+" "+p[0]);});if(e.fin)fech.push("Examen: "+_diaAb(e.fin)+" "+e.fin);if(e.act)fech.push("Acum.: "+e.act);}
+      filas+="<tr><td>"+_e(e.asig)+(e.plan==="na"?' (No Ajustado)':"")+"</td><td>"+_e(e.niv)+"</td><td>"+_e(fech.join(" · "))+(e.note?'<br><span style="font-size:9.5px;color:#6b6660">'+_e(e.note)+"</span>":"")+"</td></tr>";
+    });
+    cuerpo='<table><tr><th>Asignatura</th><th>Nivel</th><th>Fechas</th></tr>'+filas+"</table>";
+  }
+  imprimirDoc("Calendario de evaluaciones",_jLabel(),cuerpo);
+  if(typeof logInteraccion==="function")logInteraccion("pruebas","descargar calendario");
+}
+/* ═════════ Solicitud de toma de carga manual ═════════ */
+function _anioDe(t){ return Math.ceil(t/((_snap().reg==="tri")?3:2)); }
+/* Texto idéntico al de la opción cargada en el formulario:
+   "2° AÑO 11428 BIENES NECULMÁN MUÑOZ MARCELO" (un NRC por sección) */
+function _opcionForm(r){
+  var etq=(typeof HOR!=="undefined"&&HOR[r.key])?HOR[r.key].l:"";
+  var alterna=/altern/i.test(etq);
+  var nrc=(r.nrc&&r.nrc.length)?r.nrc.slice().sort()[0]:"";
+  var prof="";
+  (r.ses||[]).some(function(s){ if(s[5]&&s[5]!=="—"){prof=s[5];return true;} return false; });
+  var partes=[_anioDe(r.nivel||1)+"° AÑO"];
+  if(nrc)partes.push(nrc);
+  partes.push(String(r.nombre).toUpperCase());
+  if(prof)partes.push(String(prof).toUpperCase());
+  return partes.join(" ");
+}
+/* Resumen que viaja al formulario: es la columna que la Carrera revisa en su Excel */
+function _textoVerificacion(){
+  try{ docRespaldo._silencioso=true; docRespaldo(); }catch(e){}
+  docRespaldo._silencioso=false;
+  var S=window.__lastRespaldo||{};
+  var mg=S.mg||_mallaGrid(), det=S.det||_inscritosDetalle();
+  var V=S.V||{choques:[],solic:[],faltaPr:0,yaAprob:[],sct:0,nNiv:0,tope:4,excedeSCT:false,excedeNiv:false};
+  var obs=S.obs||{repro:[],atras:[],total:0};
+  var hayObs=(V.choques.length||V.faltaPr||V.yaAprob.length||V.excedeSCT||V.excedeNiv||obs.total);
+  var L=[];
+  L.push(hayObs?"SOLICITUD CON OBSERVACIONES - REVISAR"
+        :(V.solic.length?"SOLICITUD VERIFICADA - REQUIERE AUTORIZACION DE TOPE"
+                        :"SOLICITUD VERIFICADA - SIN OBSERVACIONES"));
+  L.push("Jornada: "+_jLabel()+" - "+mg.plan);
+  L.push("Avance declarado: "+mg.ap+" aprobadas, "+mg.rep+" reprobadas, "+mg.pen+" pendientes");
+  L.push("");
+  L.push("RAMOS SOLICITADOS ("+det.length+" - "+V.sct+" SCT):");
+  det.forEach(function(r){
+    var nrc=(r.nrc&&r.nrc.length)?r.nrc.join("/"):"sin NRC";
+    var marca=(r.estado==="no")?" - REPROBADA, retoma":(r.estado==="ok"?" - YA APROBADA (revisar)":"");
+    var pre=(r.prerreq===false)?" - PRERREQUISITO NO CUMPLIDO":"";
+    L.push("- NRC "+nrc+" "+r.nombre+" - nivel "+r.nivel+", "+_anioDe(r.nivel||1)+" ano - "+(r.cred||0)+" SCT"+marca+pre);
+  });
+  L.push("");
+  L.push("VERIFICACIONES:");
+  L.push("- Coincidencias no autorizables: "+(V.choques.length?V.choques.join(" / "):"ninguna"));
+  L.push("- Prerrequisitos: "+(V.faltaPr?V.faltaPr+" ramo(s) por revisar":"todos cumplen"));
+  L.push("- Ramos ya aprobados solicitados: "+(V.yaAprob.length?V.yaAprob.map(function(x){return x.nombre;}).join(", "):"ninguno"));
+  L.push("- Niveles distintos: "+V.nNiv+" (tope "+V.tope+") - "+
+    ((V.adelantados&&V.adelantados.length)?"INCLUYE "+V.adelantados.length+" ASIGNATURA(S) SOBRE EL NIVEL QUE CURSA: "+V.adelantados.map(function(r){return r.nombre;}).join(", ")
+     :(V.nNiv>V.tope?"EXCEDE":"dentro del tope")));
+  L.push("- Creditos: "+V.sct+" SCT - "+(V.excedeSCT?"EXCEDE el maximo de 30":"dentro del maximo de 30"));
+  L.push("- Reprobados con oferta no reinscritos: "+(obs.repro.length?obs.repro.map(function(c){return c.n;}).join(", "):"ninguno"));
+  if(V.solic&&V.solic.length){
+    L.push("");
+    L.push("TOPE(S) POR AUTORIZAR ("+V.solic.length+"):");
+    V.solic.forEach(function(s){
+      L.push("- "+String(s.txt).replace(/↔/g,"/")+" - "+s.dias+" "+s.t0+"-"+s.t1+" - "+s.min+" min online - "+s.pct+"% de la asignatura - dentro del 50% permitido");
+    });
+  }
+  L.push("");
+  var T=_tercerasGuardadas().filter(function(x){ return det.some(function(r){return r.id===x;}); });
+  if(T.length){
+    L.push("");
+    L.push("TERCERA OPORTUNIDAD declarada por el estudiante (Circular 05/2026 art. 8 - sin coincidencias):");
+    T.forEach(function(id){
+      var r=det.filter(function(x){return x.id===id;})[0];
+      if(r)L.push("- "+r.nombre);
+    });
+  }
+  L.push("");
+  L.push("Verificado contra la Circular N 05/2026 (Consejo de Carrera).");
+  L.push("Generado por UApp (miuapp.cl) el "+_fGen()+". Respaldo en PDF adjunto.");
+  return L.join("\n");
+}
+function _urlSolicitud(){
+  var C=SOLICITUD.campos, det=_inscritosDetalle(), p=[], porAnio={};
+  det.forEach(function(r){
+    var etq=(typeof HOR!=="undefined"&&HOR[r.key])?HOR[r.key].l:"";
+    var k=/altern/i.test(etq)?"alternas":("anio"+_anioDe(r.nivel||1));
+    (porAnio[k]=porAnio[k]||[]).push(_opcionForm(r));
+  });
+  var sinCampo=[], M=SOLICITUD.multiple||{};
+  Object.keys(porAnio).forEach(function(k){
+    if(!C[k]){ sinCampo=sinCampo.concat(porAnio[k]); return; }
+    if(M[k]===false){
+      /* pregunta de respuesta única: va un solo texto y el resto se avisa aparte */
+      p.push(encodeURIComponent(C[k])+"="+encodeURIComponent(JSON.stringify(porAnio[k][0])));
+      if(porAnio[k].length>1) sinCampo=sinCampo.concat(porAnio[k].slice(1));
+    }else{
+      p.push(encodeURIComponent(C[k])+"="+encodeURIComponent(JSON.stringify(JSON.stringify(porAnio[k]))));
+    }
+  });
+  var rut=_rutGuardado();
+  if(rut&&C.cedula) p.push(encodeURIComponent(C.cedula)+"="+encodeURIComponent(rut));
+  var txt=_textoVerificacion();
+  if(sinCampo.length) txt="OJO - MARCAR A MANO ESTOS RAMOS EN EL FORMULARIO:\n"+
+      sinCampo.map(function(x){return "- "+x;}).join("\n")+"\n\n"+txt;
+  var destino=C.verificacion||C.peticiones;
+  if(destino) p.push(encodeURIComponent(destino)+"="+encodeURIComponent(txt));
+  var sep=SOLICITUD.url.indexOf("?")>=0?"&":"?";
+  return SOLICITUD.url+(p.length?sep+p.join("&"):"");
+}
+/* Circular N°05/2026 art. 8: no se autorizan coincidencias en asignaturas que
+   el estudiante rinde por TERCERA oportunidad. La app no puede saberlo por sí
+   sola —solo conoce aprobado/reprobado—, así que el estudiante lo declara y
+   queda registrado en el respaldo. */
+function _tercerasGuardadas(){
+  try{ var v=JSON.parse(localStorage.getItem("tercera_v1")||"[]"); return Array.isArray(v)?v:[]; }catch(e){ return []; }
+}
+function _guardaTerceras(arr){
+  try{ localStorage.setItem("tercera_v1",JSON.stringify(arr||[])); }catch(e){}
+}
+function esTercera(id){ return _tercerasGuardadas().indexOf(+id)>=0; }
+function _rutGuardado(){ try{ return localStorage.getItem("rut_v1")||""; }catch(e){ return ""; } }
+function _guardaRut(v){ try{ v=String(v||"").replace(/[^0-9kK]/g,""); if(v)localStorage.setItem("rut_v1",v); else localStorage.removeItem("rut_v1"); }catch(e){} }
+function solicitudVigente(){
+  if(!SOLICITUD.activo)return false;
+  try{
+    var hoy=new Date().toISOString().slice(0,10);
+    if(SOLICITUD.desde&&hoy<SOLICITUD.desde)return false;
+    if(SOLICITUD.hasta&&hoy>SOLICITUD.hasta)return false;
+  }catch(e){}
+  return true;
+}
+
+function docRespaldo(){
+  var mg=_mallaGrid();
+  var det=_inscritosDetalle();
+  var obs=_observaciones(det);
+
+  /* ── Todas las verificaciones se calculan antes de escribir nada ── */
+  var V={choques:[],solic:[],faltaPr:0,yaAprob:[],nNiv:0,tope:(mg.reg==="tri")?4:3,sct:0,excedeSCT:false,excedeNiv:false};
+  if(det.length){
+    for(var i=0;i<det.length;i++)for(var j=i+1;j<det.length;j++){
+      if(sinClases(det[i].ses)||sinClases(det[j].ses))continue;
+      var cr=cruceEntre(det[i].ses,det[j].ses);
+      if(!cr)continue;
+      var etq=_e(det[i].nombre)+" ↔ "+_e(det[j].nombre);
+      var dd=cr.dias.map(function(x){return DIAS[x]||x;}).join(", ");
+      if(cr.tipo==="solicitable"){
+        V.solic.push({txt:etq,min:cr.min,dias:dd,t0:cr.t0,t1:cr.t1,
+                      pct:Math.round(Math.max(cr.pctA,cr.pctB))});
+      }else{
+        V.choques.push(etq+" ("+dd+" "+cr.t0+"–"+cr.t1+" · "+cr.min+" min"+(cr.tipo==="presencial"?" presencial":" online, "+Math.round(Math.max(cr.pctA,cr.pctB))+"%")+")");
+      }
+    }
+    V.faltaPr=det.filter(function(r){return r.prerreq===false;}).length;
+    V.yaAprob=det.filter(function(r){return r.estado==="ok";});
+    det.forEach(function(r){V.sct+=(r.cred||0);});
+    var nivs={};det.forEach(function(r){if(r.nivel!=null)nivs[r.nivel]=1;});
+    V.nNiv=Object.keys(nivs).length;
+    /* Lectura restrictiva del art. 17: ningún ramo por sobre el nivel que cursa */
+    try{
+      var _a=_ancla();
+      V.techo=(_a.techo!=null)?_a.techo:null;
+      V.limitado=!!_a.limitado;
+      V.adelantados=det.filter(function(r){ return V.techo!=null && r.nivel!=null && r.nivel>V.techo; });
+    }catch(e){ V.adelantados=[]; }
+    V.excedeSCT=V.sct>30;
+    V.excedeNiv=(V.nNiv>V.tope)||(V.adelantados&&V.adelantados.length>0);
+  }
+  /* Conteo total de observaciones: omisiones + verificaciones fallidas */
+  var nObs=obs.total+(V.choques.length?1:0)+(V.faltaPr?1:0)+(V.yaAprob.length?1:0)+(V.excedeSCT?1:0)+(V.excedeNiv?1:0);
+
+  var sello;
+  if(!det.length){
+    sello='<div class="sello alerta">⚠ DOCUMENTO INCOMPLETO — el estudiante no ha seleccionado los ramos que solicita inscribir.</div>';
+  }else if(nObs===0&&V.solic.length){
+    sello='<div class="sello sol">📝 REQUIERE AUTORIZACIÓN — la selección cumple todas las directrices, pero incluye '+V.solic.length+' tope'+(V.solic.length===1?"":"s")+
+      ' de horario que la normativa permite solicitar. Detalle en la sección 3.</div>';
+  }else if(nObs===0){
+    sello='<div class="sello ok">✓ SIN OBSERVACIONES — la selección cumple todas las verificaciones de la aplicación y no omite ramos prioritarios con oferta.</div>';
+  }else{
+    sello='<div class="sello alerta">⚠ '+nObs+' OBSERVACIÓN'+(nObs===1?"":"ES")+' — la solicitud no cumple todas las directrices de toma de carga. Revisar la sección 3 antes de autorizar.</div>';
+  }
+
+  var cuerpo=sello+'<h2>1 · Situación curricular declarada</h2>'+
+    '<div class="res"><div><b>'+mg.ap+'</b> aprobadas</div><div><b>'+mg.rep+'</b> reprobadas</div><div><b>'+mg.pen+'</b> pendientes</div><div>Malla: <b>'+mg.plan+'</b></div></div>'+
+    '<div class="leg"><span><i style="background:#def0e3;border-color:#1f7a48"></i>Aprobada</span><span><i style="background:#fbe0dc;border-color:#a33"></i>Reprobada</span><span><i style="background:#f6f3ec"></i>Pendiente</span></div>'+
+    mg.html+
+    '<div class="nota">Avance <b>declarado por el estudiante</b> en la app. '+(mg.pref==="S"?"S = semestre":"N = nivel trimestral")+' · nombres abreviados por espacio; el detalle completo está en UApp.</div>';
+  cuerpo+='<h2>2 · Ramos que solicita inscribir</h2>';
+  if(!det.length){
+    cuerpo+='<div class="nota">El estudiante aún no seleccionó secciones en <b>Horarios</b>. Este documento debe generarse con la combinación elegida.</div>';
+  }else{
+    var filas="";det.forEach(function(r){
+      var pr=(r.estado==="ok")?'<span class="tag alerta">✗ ya aprobado</span>'
+             :(r.prerreq===null)?"—":(r.prerreq?'<span class="tag si">✓ cumple</span>':'<span class="tag alerta">✗ revisar</span>');
+      var esAuto=sinClases(r.ses);
+      var hor=esAuto?'<i style="color:#6b6660">Sin horario de clases · actividad autónoma</i>'
+              :_e(r.ses.map(function(se){return (DIAS[se[0]]||se[0]).slice(0,3)+" "+se[1]+"–"+se[2];}).join(" · ")||"—");
+      var nrcTxt=(r.nrc&&r.nrc.length)?r.nrc.join(" / "):'<span style="color:#a33">por asignar</span>';
+      var modTxt=(r.mods&&r.mods.length)?' <span style="font-size:9px;color:#6b6660">'+_e(r.mods.join("+"))+"</span>":"";
+      var anio=(r.nivel!=null)?Math.ceil(r.nivel/(mg.reg==="tri"?3:2)):null;
+      filas+="<tr><td><b>"+nrcTxt+"</b>"+modTxt+"</td><td>"+_e(r.nombre)+"</td><td>"+_e(r.nivel==null?"—":r.nivel)+(anio?'<br><span style="font-size:9px;color:#6b6660">'+anio+"º año</span>":"")+"</td><td>"+_e(r.cred||"—")+"</td><td>"+hor+"</td><td>"+pr+"</td></tr>";
+    });
+    cuerpo+='<table><tr><th style="width:64px">NRC</th><th>Asignatura</th><th>Nivel</th><th>SCT</th><th>Horario</th><th>Prerrequisitos</th></tr>'+filas+"</table>"+
+      '<div class="nota">El <b>NRC</b> es el código con el que se inscribe cada sección en el sistema de la Universidad. Cuando un ramo tiene dos, corresponden a sus componentes presencial y online: se inscriben ambos.</div>';
+
+    var regla=(mg.reg==="tri")?"Res. de Rectoría 009/2024, art. 17 (régimen trimestral)":"Reglamento General del Estudiante, art. 17 (régimen semestral)";
+    cuerpo+='<h2>3 · Verificaciones de la aplicación</h2><table>'+
+      '<tr><td>Coincidencias de horario no autorizables</td><td>'+(V.choques.length?'<span class="tag alerta">✗ '+V.choques.join(" · ")+'</span>':'<span class="tag si">✓ Ninguna</span>')+"</td></tr>"+
+      (V.solic.length?'<tr><td><b>Coincidencia horaria que requiere autorización</b><br><span style="font-size:9.6px;color:#6b6660">Circular N°05/2026, art. 7 — se autoriza excepcionalmente una coincidencia, presencial o sincrónica, con límite del 50% de las horas semanales de ambas asignaturas.</span></td><td>'+
+        '<span class="tag sol">📝 '+V.solic.length+' por autorizar</span><ul class="obs">'+
+        V.solic.map(function(s){return "<li>"+s.txt+"<br><span style='color:#6b6660'>"+s.dias+" "+s.t0+"–"+s.t1+" · "+s.min+" min · "+s.pct+"% de la asignatura · dentro del 50% permitido</span></li>";}).join("")+
+        "</ul></td></tr>":"")+
+      '<tr><td>Prerrequisitos según el avance declarado<br><span style="font-size:9.6px;color:#6b6660">Circular N°05/2026, art. 4 — solo se aceptan solicitudes que cumplan íntegramente los prerrequisitos</span></td><td>'+(V.faltaPr?'<span class="tag alerta">✗ '+V.faltaPr+' ramo(s) por revisar</span>':'<span class="tag si">✓ Todos cumplen</span>')+"</td></tr>"+
+      '<tr><td><b>Ramos solicitados que ya figuran aprobados en el avance declarado</b><br><span style="font-size:9.6px;color:#6b6660">Inconsistencia entre lo declarado y lo solicitado: revisar con el registro académico.</span></td><td>'+
+        (V.yaAprob.length?'<span class="tag alerta">✗ '+V.yaAprob.length+'</span><ul class="obs">'+V.yaAprob.map(function(r){return "<li>"+_e(r.nombre)+"</li>";}).join("")+"</ul>":'<span class="tag si">✓ Ninguno</span>')+"</td></tr>"+
+      '<tr><td>Niveles distintos en la selección ('+V.nNiv+') — tope '+V.tope+'<br><span style="font-size:9.6px;color:#6b6660">'+_e(regla)+
+        '. El rango de niveles consecutivos está previsto para recuperar asignaturas pendientes, no para adelantar niveles superiores al que se cursa.</span></td><td>'+
+        (V.adelantados&&V.adelantados.length
+          ? '<span class="tag alerta">✗ '+V.adelantados.length+' por sobre el nivel que cursa</span><ul class="obs">'+
+            V.adelantados.map(function(r){return "<li>"+_e(r.nombre)+" (nivel "+r.nivel+")</li>";}).join("")+"</ul>"
+          : (V.nNiv>V.tope?'<span class="tag alerta">✗ Excede el tope</span>':'<span class="tag si">✓ Dentro del tope</span>'))+"</td></tr>"+
+      '<tr><td>Créditos seleccionados<br><span style="font-size:9.6px;color:#6b6660">Circular N°05/2026, art. 10 — máximo 30 SCT, sujeto a autorización</span></td><td><b>'+V.sct+' SCT</b>'+(V.excedeSCT?' <span class="tag alerta">— sobre el máximo de 30 SCT</span>':' <span class="tag si">✓ dentro del máximo</span>')+"</td></tr>"+
+      '<tr><td><b>Ramos reprobados con oferta que no está reinscribiendo</b><br><span style="font-size:9.6px;color:#6b6660">Circular N°05/2026, art. 3 — las asignaturas reprobadas que se oferten deben inscribirse obligatoriamente.</span></td><td>'+
+        (obs.repro.length
+          ? '<span class="tag alerta">✗ '+obs.repro.length+' omitido'+(obs.repro.length===1?"":"s")+'</span><ul class="obs">'+obs.repro.map(function(c){return "<li>"+_e(c.n)+" ("+(mg.pref==="S"?"semestre ":"nivel ")+c.t+")</li>";}).join("")+"</ul>"
+          : '<span class="tag si">✓ Ninguno</span>')+"</td></tr>"+
+      '<tr><td><b>Ramos pendientes del '+(mg.pref==="S"?"semestre":"nivel")+' más atrasado que no incluye</b><br><span style="font-size:9.6px;color:#6b6660">Circular N°05/2026, art. 2 — deben inscribirse en primer término las asignaturas pendientes del nivel más bajo.</span></td><td>'+
+        (obs.atras.length
+          ? '<span class="tag alerta">✗ '+obs.atras.length+' sin inscribir</span><ul class="obs">'+obs.atras.map(function(c){return "<li>"+_e(c.n)+"</li>";}).join("")+"</ul>"
+          : '<span class="tag si">✓ Ninguno</span>')+"</td></tr></table>"+
+      (function(){ var T=_tercerasGuardadas().filter(function(x){return det.some(function(r){return r.id===x;});});
+         return T.length?'<div class="nota" style="border-left-color:#a33"><b>Tercera oportunidad declarada</b> (Circular N°05/2026, art. 8 — sin coincidencias): '+
+           T.map(function(id){var r=det.filter(function(x){return x.id===id;})[0];return r?_e(r.nombre):"";}).filter(Boolean).join(", ")+'</div>':""; })()+
+      (V.solic.length&&!nObs?'<div class="nota"><b>Lectura:</b> la selección respeta todas las directrices de toma de carga. El único punto pendiente es la autorización del tope de horario indicado, que la normativa contempla expresamente para el ciclo correspondiente. Corresponde a la Dirección de Carrera resolverlo.</div>':"")+
+      (nObs?'<div class="nota"><b>Lectura de las observaciones:</b> la aplicación no impide presentar esta solicitud, pero deja constancia de lo que no calza con las directrices de toma de carga. Corresponde a la Dirección de Carrera resolver si autoriza la excepción.</div>':"");
+  }
+  try{ window.__lastRespaldo={det:det,V:V,obs:obs,nObs:nObs,mg:mg}; }catch(e){}
+  var firma='<div class="firma"><div>Nombre del estudiante</div><div>RUT</div><div>Firma</div></div>';
+  if(docRespaldo._silencioso)return;          /* solo se querían los cálculos */
+  imprimirDoc("Respaldo de planificación de carga académica",_jLabel(),cuerpo,firma);
+  if(typeof logInteraccion==="function")logInteraccion("planificador","descargar respaldo");
+}
 const BL_TECH=[["19:10","19:50"],["19:50","20:30"],["20:40","21:20"],["21:20","22:00"],["22:10","22:50"]];
 const HOR_TECH={
- n2s1:{l:"1er año (Nivel 2) · Sección 1",s:[["L","19:10","21:20","Teoría de la Ley y las Personas","SH-32","Hernán Parada Sotomayor"],["M","19:10","20:30","Historia Institucional de Chile","SH-32","Mauricio Silva Kachele"],["M","20:40","22:00","Historia y Evolución de las Instituciones","SH-32","Jorge Reinoso Elgueda"],["X","19:10","21:20","Teoría de la Ley y las Personas","SH-32","Hernán Parada Sotomayor"],["J","19:10","20:30","Historia y Evolución de las Instituciones","SH-32","Jorge Reinoso Elgueda"],["J","20:40","22:00","Historia Institucional de Chile","SH-32","Mauricio Silva Kachele"],["V","19:10","21:20","Comunicación y Argumentación","—","—"]]},
- n2s2:{l:"1er año (Nivel 2) · Sección 2",s:[["L","19:10","20:30","Historia Institucional de Chile","SH-33","Mauricio Silva Kachele"],["L","20:40","22:00","Teoría de la Ley y las Personas","SH-33","Carlos Manque Pérez"],["M","19:10","20:30","Historia y Evolución de las Instituciones","SH-33","Eliada Cid Sandoval"],["M","20:40","22:00","Teoría de la Ley y las Personas","SH-33","Carlos Manque Pérez"],["X","19:10","20:30","Historia y Evolución de las Instituciones","SH-33","Eliada Cid Sandoval"],["X","20:40","22:00","Teoría de la Ley y las Personas","SH-33","Carlos Manque Pérez"],["J","19:10","20:30","Historia Institucional de Chile","SH-33","Mauricio Silva Kachele"],["V","19:10","21:20","Comunicación y Argumentación","—","—"]]},
- n2s3:{l:"1er año (Nivel 2) · Sección 3",s:[["L","19:10","22:00","Historia y Evolución de las Instituciones","SH-34","Jorge Roa Rioseco"],["M","19:10","22:00","Teoría de la Ley y las Personas","SH-34","Daniel Sánchez Carrasco"],["X","19:10","20:30","Teoría de la Ley y las Personas","SH-34","Daniel Sánchez Carrasco"],["J","19:10","22:00","Historia Institucional de Chile","SC-27","Jorge Reinoso Méndez"],["V","19:10","20:30","Comunicación y Argumentación","SC-27","—"]]},
- n5s1:{l:"2º año (Nivel 5) · Sección 1",s:[["L","19:10","20:30","Teoría del Proceso","SH-41","Andrés Celedón Baeza"],["L","20:40","22:00","Teoría de la Reacción Penal","SH-41","Klaus Contreras Sierra"],["M","19:10","20:30","Teoría del Proceso","SH-41","Andrés Celedón Baeza"],["M","20:40","22:00","Derecho Constitucional Orgánico","SH-41","Sahady Espinoza Soto"],["X","19:50","22:00","Teoría de la Reacción Penal","SH-41","Klaus Contreras Sierra"],["J","19:10","20:30","Teoría del Proceso","—","Andrés Celedón Baeza"],["J","20:40","22:00","Derecho Constitucional Orgánico","—","Sahady Espinoza Soto"],["V","19:10","21:20","Aprendizaje Activo","—","—"]]},
- n5s2:{l:"2º año (Nivel 5) · Sección 2",s:[["L","19:10","22:00","Teoría del Proceso","SH-42","Francisca Game Musante"],["M","19:10","20:30","Teoría del Proceso","SH-42","Francisca Game Musante"],["M","20:40","22:00","Teoría de la Reacción Penal","SH-42","Camila Fernández Rodríguez"],["X","19:10","22:00","Derecho Constitucional Orgánico","SH-42","Sergio Arévalo Waddington"],["J","19:10","21:20","Teoría de la Reacción Penal","—","Camila Fernández Rodríguez"],["V","19:10","21:20","Aprendizaje Activo","—","—"]]},
- n8s1:{l:"3er año (Nivel 8) · Sección 1",s:[["L","19:10","22:00","Fuentes de las Obligaciones","SH-43","Daniel Sánchez Carrasco"],["M","19:10","22:00","Delitos en Particular II","SH-43","Fernando Cartes Sepúlveda"],["X","19:10","22:00","Derecho Individual del Trabajo","SH-43","Genoveva Gutiérrez Sepúlveda"],["J","19:10","20:30","Delitos en Particular II","—","Fernando Cartes Sepúlveda"],["J","20:40","22:00","Fuentes de las Obligaciones","—","Daniel Sánchez Carrasco"],["V","19:10","21:20","Desarrollo Personal y Plan de Vida","—","—"]]},
- n8s2:{l:"3er año (Nivel 8) · Sección 2",s:[["L","19:10","22:00","Fuentes de las Obligaciones","TEC SH-22","Marcelo Neculmán Muñoz"],["M","19:10","22:00","Delitos en Particular II","mismo Sec 1","Fernando Cartes Sepúlveda"],["X","19:10","22:00","Derecho Individual del Trabajo","TEC SH-22","Cristián Larraguibel Aravena"],["J","19:10","20:30","Delitos en Particular II","mismo Sec 1","Fernando Cartes Sepúlveda"],["J","20:40","22:00","Fuentes de las Obligaciones","—","Marcelo Neculmán Muñoz"]]},
- n8pna:{l:"3er año (Nivel 8) · Plan No Ajustado",s:[["V","19:10","21:20","Redacción Forense","—","Orlando Alarcón Iturriaga"]]},
- n11s1:{l:"4º año (Nivel 11) · Plan Ajustado · Sec 1",s:[["L","19:10","22:00","Contratación Mercantil","SH-45","Jean Paul Thiers Thiers"],["M","19:10","20:30","Derecho Procesal Penal","SH-45","Reinaldo Osorio Ulloa"],["M","20:40","22:00","Derecho Administrativo I","SH-45","Roberto Contreras Eddinger"],["X","19:10","20:30","Derecho Sucesorio","TEC SH-23","Marcia Molina Pezoa"],["X","20:40","22:00","Derecho Administrativo I","TEC SH-23","Roberto Contreras Eddinger"],["J","19:10","21:20","Derecho Sucesorio","—","Marcia Molina Pezoa"],["V","19:10","22:00","Derecho Procesal Penal","—","Reinaldo Osorio Ulloa"]]},
- n11pna:{l:"4º año (Nivel 11) · Plan No Ajustado",s:[["L","19:10","22:00","Derecho Sociedades","TEE SH-42","Felipe Maturana Ortiz"],["J","21:20","22:00","Derecho Sociedades","—","Felipe Maturana Ortiz"],["V","19:10","21:20","Responsabilidad Social e Innovación","—","—"]]},
- n14pna:{l:"5º año (Nivel 14) · Plan No Ajustado",s:[["L","19:10","22:00","Recursos","SH-44","Francisco Ljubetic Romero"],["M","19:10","22:00","Optativo de Especialidad I","SH-44","Marcelo Neculmán Muñoz"],["X","19:10","20:30","Reorganización y Liquidación Patrimonial","SH-44","Gonzalo Meza Osses"],["X","20:40","22:00","Derecho Tributario I","SH-44","Roxana Obreque Espinoza"],["J","19:10","21:20","Derecho Tributario I","—","Roxana Obreque Espinoza"],["J","21:20","22:00","Recursos","SH-32","Francisco Ljubetic Romero"],["V","19:10","20:30","Reorganización y Liquidación Patrimonial","—","Gonzalo Meza Osses"]]},
- n14s1:{l:"5º año (Nivel 14) · Plan Ajustado · Sec 1",s:[["L","19:10","22:00","Taller de Integración III","SC-35","Carlos Durán y Juan Castro"],["M","19:10","22:00","Taller de Integración III","TEC SH-22","Carlos Durán y Juan Castro"],["J","19:10","22:50","Seminario de Investigación Jurídica","—","Valeska Rivas Arias"],["V","19:10","22:00","Taller de Integración III","—","Carlos Durán y Juan Castro"]]},
- n14s2:{l:"5º año (Nivel 14) · Plan Ajustado · Sec 2",s:[["J","19:10","22:50","Seminario de Investigación Jurídica","—","Francisca Game Musante"]]},
- n1alt:{l:"1er año (Nivel 1) · Alterno · Sección 1",s:[["L","19:10","20:30","Introducción al Derecho","TEE SC-24","Carlos Manque Pérez"],["M","19:10","20:30","Introducción al Derecho","TEE SC-24","Carlos Manque Pérez"],["J","19:10","20:30","Introducción al Derecho","—","Carlos Manque Pérez"],["L","20:40","22:00","Historia del Derecho","TEE SH-11","Mauricio Silva Kachele"],["V","19:10","20:30","Historia del Derecho","—","Mauricio Silva Kachele"],["M","20:40","22:00","Derecho Político","TEE SC-24","Cristián Brito Valdebenito"],["X","20:40","22:00","Derecho Político","TEE SH-43","Cristián Brito Valdebenito"]]},
- n7alt:{l:"3er año (Nivel 7) · Alterno · Sección 1",s:[["L","19:10","21:20","Procedimientos Civiles de Cognición","TEE SH-33","Felipe Núñez Méndez"],["X","19:10","21:20","Procedimientos Civiles de Cognición","TEA SH-34","Felipe Núñez Méndez"]]}
+ n3s1:{l:"2º año (Nivel 3) · Sección 1",s:[["L","19:10","21:20","Argumentación Jurídica y Debate","TEA SH-32","Roa Rioseco Jorge",12,"11409","Presencial"],["M","19:10","20:30","Introducción a la Economía","TEA SH-32","Brito Valdebenito Cristian",10,"11418","Presencial"],["M","20:40","22:00","Introducción a la Economía","TEA SH-32","Brito Valdebenito Cristian",10,"11419","Presencial"],["X","19:10","22:00","Teoría Constitucional","TEA SH-32","Espinoza Soto Sahady",11,"11424","Presencial"],["J","19:10","21:20","Fundamentos Filosóficos del Derecho","—","Reinoso Elgueda Jorge",9,"11416","Online"],["J","21:20","22:00","Fundamentos Filosóficos del Derecho","—","Reinoso Elgueda Jorge",9,"11417","Online"],["V","19:10","20:30","Teoría Constitucional","—","Espinoza Soto Sahady",11,"11425","Online"]]},
+ n3s2:{l:"2º año (Nivel 3) · Sección 2",s:[["L","19:10","20:30","Introducción a la Economía","TEA SH-33","Brito Valdebenito Cristian",10,"11420","Presencial"],["L","20:40","22:00","Introducción a la Economía","TEA SH-33","Brito Valdebenito Cristian",10,"11421","Presencial"],["M","19:10","21:20","Teoría Constitucional","TEA SH-33","Arévalo Waddington Sergio",11,"11426","Presencial"],["X","19:10","19:50","Teoría Constitucional","TEA SH-33","Arévalo Waddington Sergio",11,"11426","Presencial"],["X","19:50","21:20","Teoría Constitucional","TEA SH-33","Arévalo Waddington Sergio",11,"11427","Presencial"],["J","19:10","21:20","Fundamentos Filosóficos del Derecho","—","Reinoso Mendez Jorge",9,"11412","Online"],["J","21:20","22:00","Fundamentos Filosóficos del Derecho","—","Reinoso Mendez Jorge",9,"11413","Online"],["V","19:10","21:20","Argumentación Jurídica y Debate","—","Roa Rioseco Jorge",12,"11410","Online"]]},
+ n3s3:{l:"2º año (Nivel 3) · Sección 3",s:[["L","19:10","21:20","Fundamentos Filosóficos del Derecho","TEA SH-34","Reinoso Mendez Jorge",9,"11414","Presencial"],["L","21:20","22:00","Fundamentos Filosóficos del Derecho","TEA SH-34","Reinoso Mendez Jorge",9,"11415","Presencial"],["M","19:10","21:20","Argumentación Jurídica y Debate","TEA SH-34","Roa Rioseco Jorge",12,"11411","Presencial"],["X","20:40","22:00","Argumentación Jurídica y Debate","TEA SH-34","Larraguibel Aravena Cristian",12,"11408","Presencial"],["J","19:10","20:30","Introducción a la Economía","—","Brito Valdebenito Cristian",10,"11422","Online"],["J","20:40","22:00","Introducción a la Economía","—","Brito Valdebenito Cristian",10,"11423","Online"],["V","19:10","19:50","Argumentación Jurídica y Debate","—","Larraguibel Aravena Cristian",12,"11408","Online"]]},
+ n5alt:{l:"2º año (Nivel 5) · Alterna",s:[["L","19:10","20:30","Teoría del Proceso","TEC SH-23","Nuñez Mendez Felipe Alejandro",17,"12220","Presencial"],["X","19:10","20:30","Teoría del Proceso","TEE SH-51","Nuñez Mendez Felipe Alejandro",17,"12220","Presencial"],["V","19:10","20:30","Teoría del Proceso","—","Nuñez Mendez Felipe Alejandro",17,"12220","Online"]]},
+ n6s1:{l:"2º año (Nivel 6) · Sección 1",s:[["L","19:10","20:30","Derechos y Garantías Constitucionales","TEA SH-41","Espinoza Soto Sahady",22,"11434","Presencial"],["L","20:40","22:00","Derechos y Garantías Constitucionales","TEA SH-41","Espinoza Soto Sahady",22,"11435","Presencial"],["M","19:10","21:20","Derecho Internacional Público","TEA SH-41","Vallejos Roa Liz",23,"11432","Presencial"],["X","19:10","20:30","Taller de Integración I (Ev. Ciclo)","TEA SH-41","Game Musante Francisca",24,"11438","Presencial"],["X","20:40","22:00","Bienes","TEA SH-41","Castro Saavedra Juan",21,"11430","Presencial"],["J","19:10","20:30","Bienes","—","Castro Saavedra Juan",21,"11430","Online"],["J","20:40","22:00","Bienes","—","Castro Saavedra Juan",21,"11431","Online"],["V","19:10","22:00","Taller de Integración I (Ev. Ciclo)","—","Game Musante Francisca",24,"11438","Online"]]},
+ n6s2:{l:"2º año (Nivel 6) · Sección 2",s:[["L","19:10","22:00","Taller de Integración I (Ev. Ciclo)","TEA SH-42","Rodriguez Cañete Paula",24,"11439","Presencial"],["M","19:10","20:30","Bienes","TEA SH-42","Neculmán Muñoz Marcelo",21,"11428","Presencial"],["M","20:40","22:00","Taller de Integración I (Ev. Ciclo)","TEA SH-42","Rodriguez Cañete Paula",24,"11439","Presencial"],["X","19:10","21:20","Derecho Internacional Público","TEA SH-42","Vallejos Roa Liz",23,"11433","Presencial"],["J","19:10","20:30","Derechos y Garantías Constitucionales","—","Espinoza Soto Sahady",22,"11436","Online"],["J","20:40","22:00","Derechos y Garantías Constitucionales","—","Espinoza Soto Sahady",22,"11437","Online"],["V","19:10","19:50","Bienes","—","Neculmán Muñoz Marcelo",21,"11428","Online"],["V","19:50","22:00","Bienes","—","Neculmán Muñoz Marcelo",21,"11429","Online"]]},
+ n6pna:{l:"2º año (Nivel 6) · Plan No Ajustado",s:[["X","19:10","21:20","Electivo de Desarrollo Personal","VIRTUAL","—",24,"11388","Sin clases"]]},
+ n9s1:{l:"3er año (Nivel 9) · Sección 1",s:[["L","19:10","20:30","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-43","Gutiérrez Sepúlveda Genoveva",34,"11440","Presencial"],["L","20:40","22:00","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-43","Gutiérrez Sepúlveda Genoveva",34,"11441","Presencial"],["M","19:10","21:20","Procedimientos de Ejecución y Cautela","TEA SH-43","Celedón Baeza Andrés",32,"11448","Presencial"],["X","19:10","20:30","Derecho Mercantil","TEA SH-43","Jean Paul Thiers Thiers",33,"11446","Presencial"],["X","20:40","22:00","Derecho Mercantil","TEA SH-43","Jean Paul Thiers Thiers",33,"11447","Presencial"],["J","19:10","21:20","Procedimientos de Ejecución y Cautela","—","Celedón Baeza Andrés",32,"11449","Online"],["V","19:10","20:30","Electivo de Responsabilidad Social","VIRTUAL","—",35,"11452","Sin clases"],["V","20:40","21:20","Electivo de Responsabilidad Social","VIRTUAL","—",35,"11453","Sin clases"]]},
+ n9s2:{l:"3er año (Nivel 9) · Sección 2",s:[["L","19:10","20:30","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-44","Sáez Paredes Fernando",34,"11442","Presencial"],["L","20:40","22:00","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-44","Sáez Paredes Fernando",34,"11443","Presencial"],["M","19:10","21:20","Procedimientos de Ejecución y Cautela","TEA SH-44","Osorio Ulloa Reinaldo",32,"11450","Presencial"],["J","19:10","21:20","Procedimientos de Ejecución y Cautela","—","Osorio Ulloa Reinaldo",32,"11451","Online"]]},
+ n9pna:{l:"3er año (Nivel 9) · Plan No Ajustado",s:[["L","19:10","20:30","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-43","Gutiérrez Sepúlveda Genoveva",34,"11440","Presencial"],["L","20:40","22:00","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-43","Gutiérrez Sepúlveda Genoveva",34,"11441","Presencial"],["M","19:10","21:20","Procedimientos de Ejecución y Cautela","TEA SH-44","Osorio Ulloa Reinaldo",32,"11450","Presencial"],["X","19:10","20:30","Derecho Económico","TEA SH-44","Maturana Ortiz Felipe",33,"11444","Presencial"],["X","20:40","22:00","Derecho Económico","TEA SH-44","Maturana Ortiz Felipe",33,"11445","Presencial"],["J","19:10","21:20","Procedimientos de Ejecución y Cautela","—","Osorio Ulloa Reinaldo",32,"11451","Online"],["V","19:10","21:20","Electivo de Ética","VIRTUAL","—",30,"11392","Sin clases"]]},
+ n12s1:{l:"4º año (Nivel 12) · Plan Ajustado",s:[["L","19:10","20:30","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45,"11454","Presencial"],["L","20:40","21:20","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45,"11455","Presencial"],["M","19:10","21:20","Procedimientos Especiales Orales","TEA SH-45","Alarcón Iturriaga Orlando",44,"11461","Presencial"],["M","21:20","22:00","Optativo de Especialidad I","TEA SH-45","Neculman Muñoz Marcelo",48,"11460","Presencial"],["X","19:10","22:00","Taller de Integración II (Ev. Ciclo)","TEA SH-45","Molina Pezoa Marcia",47,"11463","Presencial"],["J","19:10","20:30","Derecho Tributario I","—","Maturana Lanza Carlos",46,"11458","Online"],["J","20:40","21:20","Derecho Tributario I","—","Maturana Lanza Carlos",46,"11459","Online"],["J","21:20","22:50","Optativo de Especialidad I","—","Neculman Muñoz Marcelo",48,"11460","Online"],["V","19:10","20:30","Taller de Integración II (Ev. Ciclo)","—","Molina Pezoa Marcia",47,"11463","Online"],["V","20:40","22:00","Procedimientos Especiales Orales","—","Alarcón Iturriaga Orlando",44,"11462","Online"]]},
+ n12pna:{l:"4º año (Nivel 12) · Plan No Ajustado",s:[["L","19:10","20:30","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45,"11454","Presencial"],["L","20:40","21:20","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45,"11455","Presencial"],["M","19:10","21:20","Procedimientos Especiales Orales (Ev. Ciclo)","TEA SH-45","Alarcón Iturriaga Orlando",43,"11461","Presencial"],["X","19:10","20:30","Derecho Sucesorio","TEC SH-21","Pacheco Cornejo Hellen",42,"11456","Presencial"],["X","20:40","22:00","Derecho Sucesorio","TEC SH-21","Pacheco Cornejo Hellen",42,"11457","Presencial"],["J","19:10","20:30","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11464","Online"],["J","20:40","21:20","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11465","Online"],["V","19:10","19:50","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11465","Online"],["V","19:50","20:30","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11466","Online"],["V","20:40","22:00","Procedimientos Especiales Orales (Ev. Ciclo)","—","Alarcón Iturriaga Orlando",43,"11462","Online"]]},
+ n15s1:{l:"5º año (Niveles 14-15) · Plan Ajustado",note:"El Taller de Integración III se cursa a lo largo de dos trimestres (14 y 15).",s:[["L","19:10","22:00","Taller de Integración III (Ev. Ciclo)","TEC SH-21","Castro Saavedra Juan",54,"12412","Presencial"],["M","19:10","22:00","Taller de Integración III (Ev. Ciclo)","TEC SH-21","Castro Saavedra Juan",54,"12412","Presencial"],["V","19:10","22:00","Taller de Integración III (Ev. Ciclo)","VIRTUAL","Castro Saavedra Juan",54,"12412","Online"]]},
+ n15pna:{l:"5º año (Niveles 14-15) · Plan No Ajustado",s:[["L","19:10","20:30","Taller de Litigación Avanzada (Ev. Ciclo)","TEC SH-22","Contreras Sierra Klaus Evelyn",58,"11475","Presencial"],["L","20:40","22:00","Taller de Litigación Avanzada (Ev. Ciclo)","TEC SH-22","Contreras Sierra Klaus Evelyn",58,"11476","Presencial"],["M","19:10","21:20","Seminario de Tesis","SALA VIRTUAL","Leon Silva Glorimar",55,"11471","Online"],["X","19:10","20:30","Optativo de Especialidad II","TEC SH-22","Celedón Baeza Andrés",54,"11469","Presencial"],["X","20:40","22:00","Optativo de Especialidad II","TEC SH-22","Celedón Baeza Andrés",54,"11470","Presencial"],["J","19:10","21:20","Derecho Tributario II","—","Roxana Obreque Espinoza",57,"11467","Online"],["J","21:20","22:00","Derecho Tributario II","—","Roxana Obreque Espinoza",57,"11468","Online"],["V","19:10","19:50","Derecho Tributario II","—","Roxana Obreque Espinoza",57,"11468","Online"],["V","19:50","22:00","Seminario de Tesis","SALA VIRTUAL","Leon Silva Glorimar",55,"11473","Online"]]},
+ n15tes:{l:"5º año (Niveles 14-15) · Solo Seminario de Tesis",s:[["L","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","El Fakih Rodriguez Fatima",55,"11850","Online"],["L","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","El Fakih Rodriguez Fatima",55,"11851","Online"],["M","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","Oñate Henriquez Jaime",55,"11852","Online"],["M","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","Oñate Henriquez Jaime",55,"11853","Online"],["X","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","Fernandez Miguez Sheila",55,"11854","Online"],["X","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","Fernandez Miguez Sheila",55,"11855","Online"],["J","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","Ojeda Zavala Nicolas",55,"11856","Online"],["J","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","Ojeda Zavala Nicolas",55,"11857","Online"],["V","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","Lopez Hernandez Hernan",55,"11858","Online"],["V","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","Lopez Hernandez Hernan",55,"11859","Online"]]}
 };
+
+
+
+
+
+
 const horList=document.getElementById("horList");
 function buildTable(data,key,sel){
   const _m=t=>{const p=String(t).split(":");return (+p[0])*60+(+p[1]);};
@@ -1169,17 +2006,26 @@ function buildTable(data,key,sel){
   const endIdx=t=>{let e=-1;BL.forEach((b,i)=>{if(_m(b[0])<_m(t))e=i;});return e;};
   let maxRow=0;
   const grid={};Object.keys(DIAS).forEach(d=>grid[d]=Array(BL.length).fill(null));
-  data.forEach(([d,ini,fin,ramo,sala,profe,sid])=>{const a=idx(ini);let b=endIdx(fin);if(a<0)return;if(b<a)b=a;maxRow=Math.max(maxRow,b);grid[d][a]={ramo,sala,profe,sid,span:b-a+1};for(let k=a+1;k<=b;k++)grid[d][k]={cont:true};});
+  data.forEach(([d,ini,fin,ramo,sala,profe,sid,nrc,mod])=>{if(mod==="Sin clases")return;const a=idx(ini);let b=endIdx(fin);if(a<0)return;if(b<a)b=a;maxRow=Math.max(maxRow,b);grid[d][a]={ramo,sala,profe,sid,nrc,mod,span:b-a+1};for(let k=a+1;k<=b;k++)grid[d][k]={cont:true};});
   /* recorte visual: primera y última fila con algún contenido (evita mostrar mañanas/tardes vacías) */
   let firstRow=0, lastRow=maxRow, found=false;
   for(let i=0;i<=maxRow;i++){const any=Object.keys(DIAS).some(d=>grid[d][i]);if(any){if(!found){firstRow=i;found=true;}lastRow=i;}}
   if(!found){firstRow=0;lastRow=-1;}
-  let h='<div class="hwrap"><table class="hortbl"><thead><tr><th class="th-h">Hora</th>';
+  /* Reparto de ancho: los días sin sesiones quedan angostos y los que sí tienen
+     clases se reparten el espacio sobrante en partes iguales. */
+  const _dias=Object.keys(DIAS);
+  const _usado={}; _dias.forEach(d=>{_usado[d]=grid[d].some(c=>c);});
+  const _nU=_dias.filter(d=>_usado[d]).length||_dias.length;
+  const _nV=_dias.length-_nU;
+  const _wV=5, _wU=(91-_wV*_nV)/_nU;
+  let h='<div class="hwrap"><table class="hortbl"><colgroup><col style="width:9%">'+
+        _dias.map(d=>'<col style="width:'+((_usado[d]||_nU===_dias.length)?_wU:_wV).toFixed(2)+'%">').join("")+
+        '</colgroup><thead><tr><th class="th-h">Hora</th>';
   Object.values(DIAS).forEach(n=>h+=`<th>${n}</th>`);
   h+='</tr></thead><tbody>';
   for(let i=firstRow;i<=lastRow;i++){
     h+=`<tr><td class="th-h tm2">${BL[i][0]}<br>${BL[i][1]}</td>`;
-    Object.keys(DIAS).forEach(d=>{const c=grid[d][i];if(c&&c.cont)return;if(c){const id=sel?((c.sid!=null)?c.sid:OFER[c.ramo]):undefined;const selc=sel&&id!=null;const on=selc&&insc[id]===key;h+=`<td rowspan="${c.span}" class="cell${selc?' selc':''}${on?' selon':''}"${selc?` data-id="${id}" data-key="${key}" tabindex="0" role="button" aria-pressed="${on?'true':'false'}" aria-label="${c.ramo}. ${DIAS[d]} de ${BL[i][0]} a ${BL[i+c.span-1][1]}. ${on?'Seleccionado':'Tocar para seleccionar'}"`:''}>${on?'<span class="selck">✓</span>':''}<span class="cr">${c.ramo}</span>${c.sala&&c.sala!=="—"?`<span class="cs">${c.sala}</span>`:""}${c.profe&&c.profe!=="—"?`<span class="cp">${c.profe}</span>`:""}</td>`;}else h+="<td></td>";});
+    Object.keys(DIAS).forEach(d=>{const c=grid[d][i];if(c&&c.cont)return;if(c){const id=sel?((c.sid!=null)?c.sid:OFER[c.ramo]):undefined;const selc=sel&&id!=null;const on=selc&&insc[id]===key;h+=`<td rowspan="${c.span}" class="cell${selc?' selc':''}${on?' selon':''}"${selc?` data-id="${id}" data-key="${key}" tabindex="0" role="button" aria-pressed="${on?'true':'false'}" aria-label="${c.ramo}. ${DIAS[d]} de ${BL[i][0]} a ${BL[i+c.span-1][1]}. ${on?'Seleccionado':'Tocar para seleccionar'}"`:''}>${on?'<span class="selck">✓</span>':''}<span class="cr">${c.ramo}</span>${c.nrc?`<span class="cn">NRC ${c.nrc}${c.mod?" · "+c.mod:""}</span>`:(c.mod?`<span class="cn">${c.mod}</span>`:"")}${c.sala&&c.sala!=="—"?`<span class="cs">${c.sala}</span>`:""}${c.profe&&c.profe!=="—"?`<span class="cp">${c.profe}</span>`:""}</td>`;}else h+="<td></td>";});
     h+="</tr>";
   }
   return h+"</tbody></table></div>";
@@ -1215,26 +2061,80 @@ function renderHorTally(){
     if(!Object.keys(insc).length)return;
     insc={};saveInsc();
     if(typeof showHorMsg==='function')showHorMsg("🧹 Selección vaciada. Puedes empezar de nuevo.","info");
-    renderAllHor();renderHorTally();
+    refrescaHor();renderHorTally();
   };
 }
-let horMode="all";
+let horMode="fit";
 /* --- Detección de coincidencia horaria entre ramos piqueados (bloqueo total) --- */
 function _pmH(t){const p=String(t).split(":");return (+p[0])*60+(+p[1]);}
 function sessionsOf(id,key){const blk=HOR[key];if(!blk)return [];return blk.s.filter(se=>{const sid=(se[6]!=null)?se[6]:OFER[se[3]];return sid===id;});}
-function overlaps(a,b){return a[0]===b[0] && _pmH(a[1])<_pmH(b[2]) && _pmH(b[1])<_pmH(a[2]);}
+function overlaps(a,b){
+  if(a&&a[8]==="Sin clases")return false;
+  if(b&&b[8]==="Sin clases")return false;return a[0]===b[0] && _pmH(a[1])<_pmH(b[2]) && _pmH(b[1])<_pmH(a[2]);}
 /* devuelve el primer ramo ya inscrito que choca con (id,key), o null */
+/* Los electivos de formación general aparecen en el horario solo para recordar
+   que hay que inscribirlos: son actividades autónomas, sin clase en sala.
+   Por eso no ocupan el bloque y no pueden chocar con otro ramo. */
+function sinClases(ses){ return Array.isArray(ses)&&ses.length>0&&ses.every(function(s){ return s[8]==="Sin clases"; }); }
+/* Minutos semanales de una selección (para el criterio del 50%) */
+function _minSem(ses){
+  var t=0;(ses||[]).forEach(function(s){ if(s[8]!=="Sin clases")t+=_pmH(s[2])-_pmH(s[1]); });
+  return t||1;
+}
+/* Clasifica el cruce entre dos ramos según las directrices de la Carrera:
+   · presencial (lun–mié)  → no autorizable fuera de 5º año  → bloquea
+   · online y ≤50% semanal de ambos → tope solicitable       → permite con aviso
+   · online pero >50%      → deja una asignatura tapada      → bloquea */
+function cruceEntre(mine,other){
+  var pres=0,onl=0,dias={},t0=null,t1=null;
+  for(var i=0;i<mine.length;i++)for(var j=0;j<other.length;j++){
+    var s1=mine[i],s2=other[j];
+    if(s1[8]==="Sin clases"||s2[8]==="Sin clases")continue;
+    if(s1[0]!==s2[0])continue;
+    var a=Math.max(_pmH(s1[1]),_pmH(s2[1])), b=Math.min(_pmH(s1[2]),_pmH(s2[2]));
+    if(b>a){
+      var esOnl=(s1[0]==="J"||s1[0]==="V");
+      if(esOnl)onl+=b-a; else pres+=b-a;
+      dias[s1[0]]=1;
+      var f=function(m){return Math.floor(m/60)+":"+("0"+(m%60)).slice(-2);};
+      if(t0===null||a<t0)t0=a; if(t1===null||b>t1)t1=b;
+    }
+  }
+  if(pres+onl===0)return null;
+  var pa=(pres+onl)/_minSem(mine)*100, pb=(pres+onl)/_minSem(other)*100;
+  var f=function(m){return Math.floor(m/60)+":"+("0"+(m%60)).slice(-2);};
+  var info={min:pres+onl,pres:pres,onl:onl,pctA:pa,pctB:pb,
+            dias:Object.keys(dias),t0:f(t0),t1:f(t1)};
+  /* Circular N°05/2026, art. 7: se autoriza excepcionalmente UNA coincidencia,
+     presencial o sincrónica, con límite del 50% de las horas semanales de ambas. */
+  info.tipo=(pa<=50&&pb<=50)?"solicitable":"excede";
+  return info;
+}
+/* Topes ya presentes en la selección actual (Circular art. 7: máximo uno) */
+function topesActuales(){
+  var ids=Object.keys(insc).map(Number), out=[];
+  for(var i=0;i<ids.length;i++)for(var j=i+1;j<ids.length;j++){
+    var s1=sessionsOf(ids[i],insc[ids[i]]), s2=sessionsOf(ids[j],insc[ids[j]]);
+    if(sinClases(s1)||sinClases(s2))continue;
+    var c=cruceEntre(s1,s2);
+    if(c&&c.tipo==="solicitable")out.push({a:(s1[0]&&s1[0][3])||"",b:(s2[0]&&s2[0][3])||"",min:c.min});
+  }
+  return out;
+}
 function clashOf(id,key){
   const mine=sessionsOf(id,key);
+  if(sinClases(mine))return null;
   const ids=Object.keys(insc).map(Number);
   for(const oid of ids){
     if(oid===id)continue;
     const other=sessionsOf(oid,insc[oid]);
-    for(const s1 of mine)for(const s2 of other){
-      if(overlaps(s1,s2)){
-        const nm=(other[0]&&other[0][3])||"otro ramo";
-        return {nm,day:DIAS[s1[0]],t0:(_pmH(s1[1])>_pmH(s2[1])?s1[1]:s2[1]),t1:(_pmH(s1[2])<_pmH(s2[2])?s1[2]:s2[2])};
-      }
+    if(sinClases(other))continue;
+    var c=cruceEntre(mine,other);
+    if(c){
+      c.nm=(other[0]&&other[0][3])||"otro ramo";
+      c.oid=oid;
+      c.day=(c.dias.length?DIAS[c.dias[0]]:"");
+      return c;
     }
   }
   return null;
@@ -1247,16 +2147,60 @@ function showHorMsg(txt,kind){
   box.classList.remove("show");void box.offsetWidth;box.classList.add("show");
   clearTimeout(showHorMsg._t);showHorMsg._t=setTimeout(()=>{box.classList.remove("show");},4200);
 }
-function renderAllHor(){
-  let h="";Object.keys(HOR).forEach(k=>{h+=`<div class="hgrp serif">${HOR[k].l}</div>`+buildTable(HOR[k].s,k,true)+(HOR[k].note?`<div class="hnote">${HOR[k].note}</div>`:"");});
+function renderAllHor(filtro,encabezado){
+  let h=(encabezado||""),ocultos=0;
+  Object.keys(HOR).forEach(k=>{
+    var ses=HOR[k].s;
+    if(filtro){ ses=ses.filter(se=>filtro(k,se)); if(!ses.length){ocultos++;return;} }
+    h+=`<div class="hgrp serif">${HOR[k].l}</div>`+buildTable(ses,k,true)+notaAutonomos(k,ses)+(HOR[k].note?`<div class="hnote">${HOR[k].note}</div>`:"");
+  });
+  if(filtro&&ocultos)h+=`<div class="hnote">Se ocultaron ${ocultos} bloque${ocultos===1?"":"s"} de horario que no corresponden a tu situación. Toca <b>“Todos los horarios”</b> para verlos.</div>`;
   horList.innerHTML=h;
-  horList.querySelectorAll("td.selc").forEach(td=>{
+  bindHorCells(horList);
+}
+/* Ramos que se inscriben pero no tienen clase en sala: se listan aparte */
+function notaAutonomos(k,ses){
+  var vistos={},chips=[];
+  (ses||[]).forEach(function(se){
+    if(se[8]!=="Sin clases")return;
+    var id=(se[6]!=null)?se[6]:(typeof OFER!=="undefined"?OFER[se[3]]:null);
+    if(id==null||vistos[id])return; vistos[id]=1;
+    var cr=(typeof creditsForSel==="function")?creditsForSel(id,k):0;
+    var on=insc[id]===k;
+    chips.push('<button type="button" class="autochip'+(on?" on":"")+'" data-id="'+id+'" data-key="'+k+'"'+
+      ' aria-pressed="'+(on?"true":"false")+'">'+(on?'<span class="selck">✓</span> ':"")+escHtml(se[3])+
+      (se[7]?' <span class="ac-nrc">NRC '+escHtml(se[7])+'</span>':"")+
+      (cr?' <span class="ac-sct">'+cr+' SCT</span>':"")+'</button>');
+  });
+  if(!chips.length)return "";
+  return '<div class="autobox"><b>📌 Sin horario de clases</b> — se inscriben igual y <b>suman créditos</b>; '+
+         'son actividades que se realizan de forma autónoma. Tócalos para marcarlos.'+
+         '<div class="autochips">'+chips.join("")+'</div></div>';
+}
+function bindHorCells(root){
+  root.querySelectorAll(".autochip").forEach(function(b){
+    b.onclick=function(){
+      var id=+b.dataset.id,key=b.dataset.key;
+      if(insc[id]===key){delete insc[id];}else{insc[id]=key;}
+      saveInsc(); refrescaHor(); renderHorTally();
+      if(typeof logInteraccion==="function")logInteraccion("horarios","inscribir ramo");
+    };
+  });
+  root.querySelectorAll("td.selc").forEach(td=>{
     td.onclick=()=>{
     const id=+td.dataset.id,key=td.dataset.key;
-    if(insc[id]===key){delete insc[id];saveInsc();renderAllHor();renderHorTally();return;}
+    if(insc[id]===key){delete insc[id];saveInsc();refrescaHor();renderHorTally();return;}
     const cl=clashOf(id,key);
-    if(cl){showHorMsg(`⚠️ <b>Coincidencia horaria.</b> Choca con <b>${cl.nm}</b> (${cl.day} ${cl.t0}–${cl.t1}). Debes quitar el otro ramo para inscribir este.`,"warn");return;}
-    insc[id]=key;saveInsc();renderAllHor();renderHorTally();
+    if(cl&&cl.tipo==="solicitable"&&(esTercera(id)||esTercera(cl.oid))){
+      showHorMsg(`⛔ <b>Sin coincidencias en tercera oportunidad.</b> Declaraste que cursas por tercera vez una de estas asignaturas. La Circular N°05/2026 no autoriza topes en ese caso.`,"warn");return;}
+    if(cl&&cl.tipo==="solicitable"&&topesActuales().length>=1){
+      showHorMsg(`⛔ <b>Solo se autoriza una coincidencia.</b> Ya tienes un tope entre <b>${topesActuales()[0].a}</b> y <b>${topesActuales()[0].b}</b>. La Circular N°05/2026 permite un máximo de una, entre dos asignaturas.`,"warn");return;}
+    if(cl&&cl.tipo==="excede"){
+      showHorMsg(`⛔ <b>El tope con ${cl.nm} es demasiado grande</b> (${cl.min} min, ${Math.round(Math.max(cl.pctA,cl.pctB))}% de una de las asignaturas). Se autoriza hasta el 50%: debes quitar el otro ramo.`,"warn");return;}
+    insc[id]=key;saveInsc();refrescaHor();renderHorTally();
+    if(cl&&cl.tipo==="solicitable"){
+      var modo=(cl.pres>0&&cl.onl>0)?"parte presencial":(cl.pres>0?"presencial":"online");
+      showHorMsg(`📝 <b>Tope de ${cl.min} min con ${cl.nm}</b> (${cl.day} ${cl.t0}–${cl.t1}, ${modo} · ${Math.round(Math.max(cl.pctA,cl.pctB))}% de la asignatura).<br>La <b>Circular N°05/2026</b> permite solicitar una coincidencia de hasta el 50%: genera el respaldo en PDF desde el Planificador y preséntalo con tu solicitud.`,"info");}
     if(typeof logInteraccion==="function")logInteraccion("horarios","inscribir ramo");
     /* avisos flotantes informativos (no bloquean): exceso de créditos y exceso de niveles */
     var tot=0;Object.keys(insc).forEach(function(x){tot+=creditsForSel(+x,insc[x]);});
@@ -1287,14 +2231,211 @@ function renderMineHor(){
   let ses=[];ids.forEach(id=>{const blk=HOR[insc[id]];if(!blk)return;blk.s.forEach(se=>{const sid=(se[6]!=null)?se[6]:OFER[se[3]];if(sid===id)ses.push(se);});});
   horList.innerHTML=`<div class="hgrp serif">Mi horario</div>`+buildTable(ses,null,false);
 }
+/* Vista principal: solo la oferta que el estudiante está en condiciones de tomar */
+function renderFitHor(){
+  if(window.__inscArchivada){
+    window.__inscArchivada=false;
+    try{ if(typeof showHorMsg==="function")showHorMsg("🗓️ Empezó un nuevo período: tu selección de ramos anterior se archivó. Elige aquí los ramos de este período.","info"); }catch(e){}
+  }
+  var P=_snap(), a=_ancla(), conf=_fitEstadoConfiable();
+  var soloPlan=function(k){ return _bloqueAdmitido(k); };
+  var etqPlan=(P.cur==="na")?"Plan No Ajustado":"Plan Ajustado";
+  var notaPlan=(P.cur==="na")?' Como estás en el <b>Plan No Ajustado</b>, también puedes inscribir ramos ofrecidos para el Plan Ajustado.':'';
+  var cab, filtro;
+
+  if(!conf){
+    cab='<div class="pcard fitnote">Mostrando la oferta del <b>'+etqPlan+'</b>, que es la malla que tienes activa. '+
+        'Para afinar por tu avance, revisa tu progreso en <b>Avance Curricular</b>.</div>';
+    filtro=function(k){ return soloPlan(k); };
+  }else if(!a.hasAvance){
+    cab='<div class="pcard fitnote">Para mostrarte <b>solo lo que puedes tomar</b>, primero marca tu avance en <b>Avance Curricular</b>: toca los ramos que ya aprobaste.<br>'+
+        'Por ahora ves toda la oferta del <b>'+etqPlan+'</b>.'+notaPlan+
+        '<br><button type="button" class="mSwBtn" id="toMalla" style="margin-top:8px">📚 Ir a Avance Curricular</button></div>';
+    filtro=function(k){ return soloPlan(k); };
+  }else{
+    var hasta=(a.techo!=null?a.techo:(a.anchor+a.tope-1)), N=(a.pref==="S"?"semestre":"nivel");
+    var rango=(a.anchor===hasta)?('el <b>'+N+' '+a.anchor+'</b>'):('desde el <b>'+N+' '+a.anchor+'</b> hasta el <b>'+N+' '+hasta+'</b>');
+    cab='<div class="pcard fitnote">Oferta del <b>'+etqPlan+'</b> que <b>puedes tomar</b> según tu avance: '+rango+'. '+
+        'Se ocultan los ramos aprobados y los que aún no tienen prerrequisitos cumplidos; los reprobados sí aparecen.'+
+        (a.limitado?' <b>No se ofrecen asignaturas de niveles superiores al que cursas</b>: el rango del art. 17 está previsto para recuperar lo pendiente, no para adelantar.':'')+
+        notaPlan+'</div>';
+    filtro=function(k,se){ return soloPlan(k) && _porQueNo(k,se,a)===null; };
+  }
+
+  renderAllHor(filtro,cab);
+  var bm=document.getElementById("toMalla"); if(bm)bm.onclick=function(){go("malla");};
+  if(!horList.querySelector("td.selc")){
+    /* Distinguimos por qué quedó vacío: sin oferta de tu plan, o sin ramos que calcen con tu avance */
+    var hayAlgo=false, hayOtroPlan=false;
+    Object.keys(HOR).forEach(function(k){
+      if(!HOR[k].s.length)return;
+      if(_bloqueAdmitido(k))hayAlgo=true; else hayOtroPlan=true;
+    });
+    var msg = !hayAlgo && hayOtroPlan
+      ? 'Toda la oferta de este período corresponde al <b>'+(P.cur==="na"?"Plan Ajustado":"Plan No Ajustado")+'</b>, distinto al que tienes seleccionado.<br>'+
+        'Si ese es tu plan, cámbialo en <b>Avance Curricular</b> con el botón de malla. También puedes ver la oferta completa en <b>“Todos los horarios”</b>.'
+      : 'No quedan ramos disponibles con tu avance actual. Abre <b>“Todos los horarios”</b> arriba, o consulta en la Dirección de Carrera.';
+    horList.innerHTML=cab+'<div class="pcard fitnote">'+msg+'</div>';
+  }
+  renderHorTally();
+  renderMiniHor();
+}
+/* Casillas para declarar qué asignaturas se cursan por tercera vez */
+function _bloqueTerceras(det){
+  var rep=(det||[]).filter(function(r){ return r.estado==="no"; });
+  if(!rep.length)return "";
+  var T=_tercerasGuardadas();
+  return '<div class="sb-3a"><b>¿Alguna de estas la cursas por tercera vez?</b>'+
+    '<span>La Circular N°05/2026 no autoriza coincidencias de horario en asignaturas de tercera oportunidad.</span>'+
+    rep.map(function(r){
+      return '<label class="sb-ck"><input type="checkbox" class="ck3" data-id="'+r.id+'"'+(T.indexOf(r.id)>=0?' checked':'')+'> '+escHtml(r.nombre)+'</label>';
+    }).join("")+'</div>';
+}
+function pintaSolicitud(){
+  var box=document.getElementById("solicBox"); if(!box)return;
+  if(!solicitudVigente()||!Object.keys(insc).length){ box.style.display="none"; box.innerHTML=""; return; }
+  var det=_inscritosDetalle();
+  box.style.display="";
+  box.innerHTML='<div class="solicbox">'+
+    '<div class="sb-t">📤 ¿No pudiste inscribir estos ramos en el sistema?</div>'+
+    '<p class="sb-p">Si alguno no te aparece disponible o tiene un tope de horario, puedes pedirlo por <b>toma de carga manual</b>. '+
+    'UApp llena el formulario de la Carrera con tu selección y el resultado de las verificaciones.</p>'+
+    '<ol class="sb-l"><li><b>Genera el respaldo</b> con el botón 📄 PDF de arriba y guárdalo.</li>'+
+    '<li><b>Abre el formulario</b>: ya vendrá con tus '+det.length+' ramo(s) marcados.</li>'+
+    '<li><b>Adjunta el PDF</b> y envía.</li></ol>'+
+    _bloqueTerceras(det)+
+    '<label class="sb-rut" for="inpRut">Tu RUT <span>(sin puntos ni guión, queda solo en este dispositivo)</span></label>'+
+    '<input id="inpRut" class="sb-in" type="text" inputmode="numeric" maxlength="10" placeholder="163175371" value="'+escHtml(_rutGuardado())+'">'+
+    '<button type="button" class="mSwBtn sb-btn" id="btnSolic">📤 Generar respaldo y solicitar</button>'+
+    '<div class="sb-n">Revisa que tu avance en <b>Avance Curricular</b> esté al día antes de enviar: el documento lo declara tal como lo marcaste.</div>'+
+    '</div>';
+  box.querySelectorAll(".ck3").forEach(function(c){
+    c.onchange=function(){
+      var T=_tercerasGuardadas(), id=+c.dataset.id, i=T.indexOf(id);
+      if(c.checked){ if(i<0)T.push(id); } else if(i>=0)T.splice(i,1);
+      _guardaTerceras(T);
+      if(typeof refrescaHor==="function")refrescaHor();
+      pintaSolicitud();
+    };
+  });
+  var inp=document.getElementById("inpRut");
+  if(inp)inp.oninput=function(){ inp.value=inp.value.replace(/[^0-9kK]/g,""); _guardaRut(inp.value); };
+  var listo=!!(SOLICITUD.campos&&SOLICITUD.campos.anio1);
+  if(!listo){
+    var n=document.createElement("div"); n.className="sb-n";
+    n.innerHTML="⚠️ El formulario de la Carrera todavía no está enlazado: se abrirá en blanco y tendrás que marcar tus ramos a mano. El resumen de verificación queda en el respaldo PDF.";
+    box.querySelector(".solicbox").appendChild(n);
+  }
+  var b=document.getElementById("btnSolic");
+  if(b)b.onclick=function(){
+    try{
+      if(inp)_guardaRut(inp.value);
+      var u=_urlSolicitud();
+      if(typeof logInteraccion==="function")logInteraccion("planificador","solicitar toma de carga");
+      /* El respaldo se genera primero para que PDF y formulario reflejen la misma
+         selección, y para que el estudiante ya lo tenga a mano al adjuntarlo. */
+      try{ docRespaldo(); }catch(e){}
+      if(typeof showHorMsg==="function")showHorMsg("📄 Generando tu respaldo… en unos segundos se abre el formulario con tus ramos ya marcados.","info");
+      setTimeout(function(){ try{ window.open(u,"_blank","noopener"); }catch(e){} },2600);
+    }catch(e){ if(typeof showHorMsg==="function")showHorMsg("No se pudo preparar la solicitud. Inténtalo de nuevo.","warn"); }
+  };
+}
+function refrescaHor(){
+  /* Si la ventana de oferta completa está abierta, se repinta para reflejar la marca */
+  if(typeof allHorModal!=="undefined"&&allHorModal&&allHorModal.style.display==="flex")pintaAllHor();
+  if(horMode==="mine"){renderMineHor();renderMiniHor();return;}
+  if(horMode==="fit"){renderFitHor();return;}
+  renderAllHor();renderMiniHor();
+}
 function renderHorView(mode){
   horMode=mode;
   document.querySelectorAll("#horSeg button").forEach(b=>b.classList.toggle("on",b.dataset.h===mode));
-  const hint=document.getElementById("horHint");if(hint)hint.style.display=mode==="all"?"":"none";
-  if(mode==="all"){renderAllHor();renderHorTally();}
-  else{renderMineHor();var box=document.getElementById("horTally");if(box)box.style.display="none";}
+  const hint=document.getElementById("horHint");if(hint)hint.style.display=(mode==="mine")?"none":"";
+  if(mode==="fit"){renderFitHor();}
+  else{renderMineHor();var box=document.getElementById("horTally");if(box)box.style.display="none";renderMiniHor();}
 }
 document.querySelectorAll("#horSeg button").forEach(b=>b.onclick=()=>renderHorView(b.dataset.h));
+
+/* ---------- Todos los horarios (oferta completa, en ventana) ---------- */
+var allHorModal=document.getElementById("allHorModal");
+function pintaAllHor(){
+  var box=document.getElementById("allHorList"); if(!box)return;
+  var h="";
+  Object.keys(HOR).forEach(function(k){
+    h+='<div class="hgrp serif">'+HOR[k].l+'</div>'+buildTable(HOR[k].s,k,true)+notaAutonomos(k,HOR[k].s)+(HOR[k].note?'<div class="hnote">'+HOR[k].note+'</div>':"");
+  });
+  box.innerHTML=h;
+  bindHorCells(box);
+}
+function abrirAllHor(){
+  if(!allHorModal)return;
+  pintaAllHor();
+  allHorModal.style.display="flex";
+  var x=document.getElementById("allHorX"); if(x)x.focus();
+  if(typeof logInteraccion==="function")logInteraccion("horarios","ver oferta completa");
+}
+function cerrarAllHor(){ if(allHorModal)allHorModal.style.display="none"; }
+(function(){
+  var b=document.getElementById("toAllHor"); if(b)b.onclick=abrirAllHor;
+  var x=document.getElementById("allHorX"); if(x)x.onclick=cerrarAllHor;
+  if(allHorModal)allHorModal.onclick=function(e){ if(e.target===allHorModal)cerrarAllHor(); };
+})();
+
+/* ---------- Miniatura del horario que se va armando ---------- */
+var MINI_COL=["#8b0c0c","#1f6b3a","#1d4ed8","#c79a3e","#7c3aed","#0e7490","#b45309","#be185d"];
+var miniOculta=false;
+function _mmin(t){var p=String(t).split(":");return (+p[0])*60+(+p[1]);}
+function _iniBL(t){for(var i=0;i<BL.length;i++)if(_mmin(BL[i][0])===_mmin(t))return i;return -1;}
+function _finBL(t){var e=-1;for(var i=0;i<BL.length;i++)if(_mmin(BL[i][0])<_mmin(t))e=i;return e;}
+function renderMiniHor(){
+  var box=document.getElementById("miniHor"), pill=document.getElementById("miniPill");
+  if(!box||!pill)return;
+  var sec=document.getElementById("hor");
+  var enHor=sec&&sec.style.display!=="none";
+  var ids=Object.keys(insc).map(Number);
+  if(!enHor||horMode!=="fit"||!ids.length){ box.classList.remove("on"); pill.classList.remove("on"); return; }
+  if(miniOculta){ box.classList.remove("on"); pill.classList.add("on"); return; }
+  pill.classList.remove("on");
+
+  var dias=Object.keys(DIAS);
+  var grid={}; dias.forEach(function(d){ grid[d]=Array(BL.length).fill(null); });
+  var ci=0;
+  ids.forEach(function(id){
+    var blk=HOR[insc[id]]; if(!blk)return;
+    var col=MINI_COL[(ci++)%MINI_COL.length];
+    blk.s.forEach(function(se){
+      var sid=_sidSes(se); if(sid!==id)return;
+      var a=_iniBL(se[1]), b=_finBL(se[2]); if(a<0)return; if(b<a)b=a;
+      for(var i=a;i<=b;i++){ if(grid[se[0]])grid[se[0]][i]=col; }
+    });
+  });
+  var pri=-1,ult=-1;
+  for(var i=0;i<BL.length;i++){ if(dias.some(function(d){return grid[d][i];})){ if(pri<0)pri=i; ult=i; } }
+  if(pri<0){ box.classList.remove("on"); pill.classList.remove("on"); return; }
+
+  var g='<div class="mgd" style="grid-template-columns:repeat('+dias.length+',1fr)">';
+  dias.forEach(function(d){ g+='<div class="mgh">'+String(DIAS[d]).slice(0,1)+'</div>'; });
+  for(var f=pri;f<=ult;f++){
+    dias.forEach(function(d){
+      var c=grid[d][f];
+      g+='<div class="mgc"'+(c?' style="background:'+c+'"':"")+'></div>';
+    });
+  }
+  g+='</div>';
+  document.getElementById("miniGrid").innerHTML=g;
+  document.getElementById("miniTit").textContent="Tu horario · "+ids.length;
+  var tot=0; ids.forEach(function(x){ tot+=creditsForSel(+x,insc[x]); });
+  document.getElementById("miniPie").textContent=tot+" SCT · ver completo";
+  box.classList.add("on");
+}
+(function(){
+  var x=document.getElementById("miniX");
+  if(x)x.onclick=function(){ miniOculta=true; renderMiniHor(); };
+  var p=document.getElementById("miniPill");
+  if(p)p.onclick=function(){ miniOculta=false; renderMiniHor(); };
+  var pie=document.getElementById("miniPie");
+  if(pie)pie.onclick=function(){ renderHorView("mine"); };
+})();
 
 /* Planificador de carga */
 const OFER_TECH={"Teoría de la Ley y las Personas":7,"Historia Institucional de Chile":5,"Historia y Evolución de las Instituciones":6,"Comunicación y Argumentación":8,"Teoría del Proceso":17,"Teoría de la Reacción Penal":19,"Derecho Constitucional Orgánico":18,"Aprendizaje Activo":20,"Fuentes de las Obligaciones":28,"Delitos en Particular II":30,"Derecho Individual del Trabajo":29,"Desarrollo Personal y Plan de Vida":31,"Contratación Mercantil":41,"Derecho Procesal Penal":43,"Derecho Sucesorio":40,"Derecho Administrativo I":42,"Derecho Sociedades":38,"Responsabilidad Social e Innovación":35,"Recursos":50,"Optativo de Especialidad I":48,"Reorganización y Liquidación Patrimonial":49,"Derecho Tributario I":46,"Taller de Integración III":54,"Seminario de Investigación Jurídica":51,"Redacción Forense":null,"Introducción al Derecho":3,"Historia del Derecho":1,"Derecho Político":2,"Procedimientos Civiles de Cognición":26};
@@ -1328,13 +2469,45 @@ var HOR_VESP={
 };
 var OFER_VESP={"Derecho Sucesorio": 42, "Taller de Litigaci\u00f3n Avanzada (Ev. Ciclo)": 58, "Optativo de Especialidad II": 54, "Optativo de Especialidad I": 53, "Derecho Tributario II": 57, "Reorganizaci\u00f3n y Liquidaci\u00f3n Patrimonial": 56, "Seminario de Tesis": 55};
 /* --- Punteros activos: el motor de horarios usa la rejilla/oferta de la jornada activa --- */
+/* Período al que corresponde la oferta cargada de cada jornada.
+   Cuando cambia (nuevo trimestre o semestre), la selección de secciones
+   del período anterior deja de aplicar y se archiva sola. */
+var PERIODO={ tech:"2026-T3", diurno:"2026-S2", vregular:"2026-S2" };
 var BL=BL_TECH, HOR=HOR_TECH, OFER=OFER_TECH;
 function setHorJornada(j){
   if(j==="diurno"){ BL=BL_DIURNO; HOR=HOR_DIURNO; OFER=OFER_DIURNO; }
   else if(j==="vregular"){ BL=BL_VESP; HOR=HOR_VESP; OFER=OFER_VESP; }
   else { BL=BL_TECH; HOR=HOR_TECH; OFER=OFER_TECH; }
-  INSC_KEY=(j==="tech"||!j)?"insc_sec_v1":"insc_sec_"+j+"_v1";
+  var jj=(j==="tech"||!j)?"tech":j;
+  var base=(jj==="tech")?"insc_sec_v1":"insc_sec_"+jj+"_v1";
+  INSC_KEY=base+"_"+PERIODO[jj];
+  /* Selecciones de períodos anteriores: se archivan y se avisa una vez */
+  try{
+    var vieja=localStorage.getItem(base);
+    if(vieja){
+      var ant=JSON.parse(vieja||"{}");
+      if(ant&&Object.keys(ant).length){
+        localStorage.setItem(base+"_archivo",vieja);
+        window.__inscArchivada=true;
+      }
+      localStorage.removeItem(base);
+    }
+    /* claves de otros períodos de esta misma jornada */
+    for(var i=localStorage.length-1;i>=0;i--){
+      var k=localStorage.key(i);
+      if(k&&k.indexOf(base+"_")===0&&k!==INSC_KEY&&!/_archivo$/.test(k)){
+        localStorage.setItem(base+"_archivo",localStorage.getItem(k)||"{}");
+        localStorage.removeItem(k); window.__inscArchivada=true;
+      }
+    }
+  }catch(e){}
   loadInsc();
+  /* Y si algo guardado apunta a un bloque que ya no existe en la oferta, se descarta */
+  try{
+    var cambio=false;
+    Object.keys(insc).forEach(function(id){ if(!HOR[insc[id]]){ delete insc[id]; cambio=true; } });
+    if(cambio)saveInsc();
+  }catch(e){}
   if(j==="diurno"){ EVALS=EVALS_SEM_VIE; PRU_REG="sem"; PRU_NOTE="Calendario oficial de evaluaciones · Primavera 2026. La jornada <b>Diurna</b> rinde los <b>viernes</b>. "+PRU_DIURNO_NOTE; }
   else if(j==="vregular"){ EVALS=EVALS_SEM_SAB; PRU_REG="sem"; PRU_NOTE="Calendario oficial de evaluaciones · Primavera 2026. La jornada <b>Vespertina</b> rinde los <b>sábados</b> (las evaluaciones de ciclo, SENA y entregas se rinden en la misma fecha en todas las jornadas). "+PRU_DIURNO_NOTE; }
   else { EVALS=EVALS_TECH; PRU_REG="tri"; PRU_NOTE=""; }
@@ -1344,27 +2517,97 @@ function setHorJornada(j){
 function planProposeTECH(){
   const out=document.getElementById("planOut");if(!out)return;
   const maxDif=3, maxR=6;
+  /* La oferta se lee de los ids que trae cada sesión y se evalúa contra la
+     malla del alumno, igual que la vista "Disponibles para mí". */
+  const P=_snap(), A=P[P.cur], C_=A.C||[], S_=A.S||{}, U_=A.U;
+  const bId={}; C_.forEach(c=>{bId[c.id]=c;});
   const offById={};
-  Object.keys(HOR).forEach(k=>{const alterno=/alterno|no ajustado/i.test(HOR[k].l);const g={};HOR[k].s.forEach(se=>{(g[se[3]]=g[se[3]]||[]).push(se);});Object.keys(g).forEach(name=>{const id=OFER[name];if(id==null)return;if(alterno&&state[id]!=="no")return;(offById[id]=offById[id]||[]).push({label:HOR[k].l,sessions:g[name]});});});
+  Object.keys(HOR).forEach(k=>{
+    if(!_bloqueAdmitido(k))return;                       /* regla de planes de la Carrera */
+    const alterno=/altern/i.test(HOR[k].l);              /* secciones alternas: solo repitentes */
+    const g={}; HOR[k].s.forEach(se=>{(g[se[3]]=g[se[3]]||[]).push(se);});
+    Object.keys(g).forEach(name=>{
+      let id=(g[name][0][6]!=null)?g[name][0][6]:(typeof OFER!=="undefined"?OFER[name]:null);
+      if(id==null)return;
+      const mb=_planBloque(k);
+      if(mb!==P.cur){                                    /* bloque de la otra malla: se traduce */
+        let c0=null;(P[mb].C||[]).forEach(x=>{if(x.id===id)c0=x;});
+        const eq=c0?_equivEn(c0,A):null;
+        if(!eq)return;
+        id=eq.id;
+      }
+      if(!bId[id])return;
+      if(alterno&&S_[id]!=="no")return;   /* art. 6: alterna solo si la reprobó */
+      (offById[id]=offById[id]||[]).push({label:HOR[k].l,sessions:g[name]});
+    });
+  });
   const offIds=Object.keys(offById).map(Number);
-  const pend=COURSES.filter(c=>state[c.id]!=="ok");
+  const pend=C_.filter(c=>S_[c.id]!=="ok");
   const anchor=pend.length?Math.min(...pend.map(c=>c.t)):1;
   const _pm=t=>{const p=String(t).split(":");return (+p[0])*60+(+p[1]);};
   const idxOf=t=>BL.findIndex(b=>_pm(b[0])===_pm(t)), endOf=t=>{let e=-1;BL.forEach((b,i)=>{if(_pm(b[0])<_pm(t))e=i;});return e;};
   const cellsOf=ss=>{const cs=[];ss.forEach(se=>{const a=idxOf(se[1]);let b=endOf(se[2]);if(a<0)return;if(b<a)b=a;for(let i=a;i<=b;i++)cs.push(se[0]+i);});return cs;};
-  let cand=offIds.map(id=>byId[id]).filter(c=>c.id!==51&&state[c.id]!=="ok"&&isUnlocked(c)&&(c.t-anchor)<=maxDif);
-  cand.sort((a,b)=>{const ma=(state[a.id]==="no"||a.t===anchor)?0:1,mb=(state[b.id]==="no"||b.t===anchor)?0:1;return ma-mb||a.t-b.t||a.id-b.id;});
+  const _tch=(function(){ try{ var aa=_ancla(); return (aa.techo!=null)?aa.techo:(anchor+maxDif); }catch(e){ return anchor+maxDif; } })();
+  let cand=offIds.map(id=>bId[id]).filter(c=>c&&c.id!==51&&S_[c.id]!=="ok"&&(function(){try{return U_(c);}catch(e){return true;}})()&&c.t<=_tch);
+  cand.sort((a,b)=>{const ma=(S_[a.id]==="no"||a.t===anchor)?0:1,mb=(S_[b.id]==="no"||b.t===anchor)?0:1;return ma-mb||a.t-b.t||a.id-b.id;});
   const occ=new Set(),chosen=[],conf=[];
   for(const c of cand){if(chosen.length>=maxR)break;let placed=false;for(const o of offById[c.id]){const cs=cellsOf(o.sessions);if(cs.some(x=>occ.has(x)))continue;cs.forEach(x=>occ.add(x));chosen.push({c,o});placed=true;break;}if(!placed)conf.push(c);}
-  const chosenIds=new Set(chosen.map(x=>x.c.id));
+
+  /* Segunda pasada: los que quedaron fuera solo por horario pueden entrar igual si
+     su tope es de los que la normativa permite solicitar (online y ≤50% de ambas).
+     Se ofrecen aparte, porque exigen toma de carga manual. */
+  const extra=[];
+  if(chosen.length<maxR){
+    for(const c of conf.slice()){
+      if(chosen.length+extra.length>=maxR)break;
+      let mejor=null;
+      for(const o of (offById[c.id]||[])){
+        var topes=[],ok=true;
+        for(const el of chosen.concat(extra)){
+          var cr=cruceEntre(o.sessions,el.o.sessions);
+          if(!cr)continue;
+          if(cr.tipo!=="solicitable"){ok=false;break;}
+          topes.push({con:el.c.n,min:cr.min,dias:cr.dias.map(function(x){return DIAS[x]||x;}).join(", "),
+                      t0:cr.t0,t1:cr.t1,pct:Math.round(Math.max(cr.pctA,cr.pctB))});
+        }
+        if(ok&&topes.length){ mejor={o:o,topes:topes}; break; }
+      }
+      if(mejor){
+        extra.push({c:c,o:mejor.o,topes:mejor.topes});
+        conf.splice(conf.indexOf(c),1);
+      }
+    }
+  }
+  const chosenIds=new Set(chosen.concat(extra).map(x=>x.c.id));
   const excl=[];
-  offIds.map(id=>byId[id]).forEach(c=>{if(c.id===51||state[c.id]==="ok"||chosenIds.has(c.id))return;let r;if(!isUnlocked(c))r="faltan prerrequisitos";else if(c.t-anchor>maxDif)r="supera el tope de niveles";else if(conf.includes(c))r="choca de horario con un ramo más antiguo";else r="quedó fuera por el máximo de ramos";excl.push({c,r});});
+  offIds.map(id=>bId[id]).forEach(c=>{if(!c||c.id===51||S_[c.id]==="ok"||chosenIds.has(c.id))return;let r;if(!(function(){try{return U_(c);}catch(e){return true;}})())r="faltan prerrequisitos";else if(c.t-anchor>maxDif)r="supera el tope de niveles";else if(conf.includes(c))r="choca de horario con un ramo más antiguo";else r="quedó fuera por el máximo de ramos";excl.push({c,r});});
   excl.sort((a,b)=>a.c.t-b.c.t);
-  const apCount=COURSES.filter(c=>state[c.id]==="ok").length;
+  const apCount=C_.filter(c=>S_[c.id]==="ok").length;
   let h="";
   if(chosen.length){
     h+=`<div class="hgrp serif">Ramos propuestos (${chosen.length})</div>`;
-    chosen.forEach(({c,o})=>{const horas=o.sessions.map(se=>`${DIAS[se[0]].slice(0,3)} ${se[1]}–${se[2]}`).join(" · ");const sala=o.sessions[0][4],profe=o.sessions[0][5];const rep=state[c.id]==="no"?' <span class="pflag">repite · obligatorio</span>':(c.t===anchor?' <span class="pflag2">nivel obligatorio</span>':'');h+=`<div class="pcard"><div class="pn">${c.n}${rep}</div><div class="pm">Nivel ${c.t} · ${o.label.split(" · ").slice(-1)[0]}</div><div class="pt">${horas}${sala&&sala!=="—"?" · "+sala:""}${profe&&profe!=="—"?" · "+profe:""}</div></div>`;});
+    const pintaRamo=({c,o,topes})=>{
+      const rep=S_[c.id]==="no"?' <span class="pflag">repite · obligatorio</span>':(c.t===anchor?' <span class="pflag2">nivel obligatorio</span>':'');
+      const todas=offById[c.id]||[o];
+      const pinta=(op,dest)=>{
+        const horas=op.sessions.map(se=>`${DIAS[se[0]].slice(0,3)} ${se[1]}–${se[2]}`).join(" · ");
+        const sala=op.sessions[0][4],profe=op.sessions[0][5];
+        const nrcs=[...new Set(op.sessions.map(se=>se[7]).filter(Boolean))];
+        return `<div class="${dest?'popt popt-on':'popt'}"><div class="pm">${op.label.split(" · ").slice(-1)[0]}${nrcs.length?' · <span class="pnrc">NRC '+nrcs.join(" / ")+'</span>':''}${dest?' <span class="pflag3">propuesta</span>':''}</div><div class="pt">${horas}${sala&&sala!=="—"?" · "+sala:""}${profe&&profe!=="—"?" · "+profe:""}</div></div>`;
+      };
+      const otras=topes?[]:todas.filter(x=>x!==o);
+      const av=topes?('<div class="pautor">📝 <b>Requiere toma de carga manual.</b> '+
+        topes.map(function(t){return "Tope de <b>"+t.min+" min</b> con <b>"+t.con+"</b> ("+t.dias+" "+t.t0+"–"+t.t1+" · "+t.pct+"% de la asignatura).";}).join(" ")+
+        ' Está dentro de lo que la normativa permite solicitar. Genera el <b>respaldo en PDF</b> y preséntalo con tu solicitud.</div>'):"";
+      h+=`<div class="pcard${topes?' pcard-sol':''}"><div class="pn">${c.n}${rep}</div><div class="pm" style="margin-bottom:4px">Nivel ${c.t}${otras.length?' · <b>'+todas.length+' secciones disponibles</b>, elige la que te acomode:':''}</div>`+
+         pinta(o,true)+otras.map(x=>pinta(x,false)).join("")+av+`</div>`;
+    };
+    chosen.forEach(pintaRamo);
+    if(extra.length){
+      h+=`<div class="hgrp serif" style="margin-top:12px">Además puedes solicitar (${extra.length})</div>`+
+         `<div class="pdesc">Estos ramos abren un tope de horario que <b>la normativa permite autorizar</b>: ocurren en bloques online y no superan el 50% de las horas semanales. No se inscriben en Banner: se piden por <b>toma de carga manual</b>.</div>`;
+      extra.forEach(pintaRamo);
+    }
     h+=`<div class="hgrp serif">Horario propuesto</div>`+buildTable([].concat(...chosen.map(x=>x.o.sessions)));
   }else h+=`<div class="pcard">No hay ramos para proponer con las reglas actuales. Marca tu avance en Avance Curricular.</div>`;
   if(excl.length){h+=`<div class="hgrp serif">No incluidos</div>`;excl.forEach(({c,r})=>h+=`<div class="pexc">• <b>${c.n}</b> (nivel ${c.t}) — ${r}</div>`);}
@@ -1375,7 +2618,7 @@ function planProposeTECH(){
   h+=`<div class="pinfo">Excepción (Circular N°03/2026): en ciclo avanzado podría autorizarse <b>una sola</b> coincidencia horaria, si ninguno de los dos ramos está en repetición. No se aceptan coincidencias que involucren más de dos asignaturas. El planificador no la aplica automáticamente; debe pedirse a la Carrera.</div>`;
   out.innerHTML=h;
 }
-function planPropose(){ if(window.__planSem){ try{ if(window.__planSem())return; }catch(e){ console.error("planSem:",e); } } planProposeTECH(); }
+function planPropose(){ var r; if(window.__planSem){ try{ if(window.__planSem()){ try{pintaSolicitud();}catch(e){} return; } }catch(e){ console.error("planSem:",e); } } planProposeTECH(); try{pintaSolicitud();}catch(e){} }
 var _pb=document.getElementById("planBtn");if(_pb)_pb.onclick=planPropose;
 /* Pruebas ejemplo */
 const MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
@@ -1455,7 +2698,7 @@ var PON_AJ={"1":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"2":{
 var PON_NA={"1":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"2":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"3":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"4":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"5":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"6":{"n":"Departamento 2 evaluaciones","ev":[30,40],"p":30},"7":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"8":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"9":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"10":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"11":{"n":"Argumentación Jurídica y Debate","ev":[20,30,50],"p":null,"esp":1,"req":2},"12":{"n":"Departamento 2 evaluaciones","ev":[30,40],"p":30},"13":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"14":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"15":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"16":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"17":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"18":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"19":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"20":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"21":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"22":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"23":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"24":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"25":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"26":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"27":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"28":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"29":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"30":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"31":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"32":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"33":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"34":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"35":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"36":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"37":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"38":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"39":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"40":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"41":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"42":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"43":{"n":"Procedimientos Especiales Orales","ev":[45,45,10],"p":null,"esp":1},"44":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"45":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"46":{"n":"Taller de Litigación","ev":[20,30,50],"p":null,"esp":1},"47":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"48":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"49":{"n":"Metodología de la Investigación Jurídica","ev":[10,20,70],"p":null,"esp":1,"nf":"50% producto · 20% exposición"},"50":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"51":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"52":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"53":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"54":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"55":{"n":"Seminario de Tesis","ev":[10,20,70],"p":null,"esp":1,"nf":"50% producto · 20% exposición"},"56":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"57":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"58":{"n":"Taller de Litigación","ev":[20,30,50],"p":null,"esp":1}};
 var PRU_DIURNO_NOTE="Exámenes finales: semana del 5 al 11 de diciembre de 2026. El calendario por asignatura está por confirmar por la Carrera.";
 var EVALS=EVALS_TECH, PRU_REG="tri", PRU_NOTE="";
-let pruMode="all";
+let pruMode="mine";
 const DOW=["dom","lun","mar","mié","jue","vie","sáb"];
 function fmtOne(md){if(!md)return "—";const mm=+md.slice(0,2),dd=+md.slice(3);return `${DOW[new Date(2026,mm-1,dd).getDay()]} ${dd} ${MESC[mm-1]}`;}
 function fmtEval(arr){
@@ -1470,23 +2713,24 @@ function fmtEvalCol(arr,sec){
   if(arr.length===1){const [md,s]=arr[0];return `<span class="edbig">${fmtOne(md)}</span>`+(s!=null?`<span class="edsec"> (S${s})</span>`:"");}
   return arr.map(([md,s])=>`<span class="edseg"><span class="edsec">S${s}</span> ${fmtOne(md)}</span>`).join("");
 }
-function renderPru(mode){
-  pruMode=mode;
-  document.querySelectorAll("#pruSeg button").forEach(b=>b.classList.toggle("on",b.dataset.m===mode));
-  const ib=document.getElementById("inscBox"), el=document.getElementById("pruList");
+function renderPru(mode,dest){
+  const ib=document.getElementById("inscBox"), el=dest||document.getElementById("pruList");
   const ids=Object.keys(insc).map(Number);
-  if(typeof aplicaVisPru==="function")aplicaVisPru();
+  if(!dest && typeof aplicaVisPru==="function")aplicaVisPru();
   if(!pruebasVisibles()){
     if(ib){ib.style.display="none";ib.innerHTML="";}
-    if(el)el.innerHTML='<div class="pcard"><b>📅 El calendario de evaluaciones todavía no está publicado.</b><br>'+
+    if(el)el.innerHTML='<div class="pcard"><b>📅 El calendario de evaluaciones de este período todavía no está publicado.</b><br>'+
       'La Carrera lo dará a conocer más adelante y, cuando eso ocurra, aparecerá aquí con las fechas de cada ramo.<br>'+
-      'Mantente atento al <b>Mural</b>: ahí se avisan las novedades oficiales.</div>';
+      'Mientras tanto, abajo tienes las <b>fechas generales del período</b> según el calendario académico oficial. Mantente atento al <b>Mural</b>.</div>';
     return;
   }
-  if(mode==="mine"){
-    ib.style.display="";
-    ib.innerHTML=ids.length?`<div class="ititle">Mostrando tus ramos inscritos. Para cambiarlos, ve a <b>Horarios</b> y toca tus ramos.</div>`:`<div class="ititle">Aún no marcas ramos. Ve a <b>Horarios</b>, toca los que inscribiste y vuelve aquí.</div>`;
-  } else {ib.style.display="none";ib.innerHTML="";}
+  if(!dest){
+    pruMode=mode;
+    if(mode==="mine"){
+      ib.style.display="";
+      ib.innerHTML=ids.length?`<div class="ititle">Mostrando <b>tus ramos inscritos</b>. Para cambiarlos, ve a <b>Horarios</b> y toca tus ramos.</div>`:`<div class="ititle">Aún no marcas ramos. Ve a <b>Horarios</b>, toca los que inscribiste y vuelve aquí. Mientras tanto, mira <b>“Todas las pruebas”</b> arriba.</div>`;
+    } else {ib.style.display="none";ib.innerHTML="";}
+  }
   let list=EVALS.slice().sort((a,b)=>(a.alt?1:0)-(b.alt?1:0)||a.niv-b.niv||pruEarliest(a).localeCompare(pruEarliest(b)));
   if(mode==="mine")list=list.filter(e=>{
     if(PRU_REG==="sem")return ids.some(id=>{const p=String(insc[id]||"").indexOf("na_")===0?"na":"aj";return (e[p]||[]).includes(id);});
@@ -1519,10 +2763,88 @@ function renderPru(mode){
     return `<div class="ecard"><div class="ehead"><b>${e.asig}</b><span class="eniv">Nivel ${e.niv}${e.alt?" · alterno":""}${secTxt}</span></div><div class="ecols"><div class="ecol"><div class="ecl">1ª prueba</div><div class="ecv">${fmtEvalCol(e.p1,sec)}</div></div><div class="ecol"><div class="ecl">2ª prueba</div><div class="ecv">${fmtEvalCol(e.p2,sec)}</div></div><div class="ecol"><div class="ecl">Examen final</div><div class="ecv">${e.fin?`<span class="edbig">${fmtOne(e.fin)}</span>`:"No aplica"}</div></div></div>${e.note?`<div class="enote">${e.note}</div>`:""}</div>`;
   }).join("");
 }
-document.querySelectorAll("#pruSeg button").forEach(b=>b.onclick=()=>renderPru(b.dataset.m));
+/* ---------- Todas las pruebas (calendario completo, en ventana) ---------- */
+var allPruModal=document.getElementById("allPruModal");
+function pintaAllPru(){ var box=document.getElementById("allPruList"); if(box)renderPru("all",box); }
+function abrirAllPru(){
+  if(!pruebasVisibles())return;
+  if(!allPruModal)return;
+  pintaAllPru();
+  allPruModal.style.display="flex";
+  var x=document.getElementById("allPruX"); if(x)x.focus();
+  if(typeof logInteraccion==="function")logInteraccion("pruebas","ver calendario completo");
+}
+function cerrarAllPru(){ if(allPruModal)allPruModal.style.display="none"; }
+(function(){
+  var b=document.getElementById("toAllPru"); if(b)b.onclick=abrirAllPru;
+  var x=document.getElementById("allPruX"); if(x)x.onclick=cerrarAllPru;
+  if(allPruModal)allPruModal.onclick=function(e){ if(e.target===allPruModal)cerrarAllPru(); };
+})();
+/* Ajusta la sección Pruebas según si la jornada tiene el calendario publicado.
+   Se vuelve a aplicar cada vez que se cambia de jornada. */
+var MSG_PRU_PEND="Se publicará cuando la Carrera lo informe.";
+function aplicaVisPru(){
+  var on=pruebasVisibles(), sec=document.getElementById("pru");
+  if(!sec)return on;
+  var barra=sec.querySelector(".horBtns"); if(barra)barra.style.display=on?"":"none";
+  sec.querySelectorAll(".note").forEach(function(x){ x.style.display=on?"":"none"; });
+  sec.querySelectorAll(".pinfo").forEach(function(x){ x.style.display=""; });   /* las fechas del período siempre se ven */
+  var sub=sec.querySelector(".msub");
+  if(sub){
+    if(sub.textContent!==MSG_PRU_PEND)sub.dataset.orig=sub.textContent;
+    sub.textContent=on?(sub.dataset.orig||sub.textContent):MSG_PRU_PEND;
+  }
+  return on;
+}
 aplicaVisPru();
-renderPru("all");
-renderHorView("all");
+
+renderPru("mine");
+/* Navegación rápida por año sobre el tablero de avance.
+   Se repinta sola cada vez que el tablero se vuelve a dibujar. */
+(function(){
+  var nav=document.getElementById("ynav"), board=document.getElementById("years");
+  if(!nav||!board)return;
+  var items=[];
+  function irA(el){
+    var r1=el.getBoundingClientRect(), r0=board.getBoundingClientRect();
+    var dest=board.scrollLeft+(r1.left-r0.left)-6;
+    try{ board.scrollTo({left:dest,behavior:"smooth"}); }catch(e){ board.scrollLeft=dest; }
+  }
+  function marca(i){ [].forEach.call(nav.children,function(b,k){ b.classList.toggle("on",k===i); }); }
+  function pinta(){
+    var cols=[].slice.call(board.querySelectorAll(".lvl"));
+    var vistos={}; items=[];
+    cols.forEach(function(c){
+      var e=c.querySelector(".lvl-eyebrow"); if(!e)return;
+      var t=(e.textContent||"").trim(); if(!t||vistos[t])return;
+      vistos[t]=1; items.push({t:t,el:c});
+    });
+    nav.innerHTML="";
+    if(items.length<2)return;
+    items.forEach(function(it,i){
+      var b=document.createElement("button");
+      b.type="button"; b.textContent=it.t;
+      b.setAttribute("aria-label","Ir a "+it.t);
+      b.onclick=function(){ irA(it.el); marca(i); };
+      nav.appendChild(b);
+    });
+    marca(0);
+  }
+  var tm=null;
+  board.addEventListener("scroll",function(){
+    clearTimeout(tm);
+    tm=setTimeout(function(){
+      if(!items.length)return;
+      var r0=board.getBoundingClientRect(), best=0;
+      items.forEach(function(it,i){ if(it.el.getBoundingClientRect().left-r0.left<=24)best=i; });
+      marca(best);
+    },90);
+  });
+  try{ new MutationObserver(pinta).observe(board,{childList:true}); }catch(e){}
+  pinta();
+})();
+
+renderHorView("fit");
 
 /* ===== Mural de avisos (editar esta lista para publicar/quitar avisos) ===== */
 const AVISOS=[
@@ -1552,6 +2874,25 @@ const SB_URL="https://pohrbljeamhfkcjxikct.supabase.co";
 const SB_KEY="sb_publishable_XVNXhyYjebrrs0R0oKgLZw_9tBbDazZ";
 let sbc=null; try{ sbc=window.supabase.createClient(SB_URL,SB_KEY); }catch(e){}
 
+/* ¿Estamos en el ambiente de prueba (carpeta /prueba…)? Si es así:
+   no se registran visitas, interacciones ni consultas (para no contaminar
+   las métricas reales), no se activa el guardado sin conexión, y se pide
+   a los buscadores no indexar la página. El mismo archivo sirve para
+   producción y para prueba sin mantener dos versiones. */
+var ES_PRUEBA=false; try{ ES_PRUEBA=/\/prueba/i.test(location.pathname); }catch(e){}
+if(ES_PRUEBA){
+  try{
+    var mr=document.createElement("meta"); mr.name="robots"; mr.content="noindex,nofollow";
+    document.head.appendChild(mr);
+    document.addEventListener("DOMContentLoaded",function(){
+      var b=document.createElement("div");
+      b.textContent="🧪 Ambiente de prueba";
+      b.style.cssText="position:fixed;left:10px;bottom:10px;z-index:9999;background:#8b0c0c;color:#fff;font:600 11px/1 Inter,system-ui,sans-serif;padding:6px 10px;border-radius:20px;opacity:.92;pointer-events:none";
+      document.body.appendChild(b);
+    });
+  }catch(e){}
+}
+
 /* Contador de visitas anónimo: una marca por dispositivo y por día.
    No guarda identidad ni IP; solo fecha, jornada y si la app está instalada.
    Registra a lo más una vez cada 24 h para no inflar cifras ni saturar la base. */
@@ -1559,6 +2900,7 @@ let sbc=null; try{ sbc=window.supabase.createClient(SB_URL,SB_KEY); }catch(e){}
    Mide intensidad de uso. No guarda identidad ni IP. Falla en silencio. */
 function logInteraccion(seccion,accion){
   try{
+    if(ES_PRUEBA) return;
     if(!sbc||!seccion||!accion) return;
     var jor=null; try{ jor=localStorage.getItem("jornada3_v1")||null; }catch(e){}
     sbc.from("interacciones").insert({
@@ -1573,6 +2915,7 @@ function logInteraccion(seccion,accion){
 
 (function registrarVisita(){
   try{
+    if(ES_PRUEBA) return;
     if(!sbc) return;
     var HOY=new Date().toISOString().slice(0,10);
     var KEY="visita_v1";
@@ -1770,7 +3113,12 @@ function openAviso(ix){
     var x=document.getElementById("avisoX"); if(x&&x.focus)try{x.focus();}catch(e){}}
 }
 document.getElementById("mallaToggle").onclick=()=>showMalla(curMalla==="noajustada"?"ajustada":"noajustada");showMalla(curMalla);renderMural();
-(function(){var tp=document.getElementById("toPlan");if(tp)tp.onclick=function(){go("plan");};})();
+(function(){var tp=document.getElementById("toPlan");if(tp)tp.onclick=function(){go("plan");};
+  var vv=document.getElementById("planVolver");
+  if(vv)vv.onclick=function(){ go("hor"); };
+  var b1=document.getElementById("dlHor");if(b1)b1.onclick=function(){docHorario();};
+  var b2=document.getElementById("dlPru");if(b2)b2.onclick=function(){docPruebas();};
+  var b3=document.getElementById("dlPlan");if(b3)b3.onclick=function(){docRespaldo();};})();
 
 /* ===== Respaldo de avance + legales ===== */
 function exportData(){
@@ -1844,7 +3192,7 @@ function importData(file){
    {c:"📖 Reglamento",q:"¿Cuándo me entregan las notas y cómo pido recorrección?",k:"notas plazo entrega recorreccion revision recorregir reclamar dias publican",a:"El docente informa la nota en un máximo de <b>10 días corridos</b> tras la evaluación. Desde que se publica, tienes <b>3 días corridos</b> para pedirle la revisión de tu evaluación."},
    {c:"📖 Reglamento",q:"¿Cuántas veces puedo reprobar un ramo antes de que me eliminen?",k:"reprobar reprobado eliminacion eliminado cuantas veces repetir eliminan tres",a:"Puedes cursar una asignatura hasta <b>3 veces</b>. Te eliminan de la carrera si: (a) repruebas <b>3 veces la misma asignatura</b>, o (b) repruebas el <b>50% de las asignaturas</b> cursadas al término del <b>8º nivel</b> (régimen trimestral).",j:"tech"},
    {c:"📖 Reglamento",q:"Si repruebo un ramo, ¿qué tengo que hacer?",k:"reprobe reprobado ramo repetir volver cursar siguiente obligatorio inscribir arrastro",a:"El ramo reprobado debes cursarlo en el <b>período siguiente en que se dicte</b>, y la carrera lo inscribe <b>obligatoriamente</b> (sin derecho a sacarlo de tu carga)."},
-   {c:"📖 Reglamento",q:"¿Cuántos niveles puedo tomar al mismo tiempo?",k:"niveles cuantos ramos tomar inscribir adelantar consecutivos carga cruzar",a:"En régimen trimestral puedes inscribir asignaturas de <b>hasta 4 niveles distintos y consecutivos</b>, partiendo del nivel más bajo que tengas pendiente y cumpliendo los prerrequisitos. Casos excepcionales (más niveles o hasta 24 créditos) se solicitan a la Dirección de Carrera.",j:"tech"},
+   {c:"📖 Reglamento",q:"¿Cuántos niveles puedo tomar al mismo tiempo?",k:"niveles cuantos ramos tomar inscribir adelantar consecutivos carga cruzar",a:"En régimen trimestral el reglamento permite inscribir asignaturas de <b>hasta 4 niveles distintos y consecutivos</b> (art. 17), partiendo del nivel más bajo que tengas pendiente y cumpliendo los prerrequisitos.<br><b>Ojo:</b> la Dirección de Carrera interpreta ese rango como una vía para <b>recuperar asignaturas pendientes</b>, no para adelantar. Por eso <b>no se autorizan asignaturas de niveles superiores al que cursas</b>. Casos excepcionales se solicitan a la Dirección de Carrera.",j:"tech"},
    {c:"📖 Reglamento",q:"¿Puedo bajar mi carga académica si me enfermo?",k:"bajar rebajar disminuir carga academica enfermedad enfermo reducir rebaja",a:"Sí. Por enfermedad certificada u otra causa grave puedes pedir disminuir tu carga <b>hasta en un 50%</b> a la Dirección de Carrera, a más tardar <b>4 semanas antes del término del trimestre</b>.",j:"tech"},
    {c:"📖 Reglamento",q:"¿Qué son la suspensión, anulación y retiro?",k:"suspension anulacion retiro abandono interrupcion congelar pausar dejar estudios",a:"<b>Suspensión:</b> pausar tus estudios un tiempo (antes de tomar carga). <b>Anulación:</b> dejar sin efecto todos los ramos inscritos (en la fecha del calendario). <b>Retiro:</b> dejar la carrera; no borra notas ni carga. Suspensión y anulación: hasta 2 veces cada una, máx. 1 año por vez."},
    {c:"📖 Reglamento",q:"Si me eliminan, ¿puedo seguir estudiando?",k:"eliminado eliminacion continuidad seguir continuar gracia apelar solicitud comision",a:"El estudiante eliminado puede pedir <b>continuidad de estudios</b> por causa grave justificada, dentro de los plazos del calendario. Lo resuelve la <b>Comisión de Gracia</b> de Sede y su decisión es inapelable."},
@@ -1871,7 +3219,7 @@ function importData(file){
    /* --- Equivalentes para régimen SEMESTRAL (Diurno y Vespertino Regular) --- */
    {c:"📖 Reglamento",q:"¿Cómo se calcula la nota final del ramo?",k:"nota final calculo calcula ponderacion ponderaciones evaluaciones porcentaje acumulativa promedio",a:"En ramos <b>semestrales</b> depende de las horas de la asignatura (Reglamento General del Estudiante, art. 25):<br>• <b>72 horas o menos:</b> 2 evaluaciones regulares = 70% + 1 acumulativa = 30%.<br>• <b>108 horas o más:</b> 3 evaluaciones regulares = 70% + 1 acumulativa = 30%.<br>La acumulativa reúne foros, quiz, ensayos y trabajos similares. El syllabus puede fijar otro sistema, así que revísalo siempre.",j:"sem"},
    {c:"📖 Reglamento",q:"¿Cuántas veces puedo reprobar un ramo antes de que me eliminen?",k:"reprobar reprobado veces eliminan eliminacion elimina tres oportunidades cuantas",a:"Puedes cursar una asignatura hasta <b>3 veces</b>. Te eliminan de la carrera si (art. 44):<br>• repruebas <b>3 veces la misma asignatura</b>, o<br>• repruebas el <b>50% de las asignaturas cursadas al término del 6º nivel</b> (régimen semestral).<br>Si te eliminan, puedes pedir continuación de estudios a la Comisión de Gracia de Sede dentro de los plazos del calendario académico.",j:"sem"},
-   {c:"📖 Reglamento",q:"¿Cuántos niveles puedo tomar al mismo tiempo?",k:"niveles nivel simultaneo mismo tiempo cuantos tomar inscribir distintos consecutivos",a:"En régimen <b>semestral</b> puedes inscribir asignaturas de <b>hasta 3 niveles distintos y consecutivos</b> (art. 17), partiendo del nivel más bajo que tengas pendiente y cumpliendo los prerrequisitos. Excepcionalmente puedes pedir a la Dirección de Carrera cursar hasta <b>36 créditos semestrales</b> o ramos de niveles superiores, con causa grave justificada.",j:"sem"},
+   {c:"📖 Reglamento",q:"¿Cuántos niveles puedo tomar al mismo tiempo?",k:"niveles nivel simultaneo mismo tiempo cuantos tomar inscribir distintos consecutivos",a:"En régimen <b>semestral</b> el reglamento permite inscribir asignaturas de <b>hasta 3 niveles distintos y consecutivos</b> (art. 17), partiendo del nivel más bajo que tengas pendiente y cumpliendo los prerrequisitos. La Dirección de Carrera interpreta ese rango para <b>recuperar lo pendiente</b>, no para adelantar niveles superiores. Excepcionalmente puedes pedir a la Dirección de Carrera cursar hasta <b>36 créditos semestrales</b> o ramos de niveles superiores, con causa grave justificada.",j:"sem"},
    {c:"📖 Reglamento",q:"¿Puedo bajar mi carga académica si me enfermo?",k:"bajar disminuir carga academica enfermo enfermedad reducir menos ramos",a:"Sí. Por enfermedad certificada u otra causa grave puedes solicitar al Director de Carrera disminuir tu carga <b>hasta en un 50%</b>, a más tardar <b>6 semanas antes del término del semestre</b> (art. 16).",j:"sem"},
    {c:"📖 Reglamento",q:"¿Cuánta asistencia necesito?",k:"asistencia asistir faltas porcentaje minima minimo cuanta necesito",a:"Asistencia mínima: <b>70% en primer año</b> y <b>60% en cursos superiores</b> (art. 21). En componentes prácticos —talleres, laboratorios, prácticas— la asistencia exigida es del <b>100%</b>. El syllabus de cada ramo puede fijar un porcentaje distinto.",j:"sem"},
    {c:"👤 Autoridades",q:"Tengo un problema con un profesor o un ramo, ¿a quién acudo?",k:"problema profesor docente ramo conflicto reclamo queja acudo quien hablar",a:"Primero conversa con el <b>docente</b>. Si no se resuelve, acude a la <b>Secretaría académica</b> o a la <b>Dirección de Carrera de Derecho</b>, que es la instancia que resuelve estas situaciones.",j:"sem"}
@@ -1927,6 +3275,7 @@ function importData(file){
      No guarda identidad, ni sesión, ni dispositivo. Si falla, no interrumpe al usuario. */
   function logConsulta(pregunta,respondida,tema){
     try{
+      if(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA)return;
       if(!sbc||!pregunta)return;
       var txt=String(pregunta).trim().slice(0,300);
       if(txt.length<3)return;
@@ -1965,7 +3314,7 @@ function importData(file){
 })();
 </script>
 <script>
-if('serviceWorker' in navigator){
+if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA)){
   var __refreshing=false;
   navigator.serviceWorker.addEventListener('controllerchange',function(){
     if(__refreshing)return;__refreshing=true;window.location.reload();
@@ -2042,7 +3391,7 @@ if('serviceWorker' in navigator){
   if(avX)avX.onclick=closeAviso;
   if(avModal)avModal.onclick=function(e){if(e.target===avModal)closeAviso();};
 
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var ar=document.getElementById('archModal');if(ar&&ar.style.display==='flex'){ar.style.display='none';try{document.body.style.overflow='';}catch(x){}return;}var av=document.getElementById('avisoModal');if(av&&av.style.display==='flex'){av.style.display='none';try{document.body.style.overflow='';}catch(e){}return;}var ac=document.getElementById('allCalcModal');if(ac&&ac.style.display==='flex'){ac.style.display='none';return;}var dm=document.getElementById('docModal');if(dm&&dm.style.display==='flex'){dm.style.display='none';return;}if(panel&&panel.style.display==='flex'){panel.style.display='none';}}});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var ap=document.getElementById('allPruModal');if(ap&&ap.style.display==='flex'){ap.style.display='none';return;}var ah=document.getElementById('allHorModal');if(ah&&ah.style.display==='flex'){ah.style.display='none';return;}var ar=document.getElementById('archModal');if(ar&&ar.style.display==='flex'){ar.style.display='none';try{document.body.style.overflow='';}catch(x){}return;}var av=document.getElementById('avisoModal');if(av&&av.style.display==='flex'){av.style.display='none';try{document.body.style.overflow='';}catch(e){}return;}var ac=document.getElementById('allCalcModal');if(ac&&ac.style.display==='flex'){ac.style.display='none';return;}var dm=document.getElementById('docModal');if(dm&&dm.style.display==='flex'){dm.style.display='none';return;}if(panel&&panel.style.display==='flex'){panel.style.display='none';}}});
   if(mq.addEventListener)mq.addEventListener('change',function(){if(prefs.theme==='auto')applyTheme();});
 
   /* --- Ventanitas de documentos: Reglamento y Circular --- */
@@ -2198,6 +3547,14 @@ if('serviceWorker' in navigator){
 
   /* --- Selector de malla (ajustada/no ajustada) para Diurno y V.Regular --- */
   var curMallaSem="ajustada"; /* por jornada */
+  /* Instantánea de la malla activa para los documentos imprimibles */
+  function expSnapSem(){
+    window.__mallaSnap=function(){return {reg:"sem",pref:"S",
+      cur:(curMallaSem==="noajustada")?"na":"aj",
+      aj:{C:COURSES_SEM,S:stateSEM,U:isUnlockedSEM},
+      na:{C:COURSES_NASEM,S:stateNASEM,U:isUnlockedNASEM},
+      plan:(curMallaSem==="noajustada")?"Plan No Ajustado (Res. 135/2017)":"Plan Ajustado (Res. 165/2022)"};};
+  }
   function keyMallaSem(j){return "malla_sel_"+j+"_v1";}
   function showMallaSem(j,sel){
     curMallaSem=(sel==="noajustada")?"noajustada":"ajustada";
@@ -2213,11 +3570,11 @@ if('serviceWorker' in navigator){
     if(note){
       note.style.display="";
       if(curMallaSem==="noajustada"){
-        KEY_NASEM="malla_nasem_"+j+"_v1"; loadNASEM();
+        KEY_NASEM="malla_nasem_"+j+"_v1"; loadNASEM(); expSnapSem();
         note.innerHTML="<b>"+nm+" · Malla no ajustada · Plan 2017 (Res. 135/2017), régimen semestral.</b> Solo para estudiantes de ese plan. Ubicación por semestre y prerrequisitos <b>oficiales exactos</b>.";
         renderNASEM();
       }else{
-        KEY_SEM="malla_sem_"+j+"_v1"; loadSEM();
+        KEY_SEM="malla_sem_"+j+"_v1"; loadSEM(); expSnapSem();
         note.innerHTML="<b>"+nm+" · Plan vigente (Res. 165/2022), régimen semestral.</b> Los prerrequisitos son los oficiales del plan.";
         renderSEM();
       }
@@ -2712,13 +4069,13 @@ if('serviceWorker' in navigator){
     var motto=document.querySelector("footer .motto"); if(motto)motto.style.display=(j==="tech")?"":"none";
     /* secciones sin datos propios: mensaje pendiente */
     setPend(j,nm);
-    if(typeof renderHorView==='function' && document.getElementById("hor")){ try{renderHorView(typeof horMode!=='undefined'?horMode:"all");}catch(e){} }
+    if(typeof renderHorView==='function' && document.getElementById("hor")){ try{renderHorView(typeof horMode!=='undefined'?horMode:"fit");}catch(e){} }
     if(typeof planPropose==='function'){ try{planPropose();}catch(e){} }
-    if(typeof renderPru==='function'){ try{renderPru(typeof pruMode!=='undefined'?pruMode:"all");}catch(e){} }
+    if(typeof renderPru==='function'){ try{renderPru(typeof pruMode!=='undefined'?pruMode:"mine");}catch(e){} }
     /* rótulos del período según régimen */
     var sem=(j!=="tech");
     var hm=document.querySelector('#hor .mh');if(hm)hm.textContent=sem?"Horario del semestre":"Horario del trimestre";
-    var hs=document.querySelector('#hor .msub');if(hs)hs.textContent=sem?"Primavera 2026 · 2º semestre.":"Otoño 2026 · 2º trimestre.";
+    var hs=document.querySelector('#hor .msub');if(hs)hs.textContent=sem?"Primavera 2026 · 2º semestre.":"3er trimestre 2026.";
     var pm=document.querySelector('#pru .mh');if(pm)pm.textContent=sem?"Pruebas del semestre":"Pruebas del trimestre";
     var ps=document.querySelector('#pru .msub');
     if(ps){
@@ -2754,6 +4111,7 @@ if('serviceWorker' in navigator){
       }
     }
     centrarTabs();
+    if(j==="tech"&&window.__snapTech)window.__mallaSnap=window.__snapTech;
   }
 
   /* reset consciente de la jornada */
