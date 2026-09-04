@@ -462,6 +462,10 @@ td.cell.selon{background:#eaf6ee !important;outline:2px solid #1f6b3a;outline-of
 .mtext b{color:var(--wine)}
 .mcta{display:inline-block;margin-top:11px;color:#fff;font-weight:700;font-size:13px;padding:9px 16px;border-radius:999px;text-decoration:none}
 .mcta:active{opacity:.85}
+.volver{background:none;border:0;color:var(--wine,#8b0c0c);font:inherit;font-size:.82rem;font-weight:600;padding:6px 2px;margin:0 0 4px;cursor:pointer;display:inline-flex;align-items:center;gap:2px;-webkit-tap-highlight-color:transparent}
+.volver:hover{text-decoration:underline}
+.volver:active{opacity:.6}
+body.dark .volver{color:#e0a0a0}
 .discrow{display:flex;gap:10px;align-items:center;margin:8px 0 4px}
 .discrow .pdfBtn{flex:none}
 .disc{background:#fff7e6;border:1px solid #f0d9a6;border-radius:10px;padding:9px 12px;font-size:12.5px;color:#6a5320;line-height:1.45;margin:8px 0 4px}
@@ -753,6 +757,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
 </div></section>
 
 <section id="plan" style="display:none"><div class="wrap">
+  <button type="button" class="volver" id="planVolver">← Volver a Horarios</button>
   <div class="mh serif">Planificador de carga</div>
   <div class="msub">Cruza tu avance con la oferta del trimestre y propone qué tomar, sin choques de horario.</div>
   <div class="discrow">
@@ -3063,6 +3068,8 @@ function openAviso(ix){
 }
 document.getElementById("mallaToggle").onclick=()=>showMalla(curMalla==="noajustada"?"ajustada":"noajustada");showMalla(curMalla);renderMural();
 (function(){var tp=document.getElementById("toPlan");if(tp)tp.onclick=function(){go("plan");};
+  var vv=document.getElementById("planVolver");
+  if(vv)vv.onclick=function(){ go("hor"); };
   var b1=document.getElementById("dlHor");if(b1)b1.onclick=function(){docHorario();};
   var b2=document.getElementById("dlPru");if(b2)b2.onclick=function(){docPruebas();};
   var b3=document.getElementById("dlPlan");if(b3)b3.onclick=function(){docRespaldo();};})();
