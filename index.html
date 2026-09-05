@@ -1051,13 +1051,19 @@ var SOLICITUD={
      formulario; mientras estén vacíos, la app abre el formulario sin
      prellenar y deja los ramos escritos en el resumen. */
   url:"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=ucHaYEdgmkihNLBwOGzM977P_dy_581AsijJOgLfgENUREY1VlhPODRES01EQTBSVjhVQTk2U05LQSQlQCNjPTEu",
-  campos:{        /* ← pendientes: pedirlos a la Carrera */
-    cedula:"", anio1:"", anio2:"", anio3:"", anio4:"", anio5:"",
-    alternas:"", verificacion:"", peticiones:""
+  campos:{
+    cedula:      "r25b4c4d8ccfd4565a64cb01d989d3640",
+    anio1:       "r6e1b094571ec413495bd2175673741f4",
+    anio2:       "rc0ce15e7b0b1452ea10e8f9b2d637a1a",
+    anio3:       "rf345b762028b4d02bc4a6bc0e84cdd5d",
+    anio4:       "r6dbd8b01ea5249f885aca94049dbdb78",
+    anio5:       "r9bf44d7db35540ddac0ed1f4f32958a0",
+    alternas:    "r852ead8dd3484bdd8e71440dcd677820",
+    verificacion:"",                                   /* el formulario no tiene campo aparte */
+    peticiones:  "r63e432b54e084b21bf9f8e3828a418a3"
   },
-  /* Preguntas configuradas con "Varias respuestas". La de alternas quedó de
-     respuesta única: si más adelante se activa como múltiple, poner true. */
-  multiple:{ anio1:true, anio2:true, anio3:true, anio4:true, anio5:true, alternas:false }
+  /* Todas las preguntas de asignaturas admiten varias respuestas */
+  multiple:{ anio1:true, anio2:true, anio3:true, anio4:true, anio5:true, alternas:true }
 };
 function pruebasVisibles(){
   var j=null;
@@ -1615,6 +1621,17 @@ function _prerreqOK(id,key){
   var c=_cursoDe(id,key); if(!c)return null;
   try{ return (na?P.na:P.aj).U(c); }catch(e){ return null; }
 }
+/* ¿La malla tiene prerrequisitos registrados para esta asignatura?
+   Los electivos de formación general legítimamente no los tienen; en los
+   demás, una lista vacía significa dato faltante y no debe leerse como
+   "cumple", porque induciría a error a quien revisa la solicitud. */
+function _prerreqRegistrado(id,key){
+  var c=_cursoDe(id,key); if(!c)return true;
+  if(c.tag==="fg")return true;                       /* formación general */
+  if(c.p&&c.p.upTo)return true;
+  if(Array.isArray(c.p)&&c.p.length)return true;
+  return c.t<=2;                                     /* niveles 1 y 2: sin requisitos previos */
+}
 function _inscritosDetalle(){
   var ids=Object.keys(insc).map(Number), out=[];
   ids.forEach(function(id){
@@ -1629,6 +1646,7 @@ function _inscritosDetalle(){
               cred:(typeof creditsForSel==="function"?creditsForSel(id,key):0),
               ses:ses,prerreq:_prerreqOK(id,key),
               estado:E?E.st:null,
+              preReg:_prerreqRegistrado(id,key),
               nrc:nrcs,mods:Object.keys(mods),
               seccion:(typeof HOR!=="undefined"&&HOR[key]?HOR[key].l:"")});
   });
@@ -1741,23 +1759,98 @@ function docPruebas(){
   imprimirDoc("Calendario de evaluaciones",_jLabel(),cuerpo);
   if(typeof logInteraccion==="function")logInteraccion("pruebas","descargar calendario");
 }
+/* ═══════════════════════════════════════════════════════════════
+   TEXTOS EXACTOS DE LAS OPCIONES DEL FORMULARIO
+   Microsoft Forms solo marca una casilla si el texto coincide
+   carácter por carácter. Las opciones cargadas por la Carrera traen
+   espacios duros (\u00a0), espacios dobles y espacios finales, así que
+   NO se pueden reconstruir: hay que copiarlas literalmente.
+   Se indexan por NRC. Los NRC que falten aquí no se marcan solos y
+   la app los deja anotados en el campo de peticiones.
+   PARA COMPLETARLO: en el formulario, "Obtener URL previamente
+   rellenada", marcar TODAS las opciones, y de esa dirección extraer
+   los textos.
+   ═══════════════════════════════════════════════════════════════ */
+/* Equivalencias: el formulario usa un NRC distinto al del horario en dos casos.
+   Confirmado contra las opciones publicadas por la Carrera. */
+var NRC_EQUIV={ "11392":"11451", "11445":"11444" };
+var OPC_FORM={
+ "11412":"1° AÑO 11412\u00a0FUNDAMENTOS FILOSÓFICOS DEL DERECHO\u00a0JORGE  REINOSO MENDEZ",
+ "11414":"1° AÑO 11414 FUNDAMENTOS FILOSÓFICOS DEL DERECHO\u00a0JORGE REINOSO MENDEZ",
+ "11416":"1° AÑO 11416\u00a0 FUNDAMENTOS FILOSÓFICOS DEL DERECHO\u00a0JORGE REINOSO ELGUEDA",
+ "11426":"1° AÑO\u00a011426\u00a0TEORÍA CONSTITUCIONAL SERGIO ARÉVALO WADDINGTON ",
+ "11388":"2° AÑO 11388 ELECTIVO DE DESARROLLO PERSONAL\u00a0",
+ "11408":"1° AÑO\u00a011408 ARGUMENTACIÓN JURÍDICA Y DEBATE\u00a0CRISTIAN LARRAGUIBEL ARAVENA ",
+ "11409":"1° AÑO\u00a011409 ARGUMENTACIÓN JURÍDICA Y DEBATE\u00a0JORGE ROA RIOSECO ",
+ "11410":"1° AÑO\u00a011410 ARGUMENTACIÓN JURÍDICA Y DEBATE\u00a0JORGE ROA RIOSECO ",
+ "11411":"1° AÑO\u00a011411 ARGUMENTACIÓN JURÍDICA Y DEBATE\u00a0JORGE ROA RIOSECO ",
+ "11418":"1° AÑO\u00a011418 INTRODUCCIÓN A LA ECONOMÍA\u00a0CRISTIAN BRITO VALDEBENITO ",
+ "11420":"1° AÑO 11420\u00a0INTRODUCCIÓN A LA ECONOMÍA\u00a0CRISTIAN BRITO VALDEBENITO ",
+ "11422":"1° AÑO\u00a011422 INTRODUCCIÓN A LA ECONOMÍA\u00a0CRISTIAN BRITO VALDEBENITO ",
+ "11424":"1° AÑO\u00a011424\u00a0TEORÍA CONSTITUCIONAL SAHADY ESPINOZA SOTO ",
+ "11428":"2° AÑO 11428 BIENES\u00a0MARCELO NECULMÁN MUÑOZ ",
+ "11430":"2° AÑO 11430 BIENES\u00a0JUAN CASTRO SAAVEDRA ",
+ "11432":"2° AÑO 11432 DERECHO INTERNACIONAL PÚBLICO\u00a0LIZ VALLEJOS ROA",
+ "11433":"2° AÑO 11433 DERECHO INTERNACIONAL PÚBLICO\u00a0LIZ VALLEJOS ROA",
+ "11434":"2° AÑO 11434 DERECHOS Y GARANTÍAS CONSTITUCIONALES\u00a0SAHADY ESPINOZA SOTO ",
+ "11436":"2° AÑO 11436 DERECHOS Y GARANTÍAS CONSTITUCIONALES\u00a0SAHADY ESPINOZA SOTO ",
+ "11438":"2° AÑO 11438 TALLER DE INTEGRACIÓN I",
+ "11439":"2° AÑO 11439 TALLER DE INTEGRACIÓN I",
+ "11440":"3° AÑO\u00a0 11440 DERECHO COLECTIVO DEL TRABAJO Y SEG SOCIAL GUTIÉRREZ SEPÚLVEDA GENOVEVA",
+ "11442":"3° AÑO\u00a011442  DERECHO COLECTIVO DEL TRABAJO Y SEG SOCIAL FERNANDO SÁEZ PAREDES",
+ "11446":"3° AÑO\t11446 DERECHO MERCANTIL JEAN PAUL THIERS THIERS",
+ "11448":"3° AÑO\u00a011448  PROCEDIMIENTOS DE EJECUCIÓN Y CAUTELA ANDRÉS CELEDÓN BAEZA",
+ "11450":"3° AÑO\u00a011450 PROCEDIMIENTOS DE EJECUCIÓN Y CAUTELA REINALDO OSORIO ULLOA",
+ "11451":"3° AÑO 11451 ELECTIVO DE ÉTICA ",
+ "11452":"3° AÑO  11452 ELECTIVO DE RESPONSABILIDAD SOCIAL",
+ "11454":"4° AÑO 11454 DERECHO ADMINISTRATIVO II CONTRERAS EDDINGER ROBERTO",
+ "11456":"4° AÑO\u00a011456\u00a0DERECHO SUCESORIO\u00a0HELLEN PACHECO CORNEJO",
+ "11458":"4° AÑO\u00a011458\t\u00a0DERECHO TRIBUTARIO I\u00a0CARLOS MATURANA LANZA",
+ "11460":"4° AÑO 11460 OPTATIVO DE ESPECIALIDAD I\u00a0 MARCELO NECULMAN MUÑOZ ",
+ "11461":"4° AÑO 11461 PROCEDIMIENTOS ESPECIALES ORALES\u00a0ORLANDO ALARCÓN ITURRIAGA",
+ "11463":"4° AÑO 11463 TALLER DE INTEGRACIÓN II\u00a0SERGIO CARRERA ARANEDA\u00a0MARCIA MOLINA PEZOA",
+ "11464":"4° AÑO 11464 TALLER DE LITIGACIÓN\u00a0\u00a0ORLANDO ALARCÓN ITURRIAGA",
+ "11467":"5° AÑO 11467 DERECHO TRIBUTARIO II\u00a0\u00a0ROXANA OBREQUE ESPINOZA",
+ "11469":"5° AÑO\u00a011469 OPTATIVO DE ESPECIALIDAD II\u00a0ANDRÉS CELEDÓN BAEZA\t",
+ "11475":"5° AÑO\u00a011475 TALLER DE LITIGACIÓN AVANZADA\u00a0FRANCISCO LJUBETIC ROMERO EVELYN   CONTRERAS SIERRA-KLAUS",
+ "12220":"2° AÑO 12220 TEORÍA DEL PROCESO FELIPE NUÑEZ MENDEZ",
+ "12412":"5° AÑO 12412 TALLER DE INTEGRACIÓN III CARLOS DURAN FERNANDEZ\u00a0 JUAN CASTRO SAAVEDRA",
+ "11444":"3° AÑO 11444\u00a0 DERECHO ECONÓMICO\u00a0FELIPE MATURANA ORTIZ ",
+ "14444":"3° AÑO 14444\u00a0 DERECHO ECONÓMICO\u00a0FELIPE MATURANA ORTIZ "
+};
+
+
 /* ═════════ Solicitud de toma de carga manual ═════════ */
 function _anioDe(t){ return Math.ceil(t/((_snap().reg==="tri")?3:2)); }
 /* Texto idéntico al de la opción cargada en el formulario:
    "2° AÑO 11428 BIENES NECULMÁN MUÑOZ MARCELO" (un NRC por sección) */
+/* Devuelve el texto literal de la opción, buscándolo por NRC.
+   Si el NRC no está en el diccionario, devuelve null y la app lo
+   anota en el campo de peticiones para que se marque a mano. */
 function _opcionForm(r){
-  var etq=(typeof HOR!=="undefined"&&HOR[r.key])?HOR[r.key].l:"";
-  var alterna=/altern/i.test(etq);
-  var nrc=(r.nrc&&r.nrc.length)?r.nrc.slice().sort()[0]:"";
-  var prof="";
-  (r.ses||[]).some(function(s){ if(s[5]&&s[5]!=="—"){prof=s[5];return true;} return false; });
-  var partes=[_anioDe(r.nivel||1)+"° AÑO"];
-  if(nrc)partes.push(nrc);
-  partes.push(String(r.nombre).toUpperCase());
-  if(prof)partes.push(String(prof).toUpperCase());
-  return partes.join(" ");
+  var lista=(r.nrc||[]).slice().sort();
+  for(var i=0;i<lista.length;i++){
+    var n=lista[i];
+    if(OPC_FORM[n])return OPC_FORM[n];
+    if(NRC_EQUIV[n]&&OPC_FORM[NRC_EQUIV[n]])return OPC_FORM[NRC_EQUIV[n]];
+  }
+  return null;
+}
+/* Descripción legible para los ramos que no pudieron marcarse solos */
+function _descRamo(r){
+  var nrc=(r.nrc&&r.nrc.length)?r.nrc.slice().sort()[0]:"sin NRC";
+  return _anioDe(r.nivel||1)+"° AÑO "+nrc+" "+String(r.nombre).toUpperCase();
 }
 /* Resumen que viaja al formulario: es la columna que la Carrera revisa en su Excel */
+/* Resumen que viaja al formulario. Va en la dirección web, así que debe ser
+   BREVE: Microsoft Forms rechaza direcciones muy largas. Lleva solo lo que el
+   coordinador necesita ver sin abrir nada; el detalle completo está en el PDF. */
+/* Acorta una lista larga: los primeros n y cuántos quedan fuera */
+function _lim(arr,n){
+  if(!arr||!arr.length)return "";
+  if(arr.length<=n)return arr.join(", ");
+  return arr.slice(0,n).join(", ")+" y "+(arr.length-n)+" mas";
+}
 function _textoVerificacion(){
   try{ docRespaldo._silencioso=true; docRespaldo(); }catch(e){}
   docRespaldo._silencioso=false;
@@ -1765,61 +1858,69 @@ function _textoVerificacion(){
   var mg=S.mg||_mallaGrid(), det=S.det||_inscritosDetalle();
   var V=S.V||{choques:[],solic:[],faltaPr:0,yaAprob:[],sct:0,nNiv:0,tope:4,excedeSCT:false,excedeNiv:false};
   var obs=S.obs||{repro:[],atras:[],total:0};
-  var hayObs=(V.choques.length||V.faltaPr||V.yaAprob.length||V.excedeSCT||V.excedeNiv||obs.total);
+  var hayObs=(V.choques.length||V.faltaPr||V.yaAprob.length||V.excedeSCT||V.excedeNiv||obs.total||(V.sinRegistrar&&V.sinRegistrar.length)||!V.hayAvance);
   var L=[];
-  L.push(hayObs?"SOLICITUD CON OBSERVACIONES - REVISAR"
-        :(V.solic.length?"SOLICITUD VERIFICADA - REQUIERE AUTORIZACION DE TOPE"
-                        :"SOLICITUD VERIFICADA - SIN OBSERVACIONES"));
-  L.push("Jornada: "+_jLabel()+" - "+mg.plan);
-  L.push("Avance declarado: "+mg.ap+" aprobadas, "+mg.rep+" reprobadas, "+mg.pen+" pendientes");
-  L.push("");
-  L.push("RAMOS SOLICITADOS ("+det.length+" - "+V.sct+" SCT):");
-  det.forEach(function(r){
-    var nrc=(r.nrc&&r.nrc.length)?r.nrc.join("/"):"sin NRC";
-    var marca=(r.estado==="no")?" - REPROBADA, retoma":(r.estado==="ok"?" - YA APROBADA (revisar)":"");
-    var pre=(r.prerreq===false)?" - PRERREQUISITO NO CUMPLIDO":"";
-    L.push("- NRC "+nrc+" "+r.nombre+" - nivel "+r.nivel+", "+_anioDe(r.nivel||1)+" ano - "+(r.cred||0)+" SCT"+marca+pre);
-  });
-  L.push("");
-  L.push("VERIFICACIONES:");
-  L.push("- Coincidencias no autorizables: "+(V.choques.length?V.choques.join(" / "):"ninguna"));
-  L.push("- Prerrequisitos: "+(V.faltaPr?V.faltaPr+" ramo(s) por revisar":"todos cumplen"));
-  L.push("- Ramos ya aprobados solicitados: "+(V.yaAprob.length?V.yaAprob.map(function(x){return x.nombre;}).join(", "):"ninguno"));
-  L.push("- Niveles distintos: "+V.nNiv+" (tope "+V.tope+") - "+
-    ((V.adelantados&&V.adelantados.length)?"INCLUYE "+V.adelantados.length+" ASIGNATURA(S) SOBRE EL NIVEL QUE CURSA: "+V.adelantados.map(function(r){return r.nombre;}).join(", ")
-     :(V.nNiv>V.tope?"EXCEDE":"dentro del tope")));
-  L.push("- Creditos: "+V.sct+" SCT - "+(V.excedeSCT?"EXCEDE el maximo de 30":"dentro del maximo de 30"));
-  L.push("- Reprobados con oferta no reinscritos: "+(obs.repro.length?obs.repro.map(function(c){return c.n;}).join(", "):"ninguno"));
+
+  L.push("UApp - "+(hayObs?"CON OBSERVACIONES, REVISAR"
+        :(V.solic.length?"VERIFICADA, REQUIERE AUTORIZACION DE TOPE":"VERIFICADA SIN OBSERVACIONES")));
+
+  L.push("Avance declarado: "+mg.ap+" aprob, "+mg.rep+" reprob"+(V.hayAvance?"":" (NO DECLARADO)"));
+
+  if(det.length<=5){
+    L.push("Solicita ("+det.length+" ramos, "+V.sct+" SCT): "+det.map(function(r){
+      var n=(r.nrc&&r.nrc.length)?r.nrc[0]:"s/NRC";
+      return n+" "+r.nombre+(r.estado==="no"?" (REPROBADA)":"")+(r.estado==="ok"?" (YA APROBADA!)":"");
+    }).join(" / "));
+  }else{
+    /* con muchos ramos, las casillas del formulario ya los detallan */
+    L.push("Solicita "+det.length+" ramos ("+V.sct+" SCT): ver casillas marcadas arriba. "+
+      "NRC: "+_lim(det.map(function(r){return (r.nrc&&r.nrc.length)?r.nrc[0]:"s/NRC";}),8));
+    var rep=det.filter(function(r){return r.estado==="no";}).map(function(r){return r.nombre;});
+    if(rep.length) L.push("Reprobadas que retoma: "+_lim(rep,4));
+  }
+
+  /* Verificaciones: solo las que fallan; si todo pasa, una sola linea */
+  var mal=[];
+  if(!V.hayAvance) mal.push("sin avance declarado: verificaciones no concluyentes");
+  if(V.faltaPr) mal.push(V.faltaPr+" sin prerrequisitos");
+  if(V.fueraRango&&V.fueraRango.length) mal.push(V.fueraRango.length+" fuera de nivel: "+_lim(V.fueraRango.map(function(r){return r.nombre+" (n"+r.nivel+")";}),3));
+  else if(V.excedeNiv) mal.push("excede niveles");
+  if(V.excedeSCT) mal.push("excede 30 SCT");
+  if(V.yaAprob.length) mal.push("ya aprobadas: "+_lim(V.yaAprob.map(function(r){return r.nombre;}),3));
+  if(obs.repro.length) mal.push("reprobadas no reinscritas: "+_lim(obs.repro.map(function(c){return c.n;}),3));
+  if(V.choques.length) mal.push("coincidencia no autorizable");
+  if(V.sinRegistrar&&V.sinRegistrar.length) mal.push("sin prerreq. registrados en la app: "+_lim(V.sinRegistrar.map(function(r){return r.nombre;}),3));
+
+  var rango=(V.anclaN===V.techo)?("n"+V.anclaN):("n"+V.anclaN+"-"+V.techo);
+  if(mal.length) L.push("OBSERVACIONES: "+mal.join(" | "));
+  else L.push("Verificado OK: prerrequisitos, niveles ("+rango+"), creditos "+V.sct+"/30, reprobadas al dia.");
+
   if(V.solic&&V.solic.length){
-    L.push("");
-    L.push("TOPE(S) POR AUTORIZAR ("+V.solic.length+"):");
-    V.solic.forEach(function(s){
-      L.push("- "+String(s.txt).replace(/↔/g,"/")+" - "+s.dias+" "+s.t0+"-"+s.t1+" - "+s.min+" min online - "+s.pct+"% de la asignatura - dentro del 50% permitido");
-    });
+    L.push("TOPE POR AUTORIZAR (art.7): "+V.solic.map(function(s){
+      return String(s.txt).replace(/&[a-z]+;/g,"").replace(/↔/g,"/")+" "+s.dias+" "+s.t0+"-"+s.t1+", "+s.min+"min, "+s.pct+"%";
+    }).join(" | "));
   }
-  L.push("");
   var T=_tercerasGuardadas().filter(function(x){ return det.some(function(r){return r.id===x;}); });
-  if(T.length){
-    L.push("");
-    L.push("TERCERA OPORTUNIDAD declarada por el estudiante (Circular 05/2026 art. 8 - sin coincidencias):");
-    T.forEach(function(id){
-      var r=det.filter(function(x){return x.id===id;})[0];
-      if(r)L.push("- "+r.nombre);
-    });
-  }
-  L.push("");
-  L.push("Verificado contra la Circular N 05/2026 (Consejo de Carrera).");
-  L.push("Generado por UApp (miuapp.cl) el "+_fGen()+". Respaldo en PDF adjunto.");
-  return L.join("\n");
+  if(T.length) L.push("3a OPORTUNIDAD (art.8, sin topes): "+T.map(function(id){
+    var r=det.filter(function(x){return x.id===id;})[0]; return r?r.nombre:"";
+  }).filter(Boolean).join(", "));
+
+  L.push("Detalle completo en el respaldo PDF. Circular 05/2026. miuapp.cl");
+  var txt=L.join("\n");
+  /* Tope duro: Microsoft Forms rechaza direcciones muy largas */
+  if(txt.length>900) txt=txt.slice(0,860).replace(/\n[^\n]*$/,"")+"\n(resumen abreviado; el detalle esta en el respaldo PDF adjunto)";
+  return txt;
 }
 function _urlSolicitud(){
-  var C=SOLICITUD.campos, det=_inscritosDetalle(), p=[], porAnio={};
+  var C=SOLICITUD.campos, det=_inscritosDetalle(), p=[], porAnio={}, aMano=[];
   det.forEach(function(r){
     var etq=(typeof HOR!=="undefined"&&HOR[r.key])?HOR[r.key].l:"";
     var k=/altern/i.test(etq)?"alternas":("anio"+_anioDe(r.nivel||1));
-    (porAnio[k]=porAnio[k]||[]).push(_opcionForm(r));
+    var txt=_opcionForm(r);
+    if(txt) (porAnio[k]=porAnio[k]||[]).push(txt);
+    else aMano.push(_descRamo(r));
   });
-  var sinCampo=[], M=SOLICITUD.multiple||{};
+  var sinCampo=aMano.slice(), M=SOLICITUD.multiple||{};
   Object.keys(porAnio).forEach(function(k){
     if(!C[k]){ sinCampo=sinCampo.concat(porAnio[k]); return; }
     if(M[k]===false){
@@ -1836,9 +1937,23 @@ function _urlSolicitud(){
   if(sinCampo.length) txt="OJO - MARCAR A MANO ESTOS RAMOS EN EL FORMULARIO:\n"+
       sinCampo.map(function(x){return "- "+x;}).join("\n")+"\n\n"+txt;
   var destino=C.verificacion||C.peticiones;
-  if(destino) p.push(encodeURIComponent(destino)+"="+encodeURIComponent(txt));
   var sep=SOLICITUD.url.indexOf("?")>=0?"&":"?";
-  return SOLICITUD.url+(p.length?sep+p.join("&"):"");
+  var arma=function(resumen){
+    var q=p.slice();
+    if(destino&&resumen) q.push(encodeURIComponent(destino)+"="+encodeURIComponent(resumen));
+    return SOLICITUD.url+(q.length?sep+q.join("&"):"");
+  };
+  var u=arma(txt);
+  /* Microsoft Forms rechaza direcciones muy largas. Las casillas marcadas son
+     lo esencial, así que si el conjunto se pasa, el resumen se reduce a su
+     veredicto: el detalle completo viaja igual en el respaldo PDF. */
+  if(u.length>1900){
+    var breve=txt.split("\n")[0]+"\nDetalle completo en el respaldo PDF adjunto. miuapp.cl";
+    u=arma(breve);
+    if(u.length>1900) u=arma("");     /* solo las casillas */
+    try{ window.__solicRecortada=true; window.__solicLarga=(u.length>1900); }catch(e){}
+  }else{ try{ window.__solicRecortada=false; }catch(e){} }
+  return u;
 }
 /* Circular N°05/2026 art. 8: no se autorizan coincidencias en asignaturas que
    el estudiante rinde por TERCERA oportunidad. La app no puede saberlo por sí
@@ -1892,26 +2007,39 @@ function docRespaldo(){
     /* Lectura restrictiva del art. 17: ningún ramo por sobre el nivel que cursa */
     try{
       var _a=_ancla();
-      V.techo=(_a.techo!=null)?_a.techo:null;
+      V.hayAvance=!!_a.hasAvance;
       V.limitado=!!_a.limitado;
-      V.adelantados=det.filter(function(r){ return V.techo!=null && r.nivel!=null && r.nivel>V.techo; });
-    }catch(e){ V.adelantados=[]; }
+      /* Sin avance declarado el nivel más bajo pendiente es, necesariamente, el 1:
+         la verificación de niveles se hace igual, y el sello advierte que el
+         avance no fue declarado. Así una selección de nivel 9 no puede pasar
+         por "dentro del tope" solo porque el estudiante no marcó nada. */
+      V.anclaN=_a.hasAvance?_a.anchor:1;
+      V.techo=_a.hasAvance?_a.techo:(SIN_ADELANTO?1:V.tope);
+      V.nivelesSel=Object.keys(nivs).map(Number).sort(function(a,b){return a-b;});
+      V.fueraRango=det.filter(function(r){ return r.nivel!=null && (r.nivel>V.techo||r.nivel<V.anclaN); });
+      V.adelantados=det.filter(function(r){ return r.nivel!=null && r.nivel>V.techo; });
+      V.sinRegistrar=det.filter(function(r){ return r.preReg===false; });
+    }catch(e){ V.adelantados=[]; V.fueraRango=[]; V.sinRegistrar=[]; V.hayAvance=false; V.nivelesSel=[]; }
     V.excedeSCT=V.sct>30;
-    V.excedeNiv=(V.nNiv>V.tope)||(V.adelantados&&V.adelantados.length>0);
+    V.excedeNiv=(V.nNiv>V.tope)||(V.fueraRango&&V.fueraRango.length>0);
   }
   /* Conteo total de observaciones: omisiones + verificaciones fallidas */
-  var nObs=obs.total+(V.choques.length?1:0)+(V.faltaPr?1:0)+(V.yaAprob.length?1:0)+(V.excedeSCT?1:0)+(V.excedeNiv?1:0);
+  var nObs=obs.total+(V.choques.length?1:0)+(V.faltaPr?1:0)+(V.yaAprob.length?1:0)+(V.excedeSCT?1:0)+(V.excedeNiv?1:0)+((V.sinRegistrar&&V.sinRegistrar.length)?1:0);
 
   var sello;
   if(!det.length){
     sello='<div class="sello alerta">⚠ DOCUMENTO INCOMPLETO — el estudiante no ha seleccionado los ramos que solicita inscribir.</div>';
+  }else if(!V.hayAvance){
+    sello='<div class="sello alerta">⚠ SIN AVANCE DECLARADO — el estudiante no registró en la aplicación qué asignaturas tiene aprobadas o reprobadas. '+
+      '<b>Las verificaciones de esta solicitud no son concluyentes</b> y deben contrastarse íntegramente con el registro académico.</div>';
+    nObs=Math.max(nObs,1);
   }else if(nObs===0&&V.solic.length){
     sello='<div class="sello sol">📝 REQUIERE AUTORIZACIÓN — la selección cumple todas las directrices, pero incluye '+V.solic.length+' tope'+(V.solic.length===1?"":"s")+
       ' de horario que la normativa permite solicitar. Detalle en la sección 3.</div>';
   }else if(nObs===0){
     sello='<div class="sello ok">✓ SIN OBSERVACIONES — la selección cumple todas las verificaciones de la aplicación y no omite ramos prioritarios con oferta.</div>';
   }else{
-    sello='<div class="sello alerta">⚠ '+nObs+' OBSERVACIÓN'+(nObs===1?"":"ES")+' — la solicitud no cumple todas las directrices de toma de carga. Revisar la sección 3 antes de autorizar.</div>';
+    sello='<div class="sello alerta">⚠ '+nObs+(nObs===1?' OBSERVACIÓN':' OBSERVACIONES')+' — la solicitud no cumple todas las directrices de toma de carga. Revisar la sección 3 antes de autorizar.</div>';
   }
 
   var cuerpo=sello+'<h2>1 · Situación curricular declarada</h2>'+
@@ -1925,7 +2053,9 @@ function docRespaldo(){
   }else{
     var filas="";det.forEach(function(r){
       var pr=(r.estado==="ok")?'<span class="tag alerta">✗ ya aprobado</span>'
-             :(r.prerreq===null)?"—":(r.prerreq?'<span class="tag si">✓ cumple</span>':'<span class="tag alerta">✗ revisar</span>');
+             :(r.prerreq===null)?"—"
+             :(!r.preReg)?'<span style="color:#6b6660">— sin registrar</span>'
+             :(r.prerreq?'<span class="tag si">✓ cumple</span>':'<span class="tag alerta">✗ revisar</span>');
       var esAuto=sinClases(r.ses);
       var hor=esAuto?'<i style="color:#6b6660">Sin horario de clases · actividad autónoma</i>'
               :_e(r.ses.map(function(se){return (DIAS[se[0]]||se[0]).slice(0,3)+" "+se[1]+"–"+se[2];}).join(" · ")||"—");
@@ -1944,15 +2074,21 @@ function docRespaldo(){
         '<span class="tag sol">📝 '+V.solic.length+' por autorizar</span><ul class="obs">'+
         V.solic.map(function(s){return "<li>"+s.txt+"<br><span style='color:#6b6660'>"+s.dias+" "+s.t0+"–"+s.t1+" · "+s.min+" min · "+s.pct+"% de la asignatura · dentro del 50% permitido</span></li>";}).join("")+
         "</ul></td></tr>":"")+
-      '<tr><td>Prerrequisitos según el avance declarado<br><span style="font-size:9.6px;color:#6b6660">Circular N°05/2026, art. 4 — solo se aceptan solicitudes que cumplan íntegramente los prerrequisitos</span></td><td>'+(V.faltaPr?'<span class="tag alerta">✗ '+V.faltaPr+' ramo(s) por revisar</span>':'<span class="tag si">✓ Todos cumplen</span>')+"</td></tr>"+
+      (!V.hayAvance?'<tr><td><b>Avance curricular declarado</b><br><span style="font-size:9.6px;color:#6b6660">Sin él, la aplicación no puede comprobar prerrequisitos, niveles ni asignaturas reprobadas pendientes.</span></td><td><span class="tag alerta">✗ No fue declarado</span></td></tr>':"")+
+      '<tr><td>Prerrequisitos según el avance declarado<br><span style="font-size:9.6px;color:#6b6660">Circular N°05/2026, art. 4 — solo se aceptan solicitudes que cumplan íntegramente los prerrequisitos</span></td><td>'+(V.faltaPr?'<span class="tag alerta">✗ '+V.faltaPr+' ramo(s) por revisar</span>':(V.hayAvance?'<span class="tag si">✓ Todos cumplen</span>':'<span style="color:#6b6660">— no verificable sin avance declarado</span>'))+"</td></tr>"+
+      ((V.sinRegistrar&&V.sinRegistrar.length)?'<tr><td><b>Asignaturas sin prerrequisitos registrados en la aplicación</b><br><span style="font-size:9.6px;color:#6b6660">La verificación automática no alcanza a estas: deben revisarse contra el plan de estudios.</span></td><td>'+
+        '<span class="tag alerta">✗ '+V.sinRegistrar.length+'</span><ul class="obs">'+V.sinRegistrar.map(function(r){return "<li>"+_e(r.nombre)+" (nivel "+r.nivel+")</li>";}).join("")+"</ul></td></tr>":"")+
       '<tr><td><b>Ramos solicitados que ya figuran aprobados en el avance declarado</b><br><span style="font-size:9.6px;color:#6b6660">Inconsistencia entre lo declarado y lo solicitado: revisar con el registro académico.</span></td><td>'+
         (V.yaAprob.length?'<span class="tag alerta">✗ '+V.yaAprob.length+'</span><ul class="obs">'+V.yaAprob.map(function(r){return "<li>"+_e(r.nombre)+"</li>";}).join("")+"</ul>":'<span class="tag si">✓ Ninguno</span>')+"</td></tr>"+
-      '<tr><td>Niveles distintos en la selección ('+V.nNiv+') — tope '+V.tope+'<br><span style="font-size:9.6px;color:#6b6660">'+_e(regla)+
-        '. El rango de niveles consecutivos está previsto para recuperar asignaturas pendientes, no para adelantar niveles superiores al que se cursa.</span></td><td>'+
-        (V.adelantados&&V.adelantados.length
-          ? '<span class="tag alerta">✗ '+V.adelantados.length+' por sobre el nivel que cursa</span><ul class="obs">'+
-            V.adelantados.map(function(r){return "<li>"+_e(r.nombre)+" (nivel "+r.nivel+")</li>";}).join("")+"</ul>"
-          : (V.nNiv>V.tope?'<span class="tag alerta">✗ Excede el tope</span>':'<span class="tag si">✓ Dentro del tope</span>'))+"</td></tr>"+
+      '<tr><td><b>Niveles solicitados</b>: '+(V.nivelesSel&&V.nivelesSel.length?V.nivelesSel.join(", "):"—")+
+        ' &nbsp;·&nbsp; <b>permitido</b>: '+(V.anclaN===V.techo?("nivel "+V.anclaN):("niveles "+V.anclaN+" a "+V.techo))+
+        '<br><span style="font-size:9.6px;color:#6b6660">'+_e(regla)+
+        '. Se cuenta desde el nivel más bajo con asignaturas pendientes'+(V.hayAvance?"":" (sin avance declarado se toma el nivel 1)")+
+        '. El rango está previsto para recuperar asignaturas pendientes, no para adelantar niveles superiores al que se cursa.</span></td><td>'+
+        (V.fueraRango&&V.fueraRango.length
+          ? '<span class="tag alerta">✗ '+V.fueraRango.length+' fuera del rango permitido</span><ul class="obs">'+
+            V.fueraRango.map(function(r){return "<li>"+_e(r.nombre)+" — nivel "+r.nivel+"</li>";}).join("")+"</ul>"
+          : (V.nNiv>V.tope?'<span class="tag alerta">✗ Excede el máximo de '+V.tope+' niveles</span>':'<span class="tag si">✓ Dentro del rango</span>'))+"</td></tr>"+
       '<tr><td>Créditos seleccionados<br><span style="font-size:9.6px;color:#6b6660">Circular N°05/2026, art. 10 — máximo 30 SCT, sujeto a autorización</span></td><td><b>'+V.sct+' SCT</b>'+(V.excedeSCT?' <span class="tag alerta">— sobre el máximo de 30 SCT</span>':' <span class="tag si">✓ dentro del máximo</span>')+"</td></tr>"+
       '<tr><td><b>Ramos reprobados con oferta que no está reinscribiendo</b><br><span style="font-size:9.6px;color:#6b6660">Circular N°05/2026, art. 3 — las asignaturas reprobadas que se oferten deben inscribirse obligatoriamente.</span></td><td>'+
         (obs.repro.length
@@ -2335,7 +2471,12 @@ function pintaSolicitud(){
       /* El respaldo se genera primero para que PDF y formulario reflejen la misma
          selección, y para que el estudiante ya lo tenga a mano al adjuntarlo. */
       try{ docRespaldo(); }catch(e){}
-      if(typeof showHorMsg==="function")showHorMsg("📄 Generando tu respaldo… en unos segundos se abre el formulario con tus ramos ya marcados.","info");
+      var aviso=window.__solicLarga
+        ? "📄 Generando tu respaldo… <b>Tienes muchos ramos seleccionados</b>: es posible que el formulario se abra sin marcar. Revísalo y completa las casillas que falten; el detalle está en el PDF."
+        : window.__solicRecortada
+        ? "📄 Generando tu respaldo… se abre el formulario con tus ramos marcados. <b>Adjunta el PDF sí o sí</b>: con esta cantidad de ramos, el detalle de las verificaciones va solo en el documento."
+        : "📄 Generando tu respaldo… en unos segundos se abre el formulario con tus ramos ya marcados.";
+      if(typeof showHorMsg==="function")showHorMsg(aviso,"info");
       setTimeout(function(){ try{ window.open(u,"_blank","noopener"); }catch(e){} },2600);
     }catch(e){ if(typeof showHorMsg==="function")showHorMsg("No se pudo preparar la solicitud. Inténtalo de nuevo.","warn"); }
   };
