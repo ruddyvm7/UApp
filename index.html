@@ -1035,16 +1035,13 @@ var PRUEBAS_VISIBLES={ tech:false, diurno:false, vregular:false };   /* TECH: a 
    ══════════════════════════════════════════════════════════════ */
 var SOLICITUD={
   /* ═══════════════════════════════════════════════════════════
-     SOLICITUD DE TOMA DE CARGA · APAGADA EN PRODUCCIÓN
-     La función está completa pero desactivada: el bloque no
-     aparece en el Planificador. Se sigue afinando en el ambiente
-     de prueba (falta enlazar los identificadores del formulario
-     de la Carrera).
-     PARA ENCENDERLA: poner activo en true. Las fechas ya están
-     puestas, así que el botón aparecerá solo del 7 al 11 de
-     septiembre, según la Circular N°05/2026.
+     SOLICITUD DE TOMA DE CARGA · ACTIVA
+     Ventana del 7 al 11 de septiembre (Circular N°05/2026).
+     Fuera de esas fechas el botón desaparece solo.
+     Para el próximo período: cambiar las dos fechas.
+     Para apagarla: poner activo en false.
      ═══════════════════════════════════════════════════════════ */
-  activo:false,
+  activo:true,
   desde:"2026-09-07", hasta:"2026-09-11",
   /* Formulario oficial de la Carrera. Los identificadores de cada pregunta
      se obtienen con "Obtener URL previamente rellenada" desde el propio
@@ -1851,65 +1848,37 @@ function _lim(arr,n){
   if(arr.length<=n)return arr.join(", ");
   return arr.slice(0,n).join(", ")+" y "+(arr.length-n)+" mas";
 }
+/* Resumen que viaja al campo "Otras peticiones" del formulario.
+   El coordinador lo lee en una celda de Excel, así que va en UNA línea y lo
+   más corto posible. El detalle completo está en el respaldo PDF. */
 function _textoVerificacion(){
   try{ docRespaldo._silencioso=true; docRespaldo(); }catch(e){}
   docRespaldo._silencioso=false;
   var S=window.__lastRespaldo||{};
-  var mg=S.mg||_mallaGrid(), det=S.det||_inscritosDetalle();
+  var det=S.det||_inscritosDetalle();
   var V=S.V||{choques:[],solic:[],faltaPr:0,yaAprob:[],sct:0,nNiv:0,tope:4,excedeSCT:false,excedeNiv:false};
   var obs=S.obs||{repro:[],atras:[],total:0};
-  var hayObs=(V.choques.length||V.faltaPr||V.yaAprob.length||V.excedeSCT||V.excedeNiv||obs.total||(V.sinRegistrar&&V.sinRegistrar.length)||!V.hayAvance);
-  var L=[];
 
-  L.push("UApp - "+(hayObs?"CON OBSERVACIONES, REVISAR"
-        :(V.solic.length?"VERIFICADA, REQUIERE AUTORIZACION DE TOPE":"VERIFICADA SIN OBSERVACIONES")));
-
-  L.push("Avance declarado: "+mg.ap+" aprob, "+mg.rep+" reprob"+(V.hayAvance?"":" (NO DECLARADO)"));
-
-  if(det.length<=5){
-    L.push("Solicita ("+det.length+" ramos, "+V.sct+" SCT): "+det.map(function(r){
-      var n=(r.nrc&&r.nrc.length)?r.nrc[0]:"s/NRC";
-      return n+" "+r.nombre+(r.estado==="no"?" (REPROBADA)":"")+(r.estado==="ok"?" (YA APROBADA!)":"");
-    }).join(" / "));
-  }else{
-    /* con muchos ramos, las casillas del formulario ya los detallan */
-    L.push("Solicita "+det.length+" ramos ("+V.sct+" SCT): ver casillas marcadas arriba. "+
-      "NRC: "+_lim(det.map(function(r){return (r.nrc&&r.nrc.length)?r.nrc[0]:"s/NRC";}),8));
-    var rep=det.filter(function(r){return r.estado==="no";}).map(function(r){return r.nombre;});
-    if(rep.length) L.push("Reprobadas que retoma: "+_lim(rep,4));
-  }
-
-  /* Verificaciones: solo las que fallan; si todo pasa, una sola linea */
+  /* Solo lo que no calza, en abreviado */
   var mal=[];
-  if(!V.hayAvance) mal.push("sin avance declarado: verificaciones no concluyentes");
-  if(V.faltaPr) mal.push(V.faltaPr+" sin prerrequisitos");
-  if(V.fueraRango&&V.fueraRango.length) mal.push(V.fueraRango.length+" fuera de nivel: "+_lim(V.fueraRango.map(function(r){return r.nombre+" (n"+r.nivel+")";}),3));
-  else if(V.excedeNiv) mal.push("excede niveles");
-  if(V.excedeSCT) mal.push("excede 30 SCT");
-  if(V.yaAprob.length) mal.push("ya aprobadas: "+_lim(V.yaAprob.map(function(r){return r.nombre;}),3));
-  if(obs.repro.length) mal.push("reprobadas no reinscritas: "+_lim(obs.repro.map(function(c){return c.n;}),3));
-  if(V.choques.length) mal.push("coincidencia no autorizable");
-  if(V.sinRegistrar&&V.sinRegistrar.length) mal.push("sin prerreq. registrados en la app: "+_lim(V.sinRegistrar.map(function(r){return r.nombre;}),3));
+  if(!V.hayAvance)                                   mal.push("sin avance declarado");
+  if(V.faltaPr)                                      mal.push("prerrequisitos");
+  if(V.fueraRango&&V.fueraRango.length)              mal.push("nivel");
+  else if(V.excedeNiv)                               mal.push("niveles");
+  if(V.excedeSCT)                                    mal.push("creditos");
+  if(V.yaAprob.length)                               mal.push("ya aprobadas");
+  if(obs.repro.length)                               mal.push("reprobadas sin reinscribir");
+  if(V.choques.length)                               mal.push("tope no autorizable");
+  if(V.sinRegistrar&&V.sinRegistrar.length)          mal.push("prerreq. no registrados");
 
-  var rango=(V.anclaN===V.techo)?("n"+V.anclaN):("n"+V.anclaN+"-"+V.techo);
-  if(mal.length) L.push("OBSERVACIONES: "+mal.join(" | "));
-  else L.push("Verificado OK: prerrequisitos, niveles ("+rango+"), creditos "+V.sct+"/30, reprobadas al dia.");
-
-  if(V.solic&&V.solic.length){
-    L.push("TOPE POR AUTORIZAR (art.7): "+V.solic.map(function(s){
-      return String(s.txt).replace(/&[a-z]+;/g,"").replace(/↔/g,"/")+" "+s.dias+" "+s.t0+"-"+s.t1+", "+s.min+"min, "+s.pct+"%";
-    }).join(" | "));
-  }
+  var est=mal.length ? ("REVISAR: "+mal.join(", "))
+        : (V.solic.length ? "OK, con coincidencia horaria dentro del 50% (art.7)"
+                          : "OK, sin observaciones");
   var T=_tercerasGuardadas().filter(function(x){ return det.some(function(r){return r.id===x;}); });
-  if(T.length) L.push("3a OPORTUNIDAD (art.8, sin topes): "+T.map(function(id){
-    var r=det.filter(function(x){return x.id===id;})[0]; return r?r.nombre:"";
-  }).filter(Boolean).join(", "));
-
-  L.push("Detalle completo en el respaldo PDF. Circular 05/2026. miuapp.cl");
-  var txt=L.join("\n");
-  /* Tope duro: Microsoft Forms rechaza direcciones muy largas */
-  if(txt.length>900) txt=txt.slice(0,860).replace(/\n[^\n]*$/,"")+"\n(resumen abreviado; el detalle esta en el respaldo PDF adjunto)";
-  return txt;
+  return "Validado por UApp - "+est+
+         " | "+det.length+" ramos, "+V.sct+" SCT"+
+         (T.length?" | 3a oportunidad declarada":"")+
+         " | Respaldo PDF adjunto";
 }
 function _urlSolicitud(){
   var C=SOLICITUD.campos, det=_inscritosDetalle(), p=[], porAnio={}, aMano=[];
@@ -2112,9 +2081,9 @@ function docRespaldo(){
 }
 const BL_TECH=[["19:10","19:50"],["19:50","20:30"],["20:40","21:20"],["21:20","22:00"],["22:10","22:50"]];
 const HOR_TECH={
- n3s1:{l:"2º año (Nivel 3) · Sección 1",s:[["L","19:10","21:20","Argumentación Jurídica y Debate","TEA SH-32","Roa Rioseco Jorge",12,"11409","Presencial"],["M","19:10","20:30","Introducción a la Economía","TEA SH-32","Brito Valdebenito Cristian",10,"11418","Presencial"],["M","20:40","22:00","Introducción a la Economía","TEA SH-32","Brito Valdebenito Cristian",10,"11419","Presencial"],["X","19:10","22:00","Teoría Constitucional","TEA SH-32","Espinoza Soto Sahady",11,"11424","Presencial"],["J","19:10","21:20","Fundamentos Filosóficos del Derecho","—","Reinoso Elgueda Jorge",9,"11416","Online"],["J","21:20","22:00","Fundamentos Filosóficos del Derecho","—","Reinoso Elgueda Jorge",9,"11417","Online"],["V","19:10","20:30","Teoría Constitucional","—","Espinoza Soto Sahady",11,"11425","Online"]]},
- n3s2:{l:"2º año (Nivel 3) · Sección 2",s:[["L","19:10","20:30","Introducción a la Economía","TEA SH-33","Brito Valdebenito Cristian",10,"11420","Presencial"],["L","20:40","22:00","Introducción a la Economía","TEA SH-33","Brito Valdebenito Cristian",10,"11421","Presencial"],["M","19:10","21:20","Teoría Constitucional","TEA SH-33","Arévalo Waddington Sergio",11,"11426","Presencial"],["X","19:10","19:50","Teoría Constitucional","TEA SH-33","Arévalo Waddington Sergio",11,"11426","Presencial"],["X","19:50","21:20","Teoría Constitucional","TEA SH-33","Arévalo Waddington Sergio",11,"11427","Presencial"],["J","19:10","21:20","Fundamentos Filosóficos del Derecho","—","Reinoso Mendez Jorge",9,"11412","Online"],["J","21:20","22:00","Fundamentos Filosóficos del Derecho","—","Reinoso Mendez Jorge",9,"11413","Online"],["V","19:10","21:20","Argumentación Jurídica y Debate","—","Roa Rioseco Jorge",12,"11410","Online"]]},
- n3s3:{l:"2º año (Nivel 3) · Sección 3",s:[["L","19:10","21:20","Fundamentos Filosóficos del Derecho","TEA SH-34","Reinoso Mendez Jorge",9,"11414","Presencial"],["L","21:20","22:00","Fundamentos Filosóficos del Derecho","TEA SH-34","Reinoso Mendez Jorge",9,"11415","Presencial"],["M","19:10","21:20","Argumentación Jurídica y Debate","TEA SH-34","Roa Rioseco Jorge",12,"11411","Presencial"],["X","20:40","22:00","Argumentación Jurídica y Debate","TEA SH-34","Larraguibel Aravena Cristian",12,"11408","Presencial"],["J","19:10","20:30","Introducción a la Economía","—","Brito Valdebenito Cristian",10,"11422","Online"],["J","20:40","22:00","Introducción a la Economía","—","Brito Valdebenito Cristian",10,"11423","Online"],["V","19:10","19:50","Argumentación Jurídica y Debate","—","Larraguibel Aravena Cristian",12,"11408","Online"]]},
+ n3s1:{l:"1er año (Nivel 3) · Sección 1",s:[["L","19:10","21:20","Argumentación Jurídica y Debate","TEA SH-32","Roa Rioseco Jorge",12,"11409","Presencial"],["M","19:10","20:30","Introducción a la Economía","TEA SH-32","Brito Valdebenito Cristian",10,"11418","Presencial"],["M","20:40","22:00","Introducción a la Economía","TEA SH-32","Brito Valdebenito Cristian",10,"11419","Presencial"],["X","19:10","22:00","Teoría Constitucional","TEA SH-32","Espinoza Soto Sahady",11,"11424","Presencial"],["J","19:10","21:20","Fundamentos Filosóficos del Derecho","—","Reinoso Elgueda Jorge",9,"11416","Online"],["J","21:20","22:00","Fundamentos Filosóficos del Derecho","—","Reinoso Elgueda Jorge",9,"11417","Online"],["V","19:10","20:30","Teoría Constitucional","—","Espinoza Soto Sahady",11,"11425","Online"]]},
+ n3s2:{l:"1er año (Nivel 3) · Sección 2",s:[["L","19:10","20:30","Introducción a la Economía","TEA SH-33","Brito Valdebenito Cristian",10,"11420","Presencial"],["L","20:40","22:00","Introducción a la Economía","TEA SH-33","Brito Valdebenito Cristian",10,"11421","Presencial"],["M","19:10","21:20","Teoría Constitucional","TEA SH-33","Arévalo Waddington Sergio",11,"11426","Presencial"],["X","19:10","19:50","Teoría Constitucional","TEA SH-33","Arévalo Waddington Sergio",11,"11426","Presencial"],["X","19:50","21:20","Teoría Constitucional","TEA SH-33","Arévalo Waddington Sergio",11,"11427","Presencial"],["J","19:10","21:20","Fundamentos Filosóficos del Derecho","—","Reinoso Mendez Jorge",9,"11412","Online"],["J","21:20","22:00","Fundamentos Filosóficos del Derecho","—","Reinoso Mendez Jorge",9,"11413","Online"],["V","19:10","21:20","Argumentación Jurídica y Debate","—","Roa Rioseco Jorge",12,"11410","Online"]]},
+ n3s3:{l:"1er año (Nivel 3) · Sección 3",s:[["L","19:10","21:20","Fundamentos Filosóficos del Derecho","TEA SH-34","Reinoso Mendez Jorge",9,"11414","Presencial"],["L","21:20","22:00","Fundamentos Filosóficos del Derecho","TEA SH-34","Reinoso Mendez Jorge",9,"11415","Presencial"],["M","19:10","21:20","Argumentación Jurídica y Debate","TEA SH-34","Roa Rioseco Jorge",12,"11411","Presencial"],["X","20:40","22:00","Argumentación Jurídica y Debate","TEA SH-34","Larraguibel Aravena Cristian",12,"11408","Presencial"],["J","19:10","20:30","Introducción a la Economía","—","Brito Valdebenito Cristian",10,"11422","Online"],["J","20:40","22:00","Introducción a la Economía","—","Brito Valdebenito Cristian",10,"11423","Online"],["V","19:10","19:50","Argumentación Jurídica y Debate","—","Larraguibel Aravena Cristian",12,"11408","Online"]]},
  n5alt:{l:"2º año (Nivel 5) · Alterna",s:[["L","19:10","20:30","Teoría del Proceso","TEC SH-23","Nuñez Mendez Felipe Alejandro",17,"12220","Presencial"],["X","19:10","20:30","Teoría del Proceso","TEE SH-51","Nuñez Mendez Felipe Alejandro",17,"12220","Presencial"],["V","19:10","20:30","Teoría del Proceso","—","Nuñez Mendez Felipe Alejandro",17,"12220","Online"]]},
  n6s1:{l:"2º año (Nivel 6) · Sección 1",s:[["L","19:10","20:30","Derechos y Garantías Constitucionales","TEA SH-41","Espinoza Soto Sahady",22,"11434","Presencial"],["L","20:40","22:00","Derechos y Garantías Constitucionales","TEA SH-41","Espinoza Soto Sahady",22,"11435","Presencial"],["M","19:10","21:20","Derecho Internacional Público","TEA SH-41","Vallejos Roa Liz",23,"11432","Presencial"],["X","19:10","20:30","Taller de Integración I (Ev. Ciclo)","TEA SH-41","Game Musante Francisca",24,"11438","Presencial"],["X","20:40","22:00","Bienes","TEA SH-41","Castro Saavedra Juan",21,"11430","Presencial"],["J","19:10","20:30","Bienes","—","Castro Saavedra Juan",21,"11430","Online"],["J","20:40","22:00","Bienes","—","Castro Saavedra Juan",21,"11431","Online"],["V","19:10","22:00","Taller de Integración I (Ev. Ciclo)","—","Game Musante Francisca",24,"11438","Online"]]},
  n6s2:{l:"2º año (Nivel 6) · Sección 2",s:[["L","19:10","22:00","Taller de Integración I (Ev. Ciclo)","TEA SH-42","Rodriguez Cañete Paula",24,"11439","Presencial"],["M","19:10","20:30","Bienes","TEA SH-42","Neculmán Muñoz Marcelo",21,"11428","Presencial"],["M","20:40","22:00","Taller de Integración I (Ev. Ciclo)","TEA SH-42","Rodriguez Cañete Paula",24,"11439","Presencial"],["X","19:10","21:20","Derecho Internacional Público","TEA SH-42","Vallejos Roa Liz",23,"11433","Presencial"],["J","19:10","20:30","Derechos y Garantías Constitucionales","—","Espinoza Soto Sahady",22,"11436","Online"],["J","20:40","22:00","Derechos y Garantías Constitucionales","—","Espinoza Soto Sahady",22,"11437","Online"],["V","19:10","19:50","Bienes","—","Neculmán Muñoz Marcelo",21,"11428","Online"],["V","19:50","22:00","Bienes","—","Neculmán Muñoz Marcelo",21,"11429","Online"]]},
@@ -2123,7 +2092,7 @@ const HOR_TECH={
  n9s2:{l:"3er año (Nivel 9) · Sección 2",s:[["L","19:10","20:30","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-44","Sáez Paredes Fernando",34,"11442","Presencial"],["L","20:40","22:00","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-44","Sáez Paredes Fernando",34,"11443","Presencial"],["M","19:10","21:20","Procedimientos de Ejecución y Cautela","TEA SH-44","Osorio Ulloa Reinaldo",32,"11450","Presencial"],["J","19:10","21:20","Procedimientos de Ejecución y Cautela","—","Osorio Ulloa Reinaldo",32,"11451","Online"]]},
  n9pna:{l:"3er año (Nivel 9) · Plan No Ajustado",s:[["L","19:10","20:30","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-43","Gutiérrez Sepúlveda Genoveva",34,"11440","Presencial"],["L","20:40","22:00","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-43","Gutiérrez Sepúlveda Genoveva",34,"11441","Presencial"],["M","19:10","21:20","Procedimientos de Ejecución y Cautela","TEA SH-44","Osorio Ulloa Reinaldo",32,"11450","Presencial"],["X","19:10","20:30","Derecho Económico","TEA SH-44","Maturana Ortiz Felipe",33,"11444","Presencial"],["X","20:40","22:00","Derecho Económico","TEA SH-44","Maturana Ortiz Felipe",33,"11445","Presencial"],["J","19:10","21:20","Procedimientos de Ejecución y Cautela","—","Osorio Ulloa Reinaldo",32,"11451","Online"],["V","19:10","21:20","Electivo de Ética","VIRTUAL","—",30,"11392","Sin clases"]]},
  n12s1:{l:"4º año (Nivel 12) · Plan Ajustado",s:[["L","19:10","20:30","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45,"11454","Presencial"],["L","20:40","21:20","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45,"11455","Presencial"],["M","19:10","21:20","Procedimientos Especiales Orales","TEA SH-45","Alarcón Iturriaga Orlando",44,"11461","Presencial"],["M","21:20","22:00","Optativo de Especialidad I","TEA SH-45","Neculman Muñoz Marcelo",48,"11460","Presencial"],["X","19:10","22:00","Taller de Integración II (Ev. Ciclo)","TEA SH-45","Molina Pezoa Marcia",47,"11463","Presencial"],["J","19:10","20:30","Derecho Tributario I","—","Maturana Lanza Carlos",46,"11458","Online"],["J","20:40","21:20","Derecho Tributario I","—","Maturana Lanza Carlos",46,"11459","Online"],["J","21:20","22:50","Optativo de Especialidad I","—","Neculman Muñoz Marcelo",48,"11460","Online"],["V","19:10","20:30","Taller de Integración II (Ev. Ciclo)","—","Molina Pezoa Marcia",47,"11463","Online"],["V","20:40","22:00","Procedimientos Especiales Orales","—","Alarcón Iturriaga Orlando",44,"11462","Online"]]},
- n12pna:{l:"4º año (Nivel 12) · Plan No Ajustado",s:[["L","19:10","20:30","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45,"11454","Presencial"],["L","20:40","21:20","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45,"11455","Presencial"],["M","19:10","21:20","Procedimientos Especiales Orales (Ev. Ciclo)","TEA SH-45","Alarcón Iturriaga Orlando",43,"11461","Presencial"],["X","19:10","20:30","Derecho Sucesorio","TEC SH-21","Pacheco Cornejo Hellen",42,"11456","Presencial"],["X","20:40","22:00","Derecho Sucesorio","TEC SH-21","Pacheco Cornejo Hellen",42,"11457","Presencial"],["J","19:10","20:30","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11464","Online"],["J","20:40","21:20","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11465","Online"],["V","19:10","19:50","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11465","Online"],["V","19:50","20:30","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11466","Online"],["V","20:40","22:00","Procedimientos Especiales Orales (Ev. Ciclo)","—","Alarcón Iturriaga Orlando",43,"11462","Online"]]},
+ n12pna:{l:"4º año (Nivel 12) · Plan No Ajustado",s:[["L","19:10","20:30","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45,"11454","Presencial"],["L","20:40","21:20","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45,"11455","Presencial"],["M","19:10","21:20","Procedimientos Especiales Orales (Ev. Ciclo)","TEA SH-45","Alarcón Iturriaga Orlando",43,"11461","Presencial"],["X","19:10","20:30","Derecho Sucesorio","TEC SH-21","San Juan Torres Marco",42,"11456","Presencial"],["X","20:40","22:00","Derecho Sucesorio","TEC SH-21","San Juan Torres Marco",42,"11457","Presencial"],["J","19:10","20:30","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11464","Online"],["J","20:40","21:20","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11465","Online"],["V","19:10","19:50","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11465","Online"],["V","19:50","20:30","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11466","Online"],["V","20:40","22:00","Procedimientos Especiales Orales (Ev. Ciclo)","—","Alarcón Iturriaga Orlando",43,"11462","Online"]]},
  n15s1:{l:"5º año (Niveles 14-15) · Plan Ajustado",note:"El Taller de Integración III se cursa a lo largo de dos trimestres (14 y 15).",s:[["L","19:10","22:00","Taller de Integración III (Ev. Ciclo)","TEC SH-21","Castro Saavedra Juan",54,"12412","Presencial"],["M","19:10","22:00","Taller de Integración III (Ev. Ciclo)","TEC SH-21","Castro Saavedra Juan",54,"12412","Presencial"],["V","19:10","22:00","Taller de Integración III (Ev. Ciclo)","VIRTUAL","Castro Saavedra Juan",54,"12412","Online"]]},
  n15pna:{l:"5º año (Niveles 14-15) · Plan No Ajustado",s:[["L","19:10","20:30","Taller de Litigación Avanzada (Ev. Ciclo)","TEC SH-22","Contreras Sierra Klaus Evelyn",58,"11475","Presencial"],["L","20:40","22:00","Taller de Litigación Avanzada (Ev. Ciclo)","TEC SH-22","Contreras Sierra Klaus Evelyn",58,"11476","Presencial"],["M","19:10","21:20","Seminario de Tesis","SALA VIRTUAL","Leon Silva Glorimar",55,"11471","Online"],["X","19:10","20:30","Optativo de Especialidad II","TEC SH-22","Celedón Baeza Andrés",54,"11469","Presencial"],["X","20:40","22:00","Optativo de Especialidad II","TEC SH-22","Celedón Baeza Andrés",54,"11470","Presencial"],["J","19:10","21:20","Derecho Tributario II","—","Roxana Obreque Espinoza",57,"11467","Online"],["J","21:20","22:00","Derecho Tributario II","—","Roxana Obreque Espinoza",57,"11468","Online"],["V","19:10","19:50","Derecho Tributario II","—","Roxana Obreque Espinoza",57,"11468","Online"],["V","19:50","22:00","Seminario de Tesis","SALA VIRTUAL","Leon Silva Glorimar",55,"11473","Online"]]},
  n15tes:{l:"5º año (Niveles 14-15) · Solo Seminario de Tesis",s:[["L","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","El Fakih Rodriguez Fatima",55,"11850","Online"],["L","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","El Fakih Rodriguez Fatima",55,"11851","Online"],["M","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","Oñate Henriquez Jaime",55,"11852","Online"],["M","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","Oñate Henriquez Jaime",55,"11853","Online"],["X","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","Fernandez Miguez Sheila",55,"11854","Online"],["X","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","Fernandez Miguez Sheila",55,"11855","Online"],["J","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","Ojeda Zavala Nicolas",55,"11856","Online"],["J","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","Ojeda Zavala Nicolas",55,"11857","Online"],["V","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","Lopez Hernandez Hernan",55,"11858","Online"],["V","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","Lopez Hernandez Hernan",55,"11859","Online"]]}
