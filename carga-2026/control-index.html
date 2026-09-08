@@ -1,0 +1,377 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Apoyo a la Toma de Carga · Derecho UA Temuco</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--rojo:#AE2C2C;--carbon:#312B2B;--verde:#1f7a48;--verdebg:#e9f3ec;--rojobg:#fbe6e2;
+ --amb:#8a6d1f;--ambbg:#fdf6e3;--linea:#D9D5D2;--linea2:#EDEAE8;--tinta:#1F1B1B;--gris:#6E6764;}
+*{box-sizing:border-box}
+body{margin:0;background:#F2F1EF;font-family:'IBM Plex Sans',system-ui,sans-serif;color:var(--tinta);font-size:15px;line-height:1.5}
+.top{background:var(--rojo);color:#fff;padding:0 16px;height:52px;display:flex;align-items:center;gap:12px}
+.top .marca{font-family:'IBM Plex Sans Condensed';font-weight:700;font-size:20px}
+.top .sub{font-size:12.5px;opacity:.92;margin-left:auto;text-align:right;line-height:1.25}
+.hoja{max-width:1120px;margin:0 auto;padding:20px 16px 60px}
+h1{font-family:'IBM Plex Sans Condensed';font-size:26px;margin:0 0 4px;font-weight:700;letter-spacing:-.01em}
+.lead{color:#3D3735;max-width:70ch;margin:0 0 16px;font-size:14.5px}
+.panel{background:#fff;border:1px solid var(--linea);padding:16px;margin:0 0 16px}
+label.tit{display:block;font-family:'IBM Plex Sans Condensed';font-weight:700;font-size:14px;margin:0 0 6px}
+textarea{width:100%;min-height:150px;border:1px solid var(--linea);padding:10px 12px;font:400 12.5px/1.45 ui-monospace,Menlo,monospace;resize:vertical;background:#FBFAF9}
+textarea:focus{outline:2px solid var(--rojo);outline-offset:-1px}
+.fila{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:10px}
+button{font:inherit;font-size:13.5px;font-weight:600;padding:9px 18px;border:1px solid var(--rojo);background:var(--rojo);color:#fff;cursor:pointer}
+button.sec{background:#fff;color:var(--tinta);border-color:var(--linea);font-weight:500}
+button:disabled{opacity:.45;cursor:default}
+.hint{font-size:12px;color:var(--gris);margin-top:8px;line-height:1.45}
+.ficha{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--linea);border:1px solid var(--linea);margin:0 0 14px}
+.ficha>div{background:#fff;padding:10px 13px}
+.ficha dt{font-family:'IBM Plex Sans Condensed';font-weight:700;font-size:11px;color:var(--rojo);margin:0 0 3px;text-transform:uppercase;letter-spacing:.03em}
+.ficha dd{margin:0;font-size:15px;font-weight:600}
+.ficha dd small{display:block;font-weight:400;font-size:12px;color:var(--gris)}
+h2{font-family:'IBM Plex Sans Condensed';font-size:19px;margin:22px 0 8px;font-weight:700;color:var(--rojo)}
+.malla{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:3px;margin:0 0 6px}
+.col h3{font-family:'IBM Plex Sans Condensed';font-size:11.5px;margin:0 0 3px;text-align:center;color:var(--gris);font-weight:700}
+.cel{border:1px solid var(--linea);padding:4px 5px;font-size:9.6px;line-height:1.25;margin-bottom:3px;min-height:34px;background:#fff}
+.cel b{display:block;font-size:10px;font-weight:600}
+.cel .n{color:var(--gris);font-size:9px}
+.ok{background:var(--verdebg);border-color:#8dbfa2}
+.no{background:var(--rojobg);border-color:#d09a92}
+.tercera{background:var(--ambbg);border-color:#d8bd76;box-shadow:inset 3px 0 0 var(--amb)}
+.leg{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--gris);margin:0 0 18px}
+.leg i{display:inline-block;width:14px;height:11px;border:1px solid var(--linea);margin-right:4px;vertical-align:-1px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:0 0 6px}
+th{background:#F4F2F0;text-align:left;padding:7px 9px;font-size:11.5px;font-weight:700;border:1px solid var(--linea);color:#4A4443;text-transform:uppercase;letter-spacing:.02em}
+td{padding:7px 9px;border:1px solid var(--linea2);vertical-align:top}
+tr.si td{background:#fff}tr.no td{background:#fdf7f6}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:1px 8px;border:1px solid;border-radius:2px;white-space:nowrap}
+.p-ok{color:var(--verde);border-color:var(--verde);background:var(--verdebg)}
+.p-no{color:var(--rojo);border-color:var(--rojo);background:var(--rojobg)}
+.p-am{color:var(--amb);border-color:var(--amb);background:var(--ambbg)}
+.nota{background:#FCF8F0;border-left:4px solid #C79A3E;padding:10px 13px;font-size:13px;line-height:1.5;margin:10px 0}
+.err{background:var(--rojobg);border-left:4px solid var(--rojo);padding:10px 13px;font-size:13.5px;margin:10px 0}
+.oculto{display:none}
+.pie{margin-top:30px;border-top:1px solid var(--linea);padding-top:12px;font-size:11.5px;color:var(--gris);line-height:1.5}
+@media print{.panel,.top,.pie button{display:none}.hoja{max-width:100%}}
+</style></head><body>
+<div class="top"><span class="marca">UApp</span>
+  <span style="font-size:13px;opacity:.9">Apoyo a la Toma de Carga</span>
+  <span class="sub">Facultad de Derecho<br>Sede Temuco</span></div>
+<div class="hoja">
+
+<h1>Apoyo a la Toma de Carga</h1>
+<p class="lead">Pega el <b>Reporte de Avance Curricular</b> del estudiante y esta página determina qué asignaturas
+puede inscribir en el período, según la Circular N°05/2026 y el reglamento vigente.</p>
+
+<div class="panel" id="panel">
+  <label class="tit" for="txt">Reporte de Avance Curricular</label>
+  <textarea id="txt" placeholder="Abre el reporte en PDF, selecciona todo el texto (Ctrl+A), cópialo (Ctrl+C) y pégalo aquí."></textarea>
+  <div class="fila">
+    <button id="go">Analizar</button>
+    <button class="sec" id="limpiar">Limpiar</button>
+    <span class="hint" style="margin:0">Todo se procesa <b>en este navegador</b>. Ningún dato se envía ni se guarda.</span>
+  </div>
+</div>
+
+<div id="salida" class="oculto"></div>
+
+<div class="pie">
+  Herramienta de apoyo del Centro de Estudiantes de Derecho Vespertino TECH. No reemplaza al registro académico
+  oficial: ante cualquier diferencia, prima la información del sistema de la Universidad.
+  <span id="sello"></span>
+</div>
+</div>
+<script>
+const COURSES=[
+ {id:1,n:"Historia del Derecho",t:1,a:"Histórico",p:[]},{id:2,n:"Derecho Político",t:1,a:"Constitucional",p:[]},
+ {id:3,n:"Introducción al Derecho",t:1,a:"Fundamentos",p:[]},{id:4,n:"Electivo de Comunicación",t:1,a:"Electivo",p:[],tag:"fg"},
+ {id:5,n:"Historia Institucional de Chile",t:2,a:"Histórico",p:[]},{id:6,n:"Historia y Ev. de las Instituciones Civiles",t:2,a:"Civil",p:[]},
+ {id:7,n:"Teoría de la Ley y las Personas",t:2,a:"Civil",p:[]},{id:8,n:"Electivo de Comunicación II",t:2,a:"Electivo",p:[],tag:"fg"},
+ {id:9,n:"Fundamentos Filosóficos del Derecho",t:3,a:"Histórico",p:[]},{id:10,n:"Introducción a la Economía",t:3,a:"Económico",p:[]},
+ {id:11,n:"Teoría Constitucional",t:3,a:"Constitucional",p:[2]},{id:12,n:"Argumentación Jurídica y Debate",t:3,a:"Taller",p:[],tag:"sp"},
+ {id:13,n:"Acto Jurídico",t:4,a:"Civil",p:[6]},{id:14,n:"Organización y Atribuciones de los Tribunales",t:4,a:"Procesal",p:[3]},
+ {id:15,n:"Teoría del Delito",t:4,a:"Penal",p:[3]},{id:16,n:"Negociación, Ética y Profesional",t:4,a:"Taller",p:[],tag:"sp"},
+ {id:17,n:"Teoría del Proceso",t:5,a:"Procesal",p:[]},{id:18,n:"Derecho Constitucional Orgánico",t:5,a:"Constitucional",p:[2]},
+ {id:19,n:"Teoría de la Reacción Penal",t:5,a:"Penal",p:[]},{id:20,n:"Electivo de Desarrollo del Pensamiento",t:5,a:"Electivo",p:[],tag:"fg"},
+ {id:21,n:"Bienes",t:6,a:"Civil",p:[6,7]},{id:22,n:"Derechos y Garantías Constitucionales",t:6,a:"Constitucional",p:[2,11]},
+ {id:23,n:"Derecho Internacional Público",t:6,a:"Constitucional",p:[11]},{id:24,n:"Taller de Integración I (Ev. Ciclo)",t:6,a:"Taller",p:[13,14],tag:"he"},
+ {id:25,n:"Teoría de las Obligaciones",t:7,a:"Civil",p:[13]},{id:26,n:"Procedimientos Civiles de Cognición",t:7,a:"Procesal",p:[17]},
+ {id:27,n:"Delitos en Particular I",t:7,a:"Penal",p:[19]},{id:28,n:"Fuentes de las Obligaciones",t:8,a:"Civil",p:[13]},
+ {id:29,n:"Derecho Individual del Trabajo",t:8,a:"Laboral",p:[22]},{id:30,n:"Delitos en Particular II",t:8,a:"Penal",p:[]},
+ {id:31,n:"Electivo de Desarrollo Personal",t:8,a:"Electivo",p:[],tag:"fg"},{id:32,n:"Procedimientos de Ejecución y Cautela",t:9,a:"Procesal",p:[17]},
+ {id:33,n:"Derecho Mercantil",t:9,a:"Comercial",p:[13,21]},{id:34,n:"Derecho Colectivo del Trabajo y Seg. Social",t:9,a:"Laboral",p:[]},
+ {id:35,n:"Electivo de Responsabilidad Social",t:9,a:"Electivo",p:[],tag:"fg"},{id:36,n:"Derecho de Familia",t:10,a:"Civil",p:[7]},
+ {id:37,n:"Responsabilidad Civil",t:10,a:"Civil",p:[25]},{id:38,n:"Derecho Societario",t:10,a:"Comercial",p:[25]},
+ {id:39,n:"Taller de Litigación",t:10,a:"Taller",p:[26],tag:"sp"},{id:40,n:"Derecho Sucesorio",t:11,a:"Civil",p:[7,8,13]},
+ {id:41,n:"Contratación Mercantil",t:11,a:"Comercial",p:[28]},{id:42,n:"Derecho Administrativo I",t:11,a:"Administrativo",p:[22]},
+ {id:43,n:"Derecho Procesal Penal",t:11,a:"Procesal",p:[26]},{id:44,n:"Procedimientos Especiales Orales",t:12,a:"Procesal",p:[17,26]},
+ {id:45,n:"Derecho Administrativo II",t:12,a:"Administrativo",p:[22]},{id:46,n:"Derecho Tributario I",t:12,a:"Tributario",p:[]},
+ {id:47,n:"Taller de Integración II (Ev. Ciclo)",t:12,a:"Taller",p:[24,37,39],tag:"he"},{id:48,n:"Optativo de Especialidad I",t:12,a:"Electivo",p:[],tag:"opt"},
+ {id:49,n:"Reorg. y Liquidación Patrimonial",t:13,a:"Procesal",p:[28,38]},{id:50,n:"Recursos",t:13,a:"Procesal",p:[17,26]},
+ {id:51,n:"Seminario de Investigación Jurídica",t:13,a:"Taller",p:{upTo:35},tag:"he"},{id:52,n:"Derecho Tributario II",t:13,a:"Tributario",p:[]},
+ {id:53,n:"Optativo de Especialidad II",t:13,a:"Electivo",p:[],tag:"opt"},{id:54,n:"Taller de Integración III (Ev. Ciclo)",t:14,a:"Taller",p:{upTo:53},tag:"he"},
+ {id:55,n:"Clínica Jurídica (A+S)",t:14,a:"Taller",p:{upTo:35},tag:"he"}
+];
+const COURSES_NA=[
+ {id:1,n:"Historia del Derecho",t:1,a:"Histórico",p:[]}, {id:2,n:"Historia y Ev. de las Instituciones Civiles",t:1,a:"Civil",p:[]},
+ {id:3,n:"Derecho Político",t:1,a:"Constitucional",p:[]}, {id:4,n:"Introducción a la Economía",t:1,a:"Económico",p:[]},
+ {id:5,n:"Introducción al Derecho",t:2,a:"Fundamentos",p:[]}, {id:6,n:"Electivo de Comunicación",t:2,a:"Electivo",p:[],tag:"fg"},
+ {id:7,n:"Historia Institucional de Chile",t:2,a:"Histórico",p:[]}, {id:8,n:"Fundamentos Filosóficos del Derecho",t:2,a:"Histórico",p:[]},
+ {id:9,n:"Teoría de la Ley y las Personas",t:3,a:"Civil",p:[5]}, {id:10,n:"Teoría Constitucional",t:3,a:"Constitucional",p:[3]},
+ {id:11,n:"Argumentación Jurídica y Debate",t:3,a:"Taller",p:[],tag:"sp"}, {id:12,n:"Electivo de Comunicación",t:3,a:"Electivo",p:[],tag:"fg"},
+ {id:13,n:"Acto Jurídico",t:4,a:"Civil",p:[2,9]}, {id:14,n:"Organización y Atribuciones de los Tribunales",t:4,a:"Procesal",p:[9]},
+ {id:15,n:"Derecho Constitucional Orgánico",t:4,a:"Constitucional",p:[10]}, {id:16,n:"Teoría del Delito",t:4,a:"Penal",p:[9]},
+ {id:17,n:"Negociación y Ética Profesional",t:5,a:"Taller",p:[],tag:"sp"}, {id:18,n:"Electivo de Desarrollo del Pensamiento",t:5,a:"Electivo",p:[],tag:"fg"},
+ {id:19,n:"Bienes",t:5,a:"Civil",p:[13]}, {id:20,n:"Teoría del Proceso",t:5,a:"Procesal",p:[14]},
+ {id:21,n:"Derechos y Garantías Constitucionales (Ev. Ciclo)",t:6,a:"Constitucional",p:[13,14,15],tag:"he"}, {id:22,n:"Derecho Internacional Público",t:6,a:"Constitucional",p:[13,15]},
+ {id:23,n:"Teoría de la Reacción Penal",t:6,a:"Penal",p:[16]}, {id:24,n:"Electivo de Desarrollo Personal",t:6,a:"Electivo",p:[],tag:"fg"},
+ {id:25,n:"Teoría de las Obligaciones",t:7,a:"Civil",p:[19,21]}, {id:26,n:"Procedimientos Civiles de Cognición",t:7,a:"Procesal",p:[20,21]},
+ {id:27,n:"Derecho Individual del Trabajo",t:7,a:"Laboral",p:[19,21]}, {id:28,n:"Delitos en Particular I",t:7,a:"Penal",p:[23]},
+ {id:29,n:"Redacción Forense",t:8,a:"Taller",p:[19,20],tag:"sp"}, {id:30,n:"Electivo de Ética",t:8,a:"Electivo",p:[],tag:"fg"},
+ {id:31,n:"Fuentes de las Obligaciones",t:8,a:"Civil",p:[25]}, {id:32,n:"Procedimientos de Ejecución y Cautela",t:8,a:"Procesal",p:[26]},
+ {id:33,n:"Derecho Económico",t:9,a:"Económico",p:[4,21]}, {id:34,n:"Derecho Colectivo del Trabajo y Seg. Social",t:9,a:"Laboral",p:[27]},
+ {id:35,n:"Delitos en Particular II",t:9,a:"Penal",p:[28]}, {id:36,n:"Derecho de Familia",t:10,a:"Civil",p:[31]},
+ {id:37,n:"Responsabilidad Civil",t:10,a:"Civil",p:[31]}, {id:38,n:"Introducción al Derecho Comercial",t:10,a:"Comercial",p:[25]},
+ {id:39,n:"Derecho Administrativo I",t:10,a:"Administrativo",p:[21]}, {id:40,n:"Derecho Procesal Penal",t:11,a:"Procesal",p:[32,35]},
+ {id:41,n:"Solución Alternativa de Conflictos",t:11,a:"Taller",p:[17],tag:"sp"}, {id:42,n:"Derecho Sucesorio",t:11,a:"Civil",p:[36]},
+ {id:43,n:"Procedimientos Especiales Orales (Ev. Ciclo)",t:12,a:"Procesal",p:[36,37,40,41],tag:"he"}, {id:44,n:"Derecho de Sociedades",t:11,a:"Comercial",p:[31,38]},
+ {id:45,n:"Derecho Administrativo II",t:12,a:"Administrativo",p:[39]}, {id:46,n:"Taller de Litigación",t:12,a:"Taller",p:[40],tag:"sp"},
+ {id:47,n:"Electivo de Responsabilidad Social",t:12,a:"Electivo",p:[],tag:"fg"}, {id:48,n:"Recursos",t:13,a:"Procesal",p:[43]},
+ {id:49,n:"Metodología de la Investigación Jurídica",t:13,a:"Taller",p:[43]}, {id:50,n:"Contratación Mercantil",t:13,a:"Comercial",p:[43,44]},
+ {id:51,n:"Derecho Tributario I",t:13,a:"Tributario",p:[33,43]}, {id:52,n:"Clínica Jurídica (A+S)",t:13,a:"Taller",p:[42,43],tag:"he"},
+ {id:53,n:"Optativo de Especialidad I",t:14,a:"Electivo",p:[42,43],tag:"opt"}, {id:54,n:"Optativo de Especialidad II",t:14,a:"Electivo",p:[43],tag:"opt"},
+ {id:55,n:"Seminario de Tesis",t:14,a:"Taller",p:[49],tag:"he"}, {id:56,n:"Reorganización y Liquidación Patrimonial",t:14,a:"Procesal",p:[43,50]},
+ {id:57,n:"Derecho Tributario II",t:14,a:"Tributario",p:[51]}, {id:58,n:"Taller de Litigación Avanzada (Ev. Ciclo)",t:14,a:"Taller",p:[43,46],tag:"he"}
+];
+const CR_AJUSTADA={1:5,2:5,3:7,4:3,5:5,6:5,7:6,8:3,9:6,10:5,11:6,12:4,13:6,14:6,15:6,16:3,17:6,18:6,19:6,20:3,21:6,22:5,23:4,24:3,25:6,26:6,27:7,28:6,29:5,30:5,31:3,32:6,33:5,34:5,35:3,36:6,37:6,38:5,39:3,40:6,41:4,42:5,43:5,44:4,45:5,46:4,47:5,48:2,49:5,50:5,51:7,52:4,53:2,54:30,55:7};
+const CR_NOAJUST={1:5,2:5,3:5,4:5,5:7,6:3,7:5,8:6,9:6,10:6,11:4,12:3,13:6,14:6,15:6,16:6,17:3,18:3,19:6,20:6,21:5,22:4,23:6,24:3,25:6,26:6,27:5,28:7,29:3,30:3,31:7,32:6,33:5,34:5,35:7,36:6,37:6,38:5,39:5,40:5,41:3,42:6,43:6,44:5,45:5,46:5,47:3,48:5,49:7,50:5,51:6,52:7,53:4,54:4,55:7,56:5,57:6,58:4};
+const HOR_TECH={
+ n3s1:{l:"1er año (Nivel 3) · Sección 1",s:[["L","19:10","21:20","Argumentación Jurídica y Debate","TEA SH-32","Roa Rioseco Jorge",12,"11409","Presencial"],["M","19:10","20:30","Introducción a la Economía","TEA SH-32","Brito Valdebenito Cristian",10,"11418","Presencial"],["M","20:40","22:00","Introducción a la Economía","TEA SH-32","Brito Valdebenito Cristian",10,"11419","Presencial"],["X","19:10","22:00","Teoría Constitucional","TEA SH-32","Espinoza Soto Sahady",11,"11424","Presencial"],["J","19:10","21:20","Fundamentos Filosóficos del Derecho","—","Reinoso Elgueda Jorge",9,"11416","Online"],["J","21:20","22:00","Fundamentos Filosóficos del Derecho","—","Reinoso Elgueda Jorge",9,"11417","Online"],["V","19:10","20:30","Teoría Constitucional","—","Espinoza Soto Sahady",11,"11425","Online"]]},
+ n3s2:{l:"1er año (Nivel 3) · Sección 2",s:[["L","19:10","20:30","Introducción a la Economía","TEA SH-33","Brito Valdebenito Cristian",10,"11420","Presencial"],["L","20:40","22:00","Introducción a la Economía","TEA SH-33","Brito Valdebenito Cristian",10,"11421","Presencial"],["M","19:10","21:20","Teoría Constitucional","TEA SH-33","Arévalo Waddington Sergio",11,"11426","Presencial"],["X","19:10","19:50","Teoría Constitucional","TEA SH-33","Arévalo Waddington Sergio",11,"11426","Presencial"],["X","19:50","21:20","Teoría Constitucional","TEA SH-33","Arévalo Waddington Sergio",11,"11427","Presencial"],["J","19:10","21:20","Fundamentos Filosóficos del Derecho","—","Reinoso Mendez Jorge",9,"11412","Online"],["J","21:20","22:00","Fundamentos Filosóficos del Derecho","—","Reinoso Mendez Jorge",9,"11413","Online"],["V","19:10","21:20","Argumentación Jurídica y Debate","—","Roa Rioseco Jorge",12,"11410","Online"]]},
+ n3s3:{l:"1er año (Nivel 3) · Sección 3",s:[["L","19:10","21:20","Fundamentos Filosóficos del Derecho","TEA SH-34","Reinoso Mendez Jorge",9,"11414","Presencial"],["L","21:20","22:00","Fundamentos Filosóficos del Derecho","TEA SH-34","Reinoso Mendez Jorge",9,"11415","Presencial"],["M","19:10","21:20","Argumentación Jurídica y Debate","TEA SH-34","Roa Rioseco Jorge",12,"11411","Presencial"],["X","20:40","22:00","Argumentación Jurídica y Debate","TEA SH-34","Larraguibel Aravena Cristian",12,"11408","Presencial"],["J","19:10","20:30","Introducción a la Economía","—","Brito Valdebenito Cristian",10,"11422","Online"],["J","20:40","22:00","Introducción a la Economía","—","Brito Valdebenito Cristian",10,"11423","Online"],["V","19:10","19:50","Argumentación Jurídica y Debate","—","Larraguibel Aravena Cristian",12,"11408","Online"]]},
+ n5alt:{l:"2º año (Nivel 5) · Alterna",s:[["L","19:10","20:30","Teoría del Proceso","TEC SH-23","Nuñez Mendez Felipe Alejandro",17,"12220","Presencial"],["X","19:10","20:30","Teoría del Proceso","TEE SH-51","Nuñez Mendez Felipe Alejandro",17,"12220","Presencial"],["V","19:10","20:30","Teoría del Proceso","—","Nuñez Mendez Felipe Alejandro",17,"12220","Online"]]},
+ n6s1:{l:"2º año (Nivel 6) · Sección 1",s:[["L","19:10","20:30","Derechos y Garantías Constitucionales","TEA SH-41","Espinoza Soto Sahady",22,"11434","Presencial"],["L","20:40","22:00","Derechos y Garantías Constitucionales","TEA SH-41","Espinoza Soto Sahady",22,"11435","Presencial"],["M","19:10","21:20","Derecho Internacional Público","TEA SH-41","Vallejos Roa Liz",23,"11432","Presencial"],["X","19:10","20:30","Taller de Integración I (Ev. Ciclo)","TEA SH-41","Game Musante Francisca",24,"11438","Presencial"],["X","20:40","22:00","Bienes","TEA SH-41","Castro Saavedra Juan",21,"11430","Presencial"],["J","19:10","20:30","Bienes","—","Castro Saavedra Juan",21,"11430","Online"],["J","20:40","22:00","Bienes","—","Castro Saavedra Juan",21,"11431","Online"],["V","19:10","22:00","Taller de Integración I (Ev. Ciclo)","—","Game Musante Francisca",24,"11438","Online"]]},
+ n6s2:{l:"2º año (Nivel 6) · Sección 2",s:[["L","19:10","22:00","Taller de Integración I (Ev. Ciclo)","TEA SH-42","Rodriguez Cañete Paula",24,"11439","Presencial"],["M","19:10","20:30","Bienes","TEA SH-42","Neculmán Muñoz Marcelo",21,"11428","Presencial"],["M","20:40","22:00","Taller de Integración I (Ev. Ciclo)","TEA SH-42","Rodriguez Cañete Paula",24,"11439","Presencial"],["X","19:10","21:20","Derecho Internacional Público","TEA SH-42","Vallejos Roa Liz",23,"11433","Presencial"],["J","19:10","20:30","Derechos y Garantías Constitucionales","—","Espinoza Soto Sahady",22,"11436","Online"],["J","20:40","22:00","Derechos y Garantías Constitucionales","—","Espinoza Soto Sahady",22,"11437","Online"],["V","19:10","19:50","Bienes","—","Neculmán Muñoz Marcelo",21,"11428","Online"],["V","19:50","22:00","Bienes","—","Neculmán Muñoz Marcelo",21,"11429","Online"]]},
+ n6pna:{l:"2º año (Nivel 6) · Plan No Ajustado",s:[["X","19:10","21:20","Electivo de Desarrollo Personal","VIRTUAL","—",24,"11388","Sin clases"]]},
+ n9s1:{l:"3er año (Nivel 9) · Sección 1",s:[["L","19:10","20:30","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-43","Gutiérrez Sepúlveda Genoveva",34,"11440","Presencial"],["L","20:40","22:00","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-43","Gutiérrez Sepúlveda Genoveva",34,"11441","Presencial"],["M","19:10","21:20","Procedimientos de Ejecución y Cautela","TEA SH-43","Celedón Baeza Andrés",32,"11448","Presencial"],["X","19:10","20:30","Derecho Mercantil","TEA SH-43","Jean Paul Thiers Thiers",33,"11446","Presencial"],["X","20:40","22:00","Derecho Mercantil","TEA SH-43","Jean Paul Thiers Thiers",33,"11447","Presencial"],["J","19:10","21:20","Procedimientos de Ejecución y Cautela","—","Celedón Baeza Andrés",32,"11449","Online"],["V","19:10","20:30","Electivo de Responsabilidad Social","VIRTUAL","—",35,"11452","Sin clases"],["V","20:40","21:20","Electivo de Responsabilidad Social","VIRTUAL","—",35,"11453","Sin clases"]]},
+ n9s2:{l:"3er año (Nivel 9) · Sección 2",s:[["L","19:10","20:30","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-44","Sáez Paredes Fernando",34,"11442","Presencial"],["L","20:40","22:00","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-44","Sáez Paredes Fernando",34,"11443","Presencial"],["M","19:10","21:20","Procedimientos de Ejecución y Cautela","TEA SH-44","Osorio Ulloa Reinaldo",32,"11450","Presencial"],["J","19:10","21:20","Procedimientos de Ejecución y Cautela","—","Osorio Ulloa Reinaldo",32,"11451","Online"]]},
+ n9pna:{l:"3er año (Nivel 9) · Plan No Ajustado",s:[["L","19:10","20:30","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-43","Gutiérrez Sepúlveda Genoveva",34,"11440","Presencial"],["L","20:40","22:00","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-43","Gutiérrez Sepúlveda Genoveva",34,"11441","Presencial"],["M","19:10","21:20","Procedimientos de Ejecución y Cautela","TEA SH-44","Osorio Ulloa Reinaldo",32,"11450","Presencial"],["X","19:10","20:30","Derecho Económico","TEA SH-44","Maturana Ortiz Felipe",33,"11444","Presencial"],["X","20:40","22:00","Derecho Económico","TEA SH-44","Maturana Ortiz Felipe",33,"11445","Presencial"],["J","19:10","21:20","Procedimientos de Ejecución y Cautela","—","Osorio Ulloa Reinaldo",32,"11451","Online"],["V","19:10","21:20","Electivo de Ética","VIRTUAL","—",30,"11392","Sin clases"]]},
+ n12s1:{l:"4º año (Nivel 12) · Plan Ajustado",s:[["L","19:10","20:30","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45,"11454","Presencial"],["L","20:40","21:20","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45,"11455","Presencial"],["M","19:10","21:20","Procedimientos Especiales Orales","TEA SH-45","Alarcón Iturriaga Orlando",44,"11461","Presencial"],["M","21:20","22:00","Optativo de Especialidad I","TEA SH-45","Neculman Muñoz Marcelo",48,"11460","Presencial"],["X","19:10","22:00","Taller de Integración II (Ev. Ciclo)","TEA SH-45","Molina Pezoa Marcia",47,"11463","Presencial"],["J","19:10","20:30","Derecho Tributario I","—","Maturana Lanza Carlos",46,"11458","Online"],["J","20:40","21:20","Derecho Tributario I","—","Maturana Lanza Carlos",46,"11459","Online"],["J","21:20","22:50","Optativo de Especialidad I","—","Neculman Muñoz Marcelo",48,"11460","Online"],["V","19:10","20:30","Taller de Integración II (Ev. Ciclo)","—","Molina Pezoa Marcia",47,"11463","Online"],["V","20:40","22:00","Procedimientos Especiales Orales","—","Alarcón Iturriaga Orlando",44,"11462","Online"]]},
+ n12pna:{l:"4º año (Nivel 12) · Plan No Ajustado",s:[["L","19:10","20:30","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45,"11454","Presencial"],["L","20:40","21:20","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45,"11455","Presencial"],["M","19:10","21:20","Procedimientos Especiales Orales (Ev. Ciclo)","TEA SH-45","Alarcón Iturriaga Orlando",43,"11461","Presencial"],["X","19:10","20:30","Derecho Sucesorio","TEC SH-21","San Juan Torres Marco",42,"11456","Presencial"],["X","20:40","22:00","Derecho Sucesorio","TEC SH-21","San Juan Torres Marco",42,"11457","Presencial"],["J","19:10","20:30","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11464","Online"],["J","20:40","21:20","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11465","Online"],["V","19:10","19:50","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11465","Online"],["V","19:50","20:30","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11466","Online"],["V","20:40","22:00","Procedimientos Especiales Orales (Ev. Ciclo)","—","Alarcón Iturriaga Orlando",43,"11462","Online"]]},
+ n15s1:{l:"5º año (Niveles 14-15) · Plan Ajustado",note:"El Taller de Integración III se cursa a lo largo de dos trimestres (14 y 15).",s:[["L","19:10","22:00","Taller de Integración III (Ev. Ciclo)","TEC SH-21","Castro Saavedra Juan",54,"12412","Presencial"],["M","19:10","22:00","Taller de Integración III (Ev. Ciclo)","TEC SH-21","Castro Saavedra Juan",54,"12412","Presencial"],["V","19:10","22:00","Taller de Integración III (Ev. Ciclo)","VIRTUAL","Castro Saavedra Juan",54,"12412","Online"]]},
+ n15pna:{l:"5º año (Niveles 14-15) · Plan No Ajustado",s:[["L","19:10","20:30","Taller de Litigación Avanzada (Ev. Ciclo)","TEC SH-22","Contreras Sierra Klaus Evelyn",58,"11475","Presencial"],["L","20:40","22:00","Taller de Litigación Avanzada (Ev. Ciclo)","TEC SH-22","Contreras Sierra Klaus Evelyn",58,"11476","Presencial"],["M","19:10","21:20","Seminario de Tesis","SALA VIRTUAL","Leon Silva Glorimar",55,"11471","Online"],["X","19:10","20:30","Optativo de Especialidad II","TEC SH-22","Celedón Baeza Andrés",54,"11469","Presencial"],["X","20:40","22:00","Optativo de Especialidad II","TEC SH-22","Celedón Baeza Andrés",54,"11470","Presencial"],["J","19:10","21:20","Derecho Tributario II","—","Roxana Obreque Espinoza",57,"11467","Online"],["J","21:20","22:00","Derecho Tributario II","—","Roxana Obreque Espinoza",57,"11468","Online"],["V","19:10","19:50","Derecho Tributario II","—","Roxana Obreque Espinoza",57,"11468","Online"],["V","19:50","22:00","Seminario de Tesis","SALA VIRTUAL","Leon Silva Glorimar",55,"11473","Online"]]},
+ n15tes:{l:"5º año (Niveles 14-15) · Solo Seminario de Tesis",s:[["L","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","El Fakih Rodriguez Fatima",55,"11850","Online"],["L","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","El Fakih Rodriguez Fatima",55,"11851","Online"],["M","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","Oñate Henriquez Jaime",55,"11852","Online"],["M","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","Oñate Henriquez Jaime",55,"11853","Online"],["X","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","Fernandez Miguez Sheila",55,"11854","Online"],["X","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","Fernandez Miguez Sheila",55,"11855","Online"],["J","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","Ojeda Zavala Nicolas",55,"11856","Online"],["J","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","Ojeda Zavala Nicolas",55,"11857","Online"],["V","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","Lopez Hernandez Hernan",55,"11858","Online"],["V","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","Lopez Hernandez Hernan",55,"11859","Online"]]}
+};
+var MAPA={"FGCT01000": 4, "DERTA0001": 1, "DERTA0005": 3, "DERTA0003": 2, "DERTA0002": 6, "FGCT02000": 8, "DERTB0001": 5, "DERTB0003": 7, "DERTB0004": 11, "DERTB0002": 9, "DERTA0004": 10, "DERTB0005": 12, "DERTC0001": 13, "DERTC0005": 16, "DERTC0004": 15, "DERTC0002": 14, "DERTD0005": 19, "DERTD0002": 17, "DERTC0003": 18, "FGDT05000": 20, "DERTD0006": 24, "DERTD0003": 22, "DERTD0004": 23, "DERTD0001": 21, "DERTE0002": 26, "DERTE0001": 25, "DERTE0004": 27, "DERTF0005": 30, "DERTE0003": 29, "FGDT07000": 31, "DERTF0001": 28, "DERTF0004": 34, "DERTF0003": 33, "DERTF0002": 32, "FGCT06000": 35, "DERTG0006": 39, "DERTG0003": 38, "DERTG0002": 37, "DERTG0001": 36, "DERTH0003": 41, "DERTG0004": 42, "DERTG0005": 43, "DERTH0001": 40, "DERTH0004": 45, "DERTH0002": 44, "DERTH0007": 48, "DERTH0005": 46, "DERTH0006": 47, "DERTI0001": 50, "DERTI0004": 52, "DERTI0003": 49, "DERTI0002": 51, "DERTI0006": 53, "DERTI0005": 55, "DERTJ0001": 54};
+var HOR=HOR_TECH;
+var _e=function(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});};
+
+/* ── 1) Leer el reporte ── */
+function leerReporte(txt){
+  var out={id:null,nombre:null,programa:null,ramos:[]};
+  var m=txt.match(/ID\s*:?\s*(\d{7,10})/);      if(m)out.id=m[1];
+  m=txt.match(/Nombre\s*:?\s*([^\n]+)/);        if(m)out.nombre=m[1].trim();
+  m=txt.match(/Programa\s*:?\s*([^\n]+)/);      if(m)out.programa=m[1].trim();
+  /* el reporte trae un encabezado por página: se toman todos los cuerpos */
+  var partes=txt.split("Oportunidad 5");
+  var cuerpo=partes.length>1?partes.slice(1).join("\n\n"):txt;
+  var bloques=cuerpo.split(/\n\s*\n/);
+  var reCod=/([A-Z]{2,6}\d{4,5})-/;
+  bloques.forEach(function(b){
+    if(!b.trim()||/Universidad Autónoma|REPORTE DE AVANCE/.test(b))return;
+    var mc=b.match(reCod); if(!mc)return;
+    var mn=b.match(/(?:^|\n)\s{0,6}(\d{2,3})\s/);
+    var notas=(b.match(/Nota:\s*\d+[,.]\d/g)||[]).map(function(x){
+      return parseFloat(x.replace(/Nota:\s*/,"").replace(",","."));
+    });
+    out.ramos.push({cod:mc[1],nivel:mn?Math.round(parseInt(mn[1],10)/10):null,notas:notas});
+  });
+  /* consolidar filas repetidas del mismo código */
+  var por={};
+  out.ramos.forEach(function(r){
+    if(!por[r.cod])por[r.cod]=r;
+    else por[r.cod].notas=por[r.cod].notas.concat(r.notas);
+  });
+  out.ramos=Object.keys(por).map(function(k){
+    var r=por[k];
+    r.intentos=r.notas.length;
+    r.reprobaciones=r.notas.filter(function(n){return n<4.0;}).length;
+    r.estado=!r.notas.length?"pendiente":(r.notas.some(function(n){return n>=4.0;})?"aprobado":"reprobado");
+    r.nota=r.notas.length?r.notas[r.notas.length-1]:null;
+    r.proxima=(r.estado==="aprobado")?null:(r.notas.length+1);
+    return r;
+  });
+  return out;
+}
+
+/* ── 2) Cruzar con la malla ── */
+function armar(rep){
+  var S={}, porId={};
+  COURSES.forEach(function(c){ porId[c.id]=c; });
+  rep.ramos.forEach(function(r){
+    var id=MAPA[r.cod];
+    if(id==null)return;
+    S[id]={estado:r.estado,nota:r.nota,intentos:r.intentos,reprobaciones:r.reprobaciones,proxima:r.proxima,cod:r.cod};
+  });
+  return {S:S,porId:porId};
+}
+function nivelesInfo(S){
+  var pend=99,maxT=1;
+  COURSES.forEach(function(c){
+    var e=S[c.id];
+    if(!e||e.estado!=="aprobado"){ if(c.t<pend)pend=c.t; }
+    if(c.t>maxT)maxT=c.t;
+  });
+  var ancla=(pend===99)?1:pend;
+  /* Nivel que cursa. Se toma el nivel más alto en el que ya aprobó al menos la
+     mitad de sus asignaturas, más uno. Es el criterio del art. 19 del Reglamento
+     (el nivel donde concentra su carga) y funciona en los dos casos difíciles:
+     no adelanta por tener un electivo suelto de un nivel superior, ni retrocede
+     por arrastrar una asignatura antigua. */
+  var ultimoCompleto=0;
+  for(var t=1;t<=maxT;t++){
+    var del=COURSES.filter(function(c){return c.t===t;});
+    if(!del.length)continue;
+    var ap=del.filter(function(c){ return S[c.id]&&S[c.id].estado==="aprobado"; }).length;
+    if(ap*2>=del.length)ultimoCompleto=t;
+  }
+  var avance=Math.min(ultimoCompleto+1,maxT);
+  var techoRegl=ancla+3;
+  var techo=Math.min(techoRegl,Math.max(avance,ancla));
+  return {ancla:ancla,avance:avance,techo:techo,techoRegl:techoRegl};
+}
+function prereqOK(c,S){
+  if(!c.p)return true;
+  if(c.p.upTo!=null){
+    return COURSES.filter(function(x){return x.t<=c.p.upTo;}).every(function(x){return S[x.id]&&S[x.id].estado==="aprobado";});
+  }
+  if(!c.p.length)return true;
+  return c.p.every(function(id){ return S[id]&&S[id].estado==="aprobado"; });
+}
+function ofertaDelPeriodo(){
+  var o={};
+  Object.keys(HOR).forEach(function(k){
+    (HOR[k].s||[]).forEach(function(se){
+      if(se[6]==null)return;
+      (o[se[6]]=o[se[6]]||[]).push({key:k,etq:HOR[k].l,nrc:se[7],ses:se});
+    });
+  });
+  return o;
+}
+
+/* ── 3) Pintar ── */
+function render(rep){
+  var A=armar(rep), S=A.S, NI=nivelesInfo(S), OF=ofertaDelPeriodo();
+  var ap=0,no=0,pe=0,ter=0;
+  COURSES.forEach(function(c){
+    var e=S[c.id];
+    if(!e||e.estado==="pendiente")pe++;
+    else if(e.estado==="aprobado")ap++;
+    else { no++; if(e.reprobaciones>=2)ter++; }
+  });
+  var h='';
+  h+='<div class="ficha">'+
+    '<div><dt>Estudiante</dt><dd>'+_e(rep.nombre||"—")+'<small>'+_e(rep.id||"")+'</small></dd></div>'+
+    '<div><dt>Programa</dt><dd style="font-size:13px">'+_e(rep.programa||"—")+'</dd></div>'+
+    '<div><dt>Aprobadas</dt><dd>'+ap+'</dd></div>'+
+    '<div><dt>Reprobadas</dt><dd>'+no+(ter?'<small>'+ter+' va por 3ª vez</small>':'')+'</dd></div>'+
+    '<div><dt>Pendientes</dt><dd>'+pe+'</dd></div>'+
+    '<div><dt>Nivel que cursa</dt><dd>'+NI.avance+'<small>más bajo pendiente: '+NI.ancla+'</small></dd></div>'+
+    '</div>';
+
+  h+='<h2>Avance curricular</h2>';
+  var maxT=0; COURSES.forEach(function(c){ if(c.t>maxT)maxT=c.t; });
+  h+='<div class="malla">';
+  for(var t=1;t<=maxT;t++){
+    h+='<div class="col"><h3>N'+t+'</h3>';
+    COURSES.filter(function(c){return c.t===t;}).forEach(function(c){
+      var e=S[c.id], cls="", ex="";
+      if(e&&e.estado==="aprobado")cls="ok";
+      else if(e&&e.estado==="reprobado"){ cls="no"; if(e.reprobaciones>=2){cls+=" tercera"; ex=" · 3ª";} }
+      h+='<div class="cel '+cls+'"><b>'+_e(c.n.length>26?c.n.slice(0,25)+"…":c.n)+'</b>'+
+         (e&&e.nota!=null?'<span class="n">'+e.nota.toFixed(1)+(e.intentos>1?" · "+e.intentos+" int.":"")+ex+'</span>':'')+'</div>';
+    });
+    h+='</div>';
+  }
+  h+='</div><div class="leg">'+
+    '<span><i class="ok"></i>Aprobada</span><span><i class="no"></i>Reprobada</span>'+
+    '<span><i class="no tercera"></i>Va por tercera oportunidad</span><span><i></i>Pendiente</span></div>';
+
+  /* Ramos que puede inscribir */
+  h+='<h2>Asignaturas que puede inscribir este período</h2>';
+  h+='<div class="nota">Rango permitido: <b>'+(NI.ancla===NI.techo?("nivel "+NI.ancla):("niveles "+NI.ancla+" a "+NI.techo))+'</b>. '+
+     'Se cuenta desde el nivel más bajo con asignaturas pendientes (art. 17). El rango sirve para recuperar lo pendiente, no para adelantar niveles superiores al que cursa.</div>';
+  var filas="",n=0;
+  COURSES.slice().sort(function(a,b){return a.t-b.t;}).forEach(function(c){
+    var e=S[c.id]; if(e&&e.estado==="aprobado")return;
+    var of=OF[c.id]; if(!of||!of.length)return;
+    var dentro=(c.t>=NI.ancla&&c.t<=NI.techo);
+    var pre=prereqOK(c,S);
+    var esTer=(e&&e.reprobaciones>=2);
+    var puede=dentro&&pre;
+    if(!puede&&!dentro&&!pre)return;         /* ni siquiera vale mostrarlo */
+    n++;
+    var motivo=[];
+    if(!dentro)motivo.push(c.t>NI.techo?"nivel superior al que cursa":"fuera del rango");
+    if(!pre)motivo.push("prerrequisitos no cumplidos");
+    var secs=[];
+    of.forEach(function(o){ if(secs.indexOf(o.etq)<0)secs.push(o.etq); });
+    var nrcs=[]; of.forEach(function(o){ if(o.nrc&&nrcs.indexOf(o.nrc)<0)nrcs.push(o.nrc); });
+    filas+='<tr class="'+(puede?"si":"no")+'"><td><b>'+_e(c.n)+'</b>'+
+      (e&&e.estado==="reprobado"?'<br><span class="pill p-no">reprobada'+(esTer?" · 3ª oportunidad":"")+'</span>':'')+'</td>'+
+      '<td>'+c.t+'</td>'+
+      '<td>'+(CR_AJUSTADA[c.id]||"—")+'</td>'+
+      '<td style="font-size:11.5px">'+_e(secs.join(" · "))+'</td>'+
+      '<td style="font-weight:600">'+_e(nrcs.join(" / ")||"—")+'</td>'+
+      '<td>'+(puede
+        ? '<span class="pill p-ok">Puede inscribir</span>'+(esTer?'<br><span class="pill p-am" style="margin-top:3px">sin coincidencias (art. 8)</span>':'')
+        : '<span class="pill p-no">No</span><br><span style="font-size:11px;color:var(--gris)">'+_e(motivo.join(" · "))+'</span>')+'</td></tr>';
+  });
+  h+='<table><thead><tr><th>Asignatura</th><th>Nivel</th><th>SCT</th><th>Secciones ofrecidas</th><th>NRC</th><th>¿Puede inscribirla?</th></tr></thead><tbody>'+
+     (filas||'<tr><td colspan="6" style="color:var(--gris)">Sin asignaturas de la oferta dentro de su situación.</td></tr>')+'</tbody></table>';
+
+  /* Reprobadas con oferta: obligatorias */
+  var obl=COURSES.filter(function(c){
+    var e=S[c.id]; return e&&e.estado==="reprobado"&&OF[c.id]&&OF[c.id].length;
+  });
+  if(obl.length){
+    h+='<div class="nota"><b>Debe inscribir obligatoriamente</b> (Circular N°05/2026, art. 3): '+
+       obl.map(function(c){return _e(c.n);}).join(", ")+'.</div>';
+  }
+  var t3=COURSES.filter(function(c){ var e=S[c.id]; return e&&e.reprobaciones>=2&&OF[c.id]&&OF[c.id].length; });
+  if(t3.length){
+    h+='<div class="nota" style="border-left-color:var(--rojo);background:#fdf3f2"><b>Tercera oportunidad</b> (art. 8): '+
+       t3.map(function(c){return _e(c.n);}).join(", ")+'. <b>No se autorizan coincidencias de horario</b> en estas asignaturas.</div>';
+  }
+  document.getElementById("sello").innerHTML=' · Analizado el '+new Date().toLocaleDateString("es-CL")+'.';
+  return h;
+}
+
+document.getElementById("go").onclick=function(){
+  var t=document.getElementById("txt").value;
+  var sal=document.getElementById("salida");
+  if(!t.trim()){ sal.innerHTML='<div class="err">Pega primero el reporte.</div>'; sal.classList.remove("oculto"); return; }
+  try{
+    var rep=leerReporte(t);
+    if(!rep.ramos.length){
+      sal.innerHTML='<div class="err"><b>No pude leer el reporte.</b> Revisa que hayas copiado todo el texto del PDF, '+
+        'incluida la cabecera con el ID y el nombre.</div>';
+      sal.classList.remove("oculto"); return;
+    }
+    var recon=rep.ramos.filter(function(r){return MAPA[r.cod]!=null;}).length;
+    var aviso=(recon<rep.ramos.length)
+      ? '<div class="nota"><b>'+(rep.ramos.length-recon)+' asignatura(s) del reporte no están en la malla cargada</b> y no se consideraron. '+
+        'Puede tratarse de un plan distinto al ajustado.</div>' : '';
+    sal.innerHTML=aviso+render(rep);
+    sal.classList.remove("oculto");
+    try{ sal.scrollIntoView({behavior:"smooth",block:"start"}); }catch(e){}
+  }catch(e){
+    sal.innerHTML='<div class="err">Ocurrió un problema al leer el reporte: '+_e(e.message)+'</div>';
+    sal.classList.remove("oculto");
+  }
+};
+document.getElementById("limpiar").onclick=function(){
+  document.getElementById("txt").value="";
+  document.getElementById("salida").classList.add("oculto");
+};
+</script></body></html>
