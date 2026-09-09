@@ -73,6 +73,10 @@ tr.si td{background:#fff}tr.no td{background:#fdf7f6}
 .verif td{font-size:12.5px}
 .verif td:last-child{width:150px;text-align:right}
 .ref{display:block;font-size:10.5px;color:var(--gris);font-weight:400}
+.otras{margin:0 0 16px}
+.otras summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--gris);padding:7px 0;user-select:none}
+.otras summary:hover{color:var(--tinta)}
+.otras[open] summary{margin-bottom:2px}
 .pie{margin-top:30px;border-top:1px solid var(--linea);padding-top:12px;font-size:11.5px;color:var(--gris);line-height:1.5}
 @media print{.panel,.top,.pie button{display:none}.hoja{max-width:100%}}
 </style></head><body>
@@ -316,9 +320,14 @@ function prereqOK(c,S){
   if(!c.p.length)return true;
   return c.p.every(function(id){ return S[id]&&S[id].estado==="aprobado"; });
 }
+/* Los bloques del Plan No Ajustado corresponden a la malla antigua (Res. 135/2017).
+   Como el reporte se cruza contra la malla ajustada, solo se ofrecen los bloques
+   de ese plan: mostrar los del otro confundiría al revisar. */
+function esNoAjustado(etq){ return /No Ajustado|Solo Seminario/i.test(etq||""); }
 function ofertaDelPeriodo(){
   var o={};
   Object.keys(HOR).forEach(function(k){
+    if(esNoAjustado(HOR[k].l))return;
     (HOR[k].s||[]).forEach(function(se){
       if(se[6]==null)return;
       (o[se[6]]=o[se[6]]||[]).push({key:k,etq:HOR[k].l,nrc:se[7],ses:se});
@@ -459,31 +468,39 @@ function pintaSimulador(){
     return OF[c.id]&&OF[c.id].length;
   }).sort(function(a,b){ return a.t-b.t; });
 
+  var puede=cands.filter(function(c){ return c.t>=NI.ancla&&c.t<=NI.techo&&prereqOK(c,S); });
+  var otras=cands.filter(function(c){ return puede.indexOf(c)<0; });
+
   var h='<h2>Probar combinaciones</h2>'+
     '<p class="lead" style="margin:0 0 12px">Marca las secciones que el estudiante quiere inscribir. '+
     'El horario y las verificaciones se actualizan a medida que eliges.</p>';
 
-  /* ── selector ── */
-  h+='<div class="sel">';
-  cands.forEach(function(c){
+  var linea=function(c){
     var e=S[c.id], ter=(e&&e.reprobaciones>=2);
     var dentro=(c.t>=NI.ancla&&c.t<=NI.techo), pre=prereqOK(c,S);
     var bloqs={}; OF[c.id].forEach(function(o){ (bloqs[o.key]=bloqs[o.key]||{etq:o.etq,nrc:[]}); if(o.nrc&&bloqs[o.key].nrc.indexOf(o.nrc)<0)bloqs[o.key].nrc.push(o.nrc); });
-    h+='<div class="selr'+(dentro&&pre?'':' selr-off')+'"><div class="selr-n">'+_e(c.n)+
+    var h2='<div class="selr'+(dentro&&pre?'':' selr-off')+'"><div class="selr-n">'+_e(c.n)+
        '<span class="selr-m">nivel '+c.t+' · '+(CR_AJUSTADA[c.id]||0)+' SCT'+
        (e&&e.estado==="reprobado"?' · <b style="color:var(--rojo)">reprobada'+(ter?', 3ª oportunidad':'')+'</b>':'')+
        (dentro&&pre?'':' · <b style="color:var(--rojo)">'+(!dentro?"fuera de su nivel":"sin prerrequisitos")+'</b>')+
        '</span></div><div class="selb">';
     Object.keys(bloqs).forEach(function(k){
       var on=(SEL[c.id]===k);
-      h+='<button type="button" class="secb'+(on?" on":"")+'" data-id="'+c.id+'" data-key="'+k+'">'+
+      h2+='<button type="button" class="secb'+(on?" on":"")+'" data-id="'+c.id+'" data-key="'+k+'">'+
          _e(bloqs[k].etq.replace(/^\d+\S*\s*(año|er año)?\s*/,"").replace(/\(Nivel \d+\)\s*·\s*/,""))+
          (bloqs[k].nrc.length?'<span class="secn">'+bloqs[k].nrc.join("/")+'</span>':'')+'</button>';
     });
-    h+='</div></div>';
-  });
-  h+='</div>';
-  if(!cands.length) h+='<div class="nota">No hay asignaturas de la oferta que este estudiante deba cursar.</div>';
+    return h2+'</div></div>';
+  };
+  h+='<div class="sel">'+puede.map(linea).join("")+'</div>';
+  if(!puede.length) h+='<div class="nota">No hay asignaturas de la oferta dentro de su rango de niveles.</div>';
+  if(otras.length){
+    h+='<details class="otras"><summary>Ver '+otras.length+' asignatura'+(otras.length===1?'':'s')+
+       ' fuera de su rango o sin prerrequisitos</summary>'+
+       '<div class="nota" style="margin:8px 0">Se muestran por si la Dirección de Carrera necesita evaluarlas, '+
+       'pero no cumplen las directrices de la Circular N°05/2026.</div>'+
+       '<div class="sel">'+otras.map(linea).join("")+'</div></details>';
+  }
 
   /* ── grilla ── */
   var ids=Object.keys(SEL).map(Number);
