@@ -62,13 +62,20 @@ tr.si td{background:#fff}tr.no td{background:#fdf7f6}
 .secb:hover{border-color:var(--carbon)}
 .secb.on{background:var(--carbon);border-color:var(--carbon);color:#fff;font-weight:600}
 .secn{display:block;font-size:10px;opacity:.75;font-variant-numeric:tabular-nums}
-.grilla{margin-top:14px}
-.grilla th{font-size:11px;text-align:center}
-.grilla th.hh{width:58px;font-variant-numeric:tabular-nums;font-weight:600;color:var(--gris);background:#FBFAF9}
-.grilla td{height:38px;padding:3px 4px;vertical-align:top}
-.grilla td.ocu{background:#eef4f0}
-.grilla td.cho{background:#fbe6e2;box-shadow:inset 0 0 0 2px var(--rojo)}
-.gr{display:block;font-size:10px;line-height:1.25;font-weight:600}
+.hortbl{margin-top:14px;table-layout:fixed}
+.hortbl th{font-size:11px;text-align:center;padding:6px 4px}
+.hortbl th.hh{width:56px;font-size:10.5px;font-variant-numeric:tabular-nums;font-weight:600;color:var(--gris);background:#FBFAF9;text-align:right;padding-right:7px;line-height:1.2}
+.hortbl th.hh span{font-weight:400;opacity:.7}
+.hortbl td{padding:0;vertical-align:top;height:44px}
+.hortbl td.vac{background:#FCFBFA}
+.hortbl td.ocu{background:#F2F7F3}
+.hortbl td.cho{background:#FCEFEC;box-shadow:inset 0 0 0 2px var(--rojo)}
+.cel2{padding:5px 6px;border-bottom:1px dashed rgba(0,0,0,.12)}
+.cel2:last-child{border-bottom:0}
+.cel2 .cr{display:block;font-weight:700;font-size:11px;color:var(--rojo);line-height:1.2}
+.cel2 .cn{display:block;font-size:9.4px;font-weight:700;color:#8a6d1f;letter-spacing:.2px;line-height:1.25;margin-top:1px;font-variant-numeric:tabular-nums}
+.cel2 .cp{display:block;font-size:9.6px;color:var(--gris);line-height:1.25}
+.chow{font-size:9.5px;font-weight:700;color:var(--rojo);padding:2px 6px 4px}
 .h3s{font-family:'IBM Plex Sans Condensed';font-size:15px;margin:18px 0 6px;font-weight:700}
 .verif td{font-size:12.5px}
 .verif td:last-child{width:150px;text-align:right}
@@ -512,31 +519,60 @@ function pintaGrilla(ids){
   if(!ids.length) return '<div class="nota" style="margin-top:14px">Marca al menos una sección para ver el horario.</div>';
   var S=CTX.S, NI=CTX.NI;
   var porId={}; COURSES.forEach(function(c){ porId[c.id]=c; });
-  var celdas={}, sinHorario=[];
-  ids.forEach(function(id,i){
+  var DD=["L","M","X","J","V"];
+
+  /* Se coloca cada tramo en los bloques que ocupa. Cuando una celda queda con
+     más de una asignatura, es un tope y se muestran las dos. */
+  var g={}; DD.forEach(function(d){ g[d]=BL.map(function(){ return []; }); });
+  var sinHorario=[];
+  ids.forEach(function(id){
     var ses=sesionesDe(id,SEL[id]);
     if(!ses.length||ses.every(function(s){return s[8]==="Sin clases";})){ sinHorario.push(porId[id]); return; }
     ses.forEach(function(s){
       if(s[8]==="Sin clases")return;
+      var col=g[s[0]]; if(!col)return;
       BL.forEach(function(b,bi){
         if(_m(b[0])>=_m(s[2])||_m(b[1])<=_m(s[1]))return;
-        var k=s[0]+"-"+bi;
-        (celdas[k]=celdas[k]||[]).push({id:id,n:porId[id]?porId[id].n:id,mod:s[8]});
+        col[bi].push({id:id,n:(porId[id]?porId[id].n:String(id)),
+                      sala:s[4],prof:s[5],nrc:s[7],mod:s[8],ini:s[1],fin:s[2]});
       });
     });
   });
-  var h='<table class="grilla"><thead><tr><th></th>';
-  ["L","M","X","J","V"].forEach(function(d){ h+='<th>'+DIAS[d]+'</th>'; });
+
+  /* fusión vertical: una asignatura sola que sigue en el bloque siguiente */
+  var span={}, salta={};
+  DD.forEach(function(d){
+    for(var i=0;i<BL.length;i++){
+      var c=g[d][i];
+      if(c.length!==1||salta[d+i])continue;
+      var n=1;
+      while(i+n<BL.length && g[d][i+n].length===1 && g[d][i+n][0].id===c[0].id &&
+            g[d][i+n][0].ini===c[0].ini){ salta[d+(i+n)]=true; n++; }
+      if(n>1)span[d+i]=n;
+    }
+  });
+
+  var h='<table class="hortbl"><thead><tr><th class="hh"></th>';
+  DD.forEach(function(d){ h+='<th>'+DIAS[d]+'</th>'; });
   h+='</tr></thead><tbody>';
   BL.forEach(function(b,bi){
-    h+='<tr><th class="hh">'+b[0]+'<br>'+b[1]+'</th>';
-    ["L","M","X","J","V"].forEach(function(d){
-      var c=celdas[d+"-"+bi]||[];
-      if(!c.length){ h+='<td></td>'; return; }
-      var choque=c.length>1;
-      h+='<td class="'+(choque?"cho":"ocu")+'">'+c.map(function(x){
-        return '<span class="gr">'+_e(x.n.length>22?x.n.slice(0,21)+"…":x.n)+'</span>';
-      }).join("")+'</td>';
+    h+='<tr><th class="hh">'+b[0]+'<br><span>'+b[1]+'</span></th>';
+    DD.forEach(function(d){
+      if(salta[d+bi])return;
+      var c=g[d][bi];
+      if(!c.length){ h+='<td class="vac"></td>'; return; }
+      var sp=span[d+bi]||1;
+      var cls=c.length>1?"cho":"ocu";
+      h+='<td class="'+cls+'"'+(sp>1?' rowspan="'+sp+'"':'')+'>';
+      c.forEach(function(x){
+        h+='<div class="cel2">'+
+           '<span class="cr">'+_e(x.n)+'</span>'+
+           (x.nrc?'<span class="cn">NRC '+_e(x.nrc)+(x.mod?' · '+_e(x.mod):'')+'</span>':(x.mod?'<span class="cn">'+_e(x.mod)+'</span>':''))+
+           (x.prof&&x.prof!=="—"?'<span class="cp">'+_e(x.prof)+'</span>':'')+
+           '</div>';
+      });
+      if(c.length>1)h+='<div class="chow">⚠ Coincidencia</div>';
+      h+='</td>';
     });
     h+='</tr>';
   });
