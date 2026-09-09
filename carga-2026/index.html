@@ -166,31 +166,77 @@ var MAPA={"FGCT01000": 4, "DERTA0001": 1, "DERTA0005": 3, "DERTA0003": 2, "DERTA
 var HOR=HOR_TECH;
 var _e=function(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});};
 
-/* ── 1) Leer el reporte ── */
+/* ── Lector del Reporte de Avance Curricular ──────────────────────────────
+   Tolera los tres modos en que llega el texto: copiado del PDF con columnas,
+   copiado del PDF sin formato, y copiado de la tabla del sistema. En vez de
+   depender del orden, ubica cada dato por su posición y los asocia por
+   cercanía; cuando el código de la oportunidad coincide con el de una
+   asignatura, se usa esa coincidencia por ser más segura. */
 function leerReporte(txt){
   var out={id:null,nombre:null,programa:null,ramos:[]};
-  var m=txt.match(/ID\s*:?\s*(\d{7,10})/);      if(m)out.id=m[1];
-  m=txt.match(/Nombre\s*:?\s*([^\n]+)/);        if(m)out.nombre=m[1].trim();
-  m=txt.match(/Programa\s*:?\s*([^\n]+)/);      if(m)out.programa=m[1].trim();
-  /* el reporte trae un encabezado por página: se toman todos los cuerpos */
-  var partes=txt.split("Oportunidad 5");
-  var cuerpo=partes.length>1?partes.slice(1).join("\n\n"):txt;
-  var bloques=cuerpo.split(/\n\s*\n/);
-  var reCod=/([A-Z]{2,6}\d{4,5})-/;
-  bloques.forEach(function(b){
-    if(!b.trim()||/Universidad Autónoma|REPORTE DE AVANCE/.test(b))return;
-    var mc=b.match(reCod); if(!mc)return;
-    var mn=b.match(/(?:^|\n)\s{0,6}(\d{2,3})\s/);
-    var notas=(b.match(/Nota:\s*\d+[,.]\d/g)||[]).map(function(x){
-      return parseFloat(x.replace(/Nota:\s*/,"").replace(",","."));
-    });
-    out.ramos.push({cod:mc[1],nivel:mn?Math.round(parseInt(mn[1],10)/10):null,notas:notas});
+  var m=txt.match(/ID\s*:?\s*(\d{7,10})/);       if(m)out.id=m[1];
+  m=txt.match(/Nombre\s*:?\s*([^\n\t]+)/);       if(m)out.nombre=m[1].trim();
+  if(!out.nombre){   /* copiado desde la tabla del sistema: el nombre va bajo ALUMNO */
+    m=txt.match(/ALUMNO[\s\S]{0,120}?[\n\t]\s*([A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ\s]{8,60}?)\s*[\n\t]/);
+    if(m)out.nombre=m[1].trim();
+  }
+  m=txt.match(/Programa\s*:?\s*([^\n\t]+)/);     if(m)out.programa=m[1].trim();
+
+  /* se aplana conservando las posiciones relativas */
+  var T=txt.replace(/[\r\n\t]+/g," ").replace(/\s{2,}/g," ");
+
+  /* 1 · asignaturas: código + nombre + el nivel que las precede */
+  var asigs=[], reA=/([A-Z]{2,6}\d{4,5})-/g, ma;
+  while((ma=reA.exec(T))!==null){
+    var antes=T.slice(Math.max(0,ma.index-90),ma.index);
+    var mn=antes.match(/(?:^|\s)(\d{2,3})\s(?:[^\d]{0,80})?$/);
+    /* el nombre se toma de los caracteres siguientes y se corta en el primer
+       elemento reconocible; de todos modos, el nombre bueno viene de la malla */
+    var cola=T.slice(ma.index+ma[0].length,ma.index+ma[0].length+80);
+    var nom=cola.split(/\s+(?:P:\d|Universidad|REPORTE|Nivel\s|\d{2,3}\s+[A-Z]{2,6}\d|[A-Z]{2,6}\d{4,5}-)/)[0];
+    nom=nom.replace(/\s*(?:P:\d{6}|Nrc:\S+|Nota:\S+)\s*/g," ").replace(/\s+\d{2,3}\s*$/,"").trim();
+    asigs.push({pos:ma.index,cod:ma[1],nombre:nom.replace(/\s+/g," ").slice(0,60),
+                nivel:mn?Math.min(Math.round(parseInt(mn[1],10)/10),14):null,notas:[]});
+  }
+  /* si el nivel no quedó, se hereda del anterior */
+  for(var i=0;i<asigs.length;i++) if(asigs[i].nivel==null&&i>0) asigs[i].nivel=asigs[i-1].nivel;
+
+  /* 2 · oportunidades: código interno + nota */
+  var ops=[], reO=/P:\d{6}\s+Nrc:\d+-\s*([A-Z0-9]{5,12})\s+Nota:\s*(\d+[,.]\d)/g, mo;
+  while((mo=reO.exec(T))!==null) ops.push({pos:mo.index,cod:mo[1],nota:parseFloat(mo[2].replace(",","."))});
+  /* algunas copias pierden el código: se recogen igual por su nota */
+  var reN=/Nota:\s*(\d+[,.]\d)/g, mnn;
+  while((mnn=reN.exec(T))!==null){
+    if(!ops.some(function(o){ return Math.abs(o.pos-mnn.index)<60; }))
+      ops.push({pos:mnn.index,cod:null,nota:parseFloat(mnn[1].replace(",","."))});
+  }
+
+  /* 3 · asociar cada oportunidad con su asignatura */
+  var porCod={}; asigs.forEach(function(a){ porCod[a.cod]=a; });
+  /* primero las que calzan por código, que es lo seguro */
+  var sueltas=[];
+  ops.forEach(function(o){
+    if(o.cod&&porCod[o.cod]){ porCod[o.cod].notas.push(o.nota); porCod[o.cod]._porCod=true; }
+    else sueltas.push(o);
   });
-  /* consolidar filas repetidas del mismo código */
+  /* el resto —electivos, cuyo código interno no coincide— por cercanía,
+     descartando las que ya recibieron su nota por código */
+  sueltas.forEach(function(o){
+    var mejor=null,d=1e9;
+    asigs.forEach(function(a){
+      if(a._porCod)return;
+      var dist=Math.abs(a.pos-o.pos);
+      if(dist<d){ d=dist; mejor=a; }
+    });
+    if(mejor&&d<220) mejor.notas.push(o.nota);
+  });
+
+  /* 4 · consolidar códigos repetidos y calcular el estado */
   var por={};
-  out.ramos.forEach(function(r){
-    if(!por[r.cod])por[r.cod]=r;
-    else por[r.cod].notas=por[r.cod].notas.concat(r.notas);
+  asigs.forEach(function(a){
+    if(!por[a.cod]) por[a.cod]=a;
+    else { a.notas.forEach(function(n){ if(por[a.cod].notas.indexOf(n)<0)por[a.cod].notas.push(n); });
+           if(por[a.cod].nivel==null)por[a.cod].nivel=a.nivel; }
   });
   out.ramos=Object.keys(por).map(function(k){
     var r=por[k];
