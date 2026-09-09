@@ -51,6 +51,28 @@ tr.si td{background:#fff}tr.no td{background:#fdf7f6}
 .nota{background:#FCF8F0;border-left:4px solid #C79A3E;padding:10px 13px;font-size:13px;line-height:1.5;margin:10px 0}
 .err{background:var(--rojobg);border-left:4px solid var(--rojo);padding:10px 13px;font-size:13.5px;margin:10px 0}
 .oculto{display:none}
+.sel{border:1px solid var(--linea);margin:0 0 16px}
+.selr{display:flex;gap:12px;align-items:center;padding:8px 11px;border-bottom:1px solid var(--linea2);flex-wrap:wrap}
+.selr:last-child{border-bottom:0}
+.selr-off{background:#FBF9F8}
+.selr-n{flex:1;min-width:190px;font-size:13.5px;font-weight:600;line-height:1.3}
+.selr-m{display:block;font-weight:400;font-size:11.5px;color:var(--gris)}
+.selb{display:flex;gap:5px;flex-wrap:wrap}
+.secb{font:inherit;font-size:11.5px;font-weight:500;padding:5px 10px;border:1px solid var(--linea);background:#fff;color:var(--tinta);cursor:pointer;line-height:1.2}
+.secb:hover{border-color:var(--carbon)}
+.secb.on{background:var(--carbon);border-color:var(--carbon);color:#fff;font-weight:600}
+.secn{display:block;font-size:10px;opacity:.75;font-variant-numeric:tabular-nums}
+.grilla{margin-top:14px}
+.grilla th{font-size:11px;text-align:center}
+.grilla th.hh{width:58px;font-variant-numeric:tabular-nums;font-weight:600;color:var(--gris);background:#FBFAF9}
+.grilla td{height:38px;padding:3px 4px;vertical-align:top}
+.grilla td.ocu{background:#eef4f0}
+.grilla td.cho{background:#fbe6e2;box-shadow:inset 0 0 0 2px var(--rojo)}
+.gr{display:block;font-size:10px;line-height:1.25;font-weight:600}
+.h3s{font-family:'IBM Plex Sans Condensed';font-size:15px;margin:18px 0 6px;font-weight:700}
+.verif td{font-size:12.5px}
+.verif td:last-child{width:150px;text-align:right}
+.ref{display:block;font-size:10.5px;color:var(--gris);font-weight:400}
 .pie{margin-top:30px;border-top:1px solid var(--linea);padding-top:12px;font-size:11.5px;color:var(--gris);line-height:1.5}
 @media print{.panel,.top,.pie button{display:none}.hoja{max-width:100%}}
 </style></head><body>
@@ -390,7 +412,170 @@ function render(rep){
        t3.map(function(c){return _e(c.n);}).join(", ")+'. <b>No se autorizan coincidencias de horario</b> en estas asignaturas.</div>';
   }
   document.getElementById("sello").innerHTML=' · Analizado el '+new Date().toLocaleDateString("es-CL")+'.';
+  CTX={S:S,NI:NI,OF:OF}; SEL={};
+  h+=pintaSimulador();
   return h;
+}
+
+
+/* ══════════════ SIMULADOR DE COMBINACIONES ══════════════
+   El coordinador marca secciones y ve al instante si la combinación
+   se sostiene: topes, créditos y las reglas de la Circular 05/2026. */
+var BL=[["19:10","19:50"],["19:50","20:30"],["20:40","21:20"],["21:20","22:00"],["22:10","22:50"]];
+var DIAS={L:"Lunes",M:"Martes",X:"Miércoles",J:"Jueves",V:"Viernes"};
+var SEL={};          /* id de asignatura → clave del bloque elegido */
+var CTX=null;        /* {S, NI, OF} del análisis vigente */
+
+function _m(t){ var p=String(t).split(":"); return (+p[0])*60+(+p[1]); }
+function sesionesDe(id,key){
+  return (HOR[key]&&HOR[key].s||[]).filter(function(s){ return s[6]===id; });
+}
+function minSem(ses){
+  var t=0;(ses||[]).forEach(function(s){ if(s[8]!=="Sin clases")t+=_m(s[2])-_m(s[1]); });
+  return t||1;
+}
+/* Clasifica el cruce entre dos secciones según la Circular art. 7 */
+function cruce(a,b){
+  var min=0,dias={},t0=null,t1=null;
+  a.forEach(function(s1){ b.forEach(function(s2){
+    if(s1[8]==="Sin clases"||s2[8]==="Sin clases")return;
+    if(s1[0]!==s2[0])return;
+    var x=Math.max(_m(s1[1]),_m(s2[1])), y=Math.min(_m(s1[2]),_m(s2[2]));
+    if(y>x){ min+=y-x; dias[s1[0]]=1; if(t0===null||x<t0)t0=x; if(t1===null||y>t1)t1=y; }
+  });});
+  if(!min)return null;
+  var pa=min/minSem(a)*100, pb=min/minSem(b)*100;
+  var f=function(v){ return Math.floor(v/60)+":"+("0"+(v%60)).slice(-2); };
+  return {min:min,pctA:pa,pctB:pb,dias:Object.keys(dias).map(function(d){return DIAS[d];}).join(", "),
+          t0:f(t0),t1:f(t1),tipo:(pa<=50&&pb<=50)?"solicitable":"excede"};
+}
+
+function pintaSimulador(){
+  if(!CTX)return "";
+  var S=CTX.S, NI=CTX.NI, OF=CTX.OF;
+  /* asignaturas ofrecidas que el estudiante todavía debe cursar */
+  var cands=COURSES.filter(function(c){
+    var e=S[c.id]; if(e&&e.estado==="aprobado")return false;
+    return OF[c.id]&&OF[c.id].length;
+  }).sort(function(a,b){ return a.t-b.t; });
+
+  var h='<h2>Probar combinaciones</h2>'+
+    '<p class="lead" style="margin:0 0 12px">Marca las secciones que el estudiante quiere inscribir. '+
+    'El horario y las verificaciones se actualizan a medida que eliges.</p>';
+
+  /* ── selector ── */
+  h+='<div class="sel">';
+  cands.forEach(function(c){
+    var e=S[c.id], ter=(e&&e.reprobaciones>=2);
+    var dentro=(c.t>=NI.ancla&&c.t<=NI.techo), pre=prereqOK(c,S);
+    var bloqs={}; OF[c.id].forEach(function(o){ (bloqs[o.key]=bloqs[o.key]||{etq:o.etq,nrc:[]}); if(o.nrc&&bloqs[o.key].nrc.indexOf(o.nrc)<0)bloqs[o.key].nrc.push(o.nrc); });
+    h+='<div class="selr'+(dentro&&pre?'':' selr-off')+'"><div class="selr-n">'+_e(c.n)+
+       '<span class="selr-m">nivel '+c.t+' · '+(CR_AJUSTADA[c.id]||0)+' SCT'+
+       (e&&e.estado==="reprobado"?' · <b style="color:var(--rojo)">reprobada'+(ter?', 3ª oportunidad':'')+'</b>':'')+
+       (dentro&&pre?'':' · <b style="color:var(--rojo)">'+(!dentro?"fuera de su nivel":"sin prerrequisitos")+'</b>')+
+       '</span></div><div class="selb">';
+    Object.keys(bloqs).forEach(function(k){
+      var on=(SEL[c.id]===k);
+      h+='<button type="button" class="secb'+(on?" on":"")+'" data-id="'+c.id+'" data-key="'+k+'">'+
+         _e(bloqs[k].etq.replace(/^\d+\S*\s*(año|er año)?\s*/,"").replace(/\(Nivel \d+\)\s*·\s*/,""))+
+         (bloqs[k].nrc.length?'<span class="secn">'+bloqs[k].nrc.join("/")+'</span>':'')+'</button>';
+    });
+    h+='</div></div>';
+  });
+  h+='</div>';
+  if(!cands.length) h+='<div class="nota">No hay asignaturas de la oferta que este estudiante deba cursar.</div>';
+
+  /* ── grilla ── */
+  var ids=Object.keys(SEL).map(Number);
+  h+='<div id="simres">'+pintaGrilla(ids)+'</div>';
+  return h;
+}
+
+function pintaGrilla(ids){
+  if(!ids.length) return '<div class="nota" style="margin-top:14px">Marca al menos una sección para ver el horario.</div>';
+  var S=CTX.S, NI=CTX.NI;
+  var porId={}; COURSES.forEach(function(c){ porId[c.id]=c; });
+  var celdas={}, sinHorario=[];
+  ids.forEach(function(id,i){
+    var ses=sesionesDe(id,SEL[id]);
+    if(!ses.length||ses.every(function(s){return s[8]==="Sin clases";})){ sinHorario.push(porId[id]); return; }
+    ses.forEach(function(s){
+      if(s[8]==="Sin clases")return;
+      BL.forEach(function(b,bi){
+        if(_m(b[0])>=_m(s[2])||_m(b[1])<=_m(s[1]))return;
+        var k=s[0]+"-"+bi;
+        (celdas[k]=celdas[k]||[]).push({id:id,n:porId[id]?porId[id].n:id,mod:s[8]});
+      });
+    });
+  });
+  var h='<table class="grilla"><thead><tr><th></th>';
+  ["L","M","X","J","V"].forEach(function(d){ h+='<th>'+DIAS[d]+'</th>'; });
+  h+='</tr></thead><tbody>';
+  BL.forEach(function(b,bi){
+    h+='<tr><th class="hh">'+b[0]+'<br>'+b[1]+'</th>';
+    ["L","M","X","J","V"].forEach(function(d){
+      var c=celdas[d+"-"+bi]||[];
+      if(!c.length){ h+='<td></td>'; return; }
+      var choque=c.length>1;
+      h+='<td class="'+(choque?"cho":"ocu")+'">'+c.map(function(x){
+        return '<span class="gr">'+_e(x.n.length>22?x.n.slice(0,21)+"…":x.n)+'</span>';
+      }).join("")+'</td>';
+    });
+    h+='</tr>';
+  });
+  h+='</tbody></table>';
+  if(sinHorario.length) h+='<div class="nota" style="margin-top:8px"><b>Sin horario de clases</b> (se inscriben igual y suman créditos): '+
+     sinHorario.map(function(c){return _e(c.n);}).join(", ")+'.</div>';
+
+  /* ── verificaciones ── */
+  var sct=0, nivs={}, fuera=[], sinPre=[], terceras=[];
+  ids.forEach(function(id){
+    var c=porId[id]; if(!c)return;
+    sct+=CR_AJUSTADA[id]||0; nivs[c.t]=1;
+    if(c.t<NI.ancla||c.t>NI.techo)fuera.push(c);
+    if(!prereqOK(c,S))sinPre.push(c);
+    var e=S[id]; if(e&&e.reprobaciones>=2)terceras.push(c);
+  });
+  var topes=[],malos=[];
+  for(var i=0;i<ids.length;i++)for(var j=i+1;j<ids.length;j++){
+    var cr=cruce(sesionesDe(ids[i],SEL[ids[i]]),sesionesDe(ids[j],SEL[ids[j]]));
+    if(!cr)continue;
+    cr.a=porId[ids[i]]?porId[ids[i]].n:ids[i]; cr.b=porId[ids[j]]?porId[ids[j]].n:ids[j];
+    cr.hayTercera=terceras.some(function(c){return c.id===ids[i]||c.id===ids[j];});
+    if(cr.tipo==="solicitable"&&!cr.hayTercera)topes.push(cr); else malos.push(cr);
+  }
+  var nNiv=Object.keys(nivs).length;
+  function fila(t,ok,d){ return '<tr><td>'+t+'</td><td>'+(ok?'<span class="pill p-ok">'+d+'</span>':'<span class="pill p-no">'+d+'</span>')+'</td></tr>'; }
+  h+='<h3 class="h3s">Verificación de la combinación</h3><table class="verif">';
+  h+=fila('Créditos del período <span class="ref">art. 10 — máximo 30 SCT</span>', sct<=30, sct+' SCT');
+  h+=fila('Niveles solicitados: '+Object.keys(nivs).sort(function(a,b){return a-b;}).join(", ")+
+          ' <span class="ref">permitido: '+(NI.ancla===NI.techo?("nivel "+NI.ancla):("niveles "+NI.ancla+" a "+NI.techo))+'</span>',
+          !fuera.length&&nNiv<=4, fuera.length?(fuera.length+' fuera de rango'):'dentro del rango');
+  h+=fila('Prerrequisitos <span class="ref">art. 4</span>', !sinPre.length, sinPre.length?(sinPre.length+' sin cumplir'):'todos cumplen');
+  h+=fila('Coincidencias no autorizables', !malos.length, malos.length?(malos.length):'ninguna');
+  h+=fila('Coincidencias autorizables <span class="ref">art. 7 — máximo una, hasta 50%</span>',
+          topes.length<=1, topes.length===0?'ninguna':(topes.length===1?'1 por autorizar':topes.length+' (excede el máximo)'));
+  h+='</table>';
+  if(topes.length) h+='<div class="nota"><b>Coincidencia'+(topes.length>1?'s':'')+' que requiere'+(topes.length>1?'n':'')+' autorización:</b><ul style="margin:5px 0 0;padding-left:18px">'+
+     topes.map(function(t){ return '<li>'+_e(t.a)+' ↔ '+_e(t.b)+' — '+t.dias+' '+t.t0+'–'+t.t1+', <b>'+t.min+' min</b>, '+
+       Math.round(Math.max(t.pctA,t.pctB))+'% de la asignatura</li>'; }).join("")+'</ul></div>';
+  if(malos.length) h+='<div class="nota" style="border-left-color:var(--rojo);background:#fdf3f2"><b>No autorizable:</b><ul style="margin:5px 0 0;padding-left:18px">'+
+     malos.map(function(t){ return '<li>'+_e(t.a)+' ↔ '+_e(t.b)+' — '+t.dias+' '+t.t0+'–'+t.t1+', '+t.min+' min, '+
+       Math.round(Math.max(t.pctA,t.pctB))+'%'+(t.hayTercera?' · <b>tercera oportunidad, art. 8</b>':(t.tipo==="excede"?' · <b>supera el 50%</b>':''))+'</li>'; }).join("")+'</ul></div>';
+  return h;
+}
+
+function bindSim(){
+  document.querySelectorAll(".secb").forEach(function(b){
+    b.onclick=function(){
+      var id=+b.dataset.id, k=b.dataset.key;
+      if(SEL[id]===k) delete SEL[id]; else SEL[id]=k;
+      document.querySelectorAll('.secb[data-id="'+id+'"]').forEach(function(x){
+        x.classList.toggle("on", SEL[id]===x.dataset.key);
+      });
+      document.getElementById("simres").innerHTML=pintaGrilla(Object.keys(SEL).map(Number));
+    };
+  });
 }
 
 document.getElementById("go").onclick=function(){
@@ -410,6 +595,7 @@ document.getElementById("go").onclick=function(){
         'Puede tratarse de un plan distinto al ajustado.</div>' : '';
     sal.innerHTML=aviso+render(rep);
     sal.classList.remove("oculto");
+    bindSim();
     try{ sal.scrollIntoView({behavior:"smooth",block:"start"}); }catch(e){}
   }catch(e){
     sal.innerHTML='<div class="err">Ocurrió un problema al leer el reporte: '+_e(e.message)+'</div>';
