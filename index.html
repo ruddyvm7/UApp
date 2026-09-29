@@ -1021,7 +1021,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
            (los datos siguen cargados en el código; nada se pierde)
    PARA PUBLICAR una jornada: cambiar su valor a true y subir el archivo.
    ══════════════════════════════════════════════════════════════ */
-var PRUEBAS_VISIBLES={ tech:false, diurno:false, vregular:false };   /* TECH: a la espera del calendario del 3er trimestre */
+var PRUEBAS_VISIBLES={ tech:true, diurno:false, vregular:false };   /* TECH: calendario oficial del 3er trimestre publicado · Diurno y V.Regular: pendientes */
 
 /* ══════════════════════════════════════════════════════════════
    SOLICITUD DE TOMA DE CARGA MANUAL
@@ -1725,12 +1725,12 @@ function docPruebas(){
   if(ids.length){
     var f=lista.filter(function(e){
       if(PRU_REG==="sem")return ids.some(function(id){var p=String(insc[id]||"").indexOf("na_")===0?"na":"aj";return (e[p]||[]).indexOf(id)>=0;});
-      return ids.indexOf(e.id)>=0;
+      return _pruIdIns(e,ids)!=null;
     });
     if(f.length){lista=f;mios=true;}
   }
   lista.sort(function(a,b){return a.niv-b.niv||String(a.asig).localeCompare(String(b.asig));});
-  function fchip(lbl,mmdd){return '<div class="evrow"><span>'+_e(lbl)+'</span><span class="fecha"><small>'+_e(_diaAb(mmdd))+'</small>'+_e(mmdd)+"</span></div>";}
+  function fchip(lbl,mmdd){return '<div class="evrow"><span>'+_e(lbl)+'</span><span class="fecha">'+_e(fmtOne(mmdd))+"</span></div>";}
   /* En TECH, si el ramo está inscrito conocemos la sección (n2s1 → S1) y mostramos SU fecha */
   function miSec(id){var k=String(insc[id]||"");var m=k.match(/s(\d)/);return m?+m[1]:null;}
   function tarjeta(e){
@@ -1739,13 +1739,15 @@ function docPruebas(){
       ["e1","e2","e3"].forEach(function(k,i){(e[k]||[]).forEach(function(d){filas+=fchip("Evaluación "+(i+1),d);});});
       if(e.noExam)filas+='<div class="evrow"><span>Examen</span><span>No rinde</span></div>';
     }else{
-      var sec=miSec(e.id);
+      var _ii=_pruIdIns(e,ids), sec=(_ii!=null)?miSec(_ii):null;
       var p1=(e.p1||[]).filter(function(p){return sec==null||p[1]===sec;});
       var p2=(e.p2||[]).filter(function(p){return sec==null||p[1]===sec;});
       if(!p1.length)p1=e.p1||[]; if(!p2.length)p2=e.p2||[];
       p1.forEach(function(p){filas+=fchip("Prueba 1"+(sec==null&&e.p1.length>1?" · S"+p[1]:""),p[0]);});
       p2.forEach(function(p){filas+=fchip("Prueba 2"+(sec==null&&e.p2.length>1?" · S"+p[1]:""),p[0]);});
-      if(e.fin)filas+=fchip("Examen final",e.fin);
+      if(e.fin==="?")filas+='<div class="evrow"><span>Examen final</span><span class="fecha">Por confirmar</span></div>';
+      else if(e.fin)filas+=fchip("Examen final",e.fin);
+      else if(!e.solo)filas+='<div class="evrow"><span>Examen final</span><span class="fecha">No aplica</span></div>';
       if(e.act)filas+='<div class="evrow"><span>Acumulativa</span><span class="fecha">'+_e(e.act)+"</span></div>";
     }
     return '<div class="pcardd"><div class="ph">'+_e(e.asig)+' <small>Nivel '+_e(e.niv)+(e.plan==="na"?" · Plan No Ajustado":"")+'</small></div>'+
@@ -1760,8 +1762,13 @@ function docPruebas(){
     lista.forEach(function(e){
       var fech=[];
       if(PRU_REG==="sem"){["e1","e2","e3"].forEach(function(k,i){(e[k]||[]).forEach(function(d){fech.push("Ev."+(i+1)+": "+_diaAb(d)+" "+d);});});if(e.noExam)fech.push("Sin examen");}
-      else{(e.p1||[]).forEach(function(p){fech.push("S"+p[1]+" P1: "+_diaAb(p[0])+" "+p[0]);});(e.p2||[]).forEach(function(p){fech.push("S"+p[1]+" P2: "+_diaAb(p[0])+" "+p[0]);});if(e.fin)fech.push("Examen: "+_diaAb(e.fin)+" "+e.fin);if(e.act)fech.push("Acum.: "+e.act);}
-      filas+="<tr><td>"+_e(e.asig)+(e.plan==="na"?' (No Ajustado)':"")+"</td><td>"+_e(e.niv)+"</td><td>"+_e(fech.join(" · "))+(e.note?'<br><span style="font-size:9.5px;color:#6b6660">'+_e(e.note)+"</span>":"")+"</td></tr>";
+      else{
+        (e.p1||[]).forEach(function(p){fech.push((p[1]!=null?"S"+p[1]+" ":"")+"1ª prueba: "+fmtOne(p[0]));});
+        (e.p2||[]).forEach(function(p){fech.push((p[1]!=null?"S"+p[1]+" ":"")+"2ª prueba: "+fmtOne(p[0]));});
+        if(e.fin==="?")fech.push("Examen: por confirmar"); else if(e.fin)fech.push("Examen: "+fmtOne(e.fin)); else if(!e.solo)fech.push("Examen: no aplica");
+        if(e.act)fech.push("Acum.: "+e.act);
+      }
+      filas+="<tr><td>"+_e(e.asig)+(e.plan==="na"?' (No Ajustado)':"")+"</td><td>"+_e(e.niv)+(e.alt?" · alt.":"")+"</td><td>"+_e(fech.join(" · "))+(e.note?'<br><span style="font-size:9.5px;color:#6b6660">'+_e(e.note)+"</span>":"")+"</td></tr>";
     });
     cuerpo='<table><tr><th>Asignatura</th><th>Nivel</th><th>Fechas</th></tr>'+filas+"</table>";
   }
@@ -2625,7 +2632,7 @@ function setHorJornada(j){
   }catch(e){}
   if(j==="diurno"){ EVALS=EVALS_SEM_VIE; PRU_REG="sem"; PRU_NOTE="Calendario oficial de evaluaciones · Primavera 2026. La jornada <b>Diurna</b> rinde los <b>viernes</b>. "+PRU_DIURNO_NOTE; }
   else if(j==="vregular"){ EVALS=EVALS_SEM_SAB; PRU_REG="sem"; PRU_NOTE="Calendario oficial de evaluaciones · Primavera 2026. La jornada <b>Vespertina</b> rinde los <b>sábados</b> (las evaluaciones de ciclo, SENA y entregas se rinden en la misma fecha en todas las jornadas). "+PRU_DIURNO_NOTE; }
-  else { EVALS=EVALS_TECH; PRU_REG="tri"; PRU_NOTE=""; }
+  else { EVALS=EVALS_TECH; PRU_REG="tri"; PRU_NOTE=PRU_TECH_NOTE; }
   var pnt=document.getElementById("planNivTope");
   if(pnt)pnt.textContent=(j==="tech"||!j)?"4 niveles consecutivos":"3 niveles consecutivos";
 }
@@ -2738,30 +2745,51 @@ var _pb=document.getElementById("planBtn");if(_pb)_pb.onclick=planPropose;
 /* Pruebas ejemplo */
 const MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
 const MESC=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+/* ══════════════════════════════════════════════════════════════════
+   CALENDARIO OFICIAL DE EVALUACIONES · TECH · 3er TRIMESTRE 2026
+   Fuente: "Carrera de Derecho · Evaluaciones TECH 3 trimestre 2026" (PDF de la Carrera).
+   Formato de cada ramo:
+     id      = id de la asignatura en el Plan Ajustado (null si es solo del No Ajustado)
+     naId    = id de la asignatura en el Plan No Ajustado (si se ofrece este trimestre)
+     plan    = "na" cuando el ramo es exclusivo del Plan No Ajustado
+     niv     = trimestre del programa según el PDF (3, 6, 9, 12, 15); el alterno usa su nivel
+     p1/p2   = [["MM-DD", sección|null]]   ·  "MM-DD~MM-DD" = semana  ·  "~MM-DD" = semana del
+     fin     = "MM-DD" | null (no aplica) | "?" (por confirmar)
+     solo    = true → se muestra solo la nota (sin columnas de fechas)
+   Los ids se distinguen por plan: un mismo número puede ser un ramo distinto en cada malla.
+   ══════════════════════════════════════════════════════════════════ */
+var PRU_TECH_NOTE="Calendario oficial de la Carrera · 3er trimestre 2026. <b>Exámenes finales: 9 al 11 de diciembre.</b> En las asignaturas regulares, quienes terminen con promedio entre <b>3,5 y 3,9</b> pueden rendir el examen final, que se califica <b>aprueba o reprueba</b>: si aprueban cierran con 4,0; si reprueban mantienen su nota de presentación. No aplica a los talleres.";
 const EVALS_TECH=[
- {id:5,asig:"Historia Institucional de Chile",niv:2,act:"30%",p1:[["07-07",1],["07-06",2],["07-09",3]],p2:[["08-04",1],["08-03",2],["08-06",3]],fin:"08-31"},
- {id:6,asig:"Historia y Evolución de las Instituciones Civiles",niv:2,act:"30%",p1:[["07-21",1],["07-21",2],["07-20",3]],p2:[["08-11",1],["08-11",2],["08-10",3]],fin:"09-01"},
- {id:7,asig:"Teoría de la Ley y las Personas",niv:2,act:"30%",p1:[["07-27",1],["07-28",2],["07-28",3]],p2:[["08-17",1],["08-18",2],["08-18",3]],fin:"09-02"},
- {id:19,asig:"Teoría de la Reacción Penal",niv:5,act:"10%",p1:[["07-08",1],["07-09",2]],p2:[["08-05",1],["08-06",2]],fin:"08-31"},
- {id:18,asig:"Derecho Constitucional Orgánico",niv:5,act:"10%",p1:[["07-21",1],["07-22",2]],p2:[["08-11",1],["08-12",2]],fin:"09-01"},
- {id:17,asig:"Teoría del Proceso",niv:5,act:"10%",p1:[["07-27",1],["07-27",2]],p2:[["08-18",1],["08-18",2]],fin:"09-02"},
- {id:30,asig:"Delitos en Particular II",niv:8,act:"10%",p1:[["07-07","1-2"]],p2:[["08-11","1-2"]],fin:"08-31"},
- {id:29,asig:"Derecho Individual del Trabajo",niv:8,act:"10%",p1:[["07-22","1-2"]],p2:[["08-19","1-2"]],fin:"09-01"},
- {id:28,asig:"Fuentes de las Obligaciones",niv:8,act:"10%",p1:[["07-30","1-2"]],p2:[["08-27","1-2"]],fin:"09-02"},
- {id:null,asig:"Redacción Forense",niv:8,act:null,p1:[],p2:[],fin:null,note:"Fechas a determinar por el docente."},
- {id:41,asig:"Contratación Mercantil",niv:11,act:"10%",p1:[["07-02",null]],p2:[["08-05",null]],fin:"08-31"},
- {id:38,asig:"Derecho Sociedades",niv:11,act:"10%",p1:[["07-02",null]],p2:[["08-05",null]],fin:"08-31"},
- {id:42,asig:"Derecho Administrativo I",niv:11,act:"10%",p1:[["07-07",null]],p2:[["08-11",null]],fin:"09-01"},
- {id:43,asig:"Derecho Procesal Penal",niv:11,act:"10%",p1:[["07-24",null]],p2:[["08-17",null]],fin:"09-02"},
- {id:40,asig:"Derecho Sucesorio",niv:11,act:"10%",p1:[["07-30",null]],p2:[["08-21",null]],fin:"09-03",note:"2ª prueba coordinada con SENA."},
- {id:46,asig:"Derecho Tributario I",niv:14,act:"10%",p1:[["07-02",null]],p2:[["08-06",null]],fin:"08-30"},
- {id:49,asig:"Reorganización y Liquidación Patrimonial",niv:14,act:"10%",p1:[["07-08",null]],p2:[["08-12",null]],fin:"08-31"},
- {id:48,asig:"Optativo de Especialidad I",niv:14,act:"10%",p1:[["07-21",null]],p2:[["08-18",null]],fin:"09-01"},
- {id:50,asig:"Recursos",niv:14,act:"10%",p1:[["07-27",null]],p2:[["08-24",null]],fin:"09-02"},
- {id:3,asig:"Introducción al Derecho",niv:1,act:"30%",alt:true,p1:[["07-06",null]],p2:[["08-17",null]],fin:"08-31"},
- {id:1,asig:"Historia del Derecho",niv:1,act:"30%",alt:true,p1:[["07-10",null]],p2:[["08-21",null]],fin:"09-02"},
- {id:2,asig:"Derecho Político",niv:1,act:"30%",alt:true,p1:[["07-03",null]],p2:[["08-14",null]],fin:"09-01"},
- {id:26,asig:"Procedimientos Civiles de Cognición",niv:7,act:"10%",alt:true,p1:[["07-06",null]],p2:[["08-17",null]],fin:"08-31"}
+ /* ── PRIMER AÑO · 3er trimestre ── */
+ {id:12,asig:"Argumentación Jurídica y Debate",niv:3,act:"30%",p1:[["10-09",null]],p2:[["~11-02",null]],fin:null},
+ {id:10,asig:"Introducción a la Economía",niv:3,act:"30%",p1:[["10-13",null]],p2:[["11-10",null]],fin:"12-09"},
+ {id:9,asig:"Fundamentos Filosóficos del Derecho",niv:3,act:"30%",p1:[["10-22",null]],p2:[["11-19",null]],fin:"12-10"},
+ {id:11,asig:"Teoría Constitucional",niv:3,act:"30%",p1:[["10-28",null]],p2:[["11-25",null]],fin:"12-11"},
+ /* ── SEGUNDO AÑO · 6º trimestre ── */
+ {id:23,asig:"Derecho Internacional Público",niv:6,act:"10%",p1:[["10-13",1],["10-14",2]],p2:[["11-03",1],["11-04",2]],fin:"12-09"},
+ {id:21,asig:"Bienes",niv:6,act:"10%",p1:[["10-24",null]],p2:[["11-21",null]],fin:"12-10"},
+ {id:22,asig:"Derechos y Garantías Constitucionales",niv:6,act:"10%",p1:[["10-29",null]],p2:[["11-26",null]],fin:"12-11"},
+ {id:24,asig:"Taller de Integración I",niv:6,act:"10%",p1:[["11-02~11-06",null]],p2:[["~11-30",null]],fin:"?",note:"Planificación especial."},
+ /* ── TERCER AÑO · 9º trimestre ── */
+ {id:33,asig:"Derecho Mercantil",niv:9,act:"10%",p1:[["10-14",null]],p2:[["11-11",null]],fin:"12-09"},
+ {id:null,naId:33,plan:"na",asig:"Derecho Económico",niv:9,act:"10%",p1:[["10-14",null]],p2:[["11-11",null]],fin:"12-09"},
+ {id:34,naId:34,asig:"Derecho Colectivo del Trabajo y Seg. Social",niv:9,act:"10%",p1:[["10-19",null]],p2:[["11-16",null]],fin:"12-10"},
+ {id:32,naId:32,asig:"Procedimientos de Ejecución y Cautela",niv:9,act:"10%",p1:[["10-27",null]],p2:[["11-24",null]],fin:"12-11"},
+ /* ── CUARTO AÑO · 12º trimestre ── */
+ {id:46,asig:"Derecho Tributario I",niv:12,act:"10%",p1:[["10-29",null]],p2:[["11-26",null]],fin:"12-09"},
+ {id:null,naId:42,plan:"na",asig:"Derecho Sucesorio",niv:12,act:"10%",p1:[["10-28",null]],p2:[["11-25",null]],fin:"12-10"},
+ {id:null,naId:46,plan:"na",asig:"Taller de Litigación",niv:12,act:"10%",p1:[["10-22",null]],p2:[["11-19",null]],fin:null},
+ {id:45,naId:45,asig:"Derecho Administrativo II",niv:12,act:"10%",p1:[["10-19",null]],p2:[["11-09",null]],fin:"12-11"},
+ {id:48,asig:"Optativo de Especialidad I",niv:12,act:"10%",p1:[["10-23",null]],p2:[["12-04",null]],fin:"12-11"},
+ {id:44,naId:43,asig:"Procedimientos Especiales Orales",niv:12,act:"10%",p1:[["10-13",null]],p2:[["11-17",null]],fin:null},
+ {id:47,asig:"Taller de Integración II",niv:12,act:"10%",p1:[["11-02~11-06",null]],p2:[["~11-30",null]],fin:null,note:"Planificación especial."},
+ /* ── QUINTO AÑO · 15º trimestre (este trimestre lo ofrece el Plan No Ajustado) ── */
+ {id:null,naId:57,plan:"na",asig:"Derecho Tributario II",niv:15,act:"10%",p1:[["10-29",null]],p2:[["11-19",null]],fin:"12-09"},
+ {id:null,naId:55,plan:"na",asig:"Seminario de Tesis",niv:15,act:null,p1:[],p2:[],fin:null,solo:true,note:"Las fechas se definen según la planificación del seminario."},
+ {id:null,naId:54,plan:"na",asig:"Optativo de Especialidad II",niv:15,act:"10%",p1:[["10-14",null]],p2:[["11-11",null]],fin:"12-10"},
+ {id:null,naId:58,plan:"na",asig:"Taller de Litigación Avanzada",niv:15,act:"10%",p1:[["10-19",null]],p2:[["11-30",null]],fin:null,note:"Planificación especial."},
+ /* ── ALTERNO ── */
+ {id:17,asig:"Teoría del Proceso",niv:5,act:"10%",alt:true,p1:[["10-21",null]],p2:[["11-25",null]],fin:"12-09"}
 ];
 /* ===== Evaluaciones DIURNO (Primavera 2026) — generado del Excel oficial; año corregido 2025→2026 (viernes) ===== */
 var EVALS_DIURNO=[
@@ -2812,16 +2840,41 @@ var EVALS_SEM_SAB=[{"asig": "Derecho Político", "niv": 1, "aj": [2], "na": [3],
 var PON_AJ={"1":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"2":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"3":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"4":{"n":"Departamento 2 evaluaciones","ev":[30,40],"p":30},"5":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"6":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"7":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"8":{"n":"Departamento 2 evaluaciones","ev":[30,40],"p":30},"9":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"10":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"11":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"12":{"n":"Argumentación Jurídica y Debate","ev":[20,30,50],"p":null,"esp":1,"req":2},"13":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"14":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"15":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"16":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"17":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"18":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"19":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"20":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"21":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"22":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"23":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"24":{"n":"Taller de Integración I","ev":[20,30,40],"p":10,"esp":1,"nf":"La última evaluación debe ser ≥ 4,0"},"25":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"26":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"27":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"28":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"29":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"30":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"31":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"32":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"33":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"34":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"35":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"36":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"37":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"38":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"39":{"n":"Taller de Litigación","ev":[20,30,50],"p":null,"esp":1},"40":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"41":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"42":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"43":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"44":{"n":"Procedimientos Especiales Orales","ev":[45,45,10],"p":null,"esp":1},"45":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"46":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"47":{"n":"Taller de Integración I","ev":[20,30,40],"p":10,"esp":1,"nf":"La última evaluación debe ser ≥ 4,0"},"48":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"49":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"50":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"51":{"n":"Seminario de Investigación Jurídica","ev":[10,20,70],"p":null,"esp":1,"nf":"La entrega final (70%) se compone de 50% producto y 20% exposición"},"52":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"53":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"54":{"n":"Taller de Integración I","ev":[20,30,40],"p":10,"esp":1,"nf":"La última evaluación debe ser ≥ 4,0"},"55":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10}};
 var PON_NA={"1":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"2":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"3":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"4":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"5":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"6":{"n":"Departamento 2 evaluaciones","ev":[30,40],"p":30},"7":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"8":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"9":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"10":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"11":{"n":"Argumentación Jurídica y Debate","ev":[20,30,50],"p":null,"esp":1,"req":2},"12":{"n":"Departamento 2 evaluaciones","ev":[30,40],"p":30},"13":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"14":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"15":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"16":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"17":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"18":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"19":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"20":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"21":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"22":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"23":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"24":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"25":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"26":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"27":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"28":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"29":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"30":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"31":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"32":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"33":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"34":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"35":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"36":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"37":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"38":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"39":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"40":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"41":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"42":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"43":{"n":"Procedimientos Especiales Orales","ev":[45,45,10],"p":null,"esp":1},"44":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"45":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"46":{"n":"Taller de Litigación","ev":[20,30,50],"p":null,"esp":1},"47":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"48":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"49":{"n":"Metodología de la Investigación Jurídica","ev":[10,20,70],"p":null,"esp":1,"nf":"50% producto · 20% exposición"},"50":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"51":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"52":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"53":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"54":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"55":{"n":"Seminario de Tesis","ev":[10,20,70],"p":null,"esp":1,"nf":"50% producto · 20% exposición"},"56":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"57":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"58":{"n":"Taller de Litigación","ev":[20,30,50],"p":null,"esp":1}};
 var PRU_DIURNO_NOTE="Exámenes finales: semana del 5 al 11 de diciembre de 2026. El calendario por asignatura está por confirmar por la Carrera.";
-var EVALS=EVALS_TECH, PRU_REG="tri", PRU_NOTE="";
+var EVALS=EVALS_TECH, PRU_REG="tri", PRU_NOTE=PRU_TECH_NOTE;
 let pruMode="mine";
 const DOW=["dom","lun","mar","mié","jue","vie","sáb"];
-function fmtOne(md){if(!md)return "—";const mm=+md.slice(0,2),dd=+md.slice(3);return `${DOW[new Date(2026,mm-1,dd).getDay()]} ${dd} ${MESC[mm-1]}`;}
+function fmtOne(md){
+  if(!md)return "—";
+  md=String(md);
+  if(md.indexOf("~")>=0){                       /* semana: "11-02~11-06" o "~11-02" */
+    const p=md.split("~");
+    /* espacios duros: si hay que partir la línea, se parte después de "Semana" y no en medio de la fecha */
+    if(!p[0]){ const b=p[1]; return `Semana del\u00a0${+b.slice(3)}\u00a0${MESC[+b.slice(0,2)-1]}`; }
+    const ma=+p[0].slice(0,2), da=+p[0].slice(3), mb=+p[1].slice(0,2), db=+p[1].slice(3);
+    return `Semana del\u00a0${da}${ma!==mb?"\u00a0"+MESC[ma-1]:""}\u00a0al\u00a0${db}\u00a0${MESC[mb-1]}`;
+  }
+  const mm=+md.slice(0,2),dd=+md.slice(3);
+  return `${DOW[new Date(2026,mm-1,dd).getDay()]} ${dd} ${MESC[mm-1]}`;
+}
+/* ¿La sección inscrita es del Plan No Ajustado? (bloques *pna y "Solo Seminario de Tesis") */
+function _pruEsNA(k){return /pna$|tes$/.test(String(k||""));}
+/* Id inscrito que corresponde a esta evaluación, según el plan del estudiante.
+   Los números de asignatura se repiten entre planes, así que sin mirar el plan
+   se mostrarían fechas de un ramo que el estudiante no cursa. */
+function _pruIdIns(e,ids){
+  for(var i=0;i<ids.length;i++){
+    var id=ids[i];
+    if(_pruEsNA(insc[id])){ if(e.naId!=null&&e.naId===id)return id; }
+    else                  { if(e.id!=null&&e.id===id)return id; }
+  }
+  return null;
+}
 function fmtEval(arr){
   if(!arr||!arr.length)return '<span class="ednone">Por confirmar</span>';
   if(arr.length===1){const [md,s]=arr[0];return fmtOne(md)+(s!=null?` <span class="edsec">(S${s})</span>`:"");}
   return arr.map(([md,s])=>`<span class="edseg"><span class="edsec">S${s}</span> ${fmtOne(md)}</span>`).join("");
 }
-function pruEarliest(e){const ds=[...(e.p1||[]),...(e.p2||[])].map(x=>x[0]).concat(e.e1||[],e.e2||[],e.e3||[]).filter(Boolean);return ds.length?ds.slice().sort()[0]:"99-99";}
+function pruEarliest(e){const ds=[...(e.p1||[]),...(e.p2||[])].map(x=>x[0]).concat(e.e1||[],e.e2||[],e.e3||[]).filter(Boolean).map(x=>String(x).replace(/^~/,""));return ds.length?ds.slice().sort()[0]:"99-99";}
 function fmtEvalCol(arr,sec){
   if(!arr||!arr.length)return '<span class="ednone">Por confirmar</span>';
   if(sec){const f=arr.find(x=>String(x[1])===String(sec));if(f)return `<span class="edbig">${fmtOne(f[0])}</span>`;}
@@ -2849,7 +2902,7 @@ function renderPru(mode,dest){
   let list=EVALS.slice().sort((a,b)=>(a.alt?1:0)-(b.alt?1:0)||a.niv-b.niv||pruEarliest(a).localeCompare(pruEarliest(b)));
   if(mode==="mine")list=list.filter(e=>{
     if(PRU_REG==="sem")return ids.some(id=>{const p=String(insc[id]||"").indexOf("na_")===0?"na":"aj";return (e[p]||[]).includes(id);});
-    return ids.includes(e.id);
+    return _pruIdIns(e,ids)!=null;
   });
   if(mode==="mine"&&!list.length){el.innerHTML="";return;}
   const colD=a=>(!a||!a.length)?'<span class="ednone">Por confirmar</span>':(a.length===1?`<span class="edbig">${fmtOne(a[0])}</span>`:a.map(md=>`<span class="edseg">${fmtOne(md)}</span>`).join(""));
@@ -2873,9 +2926,12 @@ function renderPru(mode,dest){
       const gridCls=tieneE3?"ecols ecols4":"ecols ecols3";
       return `<div class="ecard"><div class="ehead"><b>${e.asig}</b><span class="eniv">Nivel ${e.niv}${e.plan==="na"?" · No ajustada":""}${e.alt?" · alterna":""}${secTxt}</span></div><div class="${gridCls}">${cols.join("")}</div>${e.note?`<div class="enote">${e.note}</div>`:""}</div>`;
     }
-    const sec=(mode==="mine"&&insc[e.id])?keySec(insc[e.id]):0;
+    const idIns=(mode==="mine")?_pruIdIns(e,ids):null;
+    const sec=(idIns!=null)?keySec(insc[idIns]):0;
     const secTxt=sec?` · S${sec}`:"";
-    return `<div class="ecard"><div class="ehead"><b>${e.asig}</b><span class="eniv">Nivel ${e.niv}${e.alt?" · alterno":""}${secTxt}</span></div><div class="ecols"><div class="ecol"><div class="ecl">1ª prueba</div><div class="ecv">${fmtEvalCol(e.p1,sec)}</div></div><div class="ecol"><div class="ecl">2ª prueba</div><div class="ecv">${fmtEvalCol(e.p2,sec)}</div></div><div class="ecol"><div class="ecl">Examen final</div><div class="ecv">${e.fin?`<span class="edbig">${fmtOne(e.fin)}</span>`:"No aplica"}</div></div></div>${e.note?`<div class="enote">${e.note}</div>`:""}</div>`;
+    const finTxt=(e.fin==="?")?'<span class="ednone">Por confirmar</span>':(e.fin?`<span class="edbig">${fmtOne(e.fin)}</span>`:"No aplica");
+    const colsTri=e.solo?"":`<div class="ecols"><div class="ecol"><div class="ecl">1ª prueba</div><div class="ecv">${fmtEvalCol(e.p1,sec)}</div></div><div class="ecol"><div class="ecl">2ª prueba</div><div class="ecv">${fmtEvalCol(e.p2,sec)}</div></div><div class="ecol"><div class="ecl">Examen final</div><div class="ecv">${finTxt}</div></div></div>`;
+    return `<div class="ecard"><div class="ehead"><b>${e.asig}</b><span class="eniv">Nivel ${e.niv}${e.plan==="na"?" · Plan No Ajustado":""}${e.alt?" · alterno":""}${secTxt}</span></div>${colsTri}${e.note?`<div class="enote">${e.note}</div>`:""}</div>`;
   }).join("");
 }
 /* ---------- Todas las pruebas (calendario completo, en ventana) ---------- */
