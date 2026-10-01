@@ -584,6 +584,43 @@ body.dark .mallaNote{background:rgba(199,154,62,.12);border-color:#5a4a2a;color:
 .mallaSwitch .mSwBtn:hover{background:#f3efe6}
 .mallaSwitch .mSwBtn.na{background:#fbf4e9;border-color:var(--gold,#c79a3e);color:#8a6d1f;font-weight:700}
 .mallaNote{font-size:.78rem;color:#8a6d1f;background:#fbf4e9;border:1px solid #efe0c4;border-radius:10px;padding:8px 11px;margin:6px 0 12px;line-height:1.4}
+
+/* ═══ Cierre de período ═══ */
+#cierreBox{margin:14px 0 8px;padding:16px;border-radius:16px;background:var(--card,#fff);border:1px solid rgba(0,0,0,.08)}
+#cierreBox .ci-t{font-weight:800;font-size:1.02rem;color:var(--wine,#8b0c0c)}
+#cierreBox .ci-p{margin:6px 0 10px;font-size:.88rem;line-height:1.45;opacity:.85}
+#cierreBox .ci-row{display:flex;flex-direction:column;gap:8px;padding:10px 0;border-top:1px solid rgba(0,0,0,.07)}
+#cierreBox .ci-n{font-weight:700;font-size:.92rem}
+#cierreBox .ci-n span{display:block;font-weight:500;font-size:.76rem;opacity:.7}
+#cierreBox .ci-ops{display:flex;gap:6px;flex-wrap:wrap}
+#cierreBox .ci-op{min-height:44px;padding:0 14px;border-radius:999px;border:1px solid rgba(0,0,0,.18);background:transparent;font:inherit;font-size:.86rem;cursor:pointer;color:inherit}
+#cierreBox .ci-op.on[data-v="ok"]{background:#2f7a4e;border-color:#2f7a4e;color:#fff}
+#cierreBox .ci-op.on[data-v="no"]{background:#ae2c2c;border-color:#ae2c2c;color:#fff}
+#cierreBox .ci-op.on[data-v="skip"]{background:#e7e4e4;border-color:#cfcaca;color:#312b2b}
+#cierreBox .ci-acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+#cierreBox .ci-save{min-height:44px;padding:0 18px;border-radius:999px;border:0;background:var(--wine,#8b0c0c);color:#fff;font:inherit;font-weight:700;cursor:pointer}
+#cierreBox .ci-save:disabled{opacity:.5;cursor:default}
+#cierreBox .ci-later{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid rgba(0,0,0,.18);background:transparent;font:inherit;cursor:pointer;color:inherit}
+body.dark #cierreBox{background:#1f1c1c;border-color:rgba(255,255,255,.12)}
+body.dark #cierreBox .ci-op,body.dark #cierreBox .ci-later{border-color:rgba(255,255,255,.25)}
+
+/* ═══ Esta semana ═══ */
+#semanaBox{margin:4px 0 18px;padding:16px;border-radius:16px;background:var(--card,#fff);border:1px solid rgba(0,0,0,.08)}
+#semanaBox .sem-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+#semanaBox .sem-h b{font-size:1.05rem;color:var(--wine,#8b0c0c)}
+#semanaBox .sem-h span{font-size:.78rem;opacity:.75}
+#semanaBox .sem-dia{margin:14px 0 4px;font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;opacity:.7}
+#semanaBox .sem-it{padding:9px 0;border-top:1px solid rgba(0,0,0,.07)}
+#semanaBox .sem-dia + .sem-it{border-top:0}
+#semanaBox .sem-n{font-weight:700;font-size:.93rem;line-height:1.3}
+#semanaBox .sem-n em{font-style:normal;font-weight:600;opacity:.7}
+#semanaBox .sem-d{margin-top:2px;font-size:.84rem;line-height:1.4}
+#semanaBox .sem-d.pend{opacity:.65;font-style:italic}
+#semanaBox .sem-pie{margin:12px 0 0;font-size:.78rem;opacity:.7}
+.ecard .edet{margin-top:8px;padding:8px 10px;border-radius:10px;background:rgba(174,44,44,.07);font-size:.82rem;line-height:1.4}
+body.dark #semanaBox{background:#1f1c1c;border-color:rgba(255,255,255,.12)}
+body.dark #semanaBox .sem-it{border-color:rgba(255,255,255,.1)}
+body.dark .ecard .edet{background:rgba(255,255,255,.07)}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.7/dist/umd/supabase.js" integrity="sha384-hazsLVND17GNLVdtV19te6qbFT2YuLgl8SamcF+QR5eIOC+W4dGKrUNMxU1jH1zD" crossorigin="anonymous"></script>
 </head>
@@ -689,6 +726,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
 </div>
 
 <section id="mural"><div class="wrap">
+  <div id="semanaBox" style="display:none" aria-live="polite"></div>
   <div class="mh serif">Mural</div>
   <div class="msub">Avisos y fechas importantes del momento.</div>
   <div id="muralList"></div>
@@ -697,6 +735,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
   <div class="wrap">
     <h1 class="h1 serif">Mi Avance Curricular</h1>
     <p class="lead">Toda tu carrera en un tablero, nivel por nivel. Tu progreso se guarda en este dispositivo.</p>
+    <div id="cierreBox" style="display:none" aria-live="polite"></div>
     <div class="mallaSwitch">
       <button type="button" class="mSwBtn" id="mallaToggle" aria-label="Cambiar de malla"></button>
     </div>
@@ -1021,7 +1060,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
            (los datos siguen cargados en el código; nada se pierde)
    PARA PUBLICAR una jornada: cambiar su valor a true y subir el archivo.
    ══════════════════════════════════════════════════════════════ */
-var PRUEBAS_VISIBLES={ tech:true, diurno:false, vregular:false };   /* TECH: calendario oficial del 3er trimestre publicado · Diurno y V.Regular: pendientes */
+var PRUEBAS_VISIBLES={ tech:true, diurno:true, vregular:false };   /* TECH: 3er trimestre · Diurno: primavera 2026 · V.Regular: pendiente */
 
 /* ══════════════════════════════════════════════════════════════
    SOLICITUD DE TOMA DE CARGA MANUAL
@@ -1347,7 +1386,7 @@ function imprimirDoc(titulo,sub,cuerpo,piePersonal){
     '<div class="tt">'+_e(titulo)+'</div><div class="sub">'+_e(sub)+' · Generado el '+_e(_fGen())+'</div></div>'+
     cuerpo+(piePersonal||'')+
     '<div class="pie">Documento <b>informativo</b> generado por el propio estudiante en UApp (miuapp.cl) a partir de la información que él registra en su dispositivo. '+
-    'Verificaciones conforme a la <b>Circular N°05/2026</b> del Consejo de Carrera. No es un certificado ni reemplaza al registro académico oficial de la Universidad. Ante cualquier diferencia, prima la información de Registro Curricular.</div>'+
+    ''+_normasJornada().pie+' No es un certificado ni reemplaza al registro académico oficial de la Universidad. Ante cualquier diferencia, prima la información de Registro Curricular.</div>'+
     '</div></body></html>';
   var interno='<div class="top"><div class="brand">U<span>App</span> · Derecho · UA Temuco</div>'+
     '<div class="tt">'+_e(titulo)+'</div><div class="sub">'+_e(sub)+' · Generado el '+_e(_fGen())+'</div></div>'+
@@ -1466,6 +1505,8 @@ function __snapTech(){return {reg:"tri",pref:"N",
   cur:(typeof curMalla!=="undefined"&&curMalla==="noajustada")?"na":"aj",
   aj:{C:COURSES,S:state,U:isUnlocked},
   na:{C:COURSES_NA,S:stateNA,U:isUnlockedNA},
+  /* guarda ambas mallas pero redibuja solo la que el estudiante tiene abierta */
+  guardar:function(){try{save();}catch(e){}try{saveNA();}catch(e){}try{ if(typeof curMalla!=="undefined"&&curMalla==="noajustada") renderNA(); else render(); }catch(e){}},
   plan:(typeof curMalla!=="undefined"&&curMalla==="noajustada")?"Plan No Ajustado (Res. 135/2017)":"Plan Ajustado (Res. 165/2022)"};}
 window.__snapTech=__snapTech;
 window.__mallaSnap=__snapTech;
@@ -1966,7 +2007,42 @@ function solicitudVigente(){
   return true;
 }
 
+/* ═══ Normas por jornada ═══
+   TECH (3er trimestre): Circular N°05/2026 del Consejo de Carrera.
+   Jornadas semestrales (primavera 2026): Circular N°03/2026.
+   Cada documento y aviso cita la circular de la jornada del estudiante. */
+function _esTech(){
+  var j=null;
+  try{ if(typeof curJornada!=="undefined") j=curJornada; }catch(e){}
+  j=j||window.__jornada||null;
+  return !j||j==="tech";
+}
+function _normasJornada(){
+  if(_esTech()) return {
+    a2:"Circular N°05/2026, art. 2 — deben inscribirse en primer término las asignaturas pendientes del nivel más bajo.", a3:"Circular N°05/2026, art. 3 — las asignaturas reprobadas que se oferten deben inscribirse obligatoriamente.", a4:"Circular N°05/2026, art. 4 — solo se aceptan solicitudes que cumplan íntegramente los prerrequisitos", a7:"Circular N°05/2026, art. 7 — se autoriza excepcionalmente una coincidencia, presencial o sincrónica, con límite del 50% de las horas semanales de ambas asignaturas.", a10:"Circular N°05/2026, art. 10 — máximo 30 SCT, sujeto a autorización",
+    a8:"Circular N°05/2026, art. 8 — sin coincidencias",
+    pie:"Verificaciones conforme a la <b>Circular N°05/2026</b> del Consejo de Carrera.",
+    sct:"sobre el máximo de 30 del período (Circular N°05/2026, art. 10)",
+    tope:"La <b>Circular N°05/2026</b> permite solicitar una coincidencia de hasta el 50%",
+    circCorta:"La Circular N°05/2026", circRef:"Circular N°05/2026, art. 10",
+    circLabel:"Circular N°05/2026", circDoc:"circ05"
+  };
+  return {
+    a2:"Circular N°03/2026 — inscribir en primer término la o las asignaturas pendientes del nivel más bajo.",
+    a3:"Circular N°03/2026 — inscribir obligatoriamente las asignaturas reprobadas que se oferten.",
+    a4:"Circular N°03/2026 — solo se aceptan solicitudes que cumplan íntegramente los prerrequisitos",
+    a7:"Circular N°03/2026 — excepcionalmente una sola coincidencia, si ninguna asignatura está en repetición y el estudiante está en ciclo avanzado.",
+    a10:"Circular N°03/2026 — máximo 30 SCT, sujeto a autorización",
+    a8:"sin coincidencias",
+    pie:"Verificaciones conforme a la <b>Circular N°03/2026</b> del Consejo de Carrera.",
+    sct:"sobre el máximo de 30 del período (Circular N°03/2026)",
+    tope:"La <b>Circular N°03/2026</b> permite excepcionalmente una sola coincidencia, en ciclo avanzado y sin asignaturas en repetición",
+    circCorta:"La Circular N°03/2026", circRef:"Circular N°03/2026",
+    circLabel:"Circular N°03/2026", circDoc:"circ"
+  };
+}
 function docRespaldo(){
+  var _NRM=_normasJornada();
   var mg=_mallaGrid();
   var det=_inscritosDetalle();
   var obs=_observaciones(det);
@@ -2058,12 +2134,12 @@ function docRespaldo(){
     var regla=(mg.reg==="tri")?"Res. de Rectoría 009/2024, art. 17 (régimen trimestral)":"Reglamento General del Estudiante, art. 17 (régimen semestral)";
     cuerpo+='<h2>3 · Verificaciones de la aplicación</h2><table>'+
       '<tr><td>Coincidencias de horario no autorizables</td><td>'+(V.choques.length?'<span class="tag alerta">✗ '+V.choques.join(" · ")+'</span>':'<span class="tag si">✓ Ninguna</span>')+"</td></tr>"+
-      (V.solic.length?'<tr><td><b>Coincidencia horaria que requiere autorización</b><br><span style="font-size:9.6px;color:#6b6660">Circular N°05/2026, art. 7 — se autoriza excepcionalmente una coincidencia, presencial o sincrónica, con límite del 50% de las horas semanales de ambas asignaturas.</span></td><td>'+
+      (V.solic.length?'<tr><td><b>Coincidencia horaria que requiere autorización</b><br><span style="font-size:9.6px;color:#6b6660">'+_NRM.a7+'</span></td><td>'+
         '<span class="tag sol">📝 '+V.solic.length+' por autorizar</span><ul class="obs">'+
         V.solic.map(function(s){return "<li>"+s.txt+"<br><span style='color:#6b6660'>"+s.dias+" "+s.t0+"–"+s.t1+" · "+s.min+" min · "+s.pct+"% de la asignatura · dentro del 50% permitido</span></li>";}).join("")+
         "</ul></td></tr>":"")+
       (!V.hayAvance?'<tr><td><b>Avance curricular declarado</b><br><span style="font-size:9.6px;color:#6b6660">Sin él, la aplicación no puede comprobar prerrequisitos, niveles ni asignaturas reprobadas pendientes.</span></td><td><span class="tag alerta">✗ No fue declarado</span></td></tr>':"")+
-      '<tr><td>Prerrequisitos según el avance declarado<br><span style="font-size:9.6px;color:#6b6660">Circular N°05/2026, art. 4 — solo se aceptan solicitudes que cumplan íntegramente los prerrequisitos</span></td><td>'+(V.faltaPr?'<span class="tag alerta">✗ '+V.faltaPr+' ramo(s) por revisar</span>':(V.hayAvance?'<span class="tag si">✓ Todos cumplen</span>':'<span style="color:#6b6660">— no verificable sin avance declarado</span>'))+"</td></tr>"+
+      '<tr><td>Prerrequisitos según el avance declarado<br><span style="font-size:9.6px;color:#6b6660">'+_NRM.a4+'</span></td><td>'+(V.faltaPr?'<span class="tag alerta">✗ '+V.faltaPr+' ramo(s) por revisar</span>':(V.hayAvance?'<span class="tag si">✓ Todos cumplen</span>':'<span style="color:#6b6660">— no verificable sin avance declarado</span>'))+"</td></tr>"+
       ((V.sinRegistrar&&V.sinRegistrar.length)?'<tr><td><b>Asignaturas sin prerrequisitos registrados en la aplicación</b><br><span style="font-size:9.6px;color:#6b6660">La verificación automática no alcanza a estas: deben revisarse contra el plan de estudios.</span></td><td>'+
         '<span class="tag alerta">✗ '+V.sinRegistrar.length+'</span><ul class="obs">'+V.sinRegistrar.map(function(r){return "<li>"+_e(r.nombre)+" (nivel "+r.nivel+")</li>";}).join("")+"</ul></td></tr>":"")+
       '<tr><td><b>Ramos solicitados que ya figuran aprobados en el avance declarado</b><br><span style="font-size:9.6px;color:#6b6660">Inconsistencia entre lo declarado y lo solicitado: revisar con el registro académico.</span></td><td>'+
@@ -2077,17 +2153,17 @@ function docRespaldo(){
           ? '<span class="tag alerta">✗ '+V.fueraRango.length+' fuera del rango permitido</span><ul class="obs">'+
             V.fueraRango.map(function(r){return "<li>"+_e(r.nombre)+" — nivel "+r.nivel+"</li>";}).join("")+"</ul>"
           : (V.nNiv>V.tope?'<span class="tag alerta">✗ Excede el máximo de '+V.tope+' niveles</span>':'<span class="tag si">✓ Dentro del rango</span>'))+"</td></tr>"+
-      '<tr><td>Créditos seleccionados<br><span style="font-size:9.6px;color:#6b6660">Circular N°05/2026, art. 10 — máximo 30 SCT, sujeto a autorización</span></td><td><b>'+V.sct+' SCT</b>'+(V.excedeSCT?' <span class="tag alerta">— sobre el máximo de 30 SCT</span>':' <span class="tag si">✓ dentro del máximo</span>')+"</td></tr>"+
-      '<tr><td><b>Ramos reprobados con oferta que no está reinscribiendo</b><br><span style="font-size:9.6px;color:#6b6660">Circular N°05/2026, art. 3 — las asignaturas reprobadas que se oferten deben inscribirse obligatoriamente.</span></td><td>'+
+      '<tr><td>Créditos seleccionados<br><span style="font-size:9.6px;color:#6b6660">'+_NRM.a10+'</span></td><td><b>'+V.sct+' SCT</b>'+(V.excedeSCT?' <span class="tag alerta">— sobre el máximo de 30 SCT</span>':' <span class="tag si">✓ dentro del máximo</span>')+"</td></tr>"+
+      '<tr><td><b>Ramos reprobados con oferta que no está reinscribiendo</b><br><span style="font-size:9.6px;color:#6b6660">'+_NRM.a3+'</span></td><td>'+
         (obs.repro.length
           ? '<span class="tag alerta">✗ '+obs.repro.length+' omitido'+(obs.repro.length===1?"":"s")+'</span><ul class="obs">'+obs.repro.map(function(c){return "<li>"+_e(c.n)+" ("+(mg.pref==="S"?"semestre ":"nivel ")+c.t+")</li>";}).join("")+"</ul>"
           : '<span class="tag si">✓ Ninguno</span>')+"</td></tr>"+
-      '<tr><td><b>Ramos pendientes del '+(mg.pref==="S"?"semestre":"nivel")+' más atrasado que no incluye</b><br><span style="font-size:9.6px;color:#6b6660">Circular N°05/2026, art. 2 — deben inscribirse en primer término las asignaturas pendientes del nivel más bajo.</span></td><td>'+
+      '<tr><td><b>Ramos pendientes del '+(mg.pref==="S"?"semestre":"nivel")+' más atrasado que no incluye</b><br><span style="font-size:9.6px;color:#6b6660">'+_NRM.a2+'</span></td><td>'+
         (obs.atras.length
           ? '<span class="tag alerta">✗ '+obs.atras.length+' sin inscribir</span><ul class="obs">'+obs.atras.map(function(c){return "<li>"+_e(c.n)+"</li>";}).join("")+"</ul>"
           : '<span class="tag si">✓ Ninguno</span>')+"</td></tr></table>"+
       (function(){ var T=_tercerasGuardadas().filter(function(x){return det.some(function(r){return r.id===x;});});
-         return T.length?'<div class="nota" style="border-left-color:#a33"><b>Tercera oportunidad declarada</b> (Circular N°05/2026, art. 8 — sin coincidencias): '+
+         return T.length?'<div class="nota" style="border-left-color:#a33"><b>Tercera oportunidad declarada</b> ('+_NRM.a8+'): '+
            T.map(function(id){var r=det.filter(function(x){return x.id===id;})[0];return r?_e(r.nombre):"";}).filter(Boolean).join(", ")+'</div>':""; })()+
       (V.solic.length&&!nObs?'<div class="nota"><b>Lectura:</b> la selección respeta todas las directrices de toma de carga. El único punto pendiente es la autorización del tope de horario indicado, que la normativa contempla expresamente para el ciclo correspondiente. Corresponde a la Dirección de Carrera resolverlo.</div>':"")+
       (nObs?'<div class="nota"><b>Lectura de las observaciones:</b> la aplicación no impide presentar esta solicitud, pero deja constancia de lo que no calza con las directrices de toma de carga. Corresponde a la Dirección de Carrera resolver si autoriza la excepción.</div>':"");
@@ -2158,7 +2234,8 @@ function buildTable(data,key,sel){
 function nivelsOfInsc(){
   var mn=99,mx=0,any=false;
   Object.keys(insc).forEach(function(id){
-    var k=insc[id];var m=/_n(\d+)_/.exec(k||"");
+    /* Diurno usa claves como "aj_n5_sec1"; TECH, como "n12s1", "n9pna" o "n5alt" */
+    var k=insc[id];var m=/_n(\d+)_/.exec(k||"")||/^n(\d+)/.exec(k||"");
     if(m){var n=+m[1];if(n<mn)mn=n;if(n>mx)mx=n;any=true;}
   });
   return any?{min:mn,max:mx}:{min:0,max:0};
@@ -2178,7 +2255,7 @@ function renderHorTally(){
   var txt='<div class="htrow"><div class="htleft"><span class="htn">'+n+' '+(n===1?'ramo':'ramos')+'</span> · <span class="htc'+(over?' over':'')+'">'+sct+' SCT</span>';
   if(faltan>0)txt+=' <span class="htf">(+'+faltan+' sin crédito informado)</span>';
   txt+='</div><button type="button" id="horClear" class="htclear">🗑 Vaciar selección</button></div>';
-  if(over)txt+='<div class="htover">El período permite inscribir hasta <b>30 SCT</b> (Circular N°03/2026). Vas <b>'+(sct-30)+'</b> por sobre ese máximo.</div>';
+  if(over)txt+='<div class="htover">El período permite inscribir hasta <b>30 SCT</b> ('+_normasJornada().circRef+'). Vas <b>'+(sct-30)+'</b> por sobre ese máximo.</div>';
   box.innerHTML=txt;box.style.display="block";
   var cb=document.getElementById("horClear");
   if(cb)cb.onclick=function(){
@@ -2318,32 +2395,33 @@ function bindHorCells(root){
     if(cl&&cl.tipo==="solicitable"&&(esTercera(id)||esTercera(cl.oid))){
       showHorMsg(`⛔ <b>Sin coincidencias en tercera oportunidad.</b> Declaraste que cursas por tercera vez una de estas asignaturas. La Circular N°05/2026 no autoriza topes en ese caso.`,"warn");return;}
     if(cl&&cl.tipo==="solicitable"&&topesActuales().length>=1){
-      showHorMsg(`⛔ <b>Solo se autoriza una coincidencia.</b> Ya tienes un tope entre <b>${topesActuales()[0].a}</b> y <b>${topesActuales()[0].b}</b>. La Circular N°05/2026 permite un máximo de una, entre dos asignaturas.`,"warn");return;}
+      showHorMsg(`⛔ <b>Solo se autoriza una coincidencia.</b> Ya tienes un tope entre <b>${topesActuales()[0].a}</b> y <b>${topesActuales()[0].b}</b>. ${_normasJornada().circCorta} permite un máximo de una, entre dos asignaturas.`,"warn");return;}
     if(cl&&cl.tipo==="excede"){
       showHorMsg(`⛔ <b>El tope con ${cl.nm} es demasiado grande</b> (${cl.min} min, ${Math.round(Math.max(cl.pctA,cl.pctB))}% de una de las asignaturas). Se autoriza hasta el 50%: debes quitar el otro ramo.`,"warn");return;}
     insc[id]=key;saveInsc();refrescaHor();renderHorTally();
     if(cl&&cl.tipo==="solicitable"){
       var modo=(cl.pres>0&&cl.onl>0)?"parte presencial":(cl.pres>0?"presencial":"online");
-      showHorMsg(`📝 <b>Tope de ${cl.min} min con ${cl.nm}</b> (${cl.day} ${cl.t0}–${cl.t1}, ${modo} · ${Math.round(Math.max(cl.pctA,cl.pctB))}% de la asignatura).<br>La <b>Circular N°05/2026</b> permite solicitar una coincidencia de hasta el 50%: genera el respaldo en PDF desde el Planificador y preséntalo con tu solicitud.`,"info");}
+      showHorMsg(`📝 <b>Tope de ${cl.min} min con ${cl.nm}</b> (${cl.day} ${cl.t0}–${cl.t1}, ${modo} · ${Math.round(Math.max(cl.pctA,cl.pctB))}% de la asignatura).<br>${_normasJornada().tope}: genera el respaldo en PDF desde el Planificador y preséntalo con tu solicitud.`,"info");}
     if(typeof logInteraccion==="function")logInteraccion("horarios","inscribir ramo");
     /* avisos flotantes informativos (no bloquean): exceso de créditos y exceso de niveles */
     var tot=0;Object.keys(insc).forEach(function(x){tot+=creditsForSel(+x,insc[x]);});
     var nivs=nivelsOfInsc();
-    var av=(typeof window.__anchorAvance==='function')?window.__anchorAvance():{anchor:null,hasAvance:false};
-    if(av.hasAvance && av.anchor!=null){
-      /* regla real: desde tu ramo más atrasado sin aprobar, hasta 3 niveles consecutivos */
-      if(nivs.max - av.anchor > 2){
-        showHorMsg(`📚 Estás excediendo el <b>tope de niveles</b>. Tu ramo más atrasado sin aprobar está en <b>nivel ${av.anchor}</b>, así que puedes inscribir hasta <b>nivel ${av.anchor+2}</b> (3 niveles consecutivos). Piqueaste un ramo de <b>nivel ${nivs.max}</b>.`,"warn");
-      }else if(tot>30){
-        showHorMsg(`📊 Llevas <b>${tot} SCT</b> — sobre el máximo de 30 del período (Circular N°03/2026). Puedes seguir explorando, pero inscribir sobre 30 requiere autorización.`,"warn");
-      }
+    /* mismo cálculo que Horarios y el Planificador: régimen de la jornada y,
+       si corresponde, la lectura restrictiva de la Carrera (no adelantar niveles) */
+    var A=(typeof _ancla==="function")?_ancla():{hasAvance:false};
+    var SCTMSG=`📊 Llevas <b>${tot} SCT</b>, ${_normasJornada().sct}. Puedes seguir explorando, pero inscribir sobre 30 requiere autorización.`;
+    if(A.hasAvance && A.anchor!=null && A.techo!=null){
+      if(nivs.max > A.techo){
+        showHorMsg(`📚 Estás sobre el <b>tope de niveles</b>. Tu ramo más atrasado sin aprobar está en <b>nivel ${A.anchor}</b>, así que puedes inscribir hasta <b>nivel ${A.techo}</b>`+
+          (A.limitado?` (la Carrera no autoriza adelantar niveles superiores al que cursas)`:` (${A.tope} niveles consecutivos)`)+
+          `. Marcaste un ramo de <b>nivel ${nivs.max}</b>.`,"warn");
+      }else if(tot>30){ showHorMsg(SCTMSG,"warn"); }
     }else{
-      /* sin avance marcado: comparación aproximada entre lo piqueado + advertencia */
-      if(nivs.max-nivs.min>2){
-        showHorMsg(`📚 Estás combinando ramos que abarcan <b>más de 3 niveles</b> (nivel ${nivs.min} y nivel ${nivs.max}). ⚠️ No tienes registrado tu avance en <b>Avance Curricular</b>, así que este cálculo es aproximado y podría no reflejar tu tope real.`,"warn");
-      }else if(tot>30){
-        showHorMsg(`📊 Llevas <b>${tot} SCT</b> — sobre el máximo de 30 del período (Circular N°03/2026). Puedes seguir explorando, pero inscribir sobre 30 requiere autorización.`,"warn");
-      }
+      /* sin avance marcado: comparación aproximada entre lo marcado + advertencia */
+      var TOPE=(A&&A.tope)||(_esTech()?4:3);
+      if(nivs.max-nivs.min>TOPE-1){
+        showHorMsg(`📚 Estás combinando ramos que abarcan <b>más de ${TOPE} niveles</b> (nivel ${nivs.min} y nivel ${nivs.max}). ⚠️ No tienes registrado tu avance en <b>Avance Curricular</b>, así que este cálculo es aproximado y podría no reflejar tu tope real.`,"warn");
+      }else if(tot>30){ showHorMsg(SCTMSG,"warn"); }
     }
     };
     td.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();td.onclick();}};
@@ -2359,7 +2437,7 @@ function renderMineHor(){
 function renderFitHor(){
   if(window.__inscArchivada){
     window.__inscArchivada=false;
-    try{ if(typeof showHorMsg==="function")showHorMsg("🗓️ Empezó un nuevo período: tu selección de ramos anterior se archivó. Elige aquí los ramos de este período.","info"); }catch(e){}
+    try{ if(typeof showHorMsg==="function")showHorMsg("🗓️ Empezó un nuevo período: tu selección anterior se archivó. En <b>Avance Curricular</b> cuéntanos cómo te fue para actualizar tu avance.","info"); }catch(e){}
   }
   var P=_snap(), a=_ancla(), conf=_fitEstadoConfiable();
   var soloPlan=function(k){ return _bloqueAdmitido(k); };
@@ -2417,7 +2495,8 @@ function _bloqueTerceras(det){
 }
 function pintaSolicitud(){
   var box=document.getElementById("solicBox"); if(!box)return;
-  if(!solicitudVigente()||!Object.keys(insc).length){ box.style.display="none"; box.innerHTML=""; return; }
+  /* el formulario y la ventana son de TECH: las otras jornadas no lo ven */
+  if(!_esTech()||!solicitudVigente()||!Object.keys(insc).length){ box.style.display="none"; box.innerHTML=""; return; }
   var det=_inscritosDetalle();
   box.style.display="";
   box.innerHTML='<div class="solicbox">'+
@@ -2735,12 +2814,14 @@ function planProposeTECH(){
   if(excl.length){h+=`<div class="hgrp serif">No incluidos</div>`;excl.forEach(({c,r})=>h+=`<div class="pexc">• <b>${c.n}</b> (nivel ${c.t}) — ${r}</div>`);}
   h+=`<div class="hgrp serif">A tener en cuenta</div>`;
   const crSel=chosen.reduce((s,x)=>s+(creditsOf(x.c.id)||0),0);
-  h+=`<div class="presum">Tu nivel más bajo pendiente es <b>nivel ${anchor}</b>. En régimen trimestral el reglamento (Res. 009/2024, art. 17) permite cursar hasta <b>4 niveles consecutivos</b> desde ahí —hasta <b>nivel ${anchor+maxDif}</b>— inscribiendo primero lo reprobado del nivel más bajo. El máximo del período es <b>30 SCT</b>, sujeto a autorización (Circular N°03/2026, inscripción primavera 2026).${crSel?` Esta propuesta suma <b>${crSel} SCT</b>.`:''}${apCount===0?'<br><span style="color:#b3445a">Aún no marcas ramos aprobados — hazlo en Avance Curricular para una propuesta real.</span>':''}</div>`;
+  h+=`<div class="presum">Tu nivel más bajo pendiente es <b>nivel ${anchor}</b>. En régimen trimestral el reglamento (Res. 009/2024, art. 17) permite cursar hasta <b>4 niveles consecutivos</b> desde ahí —hasta <b>nivel ${anchor+maxDif}</b>— inscribiendo primero lo reprobado del nivel más bajo. El máximo del período es <b>30 SCT</b>, sujeto a autorización (Circular N°05/2026, art. 10).${crSel?` Esta propuesta suma <b>${crSel} SCT</b>.`:''}${apCount===0?'<br><span style="color:#b3445a">Aún no marcas ramos aprobados — hazlo en Avance Curricular para una propuesta real.</span>':''}</div>`;
   if(offById[51]&&state[51]!=="ok")h+=`<div class="pinfo">ℹ️ El <b>Seminario de Investigación Jurídica</b> está en la oferta, pero <b>lo inscribe la Carrera</b> mediante formulario — no lo eliges tú.</div>`;
-  h+=`<div class="pinfo">Excepción (Circular N°03/2026): en ciclo avanzado podría autorizarse <b>una sola</b> coincidencia horaria, si ninguno de los dos ramos está en repetición. No se aceptan coincidencias que involucren más de dos asignaturas. El planificador no la aplica automáticamente; debe pedirse a la Carrera.</div>`;
+  h+=`<div class="pinfo">Coincidencias (Circular N°05/2026, art. 7): se autoriza excepcionalmente <b>una</b>, presencial o sincrónica, hasta el 50% de las horas semanales de ambas asignaturas, y nunca en tercera oportunidad (art. 8). Cuando existe, el planificador la muestra aparte, en «Además puedes solicitar».</div>`;
   out.innerHTML=h;
 }
-function planPropose(){ var r; if(window.__planSem){ try{ if(window.__planSem()){ try{pintaSolicitud();}catch(e){} return; } }catch(e){ console.error("planSem:",e); } } planProposeTECH(); try{pintaSolicitud();}catch(e){} }
+function planPropose(){ var r;
+  try{ var _lc=document.getElementById("lnkCirc"), _N=_normasJornada();
+       if(_lc){ _lc.textContent="📄 "+_N.circLabel; _lc.onclick=function(e){e.preventDefault(); if(window.openDoc)window.openDoc(_N.circDoc);}; } }catch(e){} if(window.__planSem){ try{ if(window.__planSem()){ try{pintaSolicitud();}catch(e){} return; } }catch(e){ console.error("planSem:",e); } } planProposeTECH(); try{pintaSolicitud();}catch(e){} }
 var _pb=document.getElementById("planBtn");if(_pb)_pb.onclick=planPropose;
 /* Pruebas ejemplo */
 const MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
@@ -2833,14 +2914,56 @@ var EVALS_DIURNO=[
   {aj:[],na:[55],asig:"Seminario de Tesis",niv:10,plan:"na",alt:false,e1:["09-04"],e2:["10-09"],e3:["11-13", "11-20"],noExam:false,note:"Semana Entrega Final 17-11-2025 Semana Exposiciones    24-11-2025 Semana Primera Entrega 01-09-2025 Semana Segunda Entrega 13-10-2025"},
   {aj:[],na:[58],asig:"Taller de Litigación Avanzada (Ev. Ciclo)",niv:10,plan:"na",alt:false,e1:["09-11"],e2:["10-09"],e3:["11-13"],noExam:false}
 ];
-/* ===== Evaluaciones PRIMAVERA 2026 (semestral) — del calendario oficial de la Carrera; año corregido a 2026 (viernes) ===== */
-var EVALS_SEM_VIE=[{"asig": "Derecho Político", "niv": 1, "aj": [2], "na": [3], "e2": ["10-02"], "e3": ["11-13"]}, {"asig": "Historia del Derecho", "niv": 1, "aj": [1], "na": [1], "e2": ["09-25"], "e3": ["10-23"]}, {"asig": "Historia y Ev. de las Instituciones Civiles", "niv": 1, "aj": [6], "na": [2], "e2": ["10-09"], "e3": ["11-06"]}, {"asig": "Introducción a la Economía", "niv": 1, "aj": [10], "na": [4], "e2": ["09-11"], "e3": ["10-30"]}, {"asig": "Introducción al Derecho", "niv": 1, "aj": [3], "na": [5], "e2": ["09-04", "10-16"], "e3": ["11-20"]}, {"asig": "Argumentación Jurídica y Debate", "niv": 2, "aj": [12], "na": [11], "noExam": true, "e1": ["09-11"], "e2": ["10-23"], "e3": ["11-06"]}, {"asig": "Fundamentos Filosóficos del Derecho", "niv": 2, "aj": [9], "na": [8], "e2": ["10-02"], "e3": ["11-13"]}, {"asig": "Historia Institucional de Chile", "niv": 2, "aj": [5], "na": [7], "e2": ["09-25"], "e3": ["10-30"]}, {"asig": "Teoría Constitucional", "niv": 2, "aj": [11], "na": [10], "e1": ["08-28"], "e2": ["10-09"], "e3": ["11-20"]}, {"asig": "Teoría de la Ley y las Personas", "niv": 2, "aj": [7], "na": [9], "e1": ["09-04"], "e2": ["10-16"], "e3": ["11-27"]}, {"asig": "Acto Jurídico", "niv": 3, "aj": [13], "na": [13], "e1": ["08-28"], "e2": ["10-02"], "e3": ["11-27"]}, {"asig": "Bienes", "niv": 4, "aj": [21], "na": [19], "e1": ["09-11"], "e2": ["10-23"], "e3": ["11-13"]}, {"asig": "Derecho Internacional Público", "niv": 4, "aj": [23], "na": [22], "e1": ["09-25"], "e2": ["10-30"]}, {"asig": "Derechos y Garantías Constitucionales", "niv": 4, "aj": [22], "na": [21], "e1": ["10-09"], "e2": ["11-20"]}, {"asig": "Taller de Integración I (Ev. Ciclo)", "niv": 4, "aj": [24], "na": [], "noExam": true, "e1": ["08-28"], "e2": ["10-16"], "e3": ["11-13"], "note": "SEMANA EVALUACIÓN"}, {"asig": "Teoría de la Reacción Penal", "niv": 4, "aj": [19], "na": [23], "e1": ["10-02"], "e2": ["11-06"]}, {"asig": "Teoría del Proceso", "niv": 4, "aj": [17], "na": [20], "e1": ["09-04"], "e2": ["10-16"], "e3": ["11-27"]}, {"asig": "Delitos en Particular II", "niv": 6, "aj": [30], "na": [35], "e1": ["08-28"], "e2": ["10-09"], "e3": ["11-27"]}, {"asig": "Derecho Colectivo del Trabajo y Seg. Social", "niv": 6, "aj": [34], "na": [34], "e1": ["10-02"], "e2": ["11-06"]}, {"asig": "Derecho Mercantil", "niv": 6, "aj": [33], "na": [], "e1": ["09-25"], "e2": ["10-30"]}, {"asig": "Fuentes de las Obligaciones", "niv": 6, "aj": [28], "na": [31], "e1": ["09-11"], "e2": ["10-23"], "e3": ["11-20"]}, {"asig": "Procedimientos de Ejecución y Cautela", "niv": 6, "aj": [32], "na": [32], "e1": ["09-04"], "e2": ["10-16"], "e3": ["11-13"], "note": "SENA"}, {"asig": "Contratación Mercantil", "niv": 8, "aj": [41], "na": [50], "e1": ["09-11"], "e2": ["10-30"]}, {"asig": "Derecho Administrativo II", "niv": 8, "aj": [45], "na": [45], "e1": ["10-02"], "e2": ["10-23"]}, {"asig": "Derecho Sucesorio", "niv": 8, "aj": [40], "na": [42], "e1": ["09-25"], "e2": ["11-13"], "note": "SENA"}, {"asig": "Derecho Tributario I", "niv": 8, "aj": [46], "na": [51], "e1": ["10-16"], "e2": ["11-06"]}, {"asig": "Derecho de Sociedades", "niv": 8, "aj": [], "na": [44], "plan": "na", "e1": ["09-11"], "e2": ["11-06"]}, {"asig": "Optativo de Especialidad I", "niv": 8, "aj": [48], "na": [], "e1": ["10-09"], "e2": ["11-20"]}, {"asig": "Procedimientos Especiales Orales", "niv": 8, "aj": [44], "na": [43], "noExam": true, "e1": ["09-04"], "e2": ["11-27"]}, {"asig": "Procedimientos Especiales Orales (Ev. Ciclo)", "niv": 8, "aj": [], "na": [43], "plan": "na", "noExam": true, "e1": ["09-04"], "e2": ["11-27"]}, {"asig": "Taller de Integración II (Ev. Ciclo)", "niv": 8, "aj": [47], "na": [], "noExam": true, "e2": ["09-25"], "e3": ["11-20"], "note": "SEMANA EVALUACIÓN"}, {"asig": "Derecho Tributario II", "niv": 9, "aj": [52], "na": [57], "e1": ["08-28"], "e2": ["11-06"]}, {"asig": "Metodología de la Investigación Jurídica", "niv": 9, "aj": [], "na": [49], "plan": "na", "noExam": true, "e1": ["08-28"], "e2": ["10-09"], "e3": ["11-20"], "note": "Entrega · Exposiciones"}, {"asig": "Optativo de Especialidad II", "niv": 9, "aj": [53], "na": [54], "e1": ["10-02"], "e2": ["11-20"]}, {"asig": "Recursos", "niv": 9, "aj": [], "na": [48], "plan": "na", "e1": ["10-02"], "e2": ["11-13"]}, {"asig": "Reorg. y Liquidación Patrimonial", "niv": 9, "aj": [49], "na": [56], "e1": ["09-11"], "e2": ["10-30"]}, {"asig": "Optativo de Especialidad I", "niv": 10, "aj": [], "na": [53], "plan": "na", "e1": ["09-25"], "e2": ["11-13"]}, {"asig": "Seminario de Tesis", "niv": 10, "aj": [], "na": [55], "plan": "na", "noExam": true, "e1": ["09-04"], "e2": ["10-09"], "e3": ["11-13", "11-20"], "note": "SEMANA ENTREGA FINAL 17-11-2026 · SEMANA EXPOSICIONES    24-11-2026 · SEMANA PRIMERA ENTREGA 01-09-2026 · SEMANA SEGUNDA ENTREGA 13-10-2026"}, {"asig": "Taller de Litigación Avanzada (Ev. Ciclo)", "niv": 10, "aj": [], "na": [58], "plan": "na", "noExam": true, "e1": ["09-11"], "e2": ["10-09"], "e3": ["11-13"], "note": "EV. CICLO Taller de Litigación Avanzada (ACD) · EV. CICLO. Taller de Litigación Avanzada (APJO) · EV. CICLO. Taller de Litigación Avanzada (Inicio Juiicios Orales)"}];
+/* ===== Evaluaciones PRIMAVERA 2026 (semestral) — verificado contra el PDF oficial «2026_PRIMAVERA_EVALUACIONES_REGULAR» y las publicaciones de Teams (1 oct 2026) ===== */
+var EVALS_SEM_VIE=[
+ {"asig": "Derecho Político", "niv": 1, "aj": [2], "na": [3], "e2": ["10-02"], "e3": ["11-13"]},
+ {"asig": "Historia del Derecho", "niv": 1, "aj": [1], "na": [1], "e2": ["09-25"], "e3": ["10-23"]},
+ {"asig": "Historia y Ev. de las Instituciones Civiles", "niv": 1, "aj": [6], "na": [2], "e2": ["10-09"], "e3": ["11-06"]},
+ {"asig": "Introducción a la Economía", "niv": 1, "aj": [10], "na": [4], "e2": ["09-11"], "e3": ["10-30"]},
+ {"asig": "Introducción al Derecho", "niv": 1, "aj": [3], "na": [5], "e2": ["09-04", "10-16"], "e3": ["11-20"]},
+ {"asig": "Argumentación Jurídica y Debate", "niv": 2, "aj": [12], "na": [11], "noExam": true, "e1": ["09-07"], "e2": ["10-23"], "e3": ["11-06"]},
+ {"asig": "Fundamentos Filosóficos del Derecho", "niv": 2, "aj": [9], "na": [8], "e1": ["09-21"], "e3": ["11-13"]},
+ {"asig": "Historia Institucional de Chile", "niv": 2, "aj": [5], "na": [7], "e1": ["09-11"], "e3": ["10-30"]},
+ {"asig": "Teoría Constitucional", "niv": 2, "aj": [11], "na": [10], "e1": ["08-28"], "e2": ["10-09"], "e3": ["11-20"]},
+ {"asig": "Teoría de la Ley y las Personas", "niv": 2, "aj": [7], "na": [9], "e1": ["09-04"], "e2": ["10-16"], "e3": ["11-27"]},
+ {"asig": "Acto Jurídico", "niv": 3, "aj": [13], "na": [13], "e1": ["08-28"], "e2": ["10-02"], "e3": ["11-27"]},
+ {"asig": "Organización y Atribuciones de los Tribunales", "niv": 3, "aj": [14], "na": [14], "e1": ["09-07"], "e2": ["10-23"]},
+ {"asig": "Bienes", "niv": 4, "aj": [21], "na": [19], "e1": ["09-11"], "e2": ["10-23"], "e3": ["11-13"]},
+ {"asig": "Derecho Internacional Público", "niv": 4, "aj": [23], "na": [22], "e1": ["09-25"], "e2": ["10-30"]},
+ {"asig": "Derechos y Garantías Constitucionales", "niv": 4, "aj": [22], "na": [21], "e1": ["10-09"], "e2": ["11-20"]},
+ {"asig": "Taller de Integración I (Ev. Ciclo)", "niv": 4, "aj": [24], "na": [], "noExam": true, "e1": ["08-28"], "e2": ["10-16"], "e3": ["11-13"], "note": "SEMANA EVALUACIÓN"},
+ {"asig": "Teoría de la Reacción Penal", "niv": 4, "aj": [19], "na": [23], "e1": ["10-02"], "e2": ["11-06"]},
+ {"asig": "Teoría del Proceso", "niv": 4, "aj": [17], "na": [20], "e1": ["09-04"], "e2": ["10-16"], "e3": ["11-27"]},
+ {"asig": "Delitos en Particular II", "niv": 6, "aj": [30], "na": [35], "e1": ["08-28"], "e2": ["10-09"], "e3": ["11-27"]},
+ {"asig": "Derecho Colectivo del Trabajo y Seg. Social", "niv": 6, "aj": [34], "na": [34], "e1": ["10-02"], "e2": ["11-06"]},
+ {"asig": "Derecho Mercantil", "niv": 6, "aj": [33], "na": [], "e1": ["09-25"], "e2": ["10-30"]},
+ {"asig": "Fuentes de las Obligaciones", "niv": 6, "aj": [28], "na": [31], "e1": ["09-11"], "e2": ["10-23"], "e3": ["11-20"]},
+ {"asig": "Procedimientos de Ejecución y Cautela", "niv": 6, "aj": [32], "na": [32], "e1": ["09-04"], "e2": ["10-16"], "e3": ["11-13"], "note": "SENA"},
+ {"asig": "Contratación Mercantil", "niv": 8, "aj": [41], "na": [50], "e1": ["09-11"], "e2": ["10-30"]},
+ {"asig": "Derecho Administrativo II", "niv": 8, "aj": [45], "na": [45], "e1": ["10-02"], "e2": ["10-23"]},
+ {"asig": "Derecho Sucesorio", "niv": 8, "aj": [40], "na": [42], "e1": ["09-25"], "e2": ["11-13"], "note": "SENA"},
+ {"asig": "Derecho Tributario I", "niv": 8, "aj": [46], "na": [51], "e1": ["10-16"], "e2": ["11-06"]},
+ {"asig": "Derecho de Sociedades", "niv": 8, "aj": [], "na": [44], "plan": "na", "e1": ["09-11"], "e2": ["11-06"]},
+ {"asig": "Optativo de Especialidad I", "niv": 8, "aj": [48], "na": [], "e1": ["10-09"], "e2": ["11-20"]},
+ {"asig": "Procedimientos Especiales Orales", "niv": 8, "aj": [44], "na": [43], "noExam": true, "e1": ["09-04"], "e2": ["11-27"]},
+ {"asig": "Procedimientos Especiales Orales (Ev. Ciclo)", "niv": 8, "aj": [], "na": [43], "plan": "na", "noExam": true, "e1": ["09-04"], "e2": ["11-27"]},
+ {"asig": "Taller de Integración II (Ev. Ciclo)", "niv": 8, "aj": [47], "na": [], "noExam": true, "e2": ["09-25"], "e3": ["11-20"], "note": "SEMANA EVALUACIÓN"},
+ {"asig": "Derecho Tributario II", "niv": 9, "aj": [52], "na": [57], "e1": ["08-28"], "e2": ["11-06"]},
+ {"asig": "Metodología de la Investigación Jurídica", "niv": 9, "aj": [], "na": [49], "plan": "na", "noExam": true, "e1": ["08-28"], "e2": ["10-09"], "e3": ["11-20"], "note": "Entrega · Exposiciones"},
+ {"asig": "Optativo de Especialidad II", "niv": 9, "aj": [53], "na": [54], "e1": ["10-02"], "e2": ["11-20"]},
+ {"asig": "Recursos", "niv": 9, "aj": [], "na": [48], "plan": "na", "e1": ["10-02"], "e2": ["11-13"]},
+ {"asig": "Reorg. y Liquidación Patrimonial", "niv": 9, "aj": [49], "na": [56], "e1": ["09-11"], "e2": ["10-30"]},
+ {"asig": "Optativo de Especialidad I", "niv": 10, "aj": [], "na": [53], "plan": "na", "e1": ["09-25"], "e2": ["11-13"]},
+ {"asig": "Seminario de Tesis", "niv": 10, "aj": [], "na": [55], "plan": "na", "noExam": true, "e1": ["09-04"], "e2": ["10-09"], "e3": ["11-13", "11-20"], "note": "SEMANA ENTREGA FINAL 17-11-2026 · SEMANA EXPOSICIONES    24-11-2026 · SEMANA PRIMERA ENTREGA 01-09-2026 · SEMANA SEGUNDA ENTREGA 13-10-2026"},
+ {"asig": "Taller de Litigación Avanzada (Ev. Ciclo)", "niv": 10, "aj": [], "na": [58], "plan": "na", "noExam": true, "e1": ["09-11"], "e2": ["10-09"], "e3": ["11-13"], "note": "EV. CICLO Taller de Litigación Avanzada (ACD) · EV. CICLO. Taller de Litigación Avanzada (APJO) · EV. CICLO. Taller de Litigación Avanzada (Inicio Juiicios Orales)"}
+];
 var EVALS_SEM_SAB=[{"asig": "Derecho Político", "niv": 1, "aj": [2], "na": [3], "e2": ["10-03"], "e3": ["11-14"]}, {"asig": "Historia del Derecho", "niv": 1, "aj": [1], "na": [1], "e2": ["09-26"], "e3": ["10-24"]}, {"asig": "Historia y Ev. de las Instituciones Civiles", "niv": 1, "aj": [6], "na": [2], "e2": ["10-10"], "e3": ["11-07"]}, {"asig": "Introducción a la Economía", "niv": 1, "aj": [10], "na": [4], "e2": ["09-12"], "e3": ["10-31"]}, {"asig": "Introducción al Derecho", "niv": 1, "aj": [3], "na": [5], "e2": ["09-05", "10-17"], "e3": ["11-21"]}, {"asig": "Argumentación Jurídica y Debate", "niv": 2, "aj": [12], "na": [11], "noExam": true, "e1": ["09-12"], "e2": ["10-24"], "e3": ["11-07"]}, {"asig": "Fundamentos Filosóficos del Derecho", "niv": 2, "aj": [9], "na": [8], "e2": ["10-03"], "e3": ["11-14"]}, {"asig": "Historia Institucional de Chile", "niv": 2, "aj": [5], "na": [7], "e2": ["09-26"], "e3": ["10-31"]}, {"asig": "Teoría Constitucional", "niv": 2, "aj": [11], "na": [10], "e1": ["08-29"], "e2": ["10-10"], "e3": ["11-21"]}, {"asig": "Teoría de la Ley y las Personas", "niv": 2, "aj": [7], "na": [9], "e1": ["09-05"], "e2": ["10-17"], "e3": ["11-28"]}, {"asig": "Acto Jurídico", "niv": 3, "aj": [13], "na": [13], "e1": ["08-29"], "e2": ["10-03"], "e3": ["11-28"]}, {"asig": "Bienes", "niv": 4, "aj": [21], "na": [19], "e1": ["09-12"], "e2": ["10-24"], "e3": ["11-14"]}, {"asig": "Derecho Internacional Público", "niv": 4, "aj": [23], "na": [22], "e1": ["09-26"], "e2": ["10-31"]}, {"asig": "Derechos y Garantías Constitucionales", "niv": 4, "aj": [22], "na": [21], "e1": ["10-10"], "e2": ["11-21"]}, {"asig": "Taller de Integración I (Ev. Ciclo)", "niv": 4, "aj": [24], "na": [], "noExam": true, "e1": ["08-28"], "e2": ["10-16"], "e3": ["11-13"], "note": "SEMANA EVALUACIÓN"}, {"asig": "Teoría de la Reacción Penal", "niv": 4, "aj": [19], "na": [23], "e1": ["10-03"], "e2": ["11-07"]}, {"asig": "Teoría del Proceso", "niv": 4, "aj": [17], "na": [20], "e1": ["09-05"], "e2": ["10-17"], "e3": ["11-28"]}, {"asig": "Delitos en Particular II", "niv": 6, "aj": [30], "na": [35], "e1": ["08-29"], "e2": ["10-10"], "e3": ["11-28"]}, {"asig": "Derecho Colectivo del Trabajo y Seg. Social", "niv": 6, "aj": [34], "na": [34], "e1": ["10-03"], "e2": ["11-07"]}, {"asig": "Derecho Mercantil", "niv": 6, "aj": [33], "na": [], "e1": ["09-26"], "e2": ["10-31"]}, {"asig": "Fuentes de las Obligaciones", "niv": 6, "aj": [28], "na": [31], "e1": ["09-12"], "e2": ["10-24"], "e3": ["11-21"]}, {"asig": "Procedimientos de Ejecución y Cautela", "niv": 6, "aj": [32], "na": [32], "e1": ["09-05"], "e2": ["10-16"], "e3": ["11-14"], "note": "SENA"}, {"asig": "Contratación Mercantil", "niv": 8, "aj": [41], "na": [50], "e1": ["09-12"], "e2": ["10-31"]}, {"asig": "Derecho Administrativo II", "niv": 8, "aj": [45], "na": [45], "e1": ["10-03"], "e2": ["10-24"]}, {"asig": "Derecho Sucesorio", "niv": 8, "aj": [40], "na": [42], "e1": ["09-25"], "e2": ["11-14"], "note": "SENA"}, {"asig": "Derecho Tributario I", "niv": 8, "aj": [46], "na": [51], "e1": ["10-17"], "e2": ["11-07"]}, {"asig": "Derecho de Sociedades", "niv": 8, "aj": [], "na": [44], "plan": "na", "e1": ["09-12"], "e2": ["11-07"]}, {"asig": "Optativo de Especialidad I", "niv": 8, "aj": [48], "na": [], "e1": ["10-10"], "e2": ["11-21"]}, {"asig": "Procedimientos Especiales Orales", "niv": 8, "aj": [44], "na": [43], "noExam": true, "e1": ["09-05"], "e2": ["11-28"]}, {"asig": "Procedimientos Especiales Orales (Ev. Ciclo)", "niv": 8, "aj": [], "na": [43], "plan": "na", "noExam": true, "e1": ["09-05"], "e2": ["11-28"]}, {"asig": "Taller de Integración II (Ev. Ciclo)", "niv": 8, "aj": [47], "na": [], "noExam": true, "e2": ["09-25"], "e3": ["11-20"], "note": "SEMANA EVALUACIÓN"}, {"asig": "Derecho Tributario II", "niv": 9, "aj": [52], "na": [57], "e1": ["08-29"], "e2": ["11-07"]}, {"asig": "Metodología de la Investigación Jurídica", "niv": 9, "aj": [], "na": [49], "plan": "na", "noExam": true, "e1": ["08-28"], "e2": ["10-09"], "e3": ["11-20"], "note": "Entrega · Exposiciones"}, {"asig": "Optativo de Especialidad II", "niv": 9, "aj": [53], "na": [54], "e1": ["10-03"], "e2": ["11-21"]}, {"asig": "Recursos", "niv": 9, "aj": [], "na": [48], "plan": "na", "e1": ["10-03"], "e2": ["11-14"]}, {"asig": "Reorg. y Liquidación Patrimonial", "niv": 9, "aj": [49], "na": [56], "e1": ["09-12"], "e2": ["10-31"]}, {"asig": "Optativo de Especialidad I", "niv": 10, "aj": [], "na": [53], "plan": "na", "e1": ["09-26"], "e2": ["11-14"]}, {"asig": "Seminario de Tesis", "niv": 10, "aj": [], "na": [55], "plan": "na", "noExam": true, "e1": ["09-04"], "e2": ["10-09"], "e3": ["11-13", "11-20"], "note": "SEMANA ENTREGA FINAL 17-11-2026 · SEMANA EXPOSICIONES    24-11-2026 · SEMANA PRIMERA ENTREGA 01-09-2026 · SEMANA SEGUNDA ENTREGA 13-10-2026"}, {"asig": "Taller de Litigación Avanzada (Ev. Ciclo)", "niv": 10, "aj": [], "na": [58], "plan": "na", "noExam": true, "e1": ["09-11"], "e2": ["10-09"], "e3": ["11-13"], "note": "EV. CICLO Taller de Litigación Avanzada (ACD) · EV. CICLO. Taller de Litigación Avanzada (APJO) · EV. CICLO. Taller de Litigación Avanzada (Inicio Juiicios Orales)"}];
 /* ===== Motor de ponderaciones (hoja PORCENTAJES) · nº evaluaciones cruzado con el calendario oficial ===== */
 var PON_AJ={"1":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"2":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"3":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"4":{"n":"Departamento 2 evaluaciones","ev":[30,40],"p":30},"5":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"6":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"7":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"8":{"n":"Departamento 2 evaluaciones","ev":[30,40],"p":30},"9":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"10":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"11":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"12":{"n":"Argumentación Jurídica y Debate","ev":[20,30,50],"p":null,"esp":1,"req":2},"13":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"14":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"15":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"16":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"17":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"18":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"19":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"20":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"21":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"22":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"23":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"24":{"n":"Taller de Integración I","ev":[20,30,40],"p":10,"esp":1,"nf":"La última evaluación debe ser ≥ 4,0"},"25":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"26":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"27":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"28":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"29":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"30":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"31":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"32":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"33":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"34":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"35":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"36":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"37":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"38":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"39":{"n":"Taller de Litigación","ev":[20,30,50],"p":null,"esp":1},"40":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"41":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"42":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"43":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"44":{"n":"Procedimientos Especiales Orales","ev":[45,45,10],"p":null,"esp":1},"45":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"46":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"47":{"n":"Taller de Integración I","ev":[20,30,40],"p":10,"esp":1,"nf":"La última evaluación debe ser ≥ 4,0"},"48":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"49":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"50":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"51":{"n":"Seminario de Investigación Jurídica","ev":[10,20,70],"p":null,"esp":1,"nf":"La entrega final (70%) se compone de 50% producto y 20% exposición"},"52":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"53":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"54":{"n":"Taller de Integración I","ev":[20,30,40],"p":10,"esp":1,"nf":"La última evaluación debe ser ≥ 4,0"},"55":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10}};
 var PON_NA={"1":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"2":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"3":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"4":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"5":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"6":{"n":"Departamento 2 evaluaciones","ev":[30,40],"p":30},"7":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"8":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"9":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"10":{"n":"Departamento 3 evaluaciones","ev":[10,20,40],"p":30},"11":{"n":"Argumentación Jurídica y Debate","ev":[20,30,50],"p":null,"esp":1,"req":2},"12":{"n":"Departamento 2 evaluaciones","ev":[30,40],"p":30},"13":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"14":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"15":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"16":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"17":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"18":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"19":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"20":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"21":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"22":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"23":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"24":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"25":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"26":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"27":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"28":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"29":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"30":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"31":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"32":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"33":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"34":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"35":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"36":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"37":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"38":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"39":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"40":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"41":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"42":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"43":{"n":"Procedimientos Especiales Orales","ev":[45,45,10],"p":null,"esp":1},"44":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"45":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"46":{"n":"Taller de Litigación","ev":[20,30,50],"p":null,"esp":1},"47":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"48":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"49":{"n":"Metodología de la Investigación Jurídica","ev":[10,20,70],"p":null,"esp":1,"nf":"50% producto · 20% exposición"},"50":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"51":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"52":{"n":"Regular 3 evaluaciones","ev":[30,30,30],"p":10},"53":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"54":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"55":{"n":"Seminario de Tesis","ev":[10,20,70],"p":null,"esp":1,"nf":"50% producto · 20% exposición"},"56":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"57":{"n":"Regular 2 evaluaciones","ev":[40,50],"p":10},"58":{"n":"Taller de Litigación","ev":[20,30,50],"p":null,"esp":1}};
-var PRU_DIURNO_NOTE="Exámenes finales: semana del 5 al 11 de diciembre de 2026. El calendario por asignatura está por confirmar por la Carrera.";
+var PRU_DIURNO_NOTE="Calendario oficial de la Carrera, primavera 2026. Exámenes finales: semana del 5 al 11 de diciembre.";
 var EVALS=EVALS_TECH, PRU_REG="tri", PRU_NOTE=PRU_TECH_NOTE;
+window.__pruDatos=function(){ return {EVALS:EVALS, REG:PRU_REG}; };
 let pruMode="mine";
 const DOW=["dom","lun","mar","mié","jue","vie","sáb"];
 function fmtOne(md){
@@ -3603,11 +3726,25 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
       '<li>Tras la inscripción, la Carrera realiza una <b>auditoría</b> para inscribir reprobadas y revisar coincidencias.</li>'+
       '<li>Es obligación del estudiante <b>revisar su portal</b> y verificar que su carga esté completa.</li>'+
       '</ol>'+
-      '<div class="docsrc">Circular N°03/2026, Dirección de Carrera, Facultad de Derecho, Universidad Autónoma de Chile (julio 2026).</div>'}
-  };
+      '<div class="docsrc">Circular N°03/2026, Dirección de Carrera, Facultad de Derecho, Universidad Autónoma de Chile (julio 2026).</div>'},
+  circ05:{title:"📄 Circular N°05/2026 — Tercer trimestre TECH",body:
+    '<p>Directrices del Consejo de Carrera para la toma de carga del <b>tercer trimestre TECH</b> (primavera 2026), en conformidad con el Reglamento del Estudiante de Pregrado.</p>'+
+    '<ol>'+
+    '<li><b>Nivel más bajo primero.</b> Se inscriben en primer término las asignaturas pendientes del nivel más bajo (art. 2).</li>'+
+    '<li><b>Reprobadas.</b> Las asignaturas reprobadas que se oferten deben inscribirse obligatoriamente (art. 3).</li>'+
+    '<li><b>Prerrequisitos.</b> Solo se aceptan solicitudes que los cumplan íntegramente (art. 4).</li>'+
+    '<li><b>Secciones alternas.</b> Solo para quienes reprobaron la asignatura (art. 6).</li>'+
+    '<li><b>Una coincidencia.</b> Se autoriza excepcionalmente una coincidencia horaria, presencial o sincrónica, con límite del 50% de las horas semanales de ambas asignaturas (art. 7).</li>'+
+    '<li><b>Tercera oportunidad.</b> No se autorizan coincidencias si una de las asignaturas se cursa por tercera vez (art. 8).</li>'+
+    '<li><b>Seminario de Tesis.</b> No se elige: lo inscribe la Carrera (art. 9).</li>'+
+    '<li><b>Créditos.</b> Máximo 30 SCT, sujeto a autorización (art. 10).</li>'+
+    '</ol>'+
+    '<p>Modificación de carga: del 7 al 11 de septiembre de 2026.</p>'+
+    '<div class="docsrc">Resumen preparado por UApp de la Circular N°05/2026, Consejo de Carrera, Facultad de Derecho, Universidad Autónoma de Chile. Ante cualquier duda, rige el texto oficial.</div>'}
+};
   var docModal=document.getElementById('docModal'),docTitle=document.getElementById('docTitle'),docBody=document.getElementById('docBody'),docX=document.getElementById('docX');
   function openDoc(which){var d=DOCS[which];if(!d||!docModal)return;docTitle.innerHTML=d.title;docBody.innerHTML=d.body;docModal.style.display='flex';}
-  function closeDoc(){if(docModal)docModal.style.display='none';}
+  window.openDoc=openDoc; function closeDoc(){if(docModal)docModal.style.display='none';}
   var lr=document.getElementById('lnkReg'),lc=document.getElementById('lnkCirc');
   if(lr)lr.onclick=function(e){e.preventDefault();openDoc('reg');};
   if(lc)lc.onclick=function(e){e.preventDefault();openDoc('circ');};
@@ -3724,6 +3861,7 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
       cur:(curMallaSem==="noajustada")?"na":"aj",
       aj:{C:COURSES_SEM,S:stateSEM,U:isUnlockedSEM},
       na:{C:COURSES_NASEM,S:stateNASEM,U:isUnlockedNASEM},
+      guardar:function(){try{saveSEM();}catch(e){}try{saveNASEM();}catch(e){}try{ if(curMallaSem==="noajustada") renderNASEM(); else renderSEM(); }catch(e){}},
       plan:(curMallaSem==="noajustada")?"Plan No Ajustado (Res. 135/2017)":"Plan Ajustado (Res. 165/2022)"};};
   }
   function keyMallaSem(j){return "malla_sel_"+j+"_v1";}
@@ -4156,7 +4294,7 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
   /* --- Selector y rotulado de jornada --- */
   var KEYJ="jornada3_v1";
   var names={tech:"Jornada Vespertina TECH",vregular:"Jornada Vespertina Regular",diurno:"Jornada Diurna"};
-  var curJornada=null;
+  var curJornada=null; window.__jornada=curJornada;
   function getJ(){try{var v=localStorage.getItem(KEYJ);return names[v]?v:null;}catch(e){return null;}}
   function setJ(j){try{if(names[j])localStorage.setItem(KEYJ,j);}catch(e){}}
   function show(){var o=document.getElementById("jornadaOverlay");if(o)o.style.display="flex";}
@@ -4225,7 +4363,7 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
 
   function applyJornada(j){
     if(!names[j])j="tech";   /* lista blanca: si el valor guardado fue manipulado, caer a un valor seguro */
-    curJornada=j;
+    curJornada=j; window.__jornada=curJornada;
     if(typeof setHorJornada==='function')setHorJornada(j);
     var nm=names[j];
     var sub=document.querySelector(".brandtxt span"); if(sub)sub.textContent=nm+" · Derecho · UA Temuco";
@@ -4325,6 +4463,255 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
   }
   var cur=urlJ||getJ();
   if(cur){applyJornada(cur);hide();}else{show();}
+})();
+</script>
+<script>
+/* ═══ Cierre de período ═══
+   Al empezar un período la app archiva los ramos que el estudiante tenía
+   inscritos. Al abrir Avance se le pregunta cómo le fue en cada uno y la
+   malla se actualiza sola, para que Horarios, el Planificador y el respaldo
+   partan de datos reales. Cada período se pregunta una sola vez. */
+(function(){
+  var ahoraNo=false;
+  function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+  function jor(){ try{ return window.__jornada||localStorage.getItem("jornada3_v1")||"tech"; }catch(e){ return "tech"; } }
+  function baseInsc(){ var j=jor(); return (j==="tech")?"insc_sec_v1":"insc_sec_"+j+"_v1"; }
+  function leer(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function pendientes(){
+    var base=baseInsc(), arch=leer(base+"_archivo");
+    /* la marca de "ya respondido" no puede empezar con el nombre de la selección:
+       el archivador de períodos la confundiría con un período antiguo */
+    if(!arch||arch==="{}"||leer("cierre_v1_"+base)===arch) return null;
+    var sel; try{ sel=JSON.parse(arch)||{}; }catch(e){ return null; }
+    var P=null; try{ P=(typeof _snap==="function")?_snap():(window.__mallaSnap?window.__mallaSnap():null); }catch(e){}
+    if(!P) return null;
+    var filas=[];
+    Object.keys(sel).forEach(function(id){
+      var plan=(typeof _planBloque==="function")?_planBloque(sel[id]):"aj";
+      var M=P[plan]; if(!M||!M.C) return;
+      var c=M.C.filter(function(x){return x.id===+id;})[0]; if(!c) return;
+      filas.push({id:+id,plan:plan,n:c.n,t:c.t,actual:(M.S&&M.S[+id])||null});
+    });
+    if(!filas.length) return null;
+    filas.sort(function(a,b){return (a.t-b.t)||a.n.localeCompare(b.n);});
+    return {base:base,arch:arch,filas:filas,P:P};
+  }
+  function pintar(){
+    var box=document.getElementById("cierreBox"); if(!box) return;
+    var d=ahoraNo?null:pendientes();
+    if(!d){ box.style.display="none"; box.innerHTML=""; return; }
+    var eleccion={};
+    d.filas.forEach(function(f){ if(f.actual==="ok"||f.actual==="no") eleccion[f.id]=f.actual; });
+    function boton(f,v,txt){ var on=eleccion[f.id]===v;
+      return '<button type="button" class="ci-op'+(on?' on':'')+'" data-id="'+f.id+'" data-v="'+v+'" aria-pressed="'+on+'">'+txt+'</button>'; }
+    box.innerHTML='<div class="ci-t">Terminó tu período anterior</div>'+
+      '<p class="ci-p">¿Cómo te fue en los ramos que tenías inscritos? Al guardarlo, tu avance se actualiza y Horarios te muestra lo que puedes tomar ahora.</p>'+
+      d.filas.map(function(f){ return '<div class="ci-row"><div class="ci-n">'+esc(f.n)+'<span>Nivel '+f.t+'</span></div>'+
+        '<div class="ci-ops" role="group" aria-label="'+esc(f.n)+'">'+boton(f,"ok","Aprobé")+boton(f,"no","Reprobé")+boton(f,"skip","No la cursé")+'</div></div>'; }).join("")+
+      '<div class="ci-acts"><button type="button" class="ci-save" id="ciGuardar">Actualizar mi avance</button>'+
+      '<button type="button" class="ci-later" id="ciLuego">Ahora no</button></div>';
+    box.style.display="";
+    var g=document.getElementById("ciGuardar");
+    function rotulo(){ var n=Object.keys(eleccion).length; g.disabled=!n; g.textContent=n?"Actualizar mi avance ("+n+")":"Actualizar mi avance"; }
+    rotulo();
+    box.querySelectorAll(".ci-op").forEach(function(btn){
+      btn.onclick=function(){
+        eleccion[+btn.dataset.id]=btn.dataset.v;
+        box.querySelectorAll('.ci-op[data-id="'+btn.dataset.id+'"]').forEach(function(o){ var on=(o===btn); o.classList.toggle("on",on); o.setAttribute("aria-pressed",on); });
+        rotulo();
+      };
+    });
+    g.onclick=function(){
+      var cambios=0;
+      d.filas.forEach(function(f){ var v=eleccion[f.id]; if(v==="ok"||v==="no"){ d.P[f.plan].S[f.id]=v; cambios++; } });
+      try{ if(d.P.guardar) d.P.guardar(); }catch(e){}
+      try{ localStorage.setItem("cierre_v1_"+d.base,d.arch); }catch(e){}
+      box.style.display="none"; box.innerHTML="";
+      try{ if(typeof showHorMsg==="function") showHorMsg(cambios?"✅ Tu avance quedó actualizado ("+cambios+(cambios===1?" ramo).":" ramos)."):"Listo: tu avance no cambió.","info"); }catch(e){}
+      try{ if(typeof logInteraccion==="function") logInteraccion("avance","cierre de periodo"); }catch(e){}
+    };
+    document.getElementById("ciLuego").onclick=function(){ ahoraNo=true; box.style.display="none"; box.innerHTML=""; };
+  }
+  window.__pintaCierre=pintar;
+  function enlazar(){
+    document.querySelectorAll('.tab[data-tab="malla"]').forEach(function(t){ t.addEventListener("click",function(){ setTimeout(pintar,0); }); });
+    var m=document.getElementById("malla"); if(m&&m.style.display!=="none") pintar();
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",enlazar); else enlazar();
+})();
+</script>
+<script>
+/* ═══ Evaluaciones: calendario + detalle semanal ═══
+   La Carrera publica el calendario al comienzo del período (fechas) y, la
+   semana anterior a cada evaluación, la hora, la sala y la modalidad.
+   · El calendario vive en la app (Pruebas).
+   · El detalle semanal lo publica el Centro de Estudiantes desde el panel,
+     pegando la tabla de Teams (tabla «evaluaciones» de Supabase).
+   Aquí se juntan las dos fuentes: «Esta semana» arriba del Mural, y el
+   detalle dentro de las tarjetas de Pruebas. */
+(function(){
+  var DET=[], cargadoPara=null, cargando=false;
+  var DIAS=["dom","lun","mar","mié","jue","vie","sáb"], MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  var ROT={tri:{p1:"1ª prueba",p2:"2ª prueba",fin:"Examen final"},sem:{e1:"1ª evaluación",e2:"2ª evaluación",e3:"3ª evaluación"}};
+  function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+  function jor(){ try{ return window.__jornada||localStorage.getItem("jornada3_v1")||"tech"; }catch(e){ return "tech"; } }
+  function iso(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+  function hoy(off){ var d=new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()+(off||0)); return iso(d); }
+  function etiquetaDia(f){
+    if(f===hoy(0)) return "Hoy"; if(f===hoy(1)) return "Mañana";
+    var d=new Date(f+"T12:00:00"); return DIAS[d.getDay()]+" "+d.getDate()+" "+MES[d.getMonth()];
+  }
+
+  /* ── El mismo ramo escrito de distintas formas («Fuente de las Obligaciones»,
+        «FUENTES DE LAS OBLIGACIONES», «Reorg. y Liquidación Patrimonial»…) ── */
+  var VACIAS={de:1,del:1,la:1,las:1,los:1,y:1,e:1,el:1,en:1,a:1,al:1};
+  /* palabras que pueden faltar al final sin que sea otro ramo */
+  var COLA={seg:1,social:1,persona:1,patrimonial:1,debate:1,derecho:1,chile:1};
+  function palabras(s){
+    s=String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+    s=s.replace(/\bd\s*[°º]/g," derecho ").replace(/\([^)]*\)/g," ").replace(/[^a-z0-9 ]/g," ");
+    return s.split(/\s+/).filter(function(w){return w&&!VACIAS[w];})
+            .map(function(w){ return (w.length>3&&/s$/.test(w))?w.slice(0,-1):w; });
+  }
+  function igual(a,b){ return a===b||(a.length>=4&&b.length>=4&&(a.indexOf(b)===0||b.indexOf(a)===0)); }
+  function mismoRamo(x,y){
+    var a=palabras(x), b=palabras(y); if(!a.length||!b.length) return false;
+    var c=a.length<=b.length?a:b, l=a.length<=b.length?b:a;
+    for(var i=0;i<c.length;i++){ if(!igual(c[i],l[i])) return false; }
+    for(var k=c.length;k<l.length;k++){ if(!COLA[l[k]]) return false; }
+    return true;
+  }
+  window.__mismoRamo=mismoRamo;
+
+  /* ── Los ramos que el estudiante marcó en Horarios, con su sección ── */
+  function seccionDe(k){ var m=/(?:sec|s)(\d+)$/i.exec(String(k||"")); return m?+m[1]:0; }
+  function misRamos(){
+    var out=[], I={}, P=null;
+    try{ I=(typeof insc!=="undefined"&&insc)?insc:{}; }catch(e){}
+    try{ P=(typeof _snap==="function")?_snap():null; }catch(e){}
+    if(!P) return out;
+    Object.keys(I).forEach(function(id){
+      var k=I[id], plan=(typeof _planBloque==="function")?_planBloque(k):"aj", M=P[plan];
+      var c=M&&M.C?M.C.filter(function(x){return x.id===+id;})[0]:null;
+      if(c) out.push({n:c.n, sec:seccionDe(k)});
+    });
+    return out;
+  }
+  function secNum(s){ var m=/(\d+)/.exec(String(s||"")); return m?+m[1]:0; }
+  function esMio(nombre, sec, mios){
+    var r=mios.filter(function(m){ return mismoRamo(m.n,nombre); });
+    if(!r.length) return false;
+    var s=secNum(sec); if(!s) return true;
+    return r.some(function(m){ return !m.sec || m.sec===s; });
+  }
+
+  /* ── Lo que trae el calendario en un rango de fechas ── */
+  function delCalendario(desde, hasta){
+    var D=(typeof window.__pruDatos==="function")?window.__pruDatos():null, out=[];
+    if(!D||!D.EVALS) return out;
+    var anio=new Date().getFullYear(), reg=(D.REG==="tri")?"tri":"sem";
+    D.EVALS.forEach(function(e){
+      var campos=(reg==="tri")?["p1","p2"]:["e1","e2","e3"];
+      campos.forEach(function(k){
+        (e[k]||[]).forEach(function(v){
+          var md=Array.isArray(v)?v[0]:v, sec=Array.isArray(v)?v[1]:null;
+          if(!md||md==="99-99") return;
+          md=String(md).replace(/^~/,"").split("~")[0];
+          var f=anio+"-"+md; if(f<desde||f>hasta) return;
+          out.push({fecha:f, asig:e.asig, tipo:ROT[reg][k], sec:sec?("S"+sec):""});
+        });
+      });
+      if(reg==="tri" && e.fin && e.fin!=="?"){ var f=anio+"-"+e.fin; if(f>=desde&&f<=hasta) out.push({fecha:f, asig:e.asig, tipo:ROT.tri.fin, sec:""}); }
+    });
+    return out;
+  }
+  function detalleTxt(r){
+    var p=[]; if(r.hora)p.push(r.hora); if(r.modalidad)p.push(r.modalidad); if(r.sala)p.push("sala "+r.sala); if(r.docente)p.push(r.docente);
+    return p.join(" · ");
+  }
+
+  /* ── «Esta semana» ── */
+  function pintarSemana(){
+    var box=document.getElementById("semanaBox"); if(!box) return;
+    var desde=hoy(0), hasta=hoy(7), mios=misRamos(), personal=mios.length>0, items=[];
+    DET.forEach(function(r){
+      if(r.fecha<desde||r.fecha>hasta) return;
+      if(personal && !esMio(r.asignatura, r.seccion, mios)) return;
+      items.push({fecha:r.fecha, asig:r.asignatura, sec:r.seccion||"", nota:r.nota||"", det:detalleTxt(r), hora:r.hora||""});
+    });
+    delCalendario(desde,hasta).forEach(function(c){
+      if(personal && !esMio(c.asig, c.sec, mios)) return;
+      var ya=items.some(function(it){ return it.fecha===c.fecha && mismoRamo(it.asig,c.asig); });
+      if(!ya) items.push({fecha:c.fecha, asig:c.asig, sec:c.sec, nota:"", det:"", tipo:c.tipo, hora:""});
+    });
+    if(!items.length){ box.style.display="none"; box.innerHTML=""; return; }
+    items.sort(function(a,b){ return a.fecha.localeCompare(b.fecha)||a.hora.localeCompare(b.hora)||a.asig.localeCompare(b.asig)||a.sec.localeCompare(b.sec); });
+    var h='<div class="sem-h"><b>📅 Esta semana</b><span>'+(personal?"Tus evaluaciones":"Evaluaciones de tu jornada")+'</span></div>', dia="";
+    items.forEach(function(it){
+      if(it.fecha!==dia){ dia=it.fecha; h+='<div class="sem-dia">'+esc(etiquetaDia(dia))+'</div>'; }
+      h+='<div class="sem-it"><div class="sem-n">'+esc(it.asig)+(it.sec?' <em>'+esc(it.sec)+'</em>':'')+(it.nota?' <em>('+esc(it.nota)+')</em>':'')+'</div>'+
+         (it.det?'<div class="sem-d">'+esc(it.det)+'</div>':'<div class="sem-d pend">'+(it.tipo?esc(it.tipo)+'. ':'')+'La hora y la sala se publican la semana anterior.</div>')+'</div>';
+    });
+    if(!personal) h+='<p class="sem-pie">Marca tus ramos en Horarios para ver solo los tuyos.</p>';
+    box.innerHTML=h; box.style.display="";
+  }
+
+  /* ── El detalle dentro de las tarjetas de Pruebas ── */
+  function decorarPruebas(){
+    var lista=document.getElementById("pruList"); if(!lista||!DET.length) return;
+    var mios=misRamos(), desde=hoy(0);
+    lista.querySelectorAll(".ecard").forEach(function(card){
+      if(card.getAttribute("data-det")) return;
+      card.setAttribute("data-det","1");
+      var b=card.querySelector(".ehead b"); if(!b) return;
+      var nombre=b.textContent.trim();
+      var propias=mios.filter(function(m){ return mismoRamo(m.n,nombre); });
+      var filas=DET.filter(function(r){
+        if(r.fecha<desde||!mismoRamo(r.asignatura,nombre)) return false;
+        var s=secNum(r.seccion);
+        return !s||!propias.length||propias.some(function(m){ return !m.sec||m.sec===s; });
+      }).slice(0,4);
+      if(!filas.length) return;
+      var d=document.createElement("div"); d.className="edet";
+      d.innerHTML=filas.map(function(r){ return "📍 <b>"+esc(etiquetaDia(r.fecha))+"</b>"+(r.seccion?" ("+esc(r.seccion)+")":"")+": "+esc(detalleTxt(r)||"hora y sala por confirmar"); }).join("<br>");
+      card.appendChild(d);
+    });
+  }
+
+  /* ── Carga: Supabase, con copia local para cuando no hay conexión ── */
+  async function cargar(){
+    var j=jor();
+    if(cargando) return;
+    if(cargadoPara!==j){ DET=[]; try{ DET=JSON.parse(localStorage.getItem("evdet_v1_"+j)||"[]")||[]; }catch(e){ DET=[]; } }
+    pintarSemana(); decorarPruebas();
+    cargando=true;
+    try{
+      if(typeof sbc!=="undefined" && sbc){
+        var q=sbc.from("evaluaciones").select("*").eq("jornada",j).gte("fecha",hoy(-1)).order("fecha");
+        var r=await Promise.race([q,new Promise(function(_,rej){ setTimeout(function(){ rej(new Error("timeout")); },6000); })]);
+        if(r && !r.error && Array.isArray(r.data)){
+          DET=r.data; cargadoPara=j;
+          try{ localStorage.setItem("evdet_v1_"+j, JSON.stringify(DET)); }catch(e){}
+        }
+      }
+    }catch(e){}
+    cargando=false;
+    pintarSemana(); decorarPruebas();
+  }
+  window.__evSemana={cargar:cargar, pintar:pintarSemana};
+
+  function enlazar(){
+    /* el Mural se redibuja al abrir la app y al cambiar de jornada */
+    var ml=document.getElementById("muralList");
+    if(ml && window.MutationObserver) new MutationObserver(function(){ if(cargadoPara!==jor()) cargar(); else pintarSemana(); }).observe(ml,{childList:true});
+    /* Pruebas se redibuja al cambiar de vista o de jornada */
+    var pl=document.getElementById("pruList");
+    if(pl && window.MutationObserver) new MutationObserver(decorarPruebas).observe(pl,{childList:true});
+    /* al volver al Mural, por si el estudiante marcó o quitó ramos */
+    document.querySelectorAll('.tab[data-tab="mural"]').forEach(function(t){ t.addEventListener("click",function(){ setTimeout(pintarSemana,0); }); });
+    cargar();
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",enlazar); else enlazar();
 })();
 </script>
 </body>
