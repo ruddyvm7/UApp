@@ -485,10 +485,12 @@ function esRuido(c){
   if(!t) return true;
   if(/^(fecha|jornada|asignatura|docente|hora y modalidad|hora|modalidad|sala|ver más|ver mas|editado|nuevo|leído por última vez|leido por ultima vez)$/i.test(t)) return true;
   if(/^derecho temuco/i.test(t)) return true;
-  if(/^evaluaci[oó]n(es)?\b/i.test(t)) return true;
+  /* títulos de las publicaciones: «EVALUACIONES VIERNES 11 DE…», «EVALUACIÓN VESPERTINO REGULAR» */
+  if(/^evaluaci[oó]n(es)?\s+(lunes|martes|mi[eé]rcoles|jueves|viernes|s[aá]bado|domingo|tech|diurn|vespertin|regular|semana|\d)/i.test(t)) return true;
   if(/^\d{1,2}-\d{1,2}\s+\d{1,2}:\d{2}$/.test(t)) return true;
   if(/^(lunes|martes|miércoles|miercoles|jueves|viernes|sábado|sabado|domingo)\s+\d{1,2}:\d{2}$/i.test(t)) return true;
-  if(/reacci[oó]n/i.test(t) || /\.pdf$/i.test(t) || /^\d{1,2}$/.test(t)) return true;
+  /* «2 reacciones de Corazón.»: solo cuando empieza con un número (nunca un ramo como Teoría de la Reacción Penal) */
+  if(/^\d+\s+reacci[oó]n/i.test(t) || /\.pdf$/i.test(t) || /^\d{1,2}$/.test(t)) return true;
   return false;
 }
 function aJornada(c){
@@ -562,22 +564,35 @@ function parseEvaluaciones(texto, anio){
     g.items.push(f);
   });
 
+  /* Texto del aviso: por día; dentro del día, cada ramo una vez (en negrita) y
+     una línea por sección. Los ramos sin hora van al final del día. */
+  const cap=s=>s?s.charAt(0).toUpperCase()+s.slice(1):s;
+  const detalle=f=>{ const p=[]; if(f.hora)p.push(f.hora); if(f.mod)p.push(cap(f.mod)); if(f.sala)p.push('Sala '+f.sala);
+    if(!f.hora&&!f.sala) p.unshift('Hora y sala por confirmar');
+    if(f.doc)p.push('Prof. '+f.doc);
+    return p.join(' · '); };
   const lineas=[];
   grupos.forEach(function(g){
     const d=new Date(g.fecha.y,g.fecha.m-1,g.fecha.d);
-    lineas.push('**'+tc(DIAS[d.getDay()])+' '+g.fecha.d+' de '+MESES[g.fecha.m-1]+'**');
-    g.items.forEach(function(f){
-      const partes=[];
-      if(f.hora) partes.push(f.hora);
-      if(f.mod) partes.push(f.mod);
-      if(f.sala) partes.push('Sala '+f.sala);
-      if(f.doc) partes.push('Prof. '+f.doc);
-      lineas.push('• '+f.asig+(f.seccion?' '+f.seccion:'')+(f.nota?' ('+f.nota+')':'')+(partes.length?' — '+partes.join(' · '):''));
-    });
+    lineas.push('📅 **'+(DIAS[d.getDay()]+' '+g.fecha.d+' de '+MESES[g.fecha.m-1]).toUpperCase()+'**');
     lineas.push('');
+    const ramos=[];
+    g.items.forEach(function(f){
+      const k=f.asig+'|'+(f.nota||'');
+      let r=ramos.find(x=>x.k===k); if(!r){ r={k:k,asig:f.asig,nota:f.nota,items:[]}; ramos.push(r); }
+      r.items.push(f);
+    });
+    const primeraHora=r=>r.items.map(f=>f.hora).filter(Boolean).sort()[0]||'99:99';
+    ramos.sort((a,b)=>primeraHora(a).localeCompare(primeraHora(b))||a.asig.localeCompare(b.asig));
+    ramos.forEach(function(r){
+      r.items.sort((a,b)=>(parseInt(String(a.seccion||'').slice(1))||0)-(parseInt(String(b.seccion||'').slice(1))||0));
+      lineas.push('**'+r.asig+'**'+(r.nota?' ('+r.nota+')':''));
+      r.items.forEach(f=>lineas.push((f.seccion?f.seccion+' · ':'')+detalle(f)));
+      lineas.push('');
+    });
   });
 
-  const texto_final = lineas.length ? 'Revisa la fecha, hora y sala de TU sección.\n\n'+lineas.join('\n').trim() : '';
+  const texto_final = lineas.length ? 'Revisa la hora y la sala de TU sección.\n\n'+lineas.join('\n').trim() : '';
   const ultima = filas.length ? filas[filas.length-1].fecha : null;
   const primera = filas.length ? filas[0].fecha : null;
   const rango = (primera&&ultima)

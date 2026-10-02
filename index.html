@@ -4626,7 +4626,9 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
     return out;
   }
   function detalleTxt(r){
-    var p=[]; if(r.hora)p.push(r.hora); if(r.modalidad)p.push(r.modalidad); if(r.sala)p.push("sala "+r.sala); if(r.docente)p.push(r.docente);
+    var p=[]; if(r.hora)p.push(r.hora); if(r.modalidad)p.push(r.modalidad); if(r.sala)p.push("sala "+r.sala);
+    if(!r.hora&&!r.sala) p.unshift("hora y sala por confirmar");
+    if(r.docente)p.push(r.docente);
     return p.join(" · ");
   }
 
@@ -4645,12 +4647,28 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
       if(!ya) items.push({fecha:c.fecha, asig:c.asig, sec:c.sec, nota:"", det:"", tipo:c.tipo, hora:""});
     });
     if(!items.length){ box.style.display="none"; box.innerHTML=""; return; }
-    items.sort(function(a,b){ return a.fecha.localeCompare(b.fecha)||a.hora.localeCompare(b.hora)||a.asig.localeCompare(b.asig)||a.sec.localeCompare(b.sec); });
-    var h='<div class="sem-h"><b>📅 Esta semana</b><span>'+(personal?"Tus evaluaciones":"Evaluaciones de tu jornada")+'</span></div>', dia="";
+    /* por día; dentro del día, cada ramo una vez y una línea por sección */
+    var porDia={};
     items.forEach(function(it){
-      if(it.fecha!==dia){ dia=it.fecha; h+='<div class="sem-dia">'+esc(etiquetaDia(dia))+'</div>'; }
-      h+='<div class="sem-it"><div class="sem-n">'+esc(it.asig)+(it.sec?' <em>'+esc(it.sec)+'</em>':'')+(it.nota?' <em>('+esc(it.nota)+')</em>':'')+'</div>'+
-         (it.det?'<div class="sem-d">'+esc(it.det)+'</div>':'<div class="sem-d pend">'+(it.tipo?esc(it.tipo)+'. ':'')+'La hora y la sala se publican la semana anterior.</div>')+'</div>';
+      var D=porDia[it.fecha]||(porDia[it.fecha]=[]);
+      var r=D.filter(function(x){ return x.nota===it.nota && mismoRamo(x.asig,it.asig); })[0];
+      if(!r){ r={asig:it.asig, nota:it.nota, filas:[]}; D.push(r); }
+      r.filas.push(it);
+    });
+    function primera(r){ return r.filas.map(function(f){return f.hora;}).filter(Boolean).sort()[0]||"99:99"; }
+    var h='<div class="sem-h"><b>📅 Esta semana</b><span>'+(personal?"Tus evaluaciones":"Evaluaciones de tu jornada")+'</span></div>';
+    Object.keys(porDia).sort().forEach(function(f){
+      h+='<div class="sem-dia">'+esc(etiquetaDia(f))+'</div>';
+      porDia[f].sort(function(a,b){ return primera(a).localeCompare(primera(b))||a.asig.localeCompare(b.asig); }).forEach(function(r){
+        r.filas.sort(function(a,b){ return secNum(a.sec)-secNum(b.sec); });
+        h+='<div class="sem-it"><div class="sem-n">'+esc(r.asig)+(r.nota?' <em>('+esc(r.nota)+')</em>':'')+'</div>';
+        r.filas.forEach(function(it){
+          var pre=it.sec?'<b>'+esc(it.sec)+'</b> · ':'';
+          h+=it.det?'<div class="sem-d">'+pre+esc(it.det)+'</div>'
+                   :'<div class="sem-d pend">'+pre+(it.tipo?esc(it.tipo)+'. ':'')+'La hora y la sala se publican la semana anterior.</div>';
+        });
+        h+='</div>';
+      });
     });
     if(!personal) h+='<p class="sem-pie">Marca tus ramos en Horarios para ver solo los tuyos.</p>';
     box.innerHTML=h; box.style.display="";
