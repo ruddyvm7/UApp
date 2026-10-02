@@ -18,7 +18,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="UApp">
 <link rel="manifest" href="./manifest.json">
-<link rel="apple-touch-icon" href="./apple-touch-icon-uapp.png">
+<link rel="apple-touch-icon" href="./apple-touch-icon-uapp-v3.png">
 <link rel="icon" type="image/svg+xml" href="./favicon-uapp.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="./favicon-uapp-32.png">
 <title>UApp · Centro de Estudiantes Derecho</title>
@@ -850,6 +850,147 @@ footer .sm{color:var(--muted)!important}
 .jchip-ic{margin-left:auto;width:38px;padding:0;display:inline-flex;align-items:center;justify-content:center}
 .jchip-ic + .jchip{margin-left:0}
 
+/* ═════════════ v2.1 · menos ruido, más aire y movimiento ═════════════ */
+:root{--u2-ok:#E7F3EB;--u2-okb:#BFDCC9;--u2-okt:#1F6B3A;--u2-no:#FBE7E5;--u2-nob:#EDB9B3;--u2-not:#8F2323;--u2-sel:#FBE7E6}
+body.dark{--u2-ok:#16301F;--u2-okb:#2C5A3A;--u2-okt:#8FD3A6;--u2-no:#3A1F1C;--u2-nob:#5A332E;--u2-not:#F0A39C;--u2-sel:#3A2524}
+
+/* Botones de acción: pastillas blancas, sin borde */
+.horBtns{display:flex!important;flex-wrap:wrap;gap:8px!important;justify-content:flex-start!important;margin:6px 0 14px!important}
+.mSwBtn,.allcalc{min-height:38px;padding:0 16px!important;border:0!important;border-radius:999px!important;background:var(--card)!important;
+  color:var(--ink)!important;box-shadow:var(--u2-sombra)!important;font-family:inherit!important;font-size:13px!important;font-weight:800!important;cursor:pointer}
+.mallaSwitch{display:flex;justify-content:flex-start!important}
+
+/* Selectores de dos opciones: pista suave y opción activa blanca */
+.seg,.seg2{display:grid!important;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:4px;padding:4px!important;border:0!important;
+  border-radius:18px!important;background:var(--u2-tinte)!important;max-width:none!important;margin:4px 0 16px!important;overflow:visible!important}
+.seg button,.seg2-b{min-height:42px;border:0!important;border-radius:14px!important;background:transparent!important;color:var(--muted)!important;
+  font-family:inherit!important;font-size:14px!important;font-weight:800!important;box-shadow:none!important;opacity:1!important;
+  transition:background-color .2s,color .2s,box-shadow .2s}
+.seg button.on,.seg2-b.on{background:var(--card)!important;color:var(--ink)!important;box-shadow:0 2px 10px rgba(46,40,40,.12)!important}
+
+/* Textos de ayuda: discretos */
+.boardhint,.cycle,.hnote,.fitnote{text-align:left!important;color:var(--muted)!important;font-weight:600;font-size:13px!important}
+
+/* ── Horario ── */
+.hortally{border:0!important;border-radius:18px!important;box-shadow:var(--u2-sombra)}
+#hor .pcard{border:0!important;border-radius:20px!important;box-shadow:var(--u2-sombra);background:var(--card)!important}
+.autobox{background:var(--card)!important;border:0!important;border-radius:18px!important;box-shadow:var(--u2-sombra)}
+.autochip{border:1.5px solid var(--cb)!important;border-radius:12px!important;background:var(--bg)!important}
+.hgrp{color:var(--ink)!important;font-size:17px!important;font-weight:800!important;border-bottom:0!important;padding-bottom:0!important;margin:22px 0 10px!important}
+.hwrap{border-radius:22px;overflow:auto;box-shadow:var(--u2-sombra);background:var(--card)}
+.hortbl{border-collapse:separate!important;border-spacing:0!important}
+.hortbl th{background:var(--card)!important;color:var(--ink)!important;border:0!important;border-bottom:1px solid var(--cb)!important;
+  font-size:12px!important;font-weight:800!important;letter-spacing:0!important;padding:12px 6px!important}
+.hortbl td{border:0!important;border-bottom:1px solid var(--cb)!important}
+.hortbl td.th-h{background:var(--bg)!important;color:var(--muted)!important;font-weight:700!important;font-size:11.5px!important}
+.hortbl td.cell{background:var(--bg)!important;border:3px solid var(--card)!important;border-radius:16px!important}
+.hortbl td.cell.selon{background:var(--u2-sel)!important;box-shadow:inset 0 0 0 2px var(--wine)}
+.hortbl td.cell .cr{color:var(--ink)!important;font-weight:800!important}
+.hortbl td.cell .cn{color:var(--wine)!important;font-weight:700!important}
+.hortbl td.cell .cs{color:var(--ink)!important}
+.hortbl td.cell .cp{color:var(--muted)!important}
+.hortbl td.cell .selck{background:var(--wine)!important;color:#fff!important;border-radius:999px!important}
+
+/* ── Notas: sin recuadros largos, tarjetas limpias ── */
+#pru .inscbox{background:none!important;border:0!important;padding:0!important;margin:0 0 12px!important;box-shadow:none!important}
+#pru .inscbox,#pru .inscbox .note,#pru .inscbox .ititle{color:var(--muted)!important;font-size:13px!important;font-weight:600}
+#pru .inscbox b{color:var(--ink)!important}
+.pinfo{background:var(--card)!important;border:0!important;border-radius:18px!important;box-shadow:var(--u2-sombra);color:var(--ink)!important;font-size:13px!important;line-height:1.5}
+#pru .pinfo{position:relative;max-height:64px;overflow:hidden;cursor:pointer;padding:12px 16px!important;transition:max-height .35s ease}
+#pru .pinfo::after{content:"Ver más";position:absolute;left:0;right:0;bottom:0;height:32px;display:flex;align-items:flex-end;justify-content:flex-end;
+  padding:0 16px 8px;background:linear-gradient(transparent,var(--card) 65%);color:var(--wine);font-weight:800;font-size:13px}
+#pru .pinfo.abierto{max-height:640px}
+#pru .pinfo.abierto::after{content:"Ver menos";position:static;height:auto;background:none;padding:6px 0 0}
+.ecard{background:var(--card)!important;border:0!important;border-radius:24px!important;box-shadow:var(--u2-sombra);padding:16px!important;margin-bottom:14px!important}
+.ehead b{color:var(--ink)!important;font-size:16px!important;font-weight:800!important}
+.eniv{color:var(--muted)!important;font-size:12px!important}
+.ecols{gap:8px!important}
+.ecol{background:var(--bg)!important;border:0!important;border-radius:16px!important;padding:10px 12px!important}
+.ecl{text-transform:none!important;letter-spacing:0!important;color:var(--muted)!important;font-size:12px!important;font-weight:700!important;margin-bottom:2px!important}
+.ecv,.edbig{color:var(--ink)!important;font-size:15px!important;font-weight:800!important}
+
+/* ── Calculadora de notas ── */
+.calchead{text-align:left!important}
+#calc .card.ccalc{border:0!important;border-radius:24px!important;box-shadow:var(--u2-sombra);background:var(--card)!important;padding:18px!important}
+.cchead b{color:var(--ink)!important;font-size:16px!important;font-weight:800!important}
+.ccsec{background:var(--u2-tinte)!important;color:var(--wine)!important;border:0!important;border-radius:999px!important;font-weight:800!important}
+.ccscheme{color:var(--muted)!important;font-size:12px!important}
+.ccrow{border-top:1px solid var(--cb)!important;padding:8px 0!important}
+.cclab{font-weight:700;color:var(--ink)}
+.ccpct{color:var(--muted)!important}
+.ccinput{min-height:44px;border:1.5px solid var(--cb)!important;border-radius:14px!important;background:var(--bg)!important;font-size:16px!important}
+.ccinput:focus{outline:none;border-color:var(--wine)!important;box-shadow:0 0 0 3px var(--u2-tinte)}
+.ccresult{border-top:1px solid var(--cb)!important}
+.gaugewrap{width:200px!important}
+#calc .note,#calc .disc{color:var(--muted)!important;font-size:12px!important}
+
+/* ── Avance curricular ── */
+.i2-avtop{background:var(--card);border-radius:24px;box-shadow:var(--u2-sombra);padding:16px 18px;display:flex;flex-direction:column;gap:10px;margin:4px 0 16px}
+#avanceTop:empty{display:none}
+#malla .legend{border:0!important;padding:4px 0 8px!important;justify-content:flex-start!important;gap:12px!important}
+.ynav{gap:6px!important;justify-content:flex-start!important}
+.ynav button{min-height:36px;padding:0 14px!important;border:0!important;border-radius:999px!important;background:var(--card)!important;color:var(--ink)!important;
+  box-shadow:var(--u2-sombra);font-family:inherit!important;font-size:13px!important;font-weight:800!important}
+.ynav button.on{background:var(--wine)!important;color:#fff!important}
+.yrbtn{border:0!important;border-radius:999px!important;background:var(--u2-tinte)!important;color:var(--wine)!important;text-transform:none!important;letter-spacing:0!important;font-size:12px!important}
+.yrbtn.on{background:var(--wine)!important;color:#fff!important}
+.lvl-eyebrow{text-transform:none!important;letter-spacing:0!important;color:var(--muted)!important;font-size:12px!important;font-weight:700!important}
+.lvl-num{color:var(--ink)!important;font-size:18px!important;font-weight:800!important;font-family:inherit!important}
+.tile{background:var(--card)!important;border:1.5px solid var(--cb)!important;border-radius:18px!important;box-shadow:0 6px 16px -12px rgba(46,40,40,.35);padding:12px 12px 12px 18px!important}
+.tile .abar{width:4px!important;border-radius:999px!important;top:12px!important;bottom:12px!important;left:7px!important;height:auto!important}
+.tile .tname{color:var(--ink)!important;font-weight:800!important;font-size:13px!important}
+.tile .tstat{color:var(--muted)!important;font-weight:800!important;font-size:11.5px!important;text-transform:none!important;letter-spacing:0!important}
+.tile .treq{color:var(--muted)!important;font-size:11px!important}
+.tile.ok{background:var(--u2-ok)!important;border-color:var(--u2-okb)!important}
+.tile.ok .tname,.tile.ok .tstat{color:var(--u2-okt)!important}
+.tile.ok .treq{color:var(--u2-okt)!important;opacity:.75}
+.tile.no{background:var(--u2-no)!important;border-color:var(--u2-nob)!important}
+.tile.no .tname,.tile.no .tstat,.tile.no .treq{color:var(--u2-not)!important}
+.tile.open{border-color:var(--wine)!important}
+.tile.open .tstat{color:var(--wine)!important}
+.tile.lock{background:var(--bg)!important;border-style:dashed!important;opacity:.78}
+
+/* ── Inicio: Tu avance compacto, al final ── */
+.i2-avc{width:100%;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px 12px;padding:14px 16px;border:0;border-radius:22px;
+  background:var(--card);box-shadow:var(--u2-sombra);font:inherit;color:inherit;text-align:left;cursor:pointer}
+.i2-avc-t{display:flex;flex-direction:column;gap:1px;min-width:0}
+.i2-avc-t b{font-size:15px;font-weight:800;color:var(--ink)}
+.i2-avc-t span{font-size:13px;color:var(--muted)}
+.i2-avc-ir{color:var(--wine);font-weight:800;font-size:13px;white-space:nowrap}
+.i2-avc .i2-seg{grid-column:1 / -1}
+.i2-avc .i2-seg i{height:6px}
+
+/* ── Movimiento ── */
+@keyframes u2in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes u2pop{from{transform:scale(.8)}to{transform:scale(1)}}
+@keyframes u2rail{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+section.u2-entra > .wrap > *, section.u2-entra .i2-col1 > *, section.u2-entra .i2-col2 > *{animation:u2in .4s cubic-bezier(.2,.7,.2,1) both}
+section.u2-entra > .wrap > *:nth-child(2), section.u2-entra .i2-col1 > *:nth-child(2){animation-delay:.05s}
+section.u2-entra > .wrap > *:nth-child(3), section.u2-entra .i2-col2 > *:nth-child(1){animation-delay:.1s}
+section.u2-entra > .wrap > *:nth-child(4), section.u2-entra .i2-col2 > *:nth-child(2){animation-delay:.15s}
+section.u2-entra > .wrap > *:nth-child(5){animation-delay:.2s}
+section.u2-entra > .wrap > *:nth-child(n+6){animation-delay:.24s}
+section.u2-entra .ecard, section.u2-entra .ccalc{animation:u2in .45s cubic-bezier(.2,.7,.2,1) both}
+section.u2-entra .ecard:nth-child(2), section.u2-entra .ccalc:nth-child(2){animation-delay:.06s}
+section.u2-entra .ecard:nth-child(3), section.u2-entra .ccalc:nth-child(3){animation-delay:.12s}
+section.u2-entra .ecard:nth-child(n+4), section.u2-entra .ccalc:nth-child(n+4){animation-delay:.18s}
+.brandbar .tabbar .tab.active .ti{animation:u2pop .3s cubic-bezier(.3,1.4,.5,1)}
+.i2-rail i{transform-origin:left center;animation:u2rail .8s cubic-bezier(.2,.7,.2,1) both}
+.mSwBtn,.allcalc,.ecard,.ilink,.i2-avc,.i2-btn,.i2-btn2,.jchip,.seg2-b,.seg button{transition:transform .15s ease,box-shadow .2s ease,background-color .2s ease,color .2s ease}
+.mSwBtn:active,.allcalc:active,.ilink:active,.i2-avc:active,.i2-btn:active,.i2-btn2:active,.jchip:active,.tab:active .ti{transform:scale(.96)}
+@media (hover:hover){.ecard:hover,.ilink:hover,.i2-avc:hover,.mSwBtn:hover{transform:translateY(-2px);box-shadow:0 16px 32px -18px rgba(174,44,44,.42)!important}}
+body.reduce-motion *,body.reduce-motion *::before,body.reduce-motion *::after{animation:none!important;transition:none!important}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* v2.1 · detalles */
+.hortbl td.cell.selon{outline:0!important;box-shadow:inset 0 0 0 2px var(--wine)!important}
+.horBtns .pdfBtn{margin-left:0!important}
+.legend span{letter-spacing:0!important;color:var(--muted)!important;font-weight:700!important}
+
+.lead,.msub{margin-left:0!important;margin-right:0!important;max-width:none!important}
+
+#jornadaOverlay .jov-logo{box-shadow:var(--u2-sombra)}
+
 </style>
 <div id="jornadaOverlay" class="jov">
   <div class="jov-card">
@@ -901,19 +1042,20 @@ footer .sm{color:var(--muted)!important}
   <div id="semanaBox" style="display:none" aria-live="polite"></div>
   </div>
   <div class="i2-col2">
-  <div id="avanceMini"></div>
   <div class="i2-mural">
   <div class="mh serif">Mural</div>
   <div class="msub">Avisos y fechas importantes del momento.</div>
   <div id="muralList"></div>
   </div>
+  <div id="avanceMini"></div>
   </div>
   </div>
 </div></section>
 <section id="malla" style="display:none">
   <div class="wrap">
-    <h1 class="h1 serif">Mi Avance Curricular</h1>
+    <h1 class="h1 serif">Mi avance curricular</h1>
     <p class="lead">Toda tu carrera en un tablero, nivel por nivel. Tu progreso se guarda en este dispositivo.</p>
+    <div id="avanceTop"></div>
     <div id="cierreBox" style="display:none" aria-live="polite"></div>
     <div class="mallaSwitch">
       <button type="button" class="mSwBtn" id="mallaToggle" aria-label="Cambiar de malla"></button>
@@ -921,10 +1063,10 @@ footer .sm{color:var(--muted)!important}
     <p class="mallaNote" id="mallaNote"></p>
     <p class="cycle"><b>Toca un ramo:</b> Disponible → Aprobado → Reprobado. Los bloqueados muestran qué les falta.</p>
     <div class="legend">
-      <span><i class="lg" style="background:#f3efe6;border-color:#d8cfba"></i>BLOQUEADO</span>
-      <span><i class="lg" style="background:#fffdf8;border-color:#d8c9ab"></i>DISPONIBLE</span>
-      <span><i class="lg" style="background:#1f6b3a;border-color:#175a30"></i>APROBADO</span>
-      <span><i class="lg" style="background:#8b0c0c;border-color:#6c0909"></i>REPROBADO</span>
+      <span><i class="lg" style="background:var(--bg);border:1.5px dashed var(--cb2)"></i>Bloqueado</span>
+      <span><i class="lg" style="background:var(--card);border-color:var(--wine)"></i>Disponible</span>
+      <span><i class="lg" style="background:var(--u2-ok);border-color:var(--u2-okb)"></i>Aprobado</span>
+      <span><i class="lg" style="background:var(--u2-no);border-color:var(--u2-nob)"></i>Reprobado</span>
     </div>
     <p class="boardhint">Desliza para recorrer los niveles → o salta con los botones</p>
     <div class="ynav" id="ynav" role="group" aria-label="Ir a un año de la carrera"></div>
@@ -947,10 +1089,10 @@ footer .sm{color:var(--muted)!important}
 <section id="calc" style="display:none">
   <div class="toprule"></div>
   <div class="wrap">
-    <div class="seg2" role="group" aria-label="Pruebas y notas"><button type="button" class="seg2-b" data-ir="pru" aria-pressed="false">📅 Fechas</button><button type="button" class="seg2-b on" data-ir="calc" aria-pressed="true">🧮 Simulador</button></div>
+    <div class="seg2" role="group" aria-label="Pruebas y notas"><button type="button" class="seg2-b" data-ir="pru" aria-pressed="false">Fechas</button><button type="button" class="seg2-b on" data-ir="calc" aria-pressed="true">Calculadora</button></div>
     <div class="calchead">
       <div>
-        <h1 class="h1 serif">Simulador de Notas</h1>
+        <h1 class="h1 serif">Calculadora de notas</h1>
         <p class="lead">Se arma solo con los ramos que marcaste en Horarios. Escribe tus notas y mira tu situación en vivo.</p>
       </div>
       <button class="allcalc" id="allCalcBtn">Todas las calculadoras</button>
@@ -964,7 +1106,7 @@ footer .sm{color:var(--muted)!important}
 <section id="hor" style="display:none"><div class="wrap">
   <div class="mh serif">Horario del trimestre</div><div class="msub">3er trimestre 2026.</div>
   <div class="mallaSwitch horBtns">
-    <button type="button" class="mSwBtn" id="toAllHor">📋 Todos los horarios</button> <button type="button" class="mSwBtn" id="toPlan">🧭 Planificador de carga</button> <button type="button" class="mSwBtn pdfBtn" id="dlHor" title="Generar un PDF con tu horario" aria-label="Generar un PDF con tu horario">📄 PDF</button>
+    <button type="button" class="mSwBtn" id="toAllHor">Todos los horarios</button> <button type="button" class="mSwBtn" id="toPlan">Planificador de carga</button> <button type="button" class="mSwBtn pdfBtn" id="dlHor" title="Generar un PDF con tu horario" aria-label="Generar un PDF con tu horario">PDF</button>
   </div>
   <div class="seg" id="horSeg" style="max-width:460px">
     <button class="on" data-h="fit">Disponibles para mí</button>
@@ -981,7 +1123,7 @@ footer .sm{color:var(--muted)!important}
   <div class="msub">Cruza tu avance con la oferta del trimestre y propone qué tomar, sin choques de horario.</div>
   <div class="discrow">
     <div class="disc" style="margin:0;flex:1">⚠️ Propuesta <b>referencial</b>, no es una inscripción oficial. Confirma siempre con tu malla y con Registro Curricular antes de inscribir.</div>
-    <button type="button" class="mSwBtn pdfBtn" id="dlPlan" title="Generar el respaldo en PDF de tu toma de carga: avance declarado, ramos elegidos y verificaciones" aria-label="Generar el respaldo en PDF de tu toma de carga">📄 PDF</button>
+    <button type="button" class="mSwBtn pdfBtn" id="dlPlan" title="Generar el respaldo en PDF de tu toma de carga: avance declarado, ramos elegidos y verificaciones" aria-label="Generar el respaldo en PDF de tu toma de carga">PDF</button>
   </div>
   <div id="solicBox" style="display:none"></div>
   <div id="planOut" style="margin-top:6px"></div>
@@ -990,13 +1132,13 @@ footer .sm{color:var(--muted)!important}
 </div></section>
 
 <section id="pru" style="display:none"><div class="wrap">
-  <div class="seg2" role="group" aria-label="Pruebas y notas"><button type="button" class="seg2-b on" data-ir="pru" aria-pressed="true">📅 Fechas</button><button type="button" class="seg2-b" data-ir="calc" aria-pressed="false">🧮 Simulador</button></div>
+  <div class="seg2" role="group" aria-label="Pruebas y notas"><button type="button" class="seg2-b on" data-ir="pru" aria-pressed="true">Fechas</button><button type="button" class="seg2-b" data-ir="calc" aria-pressed="false">Calculadora</button></div>
   <div class="mh serif">Calendario de pruebas</div>
   <div class="msub">3er trimestre 2026 · solemnes y exámenes finales.</div>
   <div class="mallaSwitch horBtns" style="margin:10px 0 4px">
-    <button type="button" class="mSwBtn" id="toAllPru">📋 Todas las pruebas</button>
-    <button type="button" class="mSwBtn pdfBtn" id="dlPru" title="Generar un PDF del calendario" aria-label="Generar un PDF del calendario">📄 PDF</button>
-    <button type="button" class="mSwBtn" id="icsPru" title="Agregar tus evaluaciones al calendario del teléfono">📅 Al calendario</button>
+    <button type="button" class="mSwBtn" id="toAllPru">Todas las pruebas</button>
+    <button type="button" class="mSwBtn pdfBtn" id="dlPru" title="Generar un PDF del calendario" aria-label="Generar un PDF del calendario">PDF</button>
+    <button type="button" class="mSwBtn" id="icsPru" title="Agregar tus evaluaciones al calendario del teléfono">Al calendario</button>
   </div>
   <div id="inscBox" class="inscbox" style="display:none"></div>
   <div id="pruList"></div>
@@ -1118,7 +1260,6 @@ footer .sm{color:var(--muted)!important}
 
 <footer>
   <div class="fn serif">Derecho · Universidad Autónoma de Chile</div>
-  <p class="motto serif">«Tu voz, nuestra causa»</p>
   <a class="fbk" href="https://forms.cloud.microsoft/r/VysiXNfr1a" target="_blank" rel="noopener noreferrer">💬 Reportar un problema o sugerencia</a>
   <p class="sm">Una herramienta del <b>Centro de Estudiantes de Derecho Vespertino TECH</b> · UA Temuco</p>
   <p class="sm" style="margin-top:8px"><a href="javascript:void(0)" id="openLegal">Términos y Privacidad</a></p>
@@ -2707,7 +2848,7 @@ function pintaSolicitud(){
     '<div class="sb-t">📤 ¿No pudiste inscribir estos ramos en el sistema?</div>'+
     '<p class="sb-p">Si alguno no te aparece disponible o tiene un tope de horario, puedes pedirlo por <b>toma de carga manual</b>. '+
     'UApp llena el formulario de la Carrera con tu selección y el resultado de las verificaciones.</p>'+
-    '<ol class="sb-l"><li><b>Descarga tu respaldo</b> con el botón <b>📄 PDF</b> de más arriba.</li>'+
+    '<ol class="sb-l"><li><b>Descarga tu respaldo</b> con el botón <b>PDF</b> de más arriba.</li>'+
     '<li><b>Envía la solicitud</b>: el formulario se abre con tus '+det.length+' ramo(s) ya marcados.</li>'+
     '<li><b>Adjunta el PDF</b> en el formulario y envía.</li></ol>'+
     _bloqueTerceras(det)+
@@ -3373,7 +3514,7 @@ const AVISOS=[
    badge:"🔜 Próximamente"},
   {tipo:"Centro de Estudiantes", nivel:"evento",
    titulo:"Asamblea del Centro de Estudiantes",
-   texto:"📅 <b>Hoy · 18:30 hrs</b> · 📍 <b>Sala C38</b>. ¡Tu voz, nuestra causa! Te esperamos.",
+   texto:"📅 <b>Hoy · 18:30 hrs</b> · 📍 <b>Sala C38</b>. Te esperamos.",
    hasta:"2026-06-24"},
   {tipo:"Receso", nivel:"info",
    titulo:"Semana de receso",
@@ -5063,7 +5204,7 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
 /* ═══ UApp 2.0 · Inicio: «Esta noche», Tu avance y la jornada en la cabecera ═══
    Lee los ramos marcados en Horarios y el avance de la malla; no guarda nada propio. */
 (function(){
-  var ICONO="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220.0%200.0%201024.0%201024.0%22%20role%3D%22img%22%20aria-label%3D%22UApp%22%3E%3Crect%20width%3D%221024%22%20height%3D%221024%22%20rx%3D%22229.1%22%20fill%3D%22%23AE2C2C%22/%3E%3Cg%20transform%3D%22translate%28212.8%20793.2%29%20scale%280.800%29%22%3E%3Cpath%20d%3D%22M376%2011Q299%2011%20240.0%20-8.5Q181%20-28%20140.5%20-67.0Q100%20-106%2079.5%20-164.5Q59%20-223%2059%20-300V-621Q59%20-667%2083.0%20-690.5Q107%20-714%20151%20-714Q196%20-714%20219.5%20-690.5Q243%20-667%20243%20-621V-298Q243%20-221%20277.0%20-182.0Q311%20-143%20376%20-143Q440%20-143%20474.0%20-182.0Q508%20-221%20508%20-298V-621Q508%20-667%20531.5%20-690.5Q555%20-714%20599%20-714Q643%20-714%20666.0%20-690.5Q689%20-667%20689%20-621V-300Q689%20-197%20653.5%20-127.5Q618%20-58%20548.0%20-23.5Q478%2011%20376%2011Z%22%20fill%3D%22%23FFFFFF%22/%3E%3C/g%3E%3C/svg%3E";
+  var ICONO="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220.0%200.0%201024.0%201024.0%22%20role%3D%22img%22%20aria-label%3D%22UApp%22%3E%3Crect%20width%3D%221024%22%20height%3D%221024%22%20rx%3D%22229.1%22%20fill%3D%22%23FFFFFF%22/%3E%3Cg%20transform%3D%22translate%28115.9%20568.0%29%20scale%280.2914%29%22%3E%3Cpath%20d%3D%22M376%2011Q299%2011%20240.0%20-8.5Q181%20-28%20140.5%20-67.0Q100%20-106%2079.5%20-164.5Q59%20-223%2059%20-300V-621Q59%20-667%2083.0%20-690.5Q107%20-714%20151%20-714Q196%20-714%20219.5%20-690.5Q243%20-667%20243%20-621V-298Q243%20-221%20277.0%20-182.0Q311%20-143%20376%20-143Q440%20-143%20474.0%20-182.0Q508%20-221%20508%20-298V-621Q508%20-667%20531.5%20-690.5Q555%20-714%20599%20-714Q643%20-714%20666.0%20-690.5Q689%20-667%20689%20-621V-300Q689%20-197%20653.5%20-127.5Q618%20-58%20548.0%20-23.5Q478%2011%20376%2011Z%22%20fill%3D%22%23AE2C2C%22/%3E%3Cpath%20d%3D%22M804%209Q773%209%20752.0%20-5.5Q731%20-20%20726.0%20-45.5Q721%20-71%20735%20-103L984%20-639Q1002%20-678%201028.5%20-696.0Q1055%20-714%201089%20-714Q1123%20-714%201148.5%20-696.0Q1174%20-678%201193%20-639L1442%20-103Q1458%20-71%201453.5%20-45.0Q1449%20-19%201428.5%20-5.0Q1408%209%201378%209Q1338%209%201316.5%20-9.0Q1295%20-27%201278%20-67L1224%20-194L1294%20-143H882L953%20-194L899%20-67Q881%20-27%20862.0%20-9.0Q843%209%20804%209ZM1087%20-513%20971%20-236%20943%20-284H1234L1206%20-236L1089%20-513Z%22%20fill%3D%22%23AE2C2C%22/%3E%3Cpath%20d%3D%22M1596%20189Q1554%20189%201531.0%20166.0Q1508%20143%201508%2099V-412Q1508%20-455%201530.5%20-478.0Q1553%20-501%201595%20-501Q1638%20-501%201660.5%20-478.0Q1683%20-455%201683%20-412V-354L1672%20-403Q1686%20-448%201730.5%20-475.5Q1775%20-503%201832%20-503Q1896%20-503%201944.5%20-472.0Q1993%20-441%202020.0%20-384.0Q2047%20-327%202047%20-246Q2047%20-167%202020.0%20-109.0Q1993%20-51%201944.5%20-20.0Q1896%2011%201832%2011Q1777%2011%201733.0%20-15.0Q1689%20-41%201674%20-83H1686V99Q1686%20143%201662.5%20166.0Q1639%20189%201596%20189ZM1776%20-120Q1803%20-120%201823.5%20-133.5Q1844%20-147%201856.0%20-174.5Q1868%20-202%201868%20-246Q1868%20-313%201842.0%20-342.5Q1816%20-372%201776%20-372Q1749%20-372%201728.0%20-359.0Q1707%20-346%201695.0%20-318.5Q1683%20-291%201683%20-246Q1683%20-180%201709.0%20-150.0Q1735%20-120%201776%20-120Z%22%20fill%3D%22%23AE2C2C%22/%3E%3Cpath%20d%3D%22M2208%20189Q2166%20189%202143.0%20166.0Q2120%20143%202120%2099V-412Q2120%20-455%202142.5%20-478.0Q2165%20-501%202207%20-501Q2250%20-501%202272.5%20-478.0Q2295%20-455%202295%20-412V-354L2284%20-403Q2298%20-448%202342.5%20-475.5Q2387%20-503%202444%20-503Q2508%20-503%202556.5%20-472.0Q2605%20-441%202632.0%20-384.0Q2659%20-327%202659%20-246Q2659%20-167%202632.0%20-109.0Q2605%20-51%202556.5%20-20.0Q2508%2011%202444%2011Q2389%2011%202345.0%20-15.0Q2301%20-41%202286%20-83H2298V99Q2298%20143%202274.5%20166.0Q2251%20189%202208%20189ZM2388%20-120Q2415%20-120%202435.5%20-133.5Q2456%20-147%202468.0%20-174.5Q2480%20-202%202480%20-246Q2480%20-313%202454.0%20-342.5Q2428%20-372%202388%20-372Q2361%20-372%202340.0%20-359.0Q2319%20-346%202307.0%20-318.5Q2295%20-291%202295%20-246Q2295%20-180%202321.0%20-150.0Q2347%20-120%202388%20-120Z%22%20fill%3D%22%23AE2C2C%22/%3E%3C/g%3E%3C/svg%3E";
   var DIAS=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
   var MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
   var LETRA=["D","L","M","X","J","V","S"];
@@ -5153,7 +5294,7 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
     } else {
       var a0=min(clases[0].ini), b0=min(clases[n-1].fin), tot=Math.max(1,b0-a0);
       var filas=clases.map(function(c){
-        return '<div class="i2-fila"><div class="i2-hr"><b>'+esc(c.ini)+'</b><span>'+esc(c.fin)+'</span></div><div><h3>'+esc(c.ramo)+'</h3><p>'+
+        return '<div class="i2-fila"><div class="i2-hr"><b>'+esc(c.ini)+'</b> <span>'+esc(c.fin)+'</span></div><div><h3>'+esc(c.ramo)+'</h3><p>'+
                esc([lugar(c),tc(c.prof)].filter(Boolean).join(", "))+'</p></div></div>';
       }).join("");
       var segs=clases.map(function(c){
@@ -5167,30 +5308,53 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
     enlazar(box);
   }
 
-  function pintarAvance(){
-    var box=document.getElementById("avanceMini"); if(!box) return;
+  function datosAvance(){
     var P=null; try{ P=window.__mallaSnap&&window.__mallaSnap(); }catch(e){}
     var A=P&&P[P.cur];
-    if(!A||!A.C||!A.C.length){ box.innerHTML=""; return; }
+    if(!A||!A.C||!A.C.length) return null;
     var C=A.C, S=A.S||{};
     var ok=C.filter(function(c){ return S[c.id]==="ok"; }).length;
     var niveles=Math.max.apply(null,C.map(function(c){ return c.t; }));
     var pend=C.filter(function(c){ return S[c.id]!=="ok"; });
     var nivel=pend.length?Math.min.apply(null,pend.map(function(c){ return c.t; })):niveles;
-    var cab='<div class="i2-avh"><h2>Tu avance</h2><button type="button" class="i2-link" data-i2="malla">Ver malla</button></div>';
-    if(!ok){
-      box.innerHTML='<section class="i2-av">'+cab+'<p class="i2-avp">Marca en Avance los ramos que ya aprobaste y aquí verás cuánto te falta.</p></section>';
-      enlazar(box); return;
-    }
     var segs="";
     for(var t=1;t<=niveles;t++){
       var del=C.filter(function(c){ return c.t===t; });
       var a=del.filter(function(c){ return S[c.id]==="ok"; }).length;
       segs+=(del.length&&a===del.length)?'<i class="ok"></i>':(a>0?'<i class="par"><b style="width:'+Math.round(a/del.length*100)+'%"></b></i>':'<i></i>');
     }
-    box.innerHTML='<section class="i2-av">'+cab+'<div class="i2-avn"><b>Nivel '+nivel+' de '+niveles+'</b><span>'+ok+' de '+C.length+' asignaturas</span></div>'+
-      '<div class="i2-seg" style="grid-template-columns:repeat('+niveles+',minmax(0,1fr))" aria-hidden="true">'+segs+'</div></section>';
-    enlazar(box);
+    return {ok:ok,total:C.length,niveles:niveles,nivel:nivel,
+            segs:'<span class="i2-seg" style="grid-template-columns:repeat('+niveles+',minmax(0,1fr))" aria-hidden="true">'+segs+'</span>'};
+  }
+  /* Inicio: tarjeta compacta al final · Avance: resumen arriba de la malla */
+  function pintarAvance(){
+    var d=datosAvance(), mini=document.getElementById("avanceMini"), top=document.getElementById("avanceTop");
+    if(mini){
+      if(!d) mini.innerHTML="";
+      else if(!d.ok) mini.innerHTML='<button type="button" class="i2-avc" data-i2="malla"><span class="i2-avc-t"><b>Tu avance</b>'+
+        '<span>Marca en Avance los ramos que ya aprobaste y aquí verás cuánto te falta.</span></span><span class="i2-avc-ir">Ir a Avance</span></button>';
+      else mini.innerHTML='<button type="button" class="i2-avc" data-i2="malla" aria-label="Tu avance: nivel '+d.nivel+' de '+d.niveles+', '+d.ok+' de '+d.total+' asignaturas. Ver malla">'+
+        '<span class="i2-avc-t"><b>Tu avance</b> <span>Nivel '+d.nivel+' de '+d.niveles+', '+d.ok+' de '+d.total+' asignaturas</span></span><span class="i2-avc-ir">Ver malla</span>'+d.segs+'</button>';
+      enlazar(mini);
+    }
+    if(top){
+      top.innerHTML=(d&&d.ok)?'<section class="i2-avtop" aria-label="Resumen de tu avance"><div class="i2-avn"><b>Vas en el nivel '+d.nivel+' de '+d.niveles+'</b> <span>'+
+        d.ok+' de '+d.total+' asignaturas</span></div>'+d.segs+'</section>':"";
+    }
+  }
+
+  /* Cada sección entra con un leve desplazamiento (se respeta «Menos movimiento») */
+  function animarSecciones(){
+    if(!window.MutationObserver) return;
+    document.querySelectorAll("body section[id]").forEach(function(s){
+      var antes=(s.style.display!=="none");
+      new MutationObserver(function(){
+        var ahora=(s.style.display!=="none");
+        if(ahora&&!antes){ s.classList.remove("u2-entra"); void s.offsetWidth; s.classList.add("u2-entra"); }
+        antes=ahora;
+      }).observe(s,{attributes:true,attributeFilter:["style"]});
+    });
+    var m=document.getElementById("mural"); if(m&&m.style.display!=="none") m.classList.add("u2-entra");
   }
 
   function chip(){
@@ -5212,6 +5376,12 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
     var jn=document.getElementById("jornadaBarName");
     if(jn&&window.MutationObserver) new MutationObserver(function(){ setTimeout(todo,0); }).observe(jn,{childList:true,characterData:true,subtree:true});
     document.addEventListener("visibilitychange",function(){ if(!document.hidden) todo(); });
+    /* Notas: los recuadros informativos se muestran resumidos y se abren al tocarlos */
+    document.addEventListener("click",function(e){ var p=(e.target&&e.target.closest)?e.target.closest("#pru .pinfo"):null; if(p&&!e.target.closest("a")) p.classList.toggle("abierto"); });
+    /* Avance: el resumen se actualiza al marcar ramos */
+    var ml=document.getElementById("malla"); if(ml) ml.addEventListener("click",function(){ setTimeout(pintarAvance,80); });
+    document.querySelectorAll('.tab[data-tab="malla"]').forEach(function(t){ t.addEventListener("click",function(){ setTimeout(pintarAvance,0); }); });
+    animarSecciones();
     setInterval(function(){ var m=document.getElementById("mural"); if(m&&m.style.display!=="none") pintarInicio(); },60000);
     todo();
   }
