@@ -6,8 +6,8 @@
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#ffffff",
-  "theme_color": "#8b0c0c",
+  "background_color": "#FBF5F5",
+  "theme_color": "#FBF5F5",
   "icons": [
     {
       "src": "./icono-uapp-192.png",
