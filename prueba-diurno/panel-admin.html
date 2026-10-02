@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>UApp · Panel de administración (prueba)</title>
+<title>UApp · Panel de administración</title>
 <style>
   :root{ --wine:#8b0c0c; --wine2:#6c0909; --gold:#c79a3e; --navy:#2c080a; --ink:#2a2b2e; --muted:#7a756c; --line:#e6e0d6; --soft:#faf7f2; --ok:#2c7a4d; }
   *{ box-sizing:border-box; margin:0; padding:0; }
@@ -18,11 +18,11 @@
   .wrap{ max-width:820px; margin:0 auto; padding:18px 16px 40px; }
   .btn{ background:var(--wine); color:#fff; border:0; border-radius:10px; padding:12px 18px; font-size:.95rem; font-weight:700; cursor:pointer; }
   .btn:hover{ background:var(--wine2); }
+  .btn:disabled{ opacity:.55; cursor:progress; }
   .btn.ghost{ background:#fff; color:var(--wine); border:1.5px solid var(--wine); }
   .btn.sm{ padding:6px 12px; font-size:.8rem; border-radius:8px; }
   .btn.gold{ background:var(--gold); color:#3a2e0a; }
   .btn.gray{ background:#e7e4de; color:#555; }
-  /* login gate */
   #gate{ max-width:420px; margin:60px auto; background:#fff; border:1px solid var(--line); border-radius:16px; padding:30px 24px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,.06); }
   #gate h1{ color:var(--navy); font-size:1.3rem; }
   #gate p{ color:var(--muted); font-size:.88rem; margin:10px 0 20px; line-height:1.5; }
@@ -31,38 +31,66 @@
   .card{ background:#fff; border:1px solid var(--line); border-radius:14px; padding:18px; margin-bottom:16px; }
   .card h2{ font-size:1rem; color:var(--navy); margin-bottom:14px; display:flex; align-items:center; gap:8px; }
   label{ display:block; font-size:.78rem; font-weight:700; color:var(--navy); margin:10px 0 4px; }
-  input, textarea, select{ width:100%; border:1px solid #cfc9bd; border-radius:9px; padding:10px 12px; font-size:.92rem; font-family:inherit; background:#fff; }
-  textarea{ min-height:80px; resize:vertical; }
-  .row2{ display:flex; gap:10px; }
-  .row2 > div{ flex:1; }
+  input, textarea, select{ width:100%; border:1px solid #cfc9bd; border-radius:9px; padding:10px 12px; font-size:.92rem; font-family:inherit; background:#fff; color:var(--ink); }
+  textarea{ min-height:110px; resize:vertical; line-height:1.5; }
+  .row2{ display:flex; gap:10px; flex-wrap:wrap; }
+  .row2 > div{ flex:1; min-width:150px; }
   .switch{ display:flex; align-items:center; gap:10px; margin-top:12px; font-size:.85rem; }
   .switch input{ width:auto; }
   .msg{ font-size:.85rem; border-radius:10px; padding:10px 12px; margin-top:12px; display:none; }
   .msg.ok{ background:#e6f4ea; color:#1e6b3a; border:1px solid #b6dcc2; display:block; }
   .msg.err{ background:#fbe9e6; color:#a3342a; border:1px solid #e3b3ab; display:block; white-space:pre-wrap; }
+  .msg.wait{ background:#f3efe6; color:#8a6d1f; border:1px solid #e0d3ae; display:block; }
   .aviso{ border:1px solid var(--line); border-left:5px solid var(--gold); border-radius:12px; padding:12px 14px; margin-bottom:10px; background:#fff; }
   .aviso.importante{ border-left-color:var(--wine); }
   .aviso .at{ font-weight:800; color:var(--navy); }
-  .aviso .ax{ font-size:.85rem; color:#555; margin:4px 0; line-height:1.45; }
-  .aviso . meta{ font-size:.72rem; color:var(--muted); }
-  .estado{ display:inline-block; font-size:.68rem; font-weight:800; border-radius:20px; padding:2px 9px; }
+  .aviso .ax{ font-size:.85rem; color:#555; margin:4px 0; line-height:1.45; white-space:pre-wrap; }
+  .aviso .meta{ font-size:.72rem; color:var(--muted); }
+  .estado{ display:inline-block; font-size:.68rem; font-weight:800; border-radius:20px; padding:2px 9px; white-space:nowrap; }
   .estado.pub{ background:#e6f4ea; color:#1e6b3a; }
   .estado.bor{ background:#f3efe6; color:#8a6d1f; }
   .acts{ display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
   .empty{ color:var(--muted); font-size:.85rem; text-align:center; padding:14px; }
-  .hint{ font-size:.72rem; color:var(--muted); margin-top:4px; }
+  .asis summary{ cursor:pointer; font-size:.92rem; color:var(--navy); list-style:none; display:flex; align-items:center; gap:8px; }
+  .asis summary::-webkit-details-marker{ display:none; }
+  .asis summary::before{ content:"▸"; color:var(--wine); font-weight:900; }
+  .asis[open] summary::before{ content:"▾"; }
+  .asis summary b{ color:var(--wine); }
+  .opts{ display:grid; gap:8px; margin:14px 0 4px; }
+  /* La regla global pone width:100% a todo input; aquí hay que devolverle
+     su tamaño natural a la casilla, o se come la fila entera. */
+  .opt{ display:flex; gap:10px; align-items:flex-start; background:var(--soft);
+        border:1px solid var(--line); border-radius:10px; padding:11px 13px;
+        cursor:pointer; margin:0; font-size:.86rem; font-weight:500; color:var(--ink); }
+  .opt input[type="checkbox"]{ width:16px; height:16px; min-width:16px; flex:0 0 16px;
+        margin:1px 0 0; padding:0; border-radius:4px; accent-color:var(--wine); }
+  .opt .otxt{ flex:1 1 auto; min-width:0; }
+  .opt .otit{ display:block; font-weight:700; color:var(--navy); margin-bottom:2px; }
+  .opt .hint{ margin:0; font-size:.76rem; line-height:1.35; }
+  .grupo{ font-size:.78rem; font-weight:800; color:var(--wine); text-transform:uppercase; letter-spacing:.04em; margin:16px 0 8px; padding-bottom:5px; border-bottom:2px solid var(--line); display:flex; justify-content:space-between; align-items:center; }
+  .grupo span{ font-weight:700; color:var(--muted); text-transform:none; letter-spacing:0; }
+  .aviso.vencido{ opacity:.72; border-left-color:#b9b3a7; }
+  .estado.ven{ background:#efece6; color:#6b6660; }
+  .editando{ box-shadow:0 0 0 3px rgba(199,154,62,.35); border-color:var(--gold)!important; }
+  .hint{ font-size:.72rem; color:var(--muted); margin-top:4px; line-height:1.4; }
+  /* Adjuntar documento */
+  .drop{ border:1.5px dashed #cfc9bd; border-radius:11px; background:var(--soft); padding:14px; text-align:center; }
+  .drop input[type=file]{ display:none; }
+  .filepick{ display:inline-block; background:#fff; border:1.5px solid var(--wine); color:var(--wine); font-weight:700; font-size:.85rem; padding:9px 16px; border-radius:9px; cursor:pointer; }
+  .filepick:hover{ background:var(--wine); color:#fff; }
+  .fileok{ display:flex; align-items:center; gap:8px; justify-content:space-between; background:#fff; border:1px solid var(--line); border-radius:9px; padding:9px 12px; font-size:.85rem; }
+  .fileok a{ color:var(--wine); font-weight:700; text-decoration:none; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .doclink{ font-size:.72rem; color:var(--wine); font-weight:700; text-decoration:none; }
 </style>
 </head>
 <body>
 
-<!-- Barra superior (oculta hasta login) -->
 <div class="top" id="topbar" style="display:none">
-  <div class="brand">UApp · Panel de administración<small>Prueba v3.0 · carga de avisos del mural</small></div>
+  <div class="brand">UApp · Panel de administración<small>Avisos del mural</small></div>
   <div class="user" id="userInfo"></div>
   <button class="btn ghost sm" id="btnOut">Salir</button>
 </div>
 
-<!-- Puerta de login -->
 <div id="gate">
   <h1>Panel de administración</h1>
   <p>Acceso solo para personal autorizado. Inicia sesión con tu <b>cuenta institucional</b>.</p>
@@ -73,18 +101,37 @@
   <div class="msg" id="gateMsg"></div>
 </div>
 
-<!-- Panel (oculto hasta login+rol) -->
 <div class="wrap" id="panel" style="display:none">
 
+  <details class="card asis" id="asisCard">
+    <summary><b>🧮 Asistente de evaluaciones</b> — pega la tabla y la ordena por ti</summary>
+    <div style="margin-top:12px">
+      <p class="hint" style="margin-bottom:8px">Copia las filas desde el Excel o el Word que envía el departamento (con o sin la fila de títulos) y pégalas aquí. El asistente las ordena por día y arma el aviso.</p>
+      <textarea id="ev_pegar" placeholder="Pega aquí las filas de la tabla…" style="min-height:120px;font-family:ui-monospace,monospace;font-size:.82rem"></textarea>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn" id="btnOrdenar">Ordenar y usar en el aviso</button>
+        <button class="btn gold" id="btnPublicarEv">📅 Publicar en la app</button>
+        <button class="btn ghost" id="btnLimpiarEv">Limpiar</button>
+      </div>
+      <div class="msg" id="evMsg"></div>
+      <p class="hint" style="margin-top:10px">«Publicar en la app» guarda cada evaluación con su hora, sala, modalidad y docente. Los estudiantes la ven en <b>Esta semana</b>, arriba del Mural, y en Pruebas. Si vuelves a publicar la misma tabla, se corrige en vez de duplicarse.</p>
+      <div id="evPublicadas" style="margin-top:6px"></div>
+    </div>
+  </details>
+
   <div class="card">
-    <h2>➕ Nuevo aviso</h2>
-    <label>Título</label>
+    <h2 id="formTitle">➕ Nuevo aviso</h2>
+
+    <label for="f_titulo">Título</label>
     <input id="f_titulo" placeholder="Ej: Fechas de evaluaciones">
-    <label>Texto</label>
+
+    <label for="f_texto">Texto</label>
     <textarea id="f_texto" placeholder="Contenido del aviso…"></textarea>
+    <div class="hint">Los saltos de línea se respetan. Si pegas una dirección web, en la app aparece como enlace tocable.</div>
+
     <div class="row2">
       <div>
-        <label>Nivel</label>
+        <label for="f_nivel">Nivel</label>
         <select id="f_nivel">
           <option value="normal">Normal</option>
           <option value="importante">Importante</option>
@@ -93,7 +140,7 @@
         </select>
       </div>
       <div>
-        <label>Jornada</label>
+        <label for="f_jornada">Jornada</label>
         <select id="f_jornada">
           <option value="tech">Vespertino TECH</option>
           <option value="diurno">Diurno</option>
@@ -101,120 +148,544 @@
         </select>
       </div>
     </div>
+
     <div class="row2">
       <div>
-        <label>Vence el (opcional)</label>
+        <label for="f_autor">Publicado por</label>
+        <input id="f_autor" placeholder="Ej: Centro de Estudiantes">
+        <div class="hint">Es la firma visible del aviso. Aparte, el sistema registra automáticamente tu cuenta institucional como responsable, y eso no se puede modificar.</div>
+      </div>
+      <div>
+        <label for="f_hasta">Vence el (opcional)</label>
         <input id="f_hasta" type="date">
-        <div class="hint">Tras esta fecha, el aviso desaparece solo.</div>
+        <div class="hint">Tras esta fecha, el aviso desaparece solo. Si lo dejas en blanco, queda publicado indefinidamente.</div>
       </div>
     </div>
+
+    <div class="opts">
+      <label class="opt"><input type="checkbox" id="f_fijado">
+        <span class="otxt"><span class="otit">📌 Fijar arriba del mural</span>
+        <span class="hint">Aparece primero, sobre los demás avisos, sin importar cuándo vence.</span></span></label>
+      <label class="opt"><input type="checkbox" id="f_vervig" checked>
+        <span class="otxt"><span class="otit">⏳ Mostrar cuántos días quedan</span>
+        <span class="hint">Si lo desmarcas, el aviso igual desaparece en su fecha, pero el estudiante no ve la cuenta regresiva.</span></span></label>
+    </div>
+
+    <label>Documento adjunto (opcional)</label>
+    <div class="drop" id="dropZone">
+      <label class="filepick" for="f_file">📎 Elegir documento…</label>
+      <input type="file" id="f_file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,image/*">
+      <div class="hint" style="margin-top:8px">PDF, Word, Excel o imagen · hasta 20 MB</div>
+    </div>
+    <div id="fileBox" style="display:none;margin-top:8px"></div>
+    <div id="labelBox" style="display:none">
+      <label for="f_doclabel">Texto del botón</label>
+      <input id="f_doclabel" placeholder="📄 Ver documento">
+      <div class="hint">Cómo se verá el botón en la app. Si lo dejas vacío, dirá "📄 Ver documento".</div>
+    </div>
+
     <div class="switch">
       <input type="checkbox" id="f_publicado">
       <label for="f_publicado" style="margin:0">Publicar de inmediato (si no, queda como borrador)</label>
     </div>
-    <div style="margin-top:14px">
+
+    <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn" id="btnGuardar">Guardar aviso</button>
+      <button class="btn ghost" id="btnCancelar" style="display:none">Cancelar edición</button>
     </div>
     <div class="msg" id="formMsg"></div>
   </div>
 
   <div class="card">
     <h2>📋 Avisos cargados</h2>
+    <div class="msg" id="listMsg"></div>
     <div id="lista"><div class="empty">Cargando…</div></div>
   </div>
 
 </div>
 
+<!-- Librería de Supabase: versión fija y verificada con candado de integridad.
+     Si el archivo en el CDN fuera alterado, el navegador se niega a ejecutarlo. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.7/dist/umd/supabase.js" integrity="sha384-hazsLVND17GNLVdtV19te6qbFT2YuLgl8SamcF+QR5eIOC+W4dGKrUNMxU1jH1zD" crossorigin="anonymous"></script>
 <script type="module">
-  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+  const { createClient } = window.supabase;
   const SUPABASE_URL = "https://pohrbljeamhfkcjxikct.supabase.co";
   const SUPABASE_KEY = "sb_publishable_XVNXhyYjebrrs0R0oKgLZw_9tBbDazZ";
+  const BUCKET = "documentos";           // bucket público de Supabase Storage
+  const MAX_MB = 20;
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
   const $ = id => document.getElementById(id);
   const gate = $('gate'), gateMsg = $('gateMsg'), panel = $('panel'), topbar = $('topbar');
-  let miRol = null, miEmail = null;
+  let miRol = null, miEmail = null, miNombre = null;
+  let docUrl = null, docName = null;      // documento adjunto del aviso en edición
+  let editandoId = null;                  // id del aviso que se está editando (null = nuevo)
 
+  /* ---------- utilidades ---------- */
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function show(el, tipo, texto){ el.className = 'msg ' + tipo; el.innerHTML = texto; if (tipo==='ok') setTimeout(()=>{ el.className='msg'; }, 5000); }
+  function hide(el){ el.className = 'msg'; }
+
+  /* Traduce los errores técnicos a algo entendible */
+  function explicar(error){
+    const m = (error && (error.message || error.error_description || error.error)) || 'Error desconocido';
+    const t = m.toLowerCase();
+    if (t.includes('jwt') || t.includes('expired') || t.includes('401') || t.includes('invalid token'))
+      return 'Tu sesión caducó. Cierra sesión con el botón "Salir" y vuelve a entrar.';
+    if (t.includes('row-level security') || t.includes('policy') || t.includes('permission') || t.includes('403'))
+      return 'No tienes permiso para esta acción. Revisa que tu correo esté en la lista de editores.';
+    if (t.includes('bucket not found'))
+      return 'Falta crear el depósito de archivos. En Supabase: Storage → New bucket → nombre "'+BUCKET+'" → marcar Public bucket.';
+    if (t.includes('failed to fetch') || t.includes('network'))
+      return 'Sin conexión con el servidor. Revisa tu internet; si persiste, el proyecto de Supabase puede estar en pausa.';
+    if (t.includes('column') && t.includes('does not exist'))
+      return 'Falta una columna en la tabla de avisos: ' + m;
+    return m;
+  }
+
+  /* ---------- login ---------- */
   $('btnLogin').onclick = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider:'azure',
       options:{ scopes:'email openid profile', redirectTo: location.href.split('#')[0] }
     });
-    if (error){ gateMsg.className='msg err'; gateMsg.textContent = error.message; }
+    if (error) show(gateMsg,'err', esc(explicar(error)));
   };
   $('btnOut').onclick = async () => { await supabase.auth.signOut(); location.href = location.href.split('#')[0]; };
 
   async function iniciar(session){
     miEmail = session.user.email;
-    // Verifica rol
     const { data, error } = await supabase.from('editores').select('rol,nombre').eq('email', miEmail).maybeSingle();
-    if (error){ gate.style.display='block'; gateMsg.className='msg err'; gateMsg.textContent='Error verificando rol: '+error.message; return; }
+    if (error){ gate.style.display='block'; show(gateMsg,'err','Error verificando permisos: '+esc(explicar(error))); return; }
     if (!data){
-      // logueado pero sin permiso
       gate.style.display='block';
-      gateMsg.className='msg err';
-      gateMsg.innerHTML = 'Iniciaste sesión como <b>'+miEmail+'</b>, pero no tienes permisos de edición. <br><button class="btn ghost sm" style="margin-top:8px" onclick="location.reload()">Volver</button>';
+      show(gateMsg,'err','Iniciaste sesión como <b>'+esc(miEmail)+'</b>, pero no tienes permisos de edición.<br><button class="btn ghost sm" style="margin-top:8px" onclick="location.reload()">Volver</button>');
       await supabase.auth.signOut();
       return;
     }
-    miRol = data.rol;
-    gate.style.display='none';
-    topbar.style.display='flex';
-    panel.style.display='block';
-    $('userInfo').innerHTML = (data.nombre||miEmail)+' <span class="rolechip">'+miRol+'</span><br>'+miEmail;
+    miRol = data.rol; miNombre = data.nombre || miEmail;
+    gate.style.display='none'; topbar.style.display='flex'; panel.style.display='block';
+    $('userInfo').innerHTML = esc(miNombre)+' <span class="rolechip">'+esc(miRol)+'</span><br>'+esc(miEmail);
+    $('f_autor').value = miNombre;          // autor automático
     cargarAvisos();
+    cargarPublicadas();
   }
 
+  /* ---------- adjuntar documento ---------- */
+  $('f_file').onchange = async (ev) => {
+    const file = ev.target.files && ev.target.files[0];
+    if (!file) return;
+    if (file.size > MAX_MB*1024*1024){
+      show($('formMsg'),'err','El archivo pesa '+(file.size/1048576).toFixed(1)+' MB y el máximo son '+MAX_MB+' MB.');
+      ev.target.value=''; return;
+    }
+    show($('formMsg'),'wait','⏳ Subiendo "'+esc(file.name)+'"…');
+    const limpio = file.name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9._-]/g,'-').toLowerCase();
+    const ruta = 'avisos/' + Date.now() + '-' + limpio;
+    const { error } = await supabase.storage.from(BUCKET).upload(ruta, file, { cacheControl:'3600', upsert:false });
+    if (error){ show($('formMsg'),'err','No se pudo subir el documento:\n'+esc(explicar(error))); ev.target.value=''; return; }
+    const { data:pub } = supabase.storage.from(BUCKET).getPublicUrl(ruta);
+    docUrl = pub.publicUrl; docName = file.name;
+    pintarAdjunto();
+    hide($('formMsg'));
+    ev.target.value='';
+  };
+
+  function pintarAdjunto(){
+    const box = $('fileBox');
+    if (!docUrl){
+      box.style.display='none'; box.innerHTML='';
+      $('labelBox').style.display='none'; $('dropZone').style.display='block';
+      return;
+    }
+    box.style.display='block';
+    box.innerHTML = '<div class="fileok"><span>📎 <a href="'+esc(docUrl)+'" target="_blank" rel="noopener">'+esc(docName)+'</a></span>'
+                  + '<button class="btn sm gray" id="btnQuitarDoc">Quitar</button></div>';
+    $('dropZone').style.display='none';
+    $('labelBox').style.display='block';
+    $('btnQuitarDoc').onclick = () => { docUrl=null; docName=null; $('f_doclabel').value=''; pintarAdjunto(); };
+  }
+
+  /* ---------- guardar ---------- */
   $('btnGuardar').onclick = async () => {
+    const btn = $('btnGuardar');
     const titulo = $('f_titulo').value.trim();
     const texto  = $('f_texto').value.trim();
-    if (!titulo){ formMsgShow('err','Ponle un título al aviso.'); return; }
+    if (!titulo){ show($('formMsg'),'err','Ponle un título al aviso.'); $('f_titulo').focus(); return; }
+    if (!texto){ show($('formMsg'),'err','Escribe el texto del aviso.'); $('f_texto').focus(); return; }
+
     const fila = {
       titulo, texto,
       nivel: $('f_nivel').value,
       jornada: $('f_jornada').value,
       hasta: $('f_hasta').value || null,
-      publicado: $('f_publicado').checked
+      fijado: $('f_fijado').checked,
+      mostrar_vigencia: $('f_vervig').checked,
+      publicado: $('f_publicado').checked,
+      autor: $('f_autor').value.trim() || miNombre,
+      doc_url: docUrl,
+      doc_label: docUrl ? ($('f_doclabel').value.trim() || '📄 Ver documento') : null
     };
-    const { error } = await supabase.from('avisos').insert(fila);
-    if (error){ formMsgShow('err','No se pudo guardar:\n'+error.message); return; }
-    formMsgShow('ok','✅ Aviso guardado'+(fila.publicado?' y publicado':' como borrador')+'.');
-    $('f_titulo').value=''; $('f_texto').value=''; $('f_hasta').value=''; $('f_publicado').checked=false;
+
+    btn.disabled = true; show($('formMsg'),'wait', editandoId ? '⏳ Guardando cambios…' : '⏳ Guardando…');
+    const { error } = editandoId
+      ? await supabase.from('avisos').update(fila).eq('id', editandoId)
+      : await supabase.from('avisos').insert(fila);
+    btn.disabled = false;
+    if (error){ show($('formMsg'),'err','No se pudo guardar:\n'+esc(explicar(error))); return; }
+
+    const eraEdicion = !!editandoId;
+    limpiarFormulario();
+    show($('formMsg'),'ok', eraEdicion ? '✅ Cambios guardados.' : ('✅ Aviso guardado'+(fila.publicado?' y publicado.':' como borrador.')));
     cargarAvisos();
   };
-  function formMsgShow(t,m){ const e=$('formMsg'); e.className='msg '+t; e.textContent=m; setTimeout(()=>{ if(t==='ok') e.className='msg'; }, 4000); }
 
+  /* ---------- edición ---------- */
+  function limpiarFormulario(){
+    editandoId = null;
+    $('f_titulo').value=''; $('f_texto').value=''; $('f_hasta').value='';
+    $('f_publicado').checked=false; $('f_doclabel').value='';
+    $('f_fijado').checked=false; $('f_vervig').checked=true;
+    $('f_nivel').value='normal'; $('f_autor').value = miNombre || '';
+    docUrl=null; docName=null; pintarAdjunto();
+    $('formTitle').textContent='➕ Nuevo aviso';
+    $('btnGuardar').textContent='Guardar aviso';
+    $('btnCancelar').style.display='none';
+    document.querySelectorAll('.aviso.editando').forEach(x=>x.classList.remove('editando'));
+    hide($('formMsg'));
+  }
+  $('btnCancelar').onclick = () => { limpiarFormulario(); window.scrollTo({top:0,behavior:'smooth'}); };
+
+  function editar(a){
+    editandoId = a.id;
+    $('f_titulo').value = a.titulo || '';
+    $('f_texto').value  = a.texto || '';
+    $('f_nivel').value  = a.nivel || 'normal';
+    $('f_jornada').value= a.jornada || 'tech';
+    $('f_autor').value  = a.autor || miNombre || '';
+    $('f_hasta').value  = a.hasta || '';
+    $('f_publicado').checked = !!a.publicado;
+    $('f_fijado').checked = a.fijado === true;
+    $('f_vervig').checked = a.mostrar_vigencia !== false;
+    if (a.doc_url){
+      docUrl = a.doc_url;
+      docName = decodeURIComponent(String(a.doc_url).split('/').pop().split('?')[0]) || 'documento';
+      $('f_doclabel').value = a.doc_label || '';
+    } else { docUrl=null; docName=null; $('f_doclabel').value=''; }
+    pintarAdjunto();
+    $('formTitle').textContent='✏️ Editando aviso';
+    $('btnGuardar').textContent='Guardar cambios';
+    $('btnCancelar').style.display='inline-block';
+    document.querySelectorAll('.aviso.editando').forEach(x=>x.classList.remove('editando'));
+    const card = document.querySelector('[data-card="'+a.id+'"]');
+    if (card) card.classList.add('editando');
+    hide($('formMsg'));
+    window.scrollTo({ top:0, behavior:'smooth' });
+    $('f_titulo').focus();
+  }
+
+  /* ---------- lista ---------- */
   async function cargarAvisos(){
-    const { data, error } = await supabase.from('avisos').select('*').order('created_at',{ascending:false});
     const cont = $('lista');
-    if (error){ cont.innerHTML='<div class="msg err">'+error.message+'</div>'; return; }
+    const { data, error } = await supabase.from('avisos').select('*').order('created_at',{ascending:false});
+    if (error){ cont.innerHTML=''; show($('listMsg'),'err','No se pudieron cargar los avisos:\n'+esc(explicar(error))); return; }
+    hide($('listMsg'));
     if (!data.length){ cont.innerHTML='<div class="empty">Aún no hay avisos. Crea el primero arriba.</div>'; return; }
-    cont.innerHTML = data.map(a => `
-      <div class="aviso ${a.nivel==='importante'?'importante':''}">
+
+    /* Separar por estado: vigentes, borradores y vencidos */
+    const hoy = new Date(); hoy.setHours(0,0,0,0);
+    const vencido = a => { if(!a.hasta) return false; const d=new Date(a.hasta+'T00:00:00'); return d < hoy; };
+    const vigentes  = data.filter(a =>  a.publicado && !vencido(a));
+    const borrador  = data.filter(a => !a.publicado && !vencido(a));
+    const vencidos  = data.filter(a =>  vencido(a));
+
+    const tarjeta = a => {
+      const ven = vencido(a);
+      const estado = ven ? '<span class="estado ven">VENCIDO</span>'
+                         : (a.publicado ? '<span class="estado pub">PUBLICADO</span>'
+                                        : '<span class="estado bor">BORRADOR</span>');
+      return `
+      <div class="aviso ${a.nivel==='importante'&&!ven?'importante':''} ${ven?'vencido':''}" data-card="${esc(a.id)}">
         <div style="display:flex;justify-content:space-between;gap:8px;align-items:start">
           <div class="at">${esc(a.titulo)||'(sin título)'}</div>
-          <span class="estado ${a.publicado?'pub':'bor'}">${a.publicado?'PUBLICADO':'BORRADOR'}</span>
+          ${estado}
         </div>
         <div class="ax">${esc(a.texto||'')}</div>
-        <div class="meta" style="font-size:.72rem;color:#999">${a.jornada||''} · ${a.nivel||''}${a.hasta?' · vence '+a.hasta:''}</div>
+        <div class="meta">${esc(a.jornada||'')} · ${esc(a.nivel||'')}${a.autor?' · firma: '+esc(a.autor):''}${a.hasta?(ven?' · venció el ':' · vence ')+esc(a.hasta):''}</div>
+        ${a.creado_por?'<div class="meta" style="color:#a09a90">🔒 registrado por '+esc(a.creado_por)+'</div>':''}
+        ${a.doc_url?'<div style="margin-top:5px">📎 <a class="doclink" href="'+esc(a.doc_url)+'" target="_blank" rel="noopener">'+esc(a.doc_label||'Ver documento')+'</a></div>':''}
         <div class="acts">
-          <button class="btn sm ${a.publicado?'gray':'gold'}" data-toggle="${a.id}" data-pub="${a.publicado}">${a.publicado?'Despublicar':'Publicar'}</button>
-          <button class="btn sm ghost" data-del="${a.id}">Eliminar</button>
+          <button class="btn sm ghost" data-edit="${esc(a.id)}">✏️ Editar</button>
+          <button class="btn sm ${a.publicado?'gray':'gold'}" data-toggle="${esc(a.id)}" data-pub="${a.publicado}">${a.publicado?'Despublicar':'Publicar'}</button>
+          <button class="btn sm ghost" data-del="${esc(a.id)}">Eliminar</button>
         </div>
-      </div>`).join('');
-    cont.querySelectorAll('[data-toggle]').forEach(b=>b.onclick=async()=>{
-      await supabase.from('avisos').update({publicado: b.dataset.pub!=='true'}).eq('id', b.dataset.toggle);
+      </div>`;
+    };
+
+    const grupo = (titulo, arr, nota) => arr.length
+      ? '<div class="grupo">'+titulo+' <span>'+arr.length+(nota?' · '+nota:'')+'</span></div>' + arr.map(tarjeta).join('')
+      : '';
+
+    cont.innerHTML = grupo('En el mural', vigentes, 'visibles ahora')
+                   + grupo('Borradores', borrador, 'no visibles')
+                   + grupo('Historial', vencidos, 'ya vencidos');
+
+    const porId = {}; data.forEach(a => porId[a.id] = a);
+
+    cont.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => editar(porId[b.dataset.edit]));
+
+    cont.querySelectorAll('[data-toggle]').forEach(b => b.onclick = async () => {
+      b.disabled = true; hide($('listMsg'));
+      const nuevo = b.dataset.pub !== 'true';
+      const { error } = await supabase.from('avisos').update({ publicado: nuevo }).eq('id', b.dataset.toggle);
+      b.disabled = false;
+      if (error){ show($('listMsg'),'err','No se pudo cambiar el estado:\n'+esc(explicar(error))); return; }
+      show($('listMsg'),'ok', nuevo ? '✅ Aviso publicado.' : '✅ Aviso despublicado.');
       cargarAvisos();
     });
-    cont.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{
-      if(!confirm('¿Eliminar este aviso?')) return;
-      await supabase.from('avisos').delete().eq('id', b.dataset.del);
+
+    cont.querySelectorAll('[data-del]').forEach(b => b.onclick = async () => {
+      if (!confirm('¿Eliminar este aviso? No se puede deshacer.')) return;
+      b.disabled = true; hide($('listMsg'));
+      const { error } = await supabase.from('avisos').delete().eq('id', b.dataset.del);
+      b.disabled = false;
+      if (error){ show($('listMsg'),'err','No se pudo eliminar:\n'+esc(explicar(error))); return; }
+      if (editandoId === b.dataset.del) limpiarFormulario();
+      show($('listMsg'),'ok','✅ Aviso eliminado.');
       cargarAvisos();
     });
   }
-  function esc(s){ return (s||'').replace(/</g,'&lt;'); }
 
-  // arranque
+  /* ---------- asistente de evaluaciones ---------- */
+/* ===== Asistente de evaluaciones: lee la tabla pegada y la ordena =====
+   Acepta tablas copiadas desde Excel o Word (una fila por línea) y las
+   publicaciones de Teams, que al copiarse reparten cada fila en varias líneas. */
+const MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const DIAS=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+const MIN=['de','del','la','las','los','y','e','en','a','al','el'];
+const RE_FECHA=/^(\d{1,2})[-\/.](\d{1,2})(?:[-\/.](\d{2,4}))?$/;
+const JORNADA_TXT={tech:'TECH',diurno:'Diurno',vregular:'Vespertino Regular'};
+
+function tc(s){
+  return String(s).toLowerCase().replace(/\s+/g,' ').trim().split(' ').map((w,i)=>{
+    if(/^s\d+$/.test(w)) return w.toUpperCase();
+    if(/^(i{1,3}|iv|vi{0,3}|ix|x)$/.test(w)) return w.toUpperCase();   /* II, III, IV… */
+    if(i>0 && MIN.includes(w)) return w;
+    return w.charAt(0).toUpperCase()+w.slice(1);
+  }).join(' ');
+}
+function celdas(linea){
+  if(/\t/.test(linea)) return linea.split(/\t+/);
+  if(/\s\|\s/.test(linea)) return linea.split(/\s*\|\s*/);
+  return linea.split(/ {2,}/);
+}
+/* Textos que no son datos: encabezados de la tabla y lo que Teams agrega al copiar */
+function esRuido(c){
+  const t=String(c||'').trim();
+  if(!t) return true;
+  if(/^(fecha|jornada|asignatura|docente|hora y modalidad|hora|modalidad|sala|ver más|ver mas|editado|nuevo|leído por última vez|leido por ultima vez)$/i.test(t)) return true;
+  if(/^derecho temuco/i.test(t)) return true;
+  /* títulos de las publicaciones: «EVALUACIONES VIERNES 11 DE…», «EVALUACIÓN VESPERTINO REGULAR» */
+  if(/^evaluaci[oó]n(es)?\s+(lunes|martes|mi[eé]rcoles|jueves|viernes|s[aá]bado|domingo|tech|diurn|vespertin|regular|semana|\d)/i.test(t)) return true;
+  if(/^\d{1,2}-\d{1,2}\s+\d{1,2}:\d{2}$/.test(t)) return true;
+  if(/^(lunes|martes|miércoles|miercoles|jueves|viernes|sábado|sabado|domingo)\s+\d{1,2}:\d{2}$/i.test(t)) return true;
+  /* «2 reacciones de Corazón.»: solo cuando empieza con un número (nunca un ramo como Teoría de la Reacción Penal) */
+  if(/^\d+\s+reacci[oó]n/i.test(t) || /\.pdf$/i.test(t) || /^\d{1,2}$/.test(t)) return true;
+  return false;
+}
+function aJornada(c){
+  const t=String(c||'').trim().toLowerCase();
+  if(/^(tech|vespertin[oa]\s+tech)$/.test(t)) return 'tech';
+  if(/^diurn[oa]s?$/.test(t)) return 'diurno';
+  if(/^(vespertin[oa]s?|v\.?\s?regular|vespertino regular)$/.test(t)) return 'vregular';
+  return null;
+}
+function filasCrudas(texto){
+  const lineas=String(texto).split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+  const limpias=l=>celdas(l).map(c=>c.trim()).filter(c=>c&&!esRuido(c));
+  const conFecha=lineas.filter(l=>limpias(l).some(c=>RE_FECHA.test(c)));
+  const enUnaLinea=conFecha.filter(l=>limpias(l).length>=3);
+  if(conFecha.length && enUnaLinea.length>=Math.ceil(conFecha.length*0.6))
+    return lineas.map(l=>({orig:l,cs:limpias(l)})).filter(f=>f.cs.length);
+  /* formato Teams: cada evaluación empieza con su fecha */
+  const filas=[]; let cur=null;
+  String(texto).split(/[\t\r\n]+/).map(c=>c.trim()).filter(c=>c&&!esRuido(c)).forEach(c=>{
+    if(RE_FECHA.test(c)){ cur={orig:'',cs:[c]}; filas.push(cur); } else if(cur){ cur.cs.push(c); }
+  });
+  filas.forEach(f=>{ f.orig=f.cs.join(' | '); });
+  return filas;
+}
+function parseFila(cs, anio){
+  let fecha=null,hora=null,mod=null,sala=null,jornada=null;
+  const resto=[];
+  cs.forEach(function(c){
+    const mF=c.match(RE_FECHA);
+    if(mF && !fecha){ fecha={d:+mF[1],m:+mF[2],y:mF[3]?(mF[3].length===2?2000+ +mF[3]:+mF[3]):anio}; return; }
+    const mH=c.match(/(\d{1,2}):(\d{2})/);
+    if(mH && !hora){
+      hora=(mH[1].length===1?'0':'')+mH[1]+':'+mH[2];
+      const mM=c.replace(mH[0],'').match(/[a-záéíóúñ]{3,}/i);
+      if(mM) mod=mM[0].toLowerCase();
+      return;
+    }
+    const j=aJornada(c); if(j && !jornada){ jornada=j; return; }
+    if(/^(sala\s*)?[a-z]{1,3}\s?-?\s?\d{1,3}$/i.test(c) && !sala){ sala=c.replace(/^sala\s*/i,'').toUpperCase(); return; }
+    if(/^(escrita|oral|online|en l[ií]nea|presencial)$/i.test(c) && !mod){ mod=c.toLowerCase(); return; }
+    resto.push(c);
+  });
+  if(!fecha) return null;
+  let asig=(resto[0]||'').trim(), doc=(resto[1]||'').trim(), nota=null, seccion=null;
+  if(/\s+SENA\s*$/i.test(asig)){ nota='SENA'; asig=asig.replace(/\s+SENA\s*$/i,''); }
+  const mS=asig.match(/\s(S\d+)\s*$/i);
+  if(mS){ seccion=mS[1].toUpperCase(); asig=asig.replace(/\s(S\d+)\s*$/i,''); }
+  if(!asig) return null;
+  return {fecha:fecha,hora:hora,mod:mod,sala:sala,jornada:jornada,asig:tc(asig),seccion:seccion,doc:doc?tc(doc):null,nota:nota};
+}
+function parseEvaluaciones(texto, anio){
+  anio = anio || new Date().getFullYear();
+  const filas=[], errores=[];
+  filasCrudas(texto).forEach(function(f){
+    if(f.cs.length<3){ if(f.cs.some(c=>RE_FECHA.test(c))) errores.push(f.orig); return; }
+    const r=parseFila(f.cs, anio);
+    if(r) filas.push(r); else if(f.cs.some(c=>RE_FECHA.test(c))) errores.push(f.orig);
+  });
+
+  filas.sort(function(a,b){
+    const da=new Date(a.fecha.y,a.fecha.m-1,a.fecha.d), db=new Date(b.fecha.y,b.fecha.m-1,b.fecha.d);
+    if(+da!==+db) return da-db;
+    return String(a.hora||'').localeCompare(String(b.hora||''));
+  });
+
+  const grupos=[];
+  filas.forEach(function(f){
+    const k=f.fecha.y+'-'+f.fecha.m+'-'+f.fecha.d;
+    let g=grupos.find(x=>x.k===k);
+    if(!g){ g={k:k,fecha:f.fecha,items:[]}; grupos.push(g); }
+    g.items.push(f);
+  });
+
+  /* Texto del aviso: por día; dentro del día, cada ramo una vez (en negrita) y
+     una línea por sección. Los ramos sin hora van al final del día. */
+  const cap=s=>s?s.charAt(0).toUpperCase()+s.slice(1):s;
+  const detalle=f=>{ const p=[]; if(f.hora)p.push(f.hora); if(f.mod)p.push(cap(f.mod)); if(f.sala)p.push('Sala '+f.sala);
+    if(!f.hora&&!f.sala) p.unshift('Hora y sala por confirmar');
+    if(f.doc)p.push('Prof. '+f.doc);
+    return p.join(' · '); };
+  const lineas=[];
+  grupos.forEach(function(g){
+    const d=new Date(g.fecha.y,g.fecha.m-1,g.fecha.d);
+    lineas.push('📅 **'+(DIAS[d.getDay()]+' '+g.fecha.d+' de '+MESES[g.fecha.m-1]).toUpperCase()+'**');
+    lineas.push('');
+    const ramos=[];
+    g.items.forEach(function(f){
+      const k=f.asig+'|'+(f.nota||'');
+      let r=ramos.find(x=>x.k===k); if(!r){ r={k:k,asig:f.asig,nota:f.nota,items:[]}; ramos.push(r); }
+      r.items.push(f);
+    });
+    const primeraHora=r=>r.items.map(f=>f.hora).filter(Boolean).sort()[0]||'99:99';
+    ramos.sort((a,b)=>primeraHora(a).localeCompare(primeraHora(b))||a.asig.localeCompare(b.asig));
+    ramos.forEach(function(r){
+      r.items.sort((a,b)=>(parseInt(String(a.seccion||'').slice(1))||0)-(parseInt(String(b.seccion||'').slice(1))||0));
+      lineas.push('**'+r.asig+'**'+(r.nota?' ('+r.nota+')':''));
+      r.items.forEach(f=>lineas.push((f.seccion?f.seccion+' · ':'')+detalle(f)));
+      lineas.push('');
+    });
+  });
+
+  const texto_final = lineas.length ? 'Revisa la hora y la sala de TU sección.\n\n'+lineas.join('\n').trim() : '';
+  const ultima = filas.length ? filas[filas.length-1].fecha : null;
+  const primera = filas.length ? filas[0].fecha : null;
+  const rango = (primera&&ultima)
+    ? (primera.d===ultima.d && primera.m===ultima.m
+        ? primera.d+' de '+MESES[primera.m-1]
+        : 'del '+primera.d+' al '+ultima.d+' de '+MESES[ultima.m-1])
+    : '';
+  return {
+    texto: texto_final, total: filas.length, errores: errores, filas: filas,
+    jornada: (filas.find(f=>f.jornada)||{}).jornada||null,
+    vence: ultima ? ultima.y+'-'+String(ultima.m).padStart(2,'0')+'-'+String(ultima.d).padStart(2,'0') : null,
+    rango: rango
+  };
+}
+/* Filas listas para la tabla «evaluaciones»: sin duplicados dentro de la misma tabla */
+function aFilasDB(r, jornadaPorDefecto){
+  const pad=n=>String(n).padStart(2,'0'), unicas={};
+  r.filas.forEach(function(f){
+    const fila={ jornada:f.jornada||jornadaPorDefecto, fecha:f.fecha.y+'-'+pad(f.fecha.m)+'-'+pad(f.fecha.d),
+      asignatura:f.asig, seccion:f.seccion||'', docente:f.doc||null, hora:f.hora||null,
+      modalidad:f.mod||null, sala:f.sala||null, nota:f.nota||null };
+    unicas[fila.jornada+'|'+fila.fecha+'|'+fila.asignatura+'|'+fila.seccion]=fila;
+  });
+  return Object.values(unicas);
+}
+
+  $('btnLimpiarEv').onclick = () => { $('ev_pegar').value=''; hide($('evMsg')); };
+
+  $('btnOrdenar').onclick = () => {
+    const crudo = $('ev_pegar').value;
+    if (!crudo.trim()){ show($('evMsg'),'err','Pega primero las filas de la tabla.'); return; }
+    const r = parseEvaluaciones(crudo, new Date().getFullYear());
+    if (!r.total){ show($('evMsg'),'err','No pude leer ninguna evaluación.\nRevisa que cada fila tenga al menos fecha, asignatura y hora, y que las columnas queden separadas (al copiar desde Excel o Word se separan solas).'); return; }
+
+    $('f_texto').value = r.texto;
+    $('f_nivel').value = 'importante';
+    if (r.vence) $('f_hasta').value = r.vence;
+    if (r.jornada) $('f_jornada').value = r.jornada;
+    if (!$('f_titulo').value.trim()){
+      const j = r.jornada ? (' '+JORNADA_TXT[r.jornada]) : '';
+      $('f_titulo').value = 'Evaluaciones'+j+(r.rango?' · '+r.rango:'');
+    }
+
+    let msg = '✅ Listo: '+r.total+(r.total===1?' evaluación ordenada':' evaluaciones ordenadas')+'. Revisa el texto abajo antes de guardar.';
+    if (r.errores.length) msg += '\n⚠️ No pude leer '+r.errores.length+' línea(s): '+esc(r.errores.slice(0,3).join(' / '));
+    show($('evMsg'), r.errores.length?'wait':'ok', msg);
+    $('f_texto').scrollIntoView({behavior:'smooth', block:'center'});
+  };
+
+  /* ---------- publicar evaluaciones en la app ---------- */
+  $('btnPublicarEv').onclick = async () => {
+    const crudo = $('ev_pegar').value;
+    if (!crudo.trim()){ show($('evMsg'),'err','Pega primero las filas de la tabla.'); return; }
+    const r = parseEvaluaciones(crudo, new Date().getFullYear());
+    if (!r.total){ show($('evMsg'),'err','No pude leer ninguna evaluación.\nRevisa que cada fila tenga al menos fecha y asignatura.'); return; }
+    const filas = aFilasDB(r, $('f_jornada').value);
+    const btn = $('btnPublicarEv'); btn.disabled = true;
+    show($('evMsg'),'wait','⏳ Publicando '+filas.length+' evaluaciones…');
+    const { error } = await supabase.from('evaluaciones').upsert(filas, { onConflict:'jornada,fecha,asignatura,seccion' });
+    btn.disabled = false;
+    if (error){
+      const falta = /evaluaciones/.test(error.message||'') && /exist|schema cache/i.test(error.message||'');
+      show($('evMsg'),'err','No se pudo publicar:\n'+esc(explicar(error))+(falta?'\nFalta crear la tabla: ejecuta UApp-evaluaciones-tabla.sql en Supabase.':''));
+      return;
+    }
+    const porJ = {}; filas.forEach(f=>{ porJ[f.jornada]=(porJ[f.jornada]||0)+1; });
+    let msg = '✅ Publicadas '+filas.length+' evaluaciones ('+Object.keys(porJ).map(j=>JORNADA_TXT[j]+': '+porJ[j]).join(', ')+'). Ya aparecen en la app.';
+    if (r.errores.length) msg += '\n⚠️ No pude leer '+r.errores.length+' fila(s): '+esc(r.errores.slice(0,3).join(' / '));
+    show($('evMsg'), r.errores.length?'wait':'ok', msg);
+    cargarPublicadas();
+  };
+
+  async function cargarPublicadas(){
+    const box = $('evPublicadas'); if (!box) return;
+    const d = new Date(), iso = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    const { data, error } = await supabase.from('evaluaciones').select('*').gte('fecha', iso).order('fecha').order('asignatura');
+    if (error){ box.innerHTML=''; return; }             /* si la tabla aún no existe, no se muestra nada */
+    if (!data.length){ box.innerHTML='<div class="empty">No hay evaluaciones publicadas desde hoy en adelante.</div>'; return; }
+    box.innerHTML = '<div class="grupo">Publicadas en la app <span>'+data.length+' desde hoy</span></div>' + data.map(e =>
+      '<div class="aviso" style="padding:10px 12px;margin-bottom:8px"><div style="display:flex;justify-content:space-between;gap:8px;align-items:start">'+
+      '<div><div class="at" style="font-size:.9rem">'+esc(e.asignatura)+(e.seccion?' '+esc(e.seccion):'')+(e.nota?' ('+esc(e.nota)+')':'')+'</div>'+
+      '<div class="meta">'+esc(e.fecha)+' · '+esc(JORNADA_TXT[e.jornada]||e.jornada)+(e.hora?' · '+esc(e.hora):'')+(e.modalidad?' · '+esc(e.modalidad):'')+(e.sala?' · Sala '+esc(e.sala):'')+(e.docente?' · '+esc(e.docente):'')+'</div></div>'+
+      '<button class="btn sm ghost" data-delev="'+esc(e.id)+'">Eliminar</button></div></div>').join('');
+    box.querySelectorAll('[data-delev]').forEach(b => b.onclick = async () => {
+      if (!confirm('¿Eliminar esta evaluación de la app?')) return;
+      b.disabled = true;
+      const { error } = await supabase.from('evaluaciones').delete().eq('id', b.dataset.delev);
+      if (error){ b.disabled=false; show($('evMsg'),'err','No se pudo eliminar:\n'+esc(explicar(error))); return; }
+      cargarPublicadas();
+    });
+  }
+
+  /* ---------- arranque ---------- */
   const { data:{ session } } = await supabase.auth.getSession();
   if (session) iniciar(session);
   supabase.auth.onAuthStateChange((_e,s)=>{ if(s) iniciar(s); });
