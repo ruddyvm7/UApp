@@ -621,6 +621,27 @@ body.dark #cierreBox .ci-op,body.dark #cierreBox .ci-later{border-color:rgba(255
 body.dark #semanaBox{background:#1f1c1c;border-color:rgba(255,255,255,.12)}
 body.dark #semanaBox .sem-it{border-color:rgba(255,255,255,.1)}
 body.dark .ecard .edet{background:rgba(255,255,255,.07)}
+
+/* ═══ Usar la propuesta ═══ */
+.pusar{margin:4px 0 14px;padding:12px 14px;border-radius:14px;background:rgba(47,122,78,.08);border:1px solid rgba(47,122,78,.25)}
+.pusar-btn{min-height:44px;padding:0 18px;border-radius:999px;border:0;background:#2f7a4e;color:#fff;font:inherit;font-weight:700;cursor:pointer}
+.pusar-btn:hover{background:#25633f}
+.pusar-t{margin-top:6px;font-size:.82rem;opacity:.8}
+body.dark .pusar{background:rgba(47,122,78,.18)}
+
+/* ═══ Pruebas y notas · Info ═══ */
+.seg2{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin:0 0 14px;border-radius:14px;background:rgba(0,0,0,.06)}
+.seg2-b{min-height:44px;border:0;border-radius:11px;background:transparent;font:inherit;font-weight:700;font-size:.92rem;color:inherit;opacity:.7;cursor:pointer}
+.seg2-b.on{background:var(--card,#fff);opacity:1;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+body.dark .seg2{background:rgba(255,255,255,.08)}
+body.dark .seg2-b.on{background:#2a2626}
+.infoDona{display:flex;align-items:center;gap:12px;width:100%;margin:6px 0 16px;padding:14px 16px;border-radius:16px;border:1px solid rgba(0,0,0,.1);background:var(--card,#fff);font:inherit;color:inherit;text-align:left;cursor:pointer}
+.infoDona-i{font-size:1.5rem;line-height:1}
+.infoDona b{display:block;font-size:.98rem}
+.infoDona small{display:block;font-size:.82rem;opacity:.75;margin-top:2px}
+body.dark .infoDona{background:#1f1c1c;border-color:rgba(255,255,255,.12)}
+/* Dona ya no flota sobre el contenido: se abre desde Info */
+#chatFab{display:none!important}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.7/dist/umd/supabase.js" integrity="sha384-hazsLVND17GNLVdtV19te6qbFT2YuLgl8SamcF+QR5eIOC+W4dGKrUNMxU1jH1zD" crossorigin="anonymous"></script>
 </head>
@@ -717,12 +738,12 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
 </div>
 <div class="tabbar">
   <button class="tab active" data-tab="mural">Mural</button>
-  <button class="tab" data-tab="malla">Avance Curricular</button>
+  <button class="tab" data-tab="malla">Avance</button>
   <button class="tab" data-tab="hor">Horarios</button>
-  <button class="tab" data-tab="pru">Pruebas</button>
-  <button class="tab" data-tab="calc">Simulador de Notas</button>
+  <button class="tab" data-tab="pru">Pruebas y notas</button>
+  
   <button class="tab" data-tab="info">Info</button>
-  <button class="tab" data-tab="solic">Solicitudes</button>
+  
 </div>
 
 <section id="mural"><div class="wrap">
@@ -768,6 +789,7 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
 <section id="calc" style="display:none">
   <div class="toprule"></div>
   <div class="wrap">
+    <div class="seg2" role="group" aria-label="Pruebas y notas"><button type="button" class="seg2-b" data-ir="pru" aria-pressed="false">📅 Fechas</button><button type="button" class="seg2-b on" data-ir="calc" aria-pressed="true">🧮 Simulador</button></div>
     <div class="calchead">
       <div>
         <h1 class="h1 serif">Simulador de Notas</h1>
@@ -810,11 +832,13 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
 </div></section>
 
 <section id="pru" style="display:none"><div class="wrap">
+  <div class="seg2" role="group" aria-label="Pruebas y notas"><button type="button" class="seg2-b on" data-ir="pru" aria-pressed="true">📅 Fechas</button><button type="button" class="seg2-b" data-ir="calc" aria-pressed="false">🧮 Simulador</button></div>
   <div class="mh serif">Calendario de pruebas</div>
   <div class="msub">3er trimestre 2026 · solemnes y exámenes finales.</div>
   <div class="mallaSwitch horBtns" style="margin:10px 0 4px">
     <button type="button" class="mSwBtn" id="toAllPru">📋 Todas las pruebas</button>
     <button type="button" class="mSwBtn pdfBtn" id="dlPru" title="Generar un PDF del calendario" aria-label="Generar un PDF del calendario">📄 PDF</button>
+    <button type="button" class="mSwBtn" id="icsPru" title="Agregar tus evaluaciones al calendario del teléfono">📅 Al calendario</button>
   </div>
   <div id="inscBox" class="inscbox" style="display:none"></div>
   <div id="pruList"></div>
@@ -826,8 +850,15 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
   <div class="mh serif">Información</div>
   <div class="msub">Autoridades, servicios y enlaces de la Facultad de Derecho · Sede Temuco.</div>
 
+  <button type="button" class="infoDona" id="abrirDona"><span class="infoDona-i" aria-hidden="true">💬</span><span><b>Pregúntale a Dona</b><small>Fechas, reglamento y trámites. Responde al instante.</small></span></button>
+
   <div id="infoCCEE">
   <div class="ihd">Tu Centro de Estudiantes</div>
+  <div id="infoSolic" class="solbox" style="margin-bottom:10px">
+    <div class="soltitle serif">📨 Formulario de solicitudes</div>
+    <p class="soltext">Envía tus peticiones, consultas o casos al Centro de Estudiantes de Derecho. Lo revisamos y te respondemos lo antes posible.</p>
+    <a class="solbtn" href="https://forms.office.com/r/FXArxG0RTW" target="_blank" rel="noopener">Hacer una solicitud →</a>
+  </div>
   <a class="ilink" href="https://www.instagram.com/ccee.derechouatco" target="_blank" rel="noopener">📸 Síguenos en Instagram · @ccee.derechouatco</a>
   <a class="ilink" href="mailto:cceedereua@gmail.com">✉️ Escríbenos · cceedereua@gmail.com</a>
   </div>
@@ -1306,10 +1337,15 @@ function showMalla(sel){
 document.getElementById("reset").onclick=()=>{if(confirm("¿Reiniciar todo tu progreso?")){if(curMalla==="noajustada"){stateNA={};saveNA();renderNA();}else{state={};save();render();}}};
 
 const SECS=["mural","malla","calc","hor","plan","pru","info","solic"];
-function go(tab){var _hl=(tab==="plan")?"hor":tab;/* el Planificador se abre desde Horarios: esa pestaña queda marcada */
+function go(tab){if(tab==="solic")tab="info";/* el formulario del Centro ahora está en Info */
+  var _hl=(tab==="plan")?"hor":(tab==="calc")?"pru":tab;/* Fechas y Simulador comparten la pestaña «Pruebas y notas» *//* el Planificador se abre desde Horarios: esa pestaña queda marcada */
   if(typeof logInteraccion==="function")logInteraccion(tab==="plan"?"planificador":tab,"ver seccion");
-  document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===_hl));SECS.forEach(s=>document.getElementById(s).style.display=s===tab?"":"none");if(tab==="plan")planPropose();if(tab==="hor")renderHorView(horMode);else if(typeof renderMiniHor==="function")renderMiniHor();if(tab==="pru")renderPru(pruMode);if(tab==="calc"&&window.__renderCalc)window.__renderCalc();if(tab==="mural")renderMural();window.scrollTo(0,0);var _at=document.querySelector(".tab.active");if(_at&&typeof _at.scrollIntoView==="function"){try{_at.scrollIntoView({inline:"center",block:"nearest"});}catch(e){}}}
+  document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===_hl));SECS.forEach(s=>document.getElementById(s).style.display=s===tab?"":"none");if(tab==="plan")planPropose();if(tab==="hor")renderHorView(horMode);else if(typeof renderMiniHor==="function")renderMiniHor();if(tab==="pru")renderPru(pruMode);if(tab==="calc"&&window.__renderCalc)window.__renderCalc();if(tab==="mural")renderMural();
+  if(tab==="info"){var _is=document.getElementById("infoSolic");if(_is)_is.style.display=(!window.__jornada||window.__jornada==="tech")?"":"none";}
+  window.scrollTo(0,0);var _at=document.querySelector(".tab.active");if(_at&&typeof _at.scrollIntoView==="function"){try{_at.scrollIntoView({inline:"center",block:"nearest"});}catch(e){}}}
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>go(b.dataset.tab));
+/* selector «Fechas / Simulador» dentro de Pruebas y notas */
+document.querySelectorAll("[data-ir]").forEach(b=>b.addEventListener("click",()=>go(b.dataset.ir)));
 /* La rueda del mouse desplaza la barra de pestañas horizontalmente (computadores) */
 (function(){var tb=document.querySelector(".tabbar");if(!tb)return;tb.addEventListener("wheel",function(e){if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){tb.scrollLeft+=e.deltaY;e.preventDefault();}},{passive:false});})();
 /* Escape de texto externo o del usuario antes de inyectarlo en HTML (anti-XSS) */
@@ -2009,7 +2045,7 @@ function solicitudVigente(){
 
 /* ═══ Normas por jornada ═══
    TECH (3er trimestre): Circular N°05/2026 del Consejo de Carrera.
-   Jornadas semestrales (primavera 2026): Circular N°03/2026.
+   Jornadas semestrales: Reglamento General del Estudiante; sin coincidencias de horario.
    Cada documento y aviso cita la circular de la jornada del estudiante. */
 function _esTech(){
   var j=null;
@@ -2027,18 +2063,20 @@ function _normasJornada(){
     circCorta:"La Circular N°05/2026", circRef:"Circular N°05/2026, art. 10",
     circLabel:"Circular N°05/2026", circDoc:"circ05"
   };
+  /* Jornadas semestrales: el Reglamento General del Estudiante (art. 17 letras a y b,
+     art. 19). En estas jornadas no se autorizan coincidencias de horario. */
   return {
-    a2:"Circular N°03/2026 — inscribir en primer término la o las asignaturas pendientes del nivel más bajo.",
-    a3:"Circular N°03/2026 — inscribir obligatoriamente las asignaturas reprobadas que se oferten.",
-    a4:"Circular N°03/2026 — solo se aceptan solicitudes que cumplan íntegramente los prerrequisitos",
-    a7:"Circular N°03/2026 — excepcionalmente una sola coincidencia, si ninguna asignatura está en repetición y el estudiante está en ciclo avanzado.",
-    a10:"Circular N°03/2026 — máximo 30 SCT, sujeto a autorización",
+    a2:"Reglamento General del Estudiante de Pregrado, art. 17 letra b — deben inscribirse las asignaturas pendientes del nivel más bajo que se dicten en el período.",
+    a3:"Reglamento General del Estudiante de Pregrado, art. 19 — las asignaturas reprobadas deben cursarse en el período siguiente en que se dicten.",
+    a4:"Reglamento General del Estudiante de Pregrado, art. 17 letra a — deben cumplirse los prerrequisitos del plan de estudios",
+    a7:"En tu jornada no se autorizan coincidencias de horario.",
+    a10:"Referencia de 30 SCT por período, sujeta a autorización de la Dirección de Carrera",
     a8:"sin coincidencias",
-    pie:"Verificaciones conforme a la <b>Circular N°03/2026</b> del Consejo de Carrera.",
-    sct:"sobre el máximo de 30 del período (Circular N°03/2026)",
-    tope:"La <b>Circular N°03/2026</b> permite excepcionalmente una sola coincidencia, en ciclo avanzado y sin asignaturas en repetición",
-    circCorta:"La Circular N°03/2026", circRef:"Circular N°03/2026",
-    circLabel:"Circular N°03/2026", circDoc:"circ"
+    pie:"Verificaciones conforme al <b>Reglamento General del Estudiante de Pregrado</b>.",
+    sct:"sobre la referencia de 30 SCT del período",
+    tope:"En tu jornada no se autorizan coincidencias de horario",
+    circCorta:"La normativa de tu jornada", circRef:"referencia de la Carrera",
+    circLabel:"", circDoc:""
   };
 }
 function docRespaldo(){
@@ -2309,6 +2347,8 @@ function cruceEntre(mine,other){
   /* Circular N°05/2026, art. 7: se autoriza excepcionalmente UNA coincidencia,
      presencial o sincrónica, con límite del 50% de las horas semanales de ambas. */
   info.tipo=(pa<=50&&pb<=50)?"solicitable":"excede";
+  /* jornadas semestrales: no se autorizan coincidencias, de ningún tamaño */
+  if(typeof _esTech==="function" && !_esTech()){ info.tipo="excede"; info.sinCoinc=true; }
   return info;
 }
 /* Topes ya presentes en la selección actual (Circular art. 7: máximo uno) */
@@ -2397,7 +2437,9 @@ function bindHorCells(root){
     if(cl&&cl.tipo==="solicitable"&&topesActuales().length>=1){
       showHorMsg(`⛔ <b>Solo se autoriza una coincidencia.</b> Ya tienes un tope entre <b>${topesActuales()[0].a}</b> y <b>${topesActuales()[0].b}</b>. ${_normasJornada().circCorta} permite un máximo de una, entre dos asignaturas.`,"warn");return;}
     if(cl&&cl.tipo==="excede"){
-      showHorMsg(`⛔ <b>El tope con ${cl.nm} es demasiado grande</b> (${cl.min} min, ${Math.round(Math.max(cl.pctA,cl.pctB))}% de una de las asignaturas). Se autoriza hasta el 50%: debes quitar el otro ramo.`,"warn");return;}
+      showHorMsg(cl.sinCoinc
+      ? `⛔ <b>Choca con ${cl.nm}</b> (${cl.dias.map(function(x){return (typeof DIAS!=="undefined"&&DIAS[x])||x;}).join(", ")}, ${cl.t0}–${cl.t1}). En tu jornada no se autorizan coincidencias de horario: quita uno de los dos ramos.`
+      : `⛔ <b>El tope con ${cl.nm} es demasiado grande</b> (${cl.min} min, ${Math.round(Math.max(cl.pctA,cl.pctB))}% de una de las asignaturas). Se autoriza hasta el 50%: debes quitar el otro ramo.`,"warn");return;}
     insc[id]=key;saveInsc();refrescaHor();renderHorTally();
     if(cl&&cl.tipo==="solicitable"){
       var modo=(cl.pres>0&&cl.onl>0)?"parte presencial":(cl.pres>0?"presencial":"online");
@@ -2715,6 +2757,24 @@ function setHorJornada(j){
   var pnt=document.getElementById("planNivTope");
   if(pnt)pnt.textContent=(j==="tech"||!j)?"4 niveles consecutivos":"3 niveles consecutivos";
 }
+/* ═══ Usar la propuesta del planificador ═══
+   Reemplaza los ramos marcados en Horarios por los propuestos, con la misma
+   secuencia que usa la app al marcar un ramo a mano. */
+function _usarPropuesta(lista){
+  lista=(lista||[]).filter(function(x){ return x && x.key && x.id!=null; });
+  if(!lista.length) return;
+  var antes=Object.keys(insc).length;
+  if(antes && !confirm("Esto reemplaza tu selección actual ("+antes+(antes===1?" ramo":" ramos")+") por la propuesta. ¿Continuar?")) return;
+  Object.keys(insc).forEach(function(k){ delete insc[k]; });
+  lista.forEach(function(x){ insc[x.id]=x.key; });
+  saveInsc();
+  try{ refrescaHor(); }catch(e){}
+  try{ renderHorTally(); }catch(e){}
+  try{ if(typeof logInteraccion==="function") logInteraccion("planificador","usar propuesta"); }catch(e){}
+  try{ showHorMsg("✅ Listo: marcamos en tu horario los "+lista.length+" ramos propuestos. Revísalos en «Mi horario».","info"); }catch(e){}
+  try{ planPropose(); }catch(e){}
+}
+window.__usarPropuesta=_usarPropuesta;
 function planProposeTECH(){
   const out=document.getElementById("planOut");if(!out)return;
   const maxDif=3, maxR=6;
@@ -2730,6 +2790,7 @@ function planProposeTECH(){
     Object.keys(g).forEach(name=>{
       let id=(g[name][0][6]!=null)?g[name][0][6]:(typeof OFER!=="undefined"?OFER[name]:null);
       if(id==null)return;
+      const idB=id;                                        /* id del ramo en la malla del bloque: es el que se inscribe */
       const mb=_planBloque(k);
       if(mb!==P.cur){                                    /* bloque de la otra malla: se traduce */
         let c0=null;(P[mb].C||[]).forEach(x=>{if(x.id===id)c0=x;});
@@ -2739,7 +2800,7 @@ function planProposeTECH(){
       }
       if(!bId[id])return;
       if(alterno&&S_[id]!=="no")return;   /* art. 6: alterna solo si la reprobó */
-      (offById[id]=offById[id]||[]).push({label:HOR[k].l,sessions:g[name]});
+      (offById[id]=offById[id]||[]).push({label:HOR[k].l,sessions:g[name],key:k,idB:idB});
     });
   });
   const offIds=Object.keys(offById).map(Number);
@@ -2787,6 +2848,7 @@ function planProposeTECH(){
   let h="";
   if(chosen.length){
     h+=`<div class="hgrp serif">Ramos propuestos (${chosen.length})</div>`;
+    h+=`<div class="pusar"><button type="button" class="pusar-btn" id="usarProp">✅ Usar esta propuesta en Mi horario</button><div class="pusar-t">Marca en Horarios las ${chosen.length} secciones propuestas.${extra.length?" Las que requieren solicitud no se marcan.":""}</div></div>`;
     const pintaRamo=({c,o,topes})=>{
       const rep=S_[c.id]==="no"?' <span class="pflag">repite · obligatorio</span>':(c.t===anchor?' <span class="pflag2">nivel obligatorio</span>':'');
       const todas=offById[c.id]||[o];
@@ -2818,10 +2880,12 @@ function planProposeTECH(){
   if(offById[51]&&state[51]!=="ok")h+=`<div class="pinfo">ℹ️ El <b>Seminario de Investigación Jurídica</b> está en la oferta, pero <b>lo inscribe la Carrera</b> mediante formulario — no lo eliges tú.</div>`;
   h+=`<div class="pinfo">Coincidencias (Circular N°05/2026, art. 7): se autoriza excepcionalmente <b>una</b>, presencial o sincrónica, hasta el 50% de las horas semanales de ambas asignaturas, y nunca en tercera oportunidad (art. 8). Cuando existe, el planificador la muestra aparte, en «Además puedes solicitar».</div>`;
   out.innerHTML=h;
+  var _ub=document.getElementById("usarProp");
+  if(_ub) _ub.onclick=function(){ _usarPropuesta(chosen.map(function(x){ return {id:x.o.idB, key:x.o.key, n:x.c.n}; })); };
 }
 function planPropose(){ var r;
   try{ var _lc=document.getElementById("lnkCirc"), _N=_normasJornada();
-       if(_lc){ _lc.textContent="📄 "+_N.circLabel; _lc.onclick=function(e){e.preventDefault(); if(window.openDoc)window.openDoc(_N.circDoc);}; } }catch(e){} if(window.__planSem){ try{ if(window.__planSem()){ try{pintaSolicitud();}catch(e){} return; } }catch(e){ console.error("planSem:",e); } } planProposeTECH(); try{pintaSolicitud();}catch(e){} }
+       if(_lc){ _lc.style.display=_N.circLabel?"":"none"; _lc.textContent="📄 "+_N.circLabel; _lc.onclick=function(e){e.preventDefault(); if(window.openDoc)window.openDoc(_N.circDoc);}; } }catch(e){} if(window.__planSem){ try{ if(window.__planSem()){ try{pintaSolicitud();}catch(e){} return; } }catch(e){ console.error("planSem:",e); } } planProposeTECH(); try{pintaSolicitud();}catch(e){} }
 var _pb=document.getElementById("planBtn");if(_pb)_pb.onclick=planPropose;
 /* Pruebas ejemplo */
 const MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
@@ -2918,9 +2982,7 @@ var EVALS_DIURNO=[
 var EVALS_SEM_VIE=[
  {"asig": "Derecho Político", "niv": 1, "aj": [2], "na": [3], "e2": ["10-02"], "e3": ["11-13"]},
  {"asig": "Historia del Derecho", "niv": 1, "aj": [1], "na": [1], "e2": ["09-25"], "e3": ["10-23"]},
- {"asig": "Historia y Ev. de las Instituciones Civiles", "niv": 1, "aj": [6], "na": [2], "e2": ["10-09"], "e3": ["11-06"]},
  {"asig": "Introducción a la Economía", "niv": 1, "aj": [10], "na": [4], "e2": ["09-11"], "e3": ["10-30"]},
- {"asig": "Introducción al Derecho", "niv": 1, "aj": [3], "na": [5], "e2": ["09-04", "10-16"], "e3": ["11-20"]},
  {"asig": "Argumentación Jurídica y Debate", "niv": 2, "aj": [12], "na": [11], "noExam": true, "e1": ["09-07"], "e2": ["10-23"], "e3": ["11-06"]},
  {"asig": "Fundamentos Filosóficos del Derecho", "niv": 2, "aj": [9], "na": [8], "e1": ["09-21"], "e3": ["11-13"]},
  {"asig": "Historia Institucional de Chile", "niv": 2, "aj": [5], "na": [7], "e1": ["09-11"], "e3": ["10-30"]},
@@ -2943,17 +3005,14 @@ var EVALS_SEM_VIE=[
  {"asig": "Derecho Administrativo II", "niv": 8, "aj": [45], "na": [45], "e1": ["10-02"], "e2": ["10-23"]},
  {"asig": "Derecho Sucesorio", "niv": 8, "aj": [40], "na": [42], "e1": ["09-25"], "e2": ["11-13"], "note": "SENA"},
  {"asig": "Derecho Tributario I", "niv": 8, "aj": [46], "na": [51], "e1": ["10-16"], "e2": ["11-06"]},
- {"asig": "Derecho de Sociedades", "niv": 8, "aj": [], "na": [44], "plan": "na", "e1": ["09-11"], "e2": ["11-06"]},
- {"asig": "Optativo de Especialidad I", "niv": 8, "aj": [48], "na": [], "e1": ["10-09"], "e2": ["11-20"]},
  {"asig": "Procedimientos Especiales Orales", "niv": 8, "aj": [44], "na": [43], "noExam": true, "e1": ["09-04"], "e2": ["11-27"]},
  {"asig": "Procedimientos Especiales Orales (Ev. Ciclo)", "niv": 8, "aj": [], "na": [43], "plan": "na", "noExam": true, "e1": ["09-04"], "e2": ["11-27"]},
  {"asig": "Taller de Integración II (Ev. Ciclo)", "niv": 8, "aj": [47], "na": [], "noExam": true, "e2": ["09-25"], "e3": ["11-20"], "note": "SEMANA EVALUACIÓN"},
  {"asig": "Derecho Tributario II", "niv": 9, "aj": [52], "na": [57], "e1": ["08-28"], "e2": ["11-06"]},
- {"asig": "Metodología de la Investigación Jurídica", "niv": 9, "aj": [], "na": [49], "plan": "na", "noExam": true, "e1": ["08-28"], "e2": ["10-09"], "e3": ["11-20"], "note": "Entrega · Exposiciones"},
  {"asig": "Optativo de Especialidad II", "niv": 9, "aj": [53], "na": [54], "e1": ["10-02"], "e2": ["11-20"]},
  {"asig": "Recursos", "niv": 9, "aj": [], "na": [48], "plan": "na", "e1": ["10-02"], "e2": ["11-13"]},
  {"asig": "Reorg. y Liquidación Patrimonial", "niv": 9, "aj": [49], "na": [56], "e1": ["09-11"], "e2": ["10-30"]},
- {"asig": "Optativo de Especialidad I", "niv": 10, "aj": [], "na": [53], "plan": "na", "e1": ["09-25"], "e2": ["11-13"]},
+ {"asig": "Optativo de Especialidad I", "niv": 10, "aj": [48], "na": [53], "e1": ["09-25"], "e2": ["11-13"]},
  {"asig": "Seminario de Tesis", "niv": 10, "aj": [], "na": [55], "plan": "na", "noExam": true, "e1": ["09-04"], "e2": ["10-09"], "e3": ["11-13", "11-20"], "note": "SEMANA ENTREGA FINAL 17-11-2026 · SEMANA EXPOSICIONES    24-11-2026 · SEMANA PRIMERA ENTREGA 01-09-2026 · SEMANA SEGUNDA ENTREGA 13-10-2026"},
  {"asig": "Taller de Litigación Avanzada (Ev. Ciclo)", "niv": 10, "aj": [], "na": [58], "plan": "na", "noExam": true, "e1": ["09-11"], "e2": ["10-09"], "e3": ["11-13"], "note": "EV. CICLO Taller de Litigación Avanzada (ACD) · EV. CICLO. Taller de Litigación Avanzada (APJO) · EV. CICLO. Taller de Litigación Avanzada (Inicio Juiicios Orales)"}
 ];
@@ -4166,7 +4225,7 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
         Object.keys(g).forEach(function(idS){
           var id=+idS, c=by[id]; if(!c)return;
           if(blk.alt && !(st[id]==="no" || (c.t===anchor && st[id]!=="ok"))){ altOnly[id]=1; return; }
-          (offById[id]=offById[id]||[]).push({label:blk.l,alt:!!blk.alt,sessions:g[idS]});
+          (offById[id]=offById[id]||[]).push({label:blk.l,alt:!!blk.alt,sessions:g[idS],key:k,idB:id});
         });
       });
     }
@@ -4236,6 +4295,7 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
     if(!hasHor)h+='<div class="pinfo">📌 Los horarios de esta jornada aún no están publicados: la propuesta considera malla, prerrequisitos y créditos, sin verificación de choques de horario.</div>';
     if(chosen.length){
       h+='<div class="hgrp serif">Ramos propuestos ('+chosen.length+')</div>';
+      if(hasHor) h+='<div class="pusar"><button type="button" class="pusar-btn" id="usarProp">✅ Usar esta propuesta en Mi horario</button><div class="pusar-t">Marca en Horarios las '+chosen.length+' secciones propuestas.</div></div>';
       h+='<div class="pleg"><span class="plg plg-red">Obligatorio</span><span class="plg plg-blue">Única sección</span><span class="plg plg-green">Varias secciones</span></div>';
       chosen.forEach(function(x){
         var c=x.c,o=x.o;
@@ -4283,11 +4343,13 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
     h+='<div class="hgrp serif">A tener en cuenta</div>';
     var warn='';
     if(crSum>capBase)warn=' <b style="color:#b3445a">⚠️ Los obligatorios superan el máximo de 30 SCT del período: debes regularizar con la Dirección de Carrera, ya que inscribir sobre 30 créditos requiere autorización.</b>';
-    h+='<div class="presum">Tu nivel más bajo pendiente es <b>semestre '+anchor+'</b>. El reglamento (Res. 009/2024, art. 17) permite cursar asignaturas de hasta <b>3 niveles consecutivos</b> desde ahí —hasta <b>semestre '+Math.min(anchor+maxDif,10)+'</b>—, inscribiendo <b>primero</b> las reprobadas y pendientes del nivel más bajo (las reprobadas son de inscripción obligatoria cuando se dictan). El máximo del período es <b>30 SCT</b>, sujeto a autorización (Circular N°03/2026, inscripción primavera 2026). Esta propuesta suma <b>'+crSum+' SCT</b>.'+warn+(apCount===0?'<br><span style="color:#b3445a">Aún no marcas ramos aprobados — hazlo en Avance Curricular para una propuesta real.</span>':'')+'</div>';
+    h+='<div class="presum">Tu nivel más bajo pendiente es <b>semestre '+anchor+'</b>. El reglamento (Res. 009/2024, art. 17) permite cursar asignaturas de hasta <b>3 niveles consecutivos</b> desde ahí —hasta <b>semestre '+Math.min(anchor+maxDif,10)+'</b>—, inscribiendo <b>primero</b> las reprobadas y pendientes del nivel más bajo (las reprobadas son de inscripción obligatoria cuando se dictan). El máximo del período es <b>30 SCT</b>, sujeto a autorización de la Dirección de Carrera. Esta propuesta suma <b>'+crSum+' SCT</b>.'+warn+(apCount===0?'<br><span style="color:#b3445a">Aún no marcas ramos aprobados — hazlo en Avance Curricular para una propuesta real.</span>':'')+'</div>';
     var semC=list.filter(function(c){return isSemn(c)&&st[c.id]!=="ok";})[0];
     if(semC&&hasHor&&offById[semC.id])h+='<div class="pinfo">ℹ️ El <b>'+semC.n+'</b> (Seminario de Tesis) <b>lo inscribe la Carrera</b> mediante un formulario habilitado para ese efecto — no lo eliges tú.</div>';
-    if(hasHor)h+='<div class="pinfo">Excepción (Circular N°03/2026): en ciclo avanzado podría autorizarse <b>una sola</b> coincidencia horaria, si ninguno de los dos ramos está en repetición. No se aceptan coincidencias que involucren más de dos asignaturas. El planificador no la aplica automáticamente; debe pedirse a la Carrera.</div>';
+    if(hasHor)h+='<div class="pinfo">Coincidencias de horario: en tu jornada no se autorizan. El planificador nunca propone ramos que choquen.</div>';
     out.innerHTML=h;
+    var _ub=document.getElementById("usarProp");
+    if(_ub) _ub.onclick=function(){ if(window.__usarPropuesta) window.__usarPropuesta(chosen.filter(function(x){return x.o&&x.o.key;}).map(function(x){ return {id:x.o.idB, key:x.o.key, n:x.c.n}; })); };
     return true;
   };
 
@@ -4716,6 +4778,105 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
     cargando=false;
     pintarSemana(); decorarPruebas();
   }
+
+  /* ═══ Pasar las evaluaciones al calendario del teléfono (.ics) ═══
+     Un archivo estándar que el iPhone, el computador y la mayoría de los
+     calendarios de Android abren para agregar los eventos de una vez.
+     Cada evento trae aviso el día anterior. Si ya hay hora y sala
+     publicadas, el evento lleva hora; si no, queda como evento de día completo. */
+  function txtICS(s){ return String(s||"").replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\r?\n/g,"\\n"); }
+  function plegar(l){ /* RFC 5545: líneas de hasta 75 bytes */
+    var out=[], cur="", b=0;
+    Array.from(l).forEach(function(ch){
+      var n=encodeURIComponent(ch).replace(/%[0-9A-F]{2}/gi,"x").length;
+      if(b+n>74){ out.push(cur); cur=" "+ch; b=1+n; } else { cur+=ch; b+=n; }
+    });
+    out.push(cur); return out.join("\r\n");
+  }
+  function ymd(f){ return f.replace(/-/g,""); }
+  function masDias(f,n){ var d=new Date(f+"T12:00:00"); d.setDate(d.getDate()+n); return iso(d); }
+  function masMin(hm,min){ var p=hm.split(":"), t=(+p[0])*60+(+p[1])+min; return String(Math.floor(t/60)%24).padStart(2,"0")+String(t%60).padStart(2,"0"); }
+  function idEstable(s){ var x=5381; for(var i=0;i<s.length;i++){ x=((x<<5)+x+s.charCodeAt(i))>>>0; } return x.toString(36); }
+  function eventosICS(){
+    var mios=misRamos(), personal=mios.length>0, desde=hoy(0), anio=new Date().getFullYear(), ev=[];
+    var D=(typeof window.__pruDatos==="function")?window.__pruDatos():null;
+    if(D&&D.EVALS){
+      var reg=(D.REG==="tri")?"tri":"sem";
+      D.EVALS.forEach(function(e){
+        ((reg==="tri")?["p1","p2"]:["e1","e2","e3"]).forEach(function(k){
+          (e[k]||[]).forEach(function(v){
+            var md=String(Array.isArray(v)?v[0]:v), sec=(Array.isArray(v)&&v[1])?("S"+v[1]):"";
+            if(!md||md==="99-99") return;
+            var semana=md.indexOf("~")>=0, p=md.split("~");
+            var ini=p[0]||p[1], fin=(p[0]&&p[1])?p[1]:null;
+            ev.push({asig:e.asig, tipo:ROT[reg][k]+(semana?" (semana)":""), sec:sec, ini:anio+"-"+ini, fin:fin?anio+"-"+fin:(semana&&!p[0]?masDias(anio+"-"+ini,4):null), semana:semana, filas:[]});
+          });
+        });
+        if(reg==="tri" && e.fin && e.fin!=="?") ev.push({asig:e.asig, tipo:ROT.tri.fin, sec:"", ini:anio+"-"+e.fin, fin:null, semana:false, filas:[]});
+      });
+    }
+    /* el detalle publicado se suma al evento del mismo día y ramo; si no está en el calendario, se agrega igual */
+    DET.forEach(function(r){
+      var m=ev.filter(function(x){ return !x.semana && x.ini===r.fecha && mismoRamo(x.asig,r.asignatura) && (!x.sec||!r.seccion||secNum(x.sec)===secNum(r.seccion)); });
+      if(m.length) m.forEach(function(x){ x.filas.push(r); });
+      else ev.push({asig:r.asignatura, tipo:"Evaluación"+(r.nota?" "+r.nota:""), sec:r.seccion||"", ini:r.fecha, fin:null, semana:false, filas:[r]});
+    });
+    ev=ev.filter(function(x){ return (x.fin||x.ini)>=desde; });
+    if(personal){
+      ev=ev.filter(function(x){ return esMio(x.asig, x.sec, mios); });
+      ev.forEach(function(x){                      /* de las secciones publicadas, la suya */
+        var propias=mios.filter(function(m){ return mismoRamo(m.n,x.asig); });
+        if(x.filas.length>1 && propias.length) x.filas=x.filas.filter(function(r){ var s=secNum(r.seccion); return !s||propias.some(function(m){ return !m.sec||m.sec===s; }); });
+      });
+    }
+    ev.sort(function(a,b){ return a.ini.localeCompare(b.ini)||a.asig.localeCompare(b.asig); });
+    return {ev:ev, personal:personal};
+  }
+  function armarICS(ev){
+    var now=new Date(), stamp=now.toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"");
+    var L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//UApp//Evaluaciones//ES","CALSCALE:GREGORIAN","METHOD:PUBLISH","X-WR-CALNAME:UApp · Evaluaciones"];
+    ev.forEach(function(x){
+      var titulo=x.asig+(x.sec?" "+x.sec:"")+": "+x.tipo;
+      var una=(x.filas.length===1)?x.filas[0]:null;
+      L.push("BEGIN:VEVENT");
+      L.push("UID:"+idEstable(jor()+"|"+x.ini+"|"+x.asig+"|"+x.tipo+"|"+x.sec)+"@miuapp.cl");
+      L.push("DTSTAMP:"+stamp);
+      L.push("SUMMARY:"+txtICS(titulo));
+      if(una && una.hora && /^\d{1,2}:\d{2}$/.test(una.hora)){
+        var hm=una.hora.padStart(5,"0").replace(":","");
+        L.push("DTSTART:"+ymd(x.ini)+"T"+hm+"00");
+        L.push("DTEND:"+ymd(x.ini)+"T"+masMin(una.hora,90)+"00");
+      }else{
+        L.push("DTSTART;VALUE=DATE:"+ymd(x.ini));
+        L.push("DTEND;VALUE=DATE:"+ymd(masDias(x.fin||x.ini,1)));
+      }
+      if(una && una.sala) L.push("LOCATION:"+txtICS("Sala "+una.sala));
+      var desc=x.filas.length
+        ? x.filas.map(function(r){ return (r.seccion?r.seccion+": ":"")+detalleTxt(r); }).join("\n")
+        : "La hora y la sala se publican la semana anterior en UApp.";
+      L.push("DESCRIPTION:"+txtICS(desc+"\nmiuapp.cl"));
+      L.push("BEGIN:VALARM","TRIGGER:-P1D","ACTION:DISPLAY","DESCRIPTION:"+txtICS("Mañana: "+titulo),"END:VALARM");
+      L.push("END:VEVENT");
+    });
+    L.push("END:VCALENDAR");
+    return L.map(plegar).join("\r\n")+"\r\n";
+  }
+  function avisar(t){ try{ if(typeof showHorMsg==="function") showHorMsg(t,"info"); }catch(e){} }
+  function alCalendario(){
+    var r=eventosICS();
+    if(!r.ev.length){ avisar("No hay evaluaciones próximas para agregar."); return; }
+    if(!r.personal && !confirm("Aún no marcas tus ramos en Horarios, así que se agregarían las "+r.ev.length+" evaluaciones de tu jornada.\n\n¿Continuar? (Para agregar solo las tuyas, marca primero tus ramos en Horarios.)")) return;
+    var txt=armarICS(r.ev); window.__ultimoICS=txt;
+    try{
+      var url=URL.createObjectURL(new Blob([txt],{type:"text/calendar;charset=utf-8"}));
+      var a=document.createElement("a"); a.href=url; a.download="UApp-evaluaciones.ics";
+      document.body.appendChild(a); a.click();
+      setTimeout(function(){ try{ URL.revokeObjectURL(url); a.remove(); }catch(e){} },2000);
+    }catch(e){}
+    avisar("📅 Listo: abre el archivo descargado para agregar "+r.ev.length+(r.ev.length===1?" evaluación":" evaluaciones")+" a tu calendario. Cada una trae aviso el día anterior.");
+    try{ if(typeof logInteraccion==="function") logInteraccion("pruebas","agregar al calendario"); }catch(e){}
+  }
+  window.__alCalendario=alCalendario;
   window.__evSemana={cargar:cargar, pintar:pintarSemana};
 
   function enlazar(){
@@ -4727,6 +4888,10 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
     if(pl && window.MutationObserver) new MutationObserver(decorarPruebas).observe(pl,{childList:true});
     /* al volver al Mural, por si el estudiante marcó o quitó ramos */
     document.querySelectorAll('.tab[data-tab="mural"]').forEach(function(t){ t.addEventListener("click",function(){ setTimeout(pintarSemana,0); }); });
+    /* botón «Al calendario» en Pruebas y notas */
+    var ic=document.getElementById("icsPru"); if(ic) ic.addEventListener("click", alCalendario);
+    /* Dona se abre desde Info (su botón flotante ya no se muestra) */
+    var ad=document.getElementById("abrirDona"); if(ad) ad.addEventListener("click", function(){ var f=document.getElementById("chatFab"); if(f) f.click(); });
     cargar();
   }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",enlazar); else enlazar();
