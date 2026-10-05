@@ -991,6 +991,242 @@ body.reduce-motion *,body.reduce-motion *::before,body.reduce-motion *::after{an
 
 #jornadaOverlay .jov-logo{box-shadow:var(--u2-sombra)}
 
+/* ═════════════ v2.2 · Avance: porcentaje y malla compacta ═════════════ */
+.av-res{background:var(--card);border-radius:24px;box-shadow:var(--u2-sombra);padding:16px 18px;display:flex;flex-direction:column;gap:10px;margin:4px 0 14px}
+.av-num{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.av-num b{font-size:34px;font-weight:900;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
+.av-num span{font-size:15px;font-weight:700;color:var(--muted)}
+.av-barra{display:block;height:10px;border-radius:999px;background:var(--u2-tinte);overflow:hidden}
+.av-barra i{display:block;height:100%;border-radius:999px;background:var(--wine);transform-origin:left center;animation:u2rail .8s cubic-bezier(.2,.7,.2,1) both}
+.av-det{margin:0;font-size:13px;color:var(--muted)}
+.i2-avc .av-barra{grid-column:1 / -1;height:6px}
+
+/* Interruptor «Ver requisitos» */
+.mv-tools{display:flex;align-items:center;gap:10px;margin:4px 0 8px}
+.mv-req{display:inline-flex;align-items:center;gap:10px;min-height:38px;padding:0 14px 0 10px;border:0;border-radius:999px;background:var(--card);color:var(--ink);
+  box-shadow:var(--u2-sombra);font:inherit;font-size:13px;font-weight:800;cursor:pointer}
+.mv-req::before{content:"";flex:0 0 auto;width:32px;height:20px;border-radius:999px;transition:background .2s;
+  background:radial-gradient(circle at 10px 50%,#fff 7px,transparent 7.5px),var(--cb2)}
+.mv-req[aria-checked="true"]::before{background:radial-gradient(circle at 22px 50%,#fff 7px,transparent 7.5px),var(--wine)}
+
+/* Malla compacta: solo el nombre; el estado va por color e ícono */
+#malla .cycle{margin:2px 0 6px!important}
+#malla .lvl{flex:0 0 140px!important}
+#malla .lvl-tiles{gap:6px!important}
+#malla .lvl-h{display:flex;align-items:baseline;gap:6px;padding:0 2px 6px!important}
+#malla .lvl-eyebrow{font-size:11px!important}
+#malla .lvl-num{font-size:15px!important}
+#malla:not(.con-req) .tile{display:flex;align-items:center;min-height:44px;padding:8px 24px 8px 14px!important;border-radius:14px!important}
+#malla .tile .abar{left:6px!important;top:9px!important;bottom:9px!important;width:3px!important}
+#malla:not(.con-req) .tile .tname{font-size:12px!important;line-height:1.25!important;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#malla:not(.con-req) .tile .tfoot,#malla:not(.con-req) .tile .treq{display:none!important}
+#malla:not(.con-req) .tile.ok::after,#malla:not(.con-req) .tile.no::after{position:absolute;right:6px;bottom:6px;width:15px;height:15px;border-radius:999px;
+  display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;line-height:1;color:var(--card)}
+#malla:not(.con-req) .tile.ok::after{content:"✓";background:var(--u2-okt)}
+#malla:not(.con-req) .tile.no::after{content:"✕";background:var(--u2-not)}
+@media (min-width:1000px){#malla .wrap{max-width:1120px}}
+
+/* v2.2 · leyenda en una línea y pie de Avance */
+#malla .legend{gap:10px!important}
+#malla .legend span{font-size:12px!important;gap:5px!important}
+#malla .lg{width:14px!important;height:14px!important;border-radius:4px!important}
+.bkrow{gap:8px!important}
+.bkbtn{min-height:42px;border:0!important;border-radius:999px!important;background:var(--card)!important;color:var(--ink)!important;box-shadow:var(--u2-sombra);font-family:inherit!important;font-weight:800!important}
+.resetbtn{border:0!important;border-radius:999px!important;background:var(--u2-no)!important;color:var(--u2-not)!important;font-weight:800!important}
+.areas{justify-content:flex-start!important;gap:14px!important;padding:12px 0 4px!important}
+.areas span{letter-spacing:0!important;color:var(--muted)!important;font-size:12px!important}
+.bknote{text-align:left!important}
+
+/* ═════════════ v2.3 · Avance: una fila de herramientas y tablero vertical en el teléfono ═════════════ */
+#malla .lead{display:none!important}
+#malla .mallaSwitch{display:flex!important;flex-wrap:wrap;gap:8px!important;align-items:center;margin:0 0 6px!important}
+@media (max-width:699px){
+  #malla .board{display:block!important;overflow:visible!important;padding:2px 0 10px!important;scroll-snap-type:none!important}
+  #malla .lvl{width:auto!important;flex:none!important;margin:0 0 12px!important;scroll-margin-top:124px}
+  #malla .lvl.ystart{border-left:0!important;padding-left:0!important;border-top:1.5px dashed var(--cb2)!important;padding-top:12px!important}
+  #malla .lvl-h{align-items:center!important;padding:0 2px 6px!important}
+  #malla .lvl-h .yrbtn{margin:0 0 0 auto!important;width:auto!important;min-height:30px;padding:0 12px!important}
+  #malla .lvl-tiles{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px!important}
+  #malla .ynav{position:sticky;top:62px;z-index:6;background:var(--bg);margin:0 -16px!important;padding:8px 16px!important;flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none}
+  #malla .ynav::-webkit-scrollbar{display:none}
+}
+
+/* ═════════════ v2.4 · Estudiar ═════════════ */
+.es-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 6px}
+.es-volver{border:0;background:none;color:var(--wine);font:inherit;font-weight:800;font-size:14px;cursor:pointer;min-height:40px;min-width:40px;padding:0}
+.es-racha{display:inline-flex;align-items:center;height:30px;padding:0 12px;border-radius:999px;background:var(--u2-tinte);color:var(--wine);font-size:13px;font-weight:800;margin:4px 0 0}
+.es-linea{margin:20px 0 10px;font-size:17px;font-weight:800;color:var(--ink)}
+.es-lista{display:flex;flex-direction:column;gap:8px}
+.es-ramo{display:flex;flex-direction:column;gap:7px;width:100%;text-align:left;padding:14px 16px;border:0;border-radius:20px;background:var(--card);box-shadow:var(--u2-sombra);font:inherit;color:var(--ink);cursor:pointer}
+.es-ramo b{font-size:15px;font-weight:800}
+.es-ramo small{font-size:12.5px;color:var(--muted)}
+.es-ramo.pronto{flex-direction:row;align-items:center;justify-content:space-between;padding:11px 16px;box-shadow:none;background:transparent;border:1.5px dashed var(--cb2);cursor:default}
+.es-ramo.pronto .es-fila{flex-direction:column;align-items:flex-start;gap:1px}
+.es-ramo.pronto b{font-size:14px;font-weight:700;color:var(--muted)}
+.es-fila{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.es-fila b{font-size:15px;font-weight:800;color:var(--ink)}
+.es-fila small{font-size:12.5px;color:var(--muted)}
+.es-chip{display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;background:var(--u2-tinte);color:var(--wine);font-size:12px;font-weight:800;white-space:nowrap}
+.es-chip.ok,.es-chip.v{background:var(--u2-ok);color:var(--u2-okt)}
+.es-chip.a{background:#FBF1DE;color:#8A5A00}
+.es-chip.r{background:var(--u2-no);color:var(--u2-not)}
+body.dark .es-chip.a{background:#3A2F18;color:#F3C969}
+.es-barra{display:flex;height:8px;border-radius:999px;overflow:hidden;background:var(--cb)}
+.es-barra i{display:block;height:100%}
+.es-dom{background:#2F9E5B}.es-rep{background:#E0A526}.es-nue{background:var(--cb2)}
+.es-modos{display:grid;grid-template-columns:1fr;gap:10px;margin:14px 0 12px}
+@media (min-width:700px){.es-modos{grid-template-columns:1fr 1fr}}
+.es-modo{display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left;padding:18px;border:0;border-radius:24px;background:var(--card);box-shadow:var(--u2-sombra);font:inherit;color:var(--ink);cursor:pointer}
+.es-modo-ico{width:44px;height:44px;border-radius:14px;background:var(--u2-tinte);color:var(--wine);display:flex;align-items:center;justify-content:center;margin-bottom:2px}
+.es-modo b{font-size:18px;font-weight:800}
+.es-modo>span:not(.es-chip):not(.es-modo-ico){font-size:13.5px;color:var(--muted);line-height:1.45}
+.es-extra{margin:0 0 14px}
+.es-stats{background:var(--card);border-radius:24px;box-shadow:var(--u2-sombra);padding:16px 18px;display:flex;flex-direction:column;gap:12px;margin-top:6px}
+.es-ley{display:flex;gap:14px;flex-wrap:wrap;margin:0;font-size:12.5px;color:var(--muted)}
+.es-ley i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.es-semana{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:end;height:70px}
+.es-semana div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;font-size:11px;color:var(--muted);height:100%}
+.es-semana i{display:block;width:100%;max-width:28px;border-radius:6px;background:var(--wine)}
+.es-nota{font-size:12.5px;color:var(--muted);margin:16px 0 0}
+.es-prog{display:flex;align-items:center;gap:10px;margin:0 0 14px}
+.es-prog>span:last-child{font-size:13px;font-weight:800;color:var(--muted);white-space:nowrap}
+.es-prog .es-barra{flex:1}
+.es-prog .es-barra i{background:var(--wine);transition:width .3s ease}
+.es-escena{perspective:1200px}
+.es-carta{display:grid;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.2,.7,.2,1);cursor:pointer;outline:none}
+.es-carta.vista{transform:rotateY(180deg);cursor:default}
+.es-carta:focus-visible .es-cara{box-shadow:0 0 0 3px var(--wine)}
+.es-cara{grid-area:1/1;min-height:240px;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:28px;background:var(--card);box-shadow:var(--u2-sombra);padding:26px 22px;display:flex;flex-direction:column;justify-content:center;gap:12px;box-sizing:border-box}
+.es-dorso{transform:rotateY(180deg)}
+.es-etq{font-size:12px;font-weight:800;color:var(--muted);margin:0}
+.es-termino{font-size:26px;font-weight:900;line-height:1.15;color:var(--ink)}
+.es-def{font-size:17px;line-height:1.5;color:var(--ink)}
+.es-ref{align-self:flex-start;display:inline-flex;align-items:center;min-height:26px;padding:0 10px;border-radius:999px;background:var(--u2-tinte);color:var(--wine);font-size:12px;font-weight:800}
+.es-pista{font-size:13px;color:var(--muted);margin:0}
+.es-centro{text-align:center;margin-bottom:8px}
+.es-acciones{margin-top:16px}
+.es-btn{width:100%;min-height:52px;border:0;border-radius:18px;background:var(--wine);color:#fff;font:inherit;font-size:16px;font-weight:800;cursor:pointer}
+.es-btn2{min-height:46px;padding:0 18px;border:0;border-radius:999px;background:var(--card);color:var(--ink);box-shadow:var(--u2-sombra);font:inherit;font-size:14px;font-weight:800;cursor:pointer}
+.es-semaforo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.es-luz{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:84px;padding:8px 4px;border:0;border-radius:18px;font:inherit;font-size:13px;font-weight:800;line-height:1.2;cursor:pointer;color:var(--ink);text-align:center}
+.es-luz i{width:20px;height:20px;border-radius:999px;box-shadow:0 0 0 4px rgba(255,255,255,.55)}
+.es-luz small{font-size:11px;font-weight:700;color:var(--muted)}
+.es-luz.r{background:var(--u2-no)}.es-luz.r i{background:#C0392B}
+.es-luz.a{background:#FBF1DE}.es-luz.a i{background:#E0A526}
+.es-luz.v{background:var(--u2-ok)}.es-luz.v i{background:#2F9E5B}
+body.dark .es-luz.a{background:#3A2F18}
+body.dark .es-luz i{box-shadow:none}
+.es-preg{font-size:18px;font-weight:800;line-height:1.35;color:var(--ink);margin:0 0 14px}
+.es-ops{display:flex;flex-direction:column;gap:8px}
+.es-op{display:flex;align-items:center;gap:12px;width:100%;text-align:left;min-height:52px;padding:11px 14px;border:1.5px solid var(--cb);border-radius:16px;background:var(--card);font:inherit;font-size:15px;line-height:1.35;color:var(--ink);cursor:pointer}
+.es-op b{flex:0 0 28px;height:28px;border-radius:999px;background:var(--u2-tinte);color:var(--wine);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800}
+.es-op.ok{border-color:var(--u2-okb);background:var(--u2-ok)}.es-op.ok b{background:var(--u2-okt);color:var(--card)}
+.es-op.mal{border-color:var(--u2-nob);background:var(--u2-no)}.es-op.mal b{background:var(--u2-not);color:var(--card)}
+.es-op[disabled]{cursor:default;color:var(--ink)}
+.es-op[disabled]:not(.ok):not(.mal){opacity:.6}
+.es-por{margin-top:12px;padding:14px 16px;border-radius:18px;background:var(--card);box-shadow:var(--u2-sombra);display:flex;flex-direction:column;gap:6px}
+.es-por>b{font-size:15px;font-weight:800;color:var(--ink)}
+.es-por p{margin:0;font-size:14px;line-height:1.5;color:var(--ink)}
+.es-fin{text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;padding:14px 0}
+.es-fin p{margin:0}
+.es-grande{font-size:40px;font-weight:900;line-height:1.05;color:var(--ink)}
+.es-cuentas{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.es-malas{width:100%;text-align:left;display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.es-malas>b{font-size:15px;font-weight:800}
+.es-malas div{padding:12px 14px;border-radius:16px;background:var(--card);box-shadow:var(--u2-sombra);font-size:13.5px;line-height:1.45;display:flex;flex-direction:column;gap:6px}
+.es-botones{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.es-repaso{width:100%;display:flex;align-items:center;gap:14px;padding:14px 16px;border:0;border-radius:22px;background:var(--card);box-shadow:var(--u2-sombra);font:inherit;color:var(--ink);text-align:left;cursor:pointer}
+.es-repaso .es-ico{flex:0 0 44px;height:44px;border-radius:14px;background:var(--u2-tinte);color:var(--wine);display:flex;align-items:center;justify-content:center}
+.es-repaso b{display:block;font-size:15px;font-weight:800}
+.es-repaso small{display:block;font-size:13px;color:var(--muted)}
+.es-repaso .i2-avc-ir{margin-left:auto}
+#repasoBox:empty{display:none}
+body.reduce-motion .es-carta,body.reduce-motion .es-prog .es-barra i{transition:none}
+@media (prefers-reduced-motion:reduce){.es-carta{transition:none}}
+
+/* v2.4 · tarjetas nuevas por día */
+.es-ajuste{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:0 0 14px;padding:10px 12px 10px 16px;border-radius:18px;background:var(--card);box-shadow:var(--u2-sombra)}
+.es-ajuste>span{font-size:13.5px;font-weight:700;color:var(--ink)}
+.es-opc{display:flex;gap:2px;padding:3px;border-radius:999px;background:var(--u2-tinte)}
+.es-opc-b{min-width:40px;min-height:36px;padding:0 9px;border:0;border-radius:999px;background:transparent;color:var(--muted);font:inherit;font-size:13px;font-weight:800;cursor:pointer;transition:background-color .2s,color .2s}
+.es-opc-b.on{background:var(--card);color:var(--ink);box-shadow:0 2px 8px rgba(46,40,40,.12)}
+.es-btn2.es-prim{background:var(--wine);color:#fff}
+
+/* ═════════════ v2.5 · funciones de la revisión de apps similares ═════════════ */
+a.es-ref{text-decoration:none}
+a.es-ref:hover{text-decoration:underline}
+.es-rev{display:inline-flex;align-items:center;min-height:26px;padding:0 10px;border-radius:999px;background:#FBF1DE;color:#8A5A00;font-size:12px;font-weight:800;margin:2px 0 0}
+.es-rev.ok{background:var(--u2-ok);color:var(--u2-okt)}
+body.dark .es-rev{background:#3A2F18;color:#F3C969}
+/* Conversor de puntaje a nota */
+.cv-card{background:var(--card);border-radius:24px;box-shadow:var(--u2-sombra);padding:16px 18px;display:flex;flex-direction:column;gap:12px;margin:0 0 16px}
+.cv-cab{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.cv-cab b{font-size:16px;font-weight:800;color:var(--ink)}
+.cv-cab span{font-size:12.5px;color:var(--muted)}
+.cv-campos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.cv-campos label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:700;color:var(--muted)}
+.cv-campos input{min-height:44px;box-sizing:border-box;width:100%;border:1.5px solid var(--cb);border-radius:14px;background:var(--bg);color:var(--ink);font:inherit;font-size:16px;font-weight:800;text-align:center}
+.cv-campos input:focus{outline:none;border-color:var(--wine);box-shadow:0 0 0 3px var(--u2-tinte)}
+.cv-res{display:flex;align-items:center;gap:12px;min-height:44px}
+.cv-nota{flex:0 0 auto;font-size:30px;font-weight:900;line-height:1;padding:6px 12px;border-radius:14px}
+.cv-nota.ok{background:var(--u2-ok);color:var(--u2-okt)}
+.cv-nota.no{background:var(--u2-no);color:var(--u2-not)}
+.cv-msg{font-size:13px;color:var(--muted);line-height:1.45}
+/* Fuente en Dona */
+.dona-fuente{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;padding-top:8px;border-top:1px solid var(--cb);font-size:12px;color:var(--muted)}
+.dona-ver{flex:0 0 auto;min-height:30px;padding:0 12px;border:0;border-radius:999px;background:var(--u2-tinte);color:var(--wine);font:inherit;font-size:12px;font-weight:800;cursor:pointer}
+/* Guía para primer año */
+.guia{background:var(--card);border-radius:20px;box-shadow:var(--u2-sombra);padding:4px 16px;margin:0 0 16px}
+.guia summary{display:flex;align-items:center;gap:12px;min-height:64px;cursor:pointer;list-style:none}
+.guia summary::-webkit-details-marker{display:none}
+.guia summary::after{content:"›";margin-left:auto;font-size:22px;color:var(--wine);transition:transform .2s}
+.guia[open] summary::after{transform:rotate(90deg)}
+.guia-ico{flex:0 0 40px;height:40px;border-radius:12px;background:var(--u2-tinte);display:flex;align-items:center;justify-content:center;font-size:20px}
+.guia summary b{display:block;font-size:15px;font-weight:800;color:var(--ink)}
+.guia summary small{display:block;font-size:12.5px;color:var(--muted)}
+.guia-g{margin:10px 0 6px;font-size:12px;font-weight:800;color:var(--muted)}
+.guia-q{display:block;width:100%;text-align:left;min-height:44px;margin:0 0 6px;padding:10px 12px;border:0;border-radius:14px;background:var(--bg);color:var(--ink);font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.guia-q:last-child{margin-bottom:12px}
+body.reduce-motion .guia summary::after{transition:none}
+
+/* ═════════════ v2.6 · Avance: prerrequisitos, celebración · Estudiar: Artículos ═════════════ */
+#years .tile{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#years.mv-foco .tile{opacity:.28;transition:opacity .2s,box-shadow .2s,transform .2s}
+#years.mv-foco .tile.mv-este,#years.mv-foco .tile.mv-req,#years.mv-foco .tile.mv-des{opacity:1}
+#years.mv-foco .tile.mv-este{box-shadow:0 0 0 3px var(--wine),0 10px 24px -12px rgba(174,44,44,.6);transform:scale(1.03)}
+#years.mv-foco .tile.mv-req{box-shadow:0 0 0 3px #4A7BD1}
+#years.mv-foco .tile.mv-des{box-shadow:0 0 0 3px #E0A526}
+.mv-banner{position:fixed;left:12px;right:12px;bottom:calc(98px + env(safe-area-inset-bottom));z-index:70;display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:20px;background:var(--card);color:var(--ink);box-shadow:0 18px 40px -16px rgba(46,40,40,.45);transform:translateY(16px);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+.mv-banner.ver{opacity:1;transform:none;pointer-events:auto}
+@media (min-width:900px){.mv-banner{left:auto;right:24px;bottom:24px;max-width:460px}}
+.mv-b-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;font-size:12.5px;line-height:1.4;color:var(--muted)}
+.mv-b-txt b{font-size:14px;color:var(--ink)}
+.mv-pt{display:inline-block;width:9px;height:9px;border-radius:999px;margin-right:6px;vertical-align:0}
+.mv-pt.req{background:#4A7BD1}.mv-pt.des{background:#E0A526}
+.mv-b-cerrar{flex:0 0 auto;min-height:40px;padding:0 14px;border:0;border-radius:999px;background:var(--wine);color:#fff;font:inherit;font-size:13px;font-weight:800;cursor:pointer}
+.mv-confeti{position:fixed;inset:0;z-index:90;pointer-events:none}
+.es-cita{margin:0 0 12px;padding:14px 16px;border-radius:18px;background:var(--card);box-shadow:var(--u2-sombra);font-size:15.5px;line-height:1.5;color:var(--ink)}
+.es-par{font-size:22px;font-weight:900}
+@media (min-width:900px){.es-modos{grid-template-columns:repeat(3,minmax(0,1fr))}}
+body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition:none}
+
+/* ═════════════ v2.7 · promedio acumulado ═════════════ */
+.pr-card{background:var(--card);border-radius:24px;box-shadow:var(--u2-sombra);padding:16px 18px;display:flex;flex-direction:column;gap:10px;margin:0 0 14px}
+.pr-cab{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.pr-cab b{display:block;font-size:16px;font-weight:800;color:var(--ink)}
+.pr-cab small{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+.pr-valor{flex:0 0 auto;font-size:30px;font-weight:900;line-height:1;color:var(--wine);padding:8px 12px;border-radius:16px;background:var(--u2-tinte)}
+.pr-cat{margin:0;font-size:13px;color:var(--ink)}
+.pr-btn{align-self:flex-start;min-height:42px;padding:0 18px;border:0;border-radius:999px;background:var(--u2-tinte);color:var(--wine);font:inherit;font-size:14px;font-weight:800;cursor:pointer}
+.pr-lista{display:flex;flex-direction:column;gap:6px;max-height:360px;overflow:auto;padding-right:2px}
+.pr-niv{margin:8px 0 2px;font-size:12px;font-weight:800;color:var(--muted)}
+.pr-fila{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:14px;color:var(--ink)}
+.pr-fila span{flex:1;min-width:0}
+.pr-fila input{flex:0 0 72px;min-height:42px;box-sizing:border-box;border:1.5px solid var(--cb);border-radius:12px;background:var(--bg);color:var(--ink);font:inherit;font-size:16px;font-weight:800;text-align:center}
+.pr-fila input:focus{outline:none;border-color:var(--wine);box-shadow:0 0 0 3px var(--u2-tinte)}
+.pr-fila input.mal{border-color:var(--u2-not);background:var(--u2-no)}
+.pr-nota{margin:0;font-size:12px;color:var(--muted);line-height:1.45}
+
 </style>
 <div id="jornadaOverlay" class="jov">
   <div class="jov-card">
@@ -1040,6 +1276,7 @@ body.reduce-motion *,body.reduce-motion *::before,body.reduce-motion *::after{an
   <div class="i2-col1">
   <div id="inicioBox" aria-live="polite"></div>
   <div id="semanaBox" style="display:none" aria-live="polite"></div>
+  <div id="repasoBox"></div>
   </div>
   <div class="i2-col2">
   <div class="i2-mural">
@@ -1054,42 +1291,43 @@ body.reduce-motion *,body.reduce-motion *::before,body.reduce-motion *::after{an
 <section id="malla" style="display:none">
   <div class="wrap">
     <h1 class="h1 serif">Mi avance curricular</h1>
-    <p class="lead">Toda tu carrera en un tablero, nivel por nivel. Tu progreso se guarda en este dispositivo.</p>
+    <p class="lead">Tu progreso se guarda en este dispositivo.</p>
     <div id="avanceTop"></div>
+    <div id="promedioBox"></div>
     <div id="cierreBox" style="display:none" aria-live="polite"></div>
     <div class="mallaSwitch">
-      <button type="button" class="mSwBtn" id="mallaToggle" aria-label="Cambiar de malla"></button>
+      <button type="button" class="mSwBtn" id="mallaToggle" aria-label="Cambiar de malla"></button><button type="button" class="mv-req" id="verReq" role="switch" aria-checked="false">Prerrequisitos</button><button type="button" class="mSwBtn" id="mallaPdf" title="Descargar tu malla con tu avance">Descargar PDF</button>
     </div>
     <p class="mallaNote" id="mallaNote"></p>
-    <p class="cycle"><b>Toca un ramo:</b> Disponible → Aprobado → Reprobado. Los bloqueados muestran qué les falta.</p>
+    <p class="cycle">Toca un ramo para marcarlo; mantenlo presionado para ver con qué ramos se conecta.</p>
     <div class="legend">
       <span><i class="lg" style="background:var(--bg);border:1.5px dashed var(--cb2)"></i>Bloqueado</span>
       <span><i class="lg" style="background:var(--card);border-color:var(--wine)"></i>Disponible</span>
       <span><i class="lg" style="background:var(--u2-ok);border-color:var(--u2-okb)"></i>Aprobado</span>
       <span><i class="lg" style="background:var(--u2-no);border-color:var(--u2-nob)"></i>Reprobado</span>
     </div>
-    <p class="boardhint">Desliza para recorrer los niveles → o salta con los botones</p>
+    
     <div class="ynav" id="ynav" role="group" aria-label="Ir a un año de la carrera"></div>
     <div id="years" class="board"></div>
     <div class="bkrow">
-      <button class="bkbtn" id="bkExp">⬇️ Respaldar mi avance</button>
-      <button class="bkbtn" id="bkImp">⬆️ Restaurar respaldo</button>
+      <button class="bkbtn" id="bkExp">Respaldar mi avance</button>
+      <button class="bkbtn" id="bkImp">Restaurar respaldo</button>
     </div>
     <div class="areas">
-      <span><i class="adot" style="background:var(--civil)"></i>DERECHO CIVIL</span>
-      <span><i class="adot" style="background:var(--proc)"></i>DERECHO PROCESAL</span>
-      <span><i class="adot" style="background:var(--penal)"></i>DERECHO PENAL</span>
+      <span><i class="adot" style="background:var(--civil)"></i>Derecho Civil</span>
+      <span><i class="adot" style="background:var(--proc)"></i>Derecho Procesal</span>
+      <span><i class="adot" style="background:var(--penal)"></i>Derecho Penal</span>
     </div>
     <p class="bknote">Tu avance se guarda solo en este dispositivo. Respáldalo para no perderlo si cambias de teléfono o limpias el navegador.</p>
     <input type="file" id="bkFile" accept="application/json,.json" style="display:none">
-    <button class="resetbtn" id="reset">🔄 Reiniciar todo mi progreso</button>
+    <button class="resetbtn" id="reset">Reiniciar todo mi progreso</button>
   </div>
 </section>
 
 <section id="calc" style="display:none">
   <div class="toprule"></div>
   <div class="wrap">
-    <div class="seg2" role="group" aria-label="Pruebas y notas"><button type="button" class="seg2-b" data-ir="pru" aria-pressed="false">Fechas</button><button type="button" class="seg2-b on" data-ir="calc" aria-pressed="true">Calculadora</button></div>
+    <div class="seg2" role="group" aria-label="Pruebas y notas"><button type="button" class="seg2-b" data-ir="pru" aria-pressed="false">Fechas</button><button type="button" class="seg2-b on" data-ir="calc" aria-pressed="true">Calculadora</button><button type="button" class="seg2-b" data-ir="estudio" aria-pressed="false">Estudiar</button></div>
     <div class="calchead">
       <div>
         <h1 class="h1 serif">Calculadora de notas</h1>
@@ -1097,16 +1335,21 @@ body.reduce-motion *,body.reduce-motion *::before,body.reduce-motion *::after{an
       </div>
       <button class="allcalc" id="allCalcBtn">Todas las calculadoras</button>
     </div>
+    <div id="convBox"></div>
     <div id="calcCards"></div>
     <div class="note" style="margin-top:12px">Escribe las notas en formato <b>10 a 70</b> (10 = 1,0 · 55 = 5,5 · 70 = 7,0). El <b>parcial</b> es tu nota acumulativa (controles, presentaciones — cada profesor la arma a su criterio). No se ingresa nota de examen: la calculadora te dice si apruebas, quedas con derecho a examen o repruebas <b>solo con tus evaluaciones</b>.</div>
     <div class="disc" style="margin-top:12px">⚠️ Herramienta de apoyo <b>referencial</b>, no oficial. Las ponderaciones y la relación créditos–horas están sujetas a confirmación con la Dirección de Carrera. Confirma siempre con tu profesor y el syllabus.</div>
   </div>
 </section>
+<section id="estudio" style="display:none"><div class="wrap">
+  <div class="seg2" role="group" aria-label="Pruebas y notas"><button type="button" class="seg2-b" data-ir="pru" aria-pressed="false">Fechas</button><button type="button" class="seg2-b" data-ir="calc" aria-pressed="false">Calculadora</button><button type="button" class="seg2-b on" data-ir="estudio" aria-pressed="true">Estudiar</button></div>
+  <div id="estudioApp" aria-live="polite"></div>
+</div></section>
 
 <section id="hor" style="display:none"><div class="wrap">
   <div class="mh serif">Horario del trimestre</div><div class="msub">3er trimestre 2026.</div>
   <div class="mallaSwitch horBtns">
-    <button type="button" class="mSwBtn" id="toAllHor">Todos los horarios</button> <button type="button" class="mSwBtn" id="toPlan">Planificador de carga</button> <button type="button" class="mSwBtn pdfBtn" id="dlHor" title="Generar un PDF con tu horario" aria-label="Generar un PDF con tu horario">PDF</button>
+    <button type="button" class="mSwBtn" id="toAllHor">Todos los horarios</button> <button type="button" class="mSwBtn" id="toPlan">Planificador de carga</button> <button type="button" class="mSwBtn pdfBtn" id="dlHor" title="Generar un PDF con tu horario" aria-label="Generar un PDF con tu horario">PDF</button><button type="button" class="mSwBtn" id="icsHor" title="Agregar tus clases al calendario del teléfono">Al calendario</button>
   </div>
   <div class="seg" id="horSeg" style="max-width:460px">
     <button class="on" data-h="fit">Disponibles para mí</button>
@@ -1132,7 +1375,7 @@ body.reduce-motion *,body.reduce-motion *::before,body.reduce-motion *::after{an
 </div></section>
 
 <section id="pru" style="display:none"><div class="wrap">
-  <div class="seg2" role="group" aria-label="Pruebas y notas"><button type="button" class="seg2-b on" data-ir="pru" aria-pressed="true">Fechas</button><button type="button" class="seg2-b" data-ir="calc" aria-pressed="false">Calculadora</button></div>
+  <div class="seg2" role="group" aria-label="Pruebas y notas"><button type="button" class="seg2-b on" data-ir="pru" aria-pressed="true">Fechas</button><button type="button" class="seg2-b" data-ir="calc" aria-pressed="false">Calculadora</button><button type="button" class="seg2-b" data-ir="estudio" aria-pressed="false">Estudiar</button></div>
   <div class="mh serif">Calendario de pruebas</div>
   <div class="msub">3er trimestre 2026 · solemnes y exámenes finales.</div>
   <div class="mallaSwitch horBtns" style="margin:10px 0 4px">
@@ -1151,6 +1394,8 @@ body.reduce-motion *,body.reduce-motion *::before,body.reduce-motion *::after{an
   <div class="msub">Ayuda, contactos y preferencias.</div>
 
   <button type="button" class="infoDona" id="abrirDona"><span class="infoDona-i" aria-hidden="true">💬</span><span><b>Pregúntale a Dona</b><small>Fechas, reglamento y trámites. Responde al instante.</small></span></button>
+
+  <div id="guiaBox"></div>
 
   <div id="infoCCEE">
   <div class="ihd">Tu Centro de Estudiantes</div>
@@ -1639,9 +1884,9 @@ function showMalla(sel){
 
 document.getElementById("reset").onclick=()=>{if(confirm("¿Reiniciar todo tu progreso?")){if(curMalla==="noajustada"){stateNA={};saveNA();renderNA();}else{state={};save();render();}}};
 
-const SECS=["mural","malla","calc","hor","plan","pru","info","solic"];
+const SECS=["mural","malla","calc","estudio","hor","plan","pru","info","solic"];
 function go(tab){if(tab==="solic")tab="info";/* el formulario del Centro ahora está en Info */
-  var _hl=(tab==="plan")?"hor":(tab==="calc")?"pru":tab;/* Fechas y Simulador comparten la pestaña «Pruebas y notas» *//* el Planificador se abre desde Horarios: esa pestaña queda marcada */
+  var _hl=(tab==="plan")?"hor":(tab==="calc"||tab==="estudio")?"pru":tab;/* Fechas y Simulador comparten la pestaña «Pruebas y notas» *//* el Planificador se abre desde Horarios: esa pestaña queda marcada */
   if(typeof logInteraccion==="function")logInteraccion(tab==="plan"?"planificador":tab,"ver seccion");
   document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===_hl));SECS.forEach(s=>document.getElementById(s).style.display=s===tab?"":"none");if(tab==="plan")planPropose();if(tab==="hor")renderHorView(horMode);else if(typeof renderMiniHor==="function")renderMiniHor();if(tab==="pru")renderPru(pruMode);if(tab==="calc"&&window.__renderCalc)window.__renderCalc();if(tab==="mural")renderMural();
   if(tab==="info"){var _is=document.getElementById("infoSolic");if(_is)_is.style.display=(!window.__jornada||window.__jornada==="tech")?"":"none";}
@@ -3958,7 +4203,7 @@ function importData(file){
     }
     if(!esChip)logConsulta(t,!!f,f?f.c:(otra?otra.c:null));
     setTimeout(()=>{
-      if(f){ addMsg(f.a,'bot'); }
+      if(f){ addMsg(f.a+(window.__fuenteDona?window.__fuenteDona(f):''),'bot'); }
       else if(otra){ addMsg("Esa información todavía no la tengo cargada para tu jornada 🙏. Lo que sé de ese tema corresponde a otro régimen de estudios y no quiero darte un dato que no te sirva.<br>Puedes revisarlo en el <b>calendario académico oficial</b> de la Universidad, o consultarlo en <b>Registro Curricular</b> o en la <b>Secretaría académica</b>.",'bot'); }
       else { addMsg("No encontré una respuesta exacta 🙈. Prueba tocando un tema aquí abajo, o escríbenos al Instagram <b>@ccee.derechouatco</b> o al correo <b>cceedereua@gmail.com</b>.",'bot'); }
     },300);}
@@ -5323,7 +5568,7 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
       var a=del.filter(function(c){ return S[c.id]==="ok"; }).length;
       segs+=(del.length&&a===del.length)?'<i class="ok"></i>':(a>0?'<i class="par"><b style="width:'+Math.round(a/del.length*100)+'%"></b></i>':'<i></i>');
     }
-    return {ok:ok,total:C.length,niveles:niveles,nivel:nivel,
+    return {ok:ok,total:C.length,niveles:niveles,nivel:nivel,pct:Math.round(ok/C.length*100),
             segs:'<span class="i2-seg" style="grid-template-columns:repeat('+niveles+',minmax(0,1fr))" aria-hidden="true">'+segs+'</span>'};
   }
   /* Inicio: tarjeta compacta al final · Avance: resumen arriba de la malla */
@@ -5333,13 +5578,16 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
       if(!d) mini.innerHTML="";
       else if(!d.ok) mini.innerHTML='<button type="button" class="i2-avc" data-i2="malla"><span class="i2-avc-t"><b>Tu avance</b>'+
         '<span>Marca en Avance los ramos que ya aprobaste y aquí verás cuánto te falta.</span></span><span class="i2-avc-ir">Ir a Avance</span></button>';
-      else mini.innerHTML='<button type="button" class="i2-avc" data-i2="malla" aria-label="Tu avance: nivel '+d.nivel+' de '+d.niveles+', '+d.ok+' de '+d.total+' asignaturas. Ver malla">'+
-        '<span class="i2-avc-t"><b>Tu avance</b> <span>Nivel '+d.nivel+' de '+d.niveles+', '+d.ok+' de '+d.total+' asignaturas</span></span><span class="i2-avc-ir">Ver malla</span>'+d.segs+'</button>';
+      else mini.innerHTML='<button type="button" class="i2-avc" data-i2="malla" aria-label="Tu avance: '+d.pct+' por ciento aprobado, '+d.ok+' de '+d.total+' asignaturas. Ver malla">'+
+        '<span class="i2-avc-t"><b>Tu avance</b> <span>'+d.pct+'\u00a0% aprobado, '+d.ok+' de '+d.total+' asignaturas</span></span><span class="i2-avc-ir">Ver malla</span>'+
+        '<span class="av-barra" aria-hidden="true"><i style="width:'+d.pct+'%"></i></span></button>';
       enlazar(mini);
     }
     if(top){
-      top.innerHTML=(d&&d.ok)?'<section class="i2-avtop" aria-label="Resumen de tu avance"><div class="i2-avn"><b>Vas en el nivel '+d.nivel+' de '+d.niveles+'</b> <span>'+
-        d.ok+' de '+d.total+' asignaturas</span></div>'+d.segs+'</section>':"";
+      var faltan=d?d.total-d.ok:0;
+      top.innerHTML=(d&&d.ok)?'<section class="av-res" aria-label="Resumen de tu avance"><div class="av-num"><b>'+d.pct+'\u00a0%</b> <span>de tu carrera aprobada</span></div>'+
+        '<span class="av-barra" role="img" aria-label="'+d.pct+' por ciento aprobado"><i style="width:'+d.pct+'%"></i></span>'+
+        '<p class="av-det">'+d.ok+' de '+d.total+' asignaturas'+(faltan?', te faltan '+faltan:'. ¡Completaste la carrera!')+'</p></section>':"";
     }
   }
 
@@ -5381,12 +5629,1344 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
     /* Avance: el resumen se actualiza al marcar ramos */
     var ml=document.getElementById("malla"); if(ml) ml.addEventListener("click",function(){ setTimeout(pintarAvance,80); });
     document.querySelectorAll('.tab[data-tab="malla"]').forEach(function(t){ t.addEventListener("click",function(){ setTimeout(pintarAvance,0); }); });
+    /* Avance: requisitos a pedido (se recuerda la elección) */
+    var vr=document.getElementById("verReq"), mm=document.getElementById("malla");
+    function requisitos(on){ if(mm) mm.classList.toggle("con-req",on); if(vr) vr.setAttribute("aria-checked",on?"true":"false"); }
+    var pref=false; try{ pref=(localStorage.getItem("uapp_req_v1")==="1"); }catch(e){}
+    requisitos(pref);
+    if(vr) vr.addEventListener("click",function(){ var on=!(mm&&mm.classList.contains("con-req")); requisitos(on); try{ localStorage.setItem("uapp_req_v1",on?"1":"0"); }catch(e){} });
+    /* en computador, al pasar el mouse por un ramo se ven sus requisitos */
+    var yrs=document.getElementById("years");
+    function titulos(){ if(!yrs) return; yrs.querySelectorAll(".tile").forEach(function(t){ var n=t.querySelector(".tname"), r=t.querySelector(".treq"); if(n) t.title=n.textContent+((r&&r.textContent)?". "+r.textContent:""); }); }
+    if(yrs&&window.MutationObserver) new MutationObserver(titulos).observe(yrs,{childList:true,subtree:true});
+    titulos();
+    /* Teléfono: el tablero va hacia abajo; los botones de año desplazan la página y se marcan al bajar */
+    function vertical(){ try{ return window.matchMedia("(max-width: 699px)").matches; }catch(e){ return false; } }
+    var yn=document.getElementById("ynav");
+    function nivelDelAnio(txt){ return [].slice.call(document.querySelectorAll("#years .lvl")).filter(function(l){ var e=l.querySelector(".lvl-eyebrow"); return e&&e.textContent.trim()===txt; })[0]; }
+    if(yn) yn.addEventListener("click",function(e){
+      var b=(e.target&&e.target.closest)?e.target.closest("button"):null; if(!b||!vertical()) return;
+      var l=nivelDelAnio((b.textContent||"").trim()); if(!l) return;
+      try{ l.scrollIntoView({behavior:"smooth",block:"start"}); }catch(_){ l.scrollIntoView(); }
+    });
+    var tic=false;
+    window.addEventListener("scroll",function(){
+      if(tic||!vertical()||!yn) return; tic=true;
+      requestAnimationFrame(function(){
+        tic=false; var m=document.getElementById("malla"); if(!m||m.style.display==="none") return;
+        var lim=yn.getBoundingClientRect().bottom+8, actual=null;
+        document.querySelectorAll("#years .lvl").forEach(function(l){ if(l.getBoundingClientRect().top<=lim){ var e=l.querySelector(".lvl-eyebrow"); if(e) actual=e.textContent.trim(); } });
+        if(actual) [].forEach.call(yn.children,function(b){ b.classList.toggle("on",(b.textContent||"").trim()===actual); });
+      });
+    },{passive:true});
     animarSecciones();
     setInterval(function(){ var m=document.getElementById("mural"); if(m&&m.style.display!=="none") pintarInicio(); },60000);
     todo();
   }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",iniciar); else setTimeout(iniciar,0);
   window.__inicio2={pintar:todo};
+})();
+
+</script>
+<script>
+/* ═══ UApp · Estudiar: línea civil (1 de 4) ═══ */
+window.__MAZOS_EXTRA=window.__MAZOS_EXTRA||{};
+(function(){
+var NOTA="Contenido inicial basado en la legislación vigente y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.";
+Object.assign(window.__MAZOS_EXTRA,{
+
+"historia-instituciones":{ramo:"Historia y Ev. de las Instituciones Civiles",nota:NOTA,revision:null,
+tarjetas:[
+{id:"hi01",t:"Ius civile",d:"Derecho propio de los ciudadanos romanos, aplicable solo a ellos.",r:"Doctrina"},
+{id:"hi02",t:"Ius gentium",d:"Derecho aplicable en Roma a las relaciones entre romanos y extranjeros, o entre extranjeros; más flexible que el ius civile.",r:"Doctrina"},
+{id:"hi03",t:"Ley de las XII Tablas",d:"Primera codificación escrita del derecho romano, de mediados del siglo V a. C., que dio publicidad y certeza a normas antes consuetudinarias.",r:"Doctrina"},
+{id:"hi04",t:"Pretor",d:"Magistrado romano encargado de administrar justicia. Sus edictos dieron origen al derecho honorario, que adaptó el ius civile a nuevas necesidades.",r:"Doctrina"},
+{id:"hi05",t:"Corpus Iuris Civilis",d:"Compilación del derecho romano ordenada por el emperador Justiniano en el siglo VI: Instituciones, Digesto, Código y Novelas.",r:"Doctrina"},
+{id:"hi06",t:"Glosadores",d:"Juristas de la escuela de Bolonia (siglos XI a XIII) que estudiaron el Corpus Iuris Civilis mediante notas o glosas a los textos.",r:"Doctrina"},
+{id:"hi07",t:"Siete Partidas",d:"Cuerpo legal castellano de Alfonso X (siglo XIII), de fuerte influencia romana, aplicado en Chile durante la Colonia y fuente del Código Civil.",r:"Doctrina"},
+{id:"hi08",t:"Código Civil francés",d:"Código de Napoleón de 1804: modelo de la codificación moderna e importante fuente del Código Civil chileno.",r:"Doctrina"},
+{id:"hi09",t:"Andrés Bello",d:"Jurista venezolano radicado en Chile, autor principal del proyecto de Código Civil chileno.",r:"Doctrina"},
+{id:"hi10",t:"Promulgación y vigencia del Código Civil",d:"Fue promulgado el 14 de diciembre de 1855 y entró en vigencia el 1 de enero de 1857.",r:"Doctrina"},
+{id:"hi11",t:"Codificación",d:"Proceso de reunir el derecho de una materia en un cuerpo legal único, ordenado y sistemático, característico del siglo XIX.",r:"Doctrina"},
+{id:"hi12",t:"Fuentes del Código Civil chileno",d:"Principalmente el derecho romano, la legislación castellana, como las Siete Partidas, el Código Civil francés y la doctrina de autores como Pothier y Savigny.",r:"Doctrina"},
+{id:"hi13",t:"Ley 18.802 (1989)",d:"Otorgó plena capacidad a la mujer casada en sociedad conyugal.",r:"Doctrina"},
+{id:"hi14",t:"Ley 19.585 (1998)",d:"Estableció la igualdad de los hijos y eliminó la distinción entre hijos legítimos e ilegítimos.",r:"Doctrina"},
+{id:"hi15",t:"Ley 19.947 (2004)",d:"Nueva Ley de Matrimonio Civil, que incorporó el divorcio vincular al derecho chileno.",r:"Doctrina"},
+{id:"hi16",t:"Ley 21.400 (2021)",d:"Permitió el matrimonio entre personas del mismo sexo, modificando la definición de matrimonio del art. 102 del Código Civil.",r:"Doctrina; art. 102 CC"}],
+preguntas:[
+{id:"hp01",q:"¿Qué emperador ordenó la compilación conocida como Corpus Iuris Civilis?",o:["Augusto","Constantino","Justiniano","Teodosio"],ok:2,por:"Justiniano ordenó la compilación en el siglo VI, reuniendo las Instituciones, el Digesto, el Código y las Novelas.",r:"Doctrina"},
+{id:"hp02",q:"¿Desde cuándo rige el Código Civil chileno?",o:["14 de diciembre de 1855","1 de enero de 1857","18 de septiembre de 1810","1 de marzo de 1903"],ok:1,por:"Fue promulgado el 14 de diciembre de 1855 y rige desde el 1 de enero de 1857. El 1 de marzo de 1903 entró en vigencia el Código de Procedimiento Civil.",r:"Doctrina"},
+{id:"hp03",q:"¿Quién fue el autor principal del proyecto de Código Civil chileno?",o:["Andrés Bello","Mariano Egaña","Diego Portales","Juan Egaña"],ok:0,por:"Andrés Bello redactó el proyecto que, tras su revisión, se convirtió en el Código Civil de 1855.",r:"Doctrina"},
+{id:"hp04",q:"El derecho aplicable en Roma a las relaciones entre romanos y extranjeros era el:",o:["Ius civile","Ius gentium","Derecho honorario","Ius naturale"],ok:1,por:"El ius gentium regía las relaciones con extranjeros; el ius civile era exclusivo de los ciudadanos romanos.",r:"Doctrina"},
+{id:"hp05",q:"¿Qué escuela medieval estudió el Corpus Iuris Civilis mediante notas a los textos?",o:["Los glosadores","Los comentaristas","La escuela histórica","Los humanistas"],ok:0,por:"Los glosadores de la escuela de Bolonia trabajaron con glosas o notas a los textos justinianeos.",r:"Doctrina"},
+{id:"hp06",q:"¿Qué código extranjero fue una de las principales fuentes del Código Civil chileno?",o:["El Código Civil alemán (BGB)","El Código Civil francés de 1804","El Código Civil suizo","El Código Civil argentino"],ok:1,por:"El Código de Napoleón de 1804 fue una fuente central. El Código alemán es de 1900, posterior al chileno.",r:"Doctrina"},
+{id:"hp07",q:"¿Qué ley estableció la igualdad de los hijos, eliminando la distinción entre legítimos e ilegítimos?",o:["Ley 18.802","Ley 19.585","Ley 19.947","Ley 20.830"],ok:1,por:"La Ley 19.585, de 1998, reformó el régimen de filiación y consagró la igualdad de los hijos.",r:"Doctrina"},
+{id:"hp08",q:"El magistrado romano cuyos edictos dieron origen al derecho honorario era el:",o:["Cónsul","Pretor","Censor","Tribuno de la plebe"],ok:1,por:"El pretor, a través de sus edictos, creó el derecho honorario o pretoriano.",r:"Doctrina"}]},
+
+"teoria-ley-personas":{ramo:"Teoría de la Ley y las Personas",nota:NOTA,revision:null,
+tarjetas:[
+{id:"tl01",t:"Ley",d:"Declaración de la voluntad soberana que, manifestada en la forma prescrita por la Constitución, manda, prohíbe o permite.",r:"Art. 1 CC"},
+{id:"tl02",t:"Costumbre",d:"No constituye derecho sino en los casos en que la ley se remite a ella.",r:"Art. 2 CC"},
+{id:"tl03",t:"Obligatoriedad de la ley",d:"Nadie podrá alegar ignorancia de la ley después que ésta haya entrado en vigencia.",r:"Art. 8 CC"},
+{id:"tl04",t:"Irretroactividad",d:"La ley puede sólo disponer para lo futuro, y no tendrá jamás efecto retroactivo.",r:"Art. 9 CC"},
+{id:"tl05",t:"Elemento gramatical de interpretación",d:"Cuando el sentido de la ley es claro, no se desatenderá su tenor literal, a pretexto de consultar su espíritu.",r:"Art. 19 CC"},
+{id:"tl06",t:"Sentido de las palabras de la ley",d:"Se entienden en su sentido natural y obvio, según el uso general; pero si el legislador las ha definido expresamente, se les da su significado legal.",r:"Art. 20 CC"},
+{id:"tl07",t:"Elemento sistemático",d:"El contexto de la ley sirve para ilustrar el sentido de cada una de sus partes, de manera que haya entre todas ellas la debida correspondencia y armonía.",r:"Art. 22 CC"},
+{id:"tl08",t:"Territorialidad de la ley",d:"La ley es obligatoria para todos los habitantes de la República, incluso los extranjeros.",r:"Art. 14 CC"},
+{id:"tl09",t:"Forma de los instrumentos públicos",d:"Se determina por la ley del país en que hayan sido otorgados.",r:"Art. 17 CC"},
+{id:"tl10",t:"Derogación tácita",d:"La que se produce cuando la nueva ley contiene disposiciones que no pueden conciliarse con las de la ley anterior.",r:"Art. 52 CC"},
+{id:"tl11",t:"Persona natural",d:"Todos los individuos de la especie humana, cualquiera que sea su edad, sexo, estirpe o condición.",r:"Art. 55 CC"},
+{id:"tl12",t:"Principio de la existencia legal",d:"Principia al nacer, esto es, al separarse completamente de su madre y sobrevivir a la separación un momento siquiera.",r:"Art. 74 CC"},
+{id:"tl13",t:"Presunción de la época de la concepción",d:"La concepción precede al nacimiento no menos de 180 días cabales y no más de 300, contados hacia atrás desde la medianoche en que principie el día del nacimiento.",r:"Art. 76 CC"},
+{id:"tl14",t:"Domicilio",d:"La residencia, acompañada, real o presuntivamente, del ánimo de permanecer en ella.",r:"Art. 59 CC"},
+{id:"tl15",t:"Estado civil",d:"La calidad de un individuo, en cuanto le habilita para ejercer ciertos derechos o contraer ciertas obligaciones civiles.",r:"Art. 304 CC"},
+{id:"tl16",t:"Persona jurídica",d:"Persona ficticia, capaz de ejercer derechos y contraer obligaciones civiles, y de ser representada judicial y extrajudicialmente.",r:"Art. 545 CC"}],
+preguntas:[
+{id:"tlp1",q:"Según el Código Civil, ¿cuándo constituye derecho la costumbre?",o:["Siempre","Solo en los casos en que la ley se remite a ella","Cuando la ley es oscura","Cuando las partes lo acuerdan"],ok:1,por:"El art. 2 dispone que la costumbre no constituye derecho sino en los casos en que la ley se remite a ella.",r:"Art. 2 CC"},
+{id:"tlp2",q:"¿Desde cuándo nadie puede alegar ignorancia de la ley?",o:["Desde su promulgación","Desde que entra en vigencia","Desde su aprobación por el Congreso","Desde que se discute en el Senado"],ok:1,por:"Según el art. 8, nadie puede alegar ignorancia de la ley después que ésta haya entrado en vigencia.",r:"Art. 8 CC"},
+{id:"tlp3",q:"Cuando el sentido de la ley es claro, el intérprete:",o:["Debe preferir su espíritu","No desatenderá su tenor literal a pretexto de consultar su espíritu","Debe aplicar la equidad natural","Debe consultar la historia fidedigna"],ok:1,por:"Es el elemento gramatical del art. 19: con sentido claro, no se desatiende el tenor literal.",r:"Art. 19 CC"},
+{id:"tlp4",q:"La existencia legal de la persona natural principia:",o:["Con la concepción","Al nacer, separándose completamente de su madre y sobreviviendo un momento siquiera","Con la inscripción en el Registro Civil","A las 24 horas de nacer"],ok:1,por:"El art. 74 fija el principio de la existencia legal en el nacimiento, con separación completa y sobrevida de un momento siquiera.",r:"Art. 74 CC"},
+{id:"tlp5",q:"Según el art. 76, la concepción precede al nacimiento:",o:["Entre 150 y 280 días","No menos de 180 ni más de 300 días","No menos de 200 ni más de 300 días","Exactamente 270 días"],ok:1,por:"La presunción del art. 76 fija un mínimo de 180 días cabales y un máximo de 300.",r:"Art. 76 CC"},
+{id:"tlp6",q:"La derogación que ocurre cuando la nueva ley no puede conciliarse con la anterior es:",o:["Expresa","Tácita","Orgánica","Parcial"],ok:1,por:"El art. 52 llama tácita a la derogación que resulta de disposiciones inconciliables con la ley anterior.",r:"Art. 52 CC"},
+{id:"tlp7",q:"«La residencia, acompañada, real o presuntivamente, del ánimo de permanecer en ella» define:",o:["La nacionalidad","El estado civil","El domicilio","La habitación"],ok:2,por:"Es la definición de domicilio del art. 59.",r:"Art. 59 CC"},
+{id:"tlp8",q:"¿La ley chilena obliga a los extranjeros que habitan en Chile?",o:["No, solo a los chilenos","Sí: es obligatoria para todos los habitantes, incluso los extranjeros","Solo si tienen residencia definitiva","Solo en materia penal"],ok:1,por:"El art. 14 consagra la territorialidad: la ley obliga a todos los habitantes de la República, incluso los extranjeros.",r:"Art. 14 CC"}]}
+
+});
+})();
+
+/* ═══ UApp · Estudiar: línea civil (2 de 4) ═══ */
+window.__MAZOS_EXTRA=window.__MAZOS_EXTRA||{};
+(function(){
+var NOTA="Contenido inicial basado en la legislación vigente y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.";
+Object.assign(window.__MAZOS_EXTRA,{
+
+"bienes":{ramo:"Bienes",nota:NOTA,revision:null,
+tarjetas:[
+{id:"bi01",t:"Cosas corporales e incorporales",d:"Corporales: tienen un ser real y pueden ser percibidas por los sentidos. Incorporales: consisten en meros derechos, como los créditos y las servidumbres activas.",r:"Art. 565 CC"},
+{id:"bi02",t:"Bienes muebles",d:"Los que pueden transportarse de un lugar a otro, sea moviéndose ellos a sí mismos, como los animales, sea por una fuerza externa, como las cosas inanimadas.",r:"Art. 567 CC"},
+{id:"bi03",t:"Bienes inmuebles",d:"Las cosas que no pueden transportarse de un lugar a otro, como las tierras y minas, y las que adhieren permanentemente a ellas, como los edificios y los árboles.",r:"Art. 568 CC"},
+{id:"bi04",t:"Inmuebles por destinación",d:"Las cosas que están permanentemente destinadas al uso, cultivo y beneficio de un inmueble, aunque puedan separarse sin detrimento.",r:"Art. 570 CC"},
+{id:"bi05",t:"Derecho real",d:"El que tenemos sobre una cosa sin respecto a determinada persona.",r:"Art. 577 CC"},
+{id:"bi06",t:"Derechos reales que enumera el Código",d:"Dominio, herencia, usufructo, uso o habitación, servidumbres activas, prenda e hipoteca.",r:"Art. 577 CC"},
+{id:"bi07",t:"Derecho personal o crédito",d:"El que sólo puede reclamarse de ciertas personas que, por un hecho suyo o la sola disposición de la ley, han contraído las obligaciones correlativas.",r:"Art. 578 CC"},
+{id:"bi08",t:"Dominio",d:"Derecho real en una cosa corporal, para gozar y disponer de ella arbitrariamente, no siendo contra la ley o contra derecho ajeno.",r:"Art. 582 CC"},
+{id:"bi09",t:"Modos de adquirir el dominio",d:"La ocupación, la accesión, la tradición, la sucesión por causa de muerte y la prescripción.",r:"Art. 588 CC"},
+{id:"bi10",t:"Bienes nacionales de uso público",d:"Aquellos cuyo dominio pertenece a la nación toda y cuyo uso pertenece a todos sus habitantes, como calles, plazas, puentes y caminos.",r:"Art. 589 CC"},
+{id:"bi11",t:"Tradición",d:"Modo de adquirir que consiste en la entrega que el dueño hace de una cosa a otro, habiendo por una parte la facultad e intención de transferir el dominio, y por otra la capacidad e intención de adquirirlo.",r:"Art. 670 CC"},
+{id:"bi12",t:"Tradición de bienes raíces",d:"Se efectúa por la inscripción del título en el Registro del Conservador de Bienes Raíces.",r:"Art. 686 CC"},
+{id:"bi13",t:"Posesión",d:"La tenencia de una cosa determinada con ánimo de señor o dueño.",r:"Art. 700 CC"},
+{id:"bi14",t:"Mera tenencia",d:"La que se ejerce sobre una cosa, no como dueño, sino en lugar o a nombre del dueño, como el acreedor prendario o el arrendatario.",r:"Art. 714 CC"},
+{id:"bi15",t:"Plazos de la prescripción adquisitiva",d:"Ordinaria: dos años para los muebles y cinco para los inmuebles. Extraordinaria: diez años.",r:"Arts. 2508 y 2511 CC"},
+{id:"bi16",t:"Acción reivindicatoria",d:"La que tiene el dueño de una cosa singular, de que no está en posesión, para que el poseedor sea condenado a restituírsela.",r:"Art. 889 CC"}],
+preguntas:[
+{id:"bip1",q:"¿Cuál de estos NO es un modo de adquirir el dominio según el art. 588?",o:["La ocupación","La tradición","El contrato de compraventa","La prescripción"],ok:2,por:"El art. 588 enumera ocupación, accesión, tradición, sucesión por causa de muerte y prescripción. La compraventa es un título, no un modo de adquirir.",r:"Art. 588 CC"},
+{id:"bip2",q:"¿Cómo se efectúa la tradición de un bien raíz?",o:["Por la entrega material","Por la escritura pública de compraventa","Por la inscripción del título en el Registro del Conservador de Bienes Raíces","Por el pago del precio"],ok:2,por:"Según el art. 686, la tradición del dominio de los bienes raíces se efectúa por la inscripción del título en el Conservador.",r:"Art. 686 CC"},
+{id:"bip3",q:"¿Cuál es el plazo de la prescripción adquisitiva ordinaria de un inmueble?",o:["Dos años","Cinco años","Diez años","Quince años"],ok:1,por:"El art. 2508 fija dos años para los muebles y cinco para los bienes raíces.",r:"Art. 2508 CC"},
+{id:"bip4",q:"Respecto de la cosa arrendada, el arrendatario es:",o:["Poseedor regular","Poseedor irregular","Mero tenedor","Dueño"],ok:2,por:"El art. 714 menciona al arrendatario entre los meros tenedores: tiene la cosa a nombre del dueño.",r:"Art. 714 CC"},
+{id:"bip5",q:"El derecho que tenemos sobre una cosa sin respecto a determinada persona es un:",o:["Derecho personal","Derecho real","Crédito","Derecho potestativo"],ok:1,por:"Es la definición de derecho real del art. 577.",r:"Art. 577 CC"},
+{id:"bip6",q:"Una maquinaria destinada permanentemente al cultivo de un predio agrícola es un inmueble:",o:["Por naturaleza","Por adherencia","Por destinación","Por analogía"],ok:2,por:"El art. 570 considera inmuebles por destinación las cosas permanentemente destinadas al uso, cultivo y beneficio de un inmueble.",r:"Art. 570 CC"},
+{id:"bip7",q:"¿Qué acción tiene el dueño que no está en posesión de su cosa para que el poseedor se la restituya?",o:["Acción posesoria","Acción reivindicatoria","Acción pauliana","Acción de precario"],ok:1,por:"Es la acción reivindicatoria o de dominio del art. 889.",r:"Art. 889 CC"},
+{id:"bip8",q:"Las calles, plazas y puentes son:",o:["Bienes fiscales","Bienes nacionales de uso público","Bienes municipales privados","Cosas que no pertenecen a nadie"],ok:1,por:"El art. 589 los pone como ejemplo de bienes nacionales de uso público.",r:"Art. 589 CC"}]},
+
+"teoria-obligaciones":{ramo:"Teoría de las Obligaciones",nota:NOTA,revision:null,
+tarjetas:[
+{id:"to01",t:"Obligación",d:"Vínculo jurídico entre personas determinadas, en virtud del cual una se coloca en la necesidad de dar, hacer o no hacer algo en favor de la otra.",r:"Doctrina"},
+{id:"to02",t:"Fuentes de las obligaciones",d:"El contrato, el cuasicontrato, el delito, el cuasidelito y la ley.",r:"Arts. 1437 y 2284 CC"},
+{id:"to03",t:"Obligaciones civiles y naturales",d:"Civiles: dan derecho para exigir su cumplimiento. Naturales: no confieren derecho para exigirlas, pero autorizan para retener lo que se ha dado o pagado en razón de ellas.",r:"Art. 1470 CC"},
+{id:"to04",t:"Obligación solidaria",d:"Aquella en que cada deudor puede ser obligado al total de la deuda, o cada acreedor puede exigirla totalmente. Si no la establece la ley, debe ser expresamente declarada.",r:"Art. 1511 CC"},
+{id:"to05",t:"Obligación alternativa",d:"Aquella por la cual se deben varias cosas, de tal manera que la ejecución de una de ellas exonera de la ejecución de las otras.",r:"Art. 1499 CC"},
+{id:"to06",t:"Obligación facultativa",d:"La que tiene por objeto una cosa determinada, pero concediéndose al deudor la facultad de pagar con esta cosa o con otra que se designa.",r:"Art. 1505 CC"},
+{id:"to07",t:"Obligación indivisible",d:"La que tiene por objeto una cosa que no es susceptible de división, ni física ni intelectual, como la de constituir una servidumbre de tránsito.",r:"Art. 1524 CC"},
+{id:"to08",t:"Condición resolutoria tácita",d:"Va envuelta en los contratos bilaterales: si uno de los contratantes no cumple lo pactado, el otro puede pedir a su arbitrio la resolución o el cumplimiento del contrato, con indemnización de perjuicios.",r:"Art. 1489 CC"},
+{id:"to09",t:"Mora del deudor",d:"Está en mora cuando no cumple en el término estipulado, cuando la obligación solo podía cumplirse en cierto tiempo que dejó pasar, o cuando ha sido judicialmente reconvenido.",r:"Art. 1551 CC"},
+{id:"to10",t:"Indemnización de perjuicios",d:"Comprende el daño emergente y el lucro cesante, salvo que la ley la limite expresamente al daño emergente.",r:"Art. 1556 CC"},
+{id:"to11",t:"Grados de culpa",d:"La ley distingue la culpa grave, la culpa leve y la culpa o descuido levísimo.",r:"Art. 44 CC"},
+{id:"to12",t:"Caso fortuito o fuerza mayor",d:"El imprevisto a que no es posible resistir, como un naufragio, un terremoto o los actos de autoridad ejercidos por un funcionario público.",r:"Art. 45 CC"},
+{id:"to13",t:"Cláusula penal",d:"Aquella en que una persona, para asegurar el cumplimiento de una obligación, se sujeta a una pena que consiste en dar o hacer algo en caso de no ejecutar o de retardar la obligación principal.",r:"Art. 1535 CC"},
+{id:"to14",t:"Pago efectivo",d:"La prestación de lo que se debe.",r:"Art. 1568 CC"},
+{id:"to15",t:"Novación",d:"La substitución de una nueva obligación a otra anterior, la cual queda por tanto extinguida.",r:"Art. 1628 CC"},
+{id:"to16",t:"Prescripción extintiva de las acciones",d:"La acción ejecutiva prescribe en tres años y la ordinaria en cinco, contados desde que la obligación se hizo exigible.",r:"Arts. 2514 y 2515 CC"}],
+preguntas:[
+{id:"top1",q:"¿Cuál de estas NO es una fuente de las obligaciones según el Código Civil?",o:["El contrato","El cuasidelito","La ley","La sentencia judicial"],ok:3,por:"El Código reconoce como fuentes el contrato, el cuasicontrato, el delito, el cuasidelito y la ley.",r:"Arts. 1437 y 2284 CC"},
+{id:"top2",q:"La solidaridad:",o:["Se presume entre los codeudores","Debe ser expresamente declarada cuando no la establece la ley","Solo puede nacer de un testamento","Solo existe en las obligaciones de hacer"],ok:1,por:"El art. 1511 exige que la solidaridad sea expresamente declarada en todos los casos en que no la establece la ley.",r:"Art. 1511 CC"},
+{id:"top3",q:"En un contrato bilateral, si una parte no cumple, la otra puede pedir:",o:["Solo el cumplimiento forzado","Solo la nulidad del contrato","A su arbitrio, la resolución o el cumplimiento, con indemnización de perjuicios","La rescisión por lesión"],ok:2,por:"Es la condición resolutoria tácita del art. 1489.",r:"Art. 1489 CC"},
+{id:"top4",q:"La indemnización de perjuicios comprende, por regla general:",o:["Solo el daño emergente","Solo el lucro cesante","El daño emergente y el lucro cesante","Solo el daño moral"],ok:2,por:"El art. 1556 incluye ambos, salvo que la ley la limite expresamente al daño emergente.",r:"Art. 1556 CC"},
+{id:"top5",q:"¿En qué plazo prescribe por regla general la acción ejecutiva?",o:["Un año","Dos años","Tres años","Cinco años"],ok:2,por:"El art. 2515 fija tres años para las acciones ejecutivas y cinco para las ordinarias.",r:"Art. 2515 CC"},
+{id:"top6",q:"Las obligaciones que no dan derecho a exigir su cumplimiento, pero autorizan para retener lo pagado, son:",o:["Civiles","Naturales","Solidarias","Facultativas"],ok:1,por:"Es la definición de obligaciones naturales del art. 1470.",r:"Art. 1470 CC"},
+{id:"top7",q:"Si no hay plazo estipulado ni época determinada, ¿cuándo está en mora el deudor?",o:["Desde que nace la obligación","Cuando ha sido judicialmente reconvenido por el acreedor","Cuando el acreedor le envía un aviso","Nunca"],ok:1,por:"En los demás casos, el art. 1551 N° 3 exige la reconvención judicial.",r:"Art. 1551 CC"},
+{id:"top8",q:"La substitución de una nueva obligación a otra anterior, que queda extinguida, se llama:",o:["Compensación","Novación","Remisión","Confusión"],ok:1,por:"Es la definición de novación del art. 1628.",r:"Art. 1628 CC"}]}
+
+});
+})();
+
+/* ═══ UApp · Estudiar: línea civil (3 de 4) ═══ */
+window.__MAZOS_EXTRA=window.__MAZOS_EXTRA||{};
+(function(){
+var NOTA="Contenido inicial basado en la legislación vigente y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.";
+Object.assign(window.__MAZOS_EXTRA,{
+
+"fuentes-obligaciones":{ramo:"Fuentes de las Obligaciones",nota:NOTA,revision:null,
+tarjetas:[
+{id:"fo01",t:"Contrato",d:"Acto por el cual una parte se obliga para con otra a dar, hacer o no hacer alguna cosa.",r:"Art. 1438 CC"},
+{id:"fo02",t:"Contrato unilateral y bilateral",d:"Unilateral: una de las partes se obliga para con otra que no contrae obligación alguna. Bilateral: las partes contratantes se obligan recíprocamente.",r:"Art. 1439 CC"},
+{id:"fo03",t:"Contrato gratuito y oneroso",d:"Gratuito: tiene por objeto la utilidad de una de las partes, sufriendo la otra el gravamen. Oneroso: tiene por objeto la utilidad de ambos contratantes, gravándose cada uno a beneficio del otro.",r:"Art. 1440 CC"},
+{id:"fo04",t:"Contrato real, solemne y consensual",d:"Real: se perfecciona por la tradición de la cosa. Solemne: está sujeto a formalidades especiales. Consensual: se perfecciona por el solo consentimiento.",r:"Art. 1443 CC"},
+{id:"fo05",t:"Fuerza obligatoria del contrato",d:"Todo contrato legalmente celebrado es una ley para los contratantes, y no puede ser invalidado sino por su consentimiento mutuo o por causas legales.",r:"Art. 1545 CC"},
+{id:"fo06",t:"Buena fe contractual",d:"Los contratos deben ejecutarse de buena fe, y obligan no solo a lo que en ellos se expresa, sino a todas las cosas que emanan de su naturaleza o que por la ley o la costumbre les pertenecen.",r:"Art. 1546 CC"},
+{id:"fo07",t:"Interpretación de los contratos",d:"Conocida claramente la intención de los contratantes, debe estarse a ella más que a lo literal de las palabras.",r:"Art. 1560 CC"},
+{id:"fo08",t:"Compraventa",d:"Contrato en que una de las partes se obliga a dar una cosa y la otra a pagarla en dinero.",r:"Art. 1793 CC"},
+{id:"fo09",t:"Perfeccionamiento de la compraventa",d:"Se reputa perfecta desde que las partes han convenido en la cosa y en el precio. La de bienes raíces no se reputa perfecta mientras no se otorga escritura pública.",r:"Art. 1801 CC"},
+{id:"fo10",t:"Venta de cosa ajena",d:"Es válida, sin perjuicio de los derechos del dueño de la cosa vendida, mientras no se extingan por el lapso de tiempo.",r:"Art. 1815 CC"},
+{id:"fo11",t:"Lesión enorme en la compraventa",d:"El vendedor la sufre cuando recibe menos de la mitad del justo precio; el comprador, cuando el justo precio es inferior a la mitad del que paga. No procede en la venta de muebles.",r:"Arts. 1889 y 1891 CC"},
+{id:"fo12",t:"Promesa de celebrar un contrato",d:"Solo produce obligación si consta por escrito, el contrato prometido no es ineficaz por ley, contiene un plazo o condición que fije su celebración y especifica el contrato prometido.",r:"Art. 1554 CC"},
+{id:"fo13",t:"Arrendamiento",d:"Contrato en que las dos partes se obligan recíprocamente, la una a conceder el goce de una cosa, o a ejecutar una obra o prestar un servicio, y la otra a pagar por ello un precio determinado.",r:"Art. 1915 CC"},
+{id:"fo14",t:"Mandato",d:"Contrato en que una persona confía la gestión de uno o más negocios a otra, que se hace cargo de ellos por cuenta y riesgo de la primera.",r:"Art. 2116 CC"},
+{id:"fo15",t:"Comodato o préstamo de uso",d:"Contrato en que una parte entrega gratuitamente a otra una especie, mueble o raíz, para que haga uso de ella, con cargo de restituir la misma especie después de terminado el uso.",r:"Art. 2174 CC"},
+{id:"fo16",t:"Cuasicontratos principales",d:"La agencia oficiosa, el pago de lo no debido y la comunidad.",r:"Art. 2285 CC"}],
+preguntas:[
+{id:"fop1",q:"¿Cuándo se reputa perfecta la compraventa de un bien raíz?",o:["Desde que las partes acuerdan cosa y precio","Desde que se otorga escritura pública","Desde que se paga el precio","Desde la entrega material"],ok:1,por:"El art. 1801 exige escritura pública para que la venta de bienes raíces se repute perfecta.",r:"Art. 1801 CC"},
+{id:"fop2",q:"La venta de cosa ajena:",o:["Es nula absolutamente","Es inexistente","Es válida, sin perjuicio de los derechos del dueño","Es válida solo si el dueño lo autoriza"],ok:2,por:"El art. 1815 declara válida la venta de cosa ajena, sin perjuicio de los derechos del dueño.",r:"Art. 1815 CC"},
+{id:"fop3",q:"¿Procede la lesión enorme en la compraventa de bienes muebles?",o:["Sí, siempre","No: solo procede en la de bienes raíces","Sí, si el precio es inferior a la mitad del justo","Solo si lo pacta el contrato"],ok:1,por:"El art. 1891 excluye la acción rescisoria por lesión enorme en las ventas de bienes muebles.",r:"Art. 1891 CC"},
+{id:"fop4",q:"El contrato que se perfecciona por la tradición de la cosa es:",o:["Consensual","Real","Solemne","Aleatorio"],ok:1,por:"Así lo define el art. 1443.",r:"Art. 1443 CC"},
+{id:"fop5",q:"La regla de interpretación del art. 1560 ordena preferir:",o:["El tenor literal de las palabras","La intención claramente conocida de los contratantes","La interpretación favorable al deudor","La costumbre local"],ok:1,por:"Conocida claramente la intención de los contratantes, debe estarse a ella más que a lo literal de las palabras.",r:"Art. 1560 CC"},
+{id:"fop6",q:"¿Cuál NO es un requisito de la promesa de celebrar un contrato?",o:["Que conste por escrito","Que contenga un plazo o condición que fije la época de celebración","Que se otorgue siempre por escritura pública","Que especifique el contrato prometido"],ok:2,por:"El art. 1554 exige que conste por escrito, no necesariamente por escritura pública.",r:"Art. 1554 CC"},
+{id:"fop7",q:"El contrato en que una persona confía la gestión de negocios a otra, por cuenta y riesgo de la primera, es:",o:["Arrendamiento de servicios","Mandato","Sociedad","Depósito"],ok:1,por:"Es la definición de mandato del art. 2116.",r:"Art. 2116 CC"},
+{id:"fop8",q:"¿Cuáles son los cuasicontratos principales según el Código Civil?",o:["Agencia oficiosa, pago de lo no debido y comunidad","Mandato, depósito y comodato","Delito, cuasidelito y ley","Promesa, opción y reserva"],ok:0,por:"El art. 2285 señala esos tres como los principales cuasicontratos.",r:"Art. 2285 CC"}]},
+
+"derecho-familia":{ramo:"Derecho de Familia",nota:NOTA,revision:null,
+tarjetas:[
+{id:"df01",t:"Matrimonio",d:"Contrato solemne por el cual dos personas se unen actual e indisolublemente, y por toda la vida, con el fin de vivir juntos, de procrear y de auxiliarse mutuamente.",r:"Art. 102 CC"},
+{id:"df02",t:"Esponsales",d:"La promesa de matrimonio mutuamente aceptada. Es un hecho privado que no produce obligación alguna ante la ley civil.",r:"Art. 98 CC"},
+{id:"df03",t:"Parentesco por consanguinidad",d:"El que existe entre dos personas que descienden una de la otra o de un mismo progenitor, en cualquiera de sus grados.",r:"Art. 28 CC"},
+{id:"df04",t:"Parentesco por afinidad",d:"El que existe entre una persona que está o ha estado casada y los consanguíneos de su cónyuge.",r:"Art. 31 CC"},
+{id:"df05",t:"Divorcio por cese de la convivencia",d:"De común acuerdo, procede tras un año de cese efectivo de la convivencia. Si lo pide uno solo de los cónyuges, se exige un cese de al menos tres años.",r:"Art. 55 Ley 19.947"},
+{id:"df06",t:"Divorcio por culpa",d:"Lo puede demandar un cónyuge por falta imputable al otro que constituya una violación grave de los deberes del matrimonio, o para con los hijos, que torne intolerable la vida en común.",r:"Art. 54 Ley 19.947"},
+{id:"df07",t:"Compensación económica",d:"Derecho del cónyuge que, por dedicarse al cuidado de los hijos o a las labores del hogar, no pudo desarrollar una actividad remunerada o lo hizo en menor medida, a ser compensado del menoscabo económico al terminar el matrimonio por divorcio o nulidad.",r:"Art. 61 Ley 19.947"},
+{id:"df08",t:"Regímenes patrimoniales del matrimonio",d:"La sociedad conyugal, la separación total de bienes y la participación en los gananciales.",r:"Doctrina"},
+{id:"df09",t:"Bienes familiares",d:"El inmueble que sirve de residencia principal de la familia, y los muebles que la guarnecen, pueden declararse bienes familiares, cualquiera sea el régimen de bienes del matrimonio.",r:"Art. 141 CC"},
+{id:"df10",t:"Clases de filiación",d:"Por naturaleza, que puede ser matrimonial o no matrimonial, y adoptiva.",r:"Art. 179 CC"},
+{id:"df11",t:"Igualdad de los hijos",d:"La ley considera iguales a todos los hijos.",r:"Art. 33 CC"},
+{id:"df12",t:"Patria potestad",d:"Conjunto de derechos y deberes que corresponden al padre o a la madre sobre los bienes de sus hijos no emancipados.",r:"Art. 243 CC"},
+{id:"df13",t:"Cuidado personal compartido",d:"Régimen de vida que procura estimular la corresponsabilidad de ambos padres que viven separados en la crianza y educación de los hijos comunes.",r:"Art. 225 CC"},
+{id:"df14",t:"Alimentos: a quiénes se deben",d:"Entre otros, al cónyuge, a los descendientes, a los ascendientes y a los hermanos.",r:"Art. 321 CC"},
+{id:"df15",t:"Acuerdo de Unión Civil",d:"Contrato celebrado entre dos personas que comparten un hogar, con el propósito de regular los efectos jurídicos derivados de su vida afectiva en común, de carácter estable y permanente.",r:"Art. 1 Ley 20.830"},
+{id:"df16",t:"Mediación familiar previa",d:"En las causas de alimentos, cuidado personal y relación directa y regular, debe intentarse una mediación antes de presentar la demanda.",r:"Art. 106 Ley 19.968"}],
+preguntas:[
+{id:"dfp1",q:"Según el Código Civil, los esponsales:",o:["Obligan a casarse","No producen obligación alguna ante la ley civil","Dan derecho a indemnización si se rompen","Deben constar por escritura pública"],ok:1,por:"El art. 98 los define como un hecho privado que no produce obligación alguna ante la ley civil.",r:"Art. 98 CC"},
+{id:"dfp2",q:"¿Cuánto tiempo de cese de la convivencia exige el divorcio solicitado por uno solo de los cónyuges?",o:["Un año","Dos años","Tres años","Cinco años"],ok:2,por:"El art. 55 de la Ley 19.947 exige un año si es de común acuerdo y tres años si lo pide uno solo de los cónyuges.",r:"Art. 55 Ley 19.947"},
+{id:"dfp3",q:"La compensación económica procede a favor del cónyuge que:",o:["Tiene menos bienes al casarse","Por dedicarse a los hijos o al hogar, no pudo trabajar remuneradamente o lo hizo en menor medida","Fue engañado por el otro cónyuge","Pide el divorcio"],ok:1,por:"El art. 61 de la Ley 19.947 la concede para compensar ese menoscabo económico.",r:"Art. 61 Ley 19.947"},
+{id:"dfp4",q:"La patria potestad se refiere a:",o:["El cuidado personal de los hijos","Los derechos y deberes de los padres sobre los bienes de sus hijos no emancipados","El deber de alimentos","La relación directa y regular"],ok:1,por:"Así la define el art. 243: recae sobre los bienes de los hijos no emancipados.",r:"Art. 243 CC"},
+{id:"dfp5",q:"¿Qué inmueble puede declararse bien familiar?",o:["Cualquier inmueble de los cónyuges","El que sirve de residencia principal de la familia","Solo el adquirido durante el matrimonio","Solo el de propiedad de ambos cónyuges"],ok:1,por:"El art. 141 se refiere al inmueble que sirve de residencia principal de la familia, cualquiera sea el régimen de bienes.",r:"Art. 141 CC"},
+{id:"dfp6",q:"Hoy la filiación puede ser:",o:["Legítima o ilegítima","Por naturaleza, matrimonial o no matrimonial, o adoptiva","Natural o simplemente ilegítima","Solo matrimonial o adoptiva"],ok:1,por:"El art. 179, tras la Ley 19.585, distingue la filiación por naturaleza, matrimonial o no matrimonial, y la adoptiva.",r:"Art. 179 CC"},
+{id:"dfp7",q:"¿En qué causas se exige mediación previa a la demanda ante los tribunales de familia?",o:["Divorcio y nulidad","Alimentos, cuidado personal y relación directa y regular","Violencia intrafamiliar","Adopción"],ok:1,por:"El art. 106 de la Ley 19.968 exige mediación previa en esas tres materias.",r:"Art. 106 Ley 19.968"},
+{id:"dfp8",q:"El Acuerdo de Unión Civil es:",o:["Un contrato entre dos personas que comparten un hogar para regular los efectos de su vida afectiva en común","Un tipo de matrimonio religioso","Un régimen patrimonial del matrimonio","Una promesa de matrimonio"],ok:0,por:"Así lo define el art. 1 de la Ley 20.830.",r:"Art. 1 Ley 20.830"}]}
+
+});
+})();
+
+/* ═══ UApp · Estudiar: línea civil (4 de 4) ═══ */
+window.__MAZOS_EXTRA=window.__MAZOS_EXTRA||{};
+(function(){
+var NOTA="Contenido inicial basado en la legislación vigente y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.";
+Object.assign(window.__MAZOS_EXTRA,{
+
+"responsabilidad-civil":{ramo:"Responsabilidad Civil",nota:NOTA,revision:null,
+tarjetas:[
+{id:"rc01",t:"Delito civil",d:"Hecho ilícito cometido con intención de dañar.",r:"Art. 2284 CC"},
+{id:"rc02",t:"Cuasidelito civil",d:"Hecho culpable, pero cometido sin intención de dañar.",r:"Art. 2284 CC"},
+{id:"rc03",t:"Regla general de responsabilidad extracontractual",d:"El que ha cometido un delito o cuasidelito que ha inferido daño a otro es obligado a la indemnización, sin perjuicio de la pena que le impongan las leyes.",r:"Art. 2314 CC"},
+{id:"rc04",t:"Capacidad delictual",d:"No son capaces de delito o cuasidelito los menores de siete años ni los dementes. Respecto del mayor de siete y menor de dieciséis, el juez decide si cometió el hecho con discernimiento.",r:"Art. 2319 CC"},
+{id:"rc05",t:"Responsabilidad por el hecho ajeno",d:"Toda persona es responsable no solo de sus propias acciones, sino del hecho de quienes estuvieren a su cuidado, como los padres respecto de sus hijos menores que habiten en la misma casa.",r:"Art. 2320 CC"},
+{id:"rc06",t:"Responsabilidad solidaria",d:"Si un delito o cuasidelito ha sido cometido por dos o más personas, cada una de ellas es solidariamente responsable de todo perjuicio procedente del mismo delito o cuasidelito.",r:"Art. 2317 CC"},
+{id:"rc07",t:"Exposición imprudente al daño",d:"La apreciación del daño está sujeta a reducción si el que lo ha sufrido se expuso a él imprudentemente.",r:"Art. 2330 CC"},
+{id:"rc08",t:"Prescripción de la acción",d:"Las acciones por daño o dolo prescriben en cuatro años contados desde la perpetración del acto.",r:"Art. 2332 CC"},
+{id:"rc09",t:"Daño imputable a malicia o negligencia",d:"Por regla general, todo daño que pueda imputarse a malicia o negligencia de otra persona debe ser reparado por ésta.",r:"Art. 2329 CC"},
+{id:"rc10",t:"Responsabilidad por animales",d:"El dueño de un animal es responsable de los daños causados por él, aun después de soltado o extraviado, salvo que no sea imputable a culpa suya o de su dependiente.",r:"Art. 2326 CC"},
+{id:"rc11",t:"Ruina de un edificio",d:"El dueño responde de los daños que ocasione su ruina, si ésta ocurrió por haber omitido las reparaciones necesarias o por haber faltado de otra manera al cuidado de un buen padre de familia.",r:"Art. 2323 CC"},
+{id:"rc12",t:"Elementos de la responsabilidad extracontractual",d:"Capacidad, hecho culpable o doloso, daño y relación de causalidad entre el hecho y el daño.",r:"Doctrina"},
+{id:"rc13",t:"Daño emergente y lucro cesante",d:"Daño emergente: empobrecimiento real del patrimonio. Lucro cesante: la ganancia que se deja de percibir a causa del hecho dañoso.",r:"Doctrina"},
+{id:"rc14",t:"Daño moral",d:"Lesión de intereses extrapatrimoniales, como el sufrimiento o la afectación de derechos de la personalidad. La jurisprudencia admite su indemnización en sede extracontractual.",r:"Doctrina"},
+{id:"rc15",t:"Responsabilidad contractual y extracontractual",d:"La contractual deriva del incumplimiento de una obligación nacida de un contrato; la extracontractual, de un hecho ilícito sin vínculo previo entre las partes.",r:"Doctrina"},
+{id:"rc16",t:"Acción popular por daño contingente",d:"La ley concede acción popular cuando un daño contingente, por imprudencia o negligencia de alguien, amenaza a personas indeterminadas.",r:"Art. 2333 CC"}],
+preguntas:[
+{id:"rcp1",q:"¿Cuál es el plazo de prescripción de la acción de responsabilidad extracontractual?",o:["Dos años","Cuatro años desde la perpetración del acto","Cinco años desde que se conoce el daño","Diez años"],ok:1,por:"El art. 2332 fija cuatro años contados desde la perpetración del acto.",r:"Art. 2332 CC"},
+{id:"rcp2",q:"Si un cuasidelito es cometido por dos personas, su responsabilidad es:",o:["Simplemente conjunta","Solidaria","Subsidiaria","Proporcional a su culpa"],ok:1,por:"El art. 2317 establece la responsabilidad solidaria de los coautores.",r:"Art. 2317 CC"},
+{id:"rcp3",q:"¿Son capaces de delito o cuasidelito civil los menores de siete años?",o:["Sí","No","Solo si actuaron con discernimiento","Solo si sus padres lo autorizan"],ok:1,por:"El art. 2319 declara incapaces de delito o cuasidelito a los menores de siete años y a los dementes.",r:"Art. 2319 CC"},
+{id:"rcp4",q:"La diferencia entre el delito y el cuasidelito civil está en:",o:["El monto del daño","La intención de dañar","La edad del autor","El tipo de bien afectado"],ok:1,por:"Según el art. 2284, el delito se comete con intención de dañar; el cuasidelito, sin ella.",r:"Art. 2284 CC"},
+{id:"rcp5",q:"Si la víctima se expuso imprudentemente al daño, la indemnización:",o:["Se mantiene íntegra","Queda sujeta a reducción","Se extingue","Se duplica"],ok:1,por:"Así lo dispone el art. 2330.",r:"Art. 2330 CC"},
+{id:"rcp6",q:"Los padres responden por el hecho de sus hijos menores:",o:["Siempre","Que habiten en la misma casa","Solo si fueron condenados penalmente","Nunca"],ok:1,por:"El art. 2320 se refiere a los hijos menores que habiten en la misma casa.",r:"Art. 2320 CC"},
+{id:"rcp7",q:"¿Cuál NO es un elemento de la responsabilidad extracontractual?",o:["El daño","La relación de causalidad","Un contrato previo entre las partes","El hecho culpable o doloso"],ok:2,por:"Justamente, la responsabilidad extracontractual no supone un vínculo contractual previo.",r:"Doctrina"},
+{id:"rcp8",q:"La ganancia que se deja de percibir a causa del hecho dañoso es el:",o:["Daño emergente","Lucro cesante","Daño moral","Daño indirecto"],ok:1,por:"Es el lucro cesante; el daño emergente es el empobrecimiento real del patrimonio.",r:"Doctrina"}]},
+
+"derecho-sucesorio":{ramo:"Derecho Sucesorio",nota:NOTA,revision:null,
+tarjetas:[
+{id:"ds01",t:"Asignaciones por causa de muerte",d:"Las que hace la ley, o el testamento de una persona difunta, para suceder en sus bienes.",r:"Art. 953 CC"},
+{id:"ds02",t:"Título universal y título singular",d:"Universal: se sucede en todos los bienes, derechos y obligaciones transmisibles del difunto, o en una cuota de ellos. Singular: se sucede en una o más especies o cuerpos ciertos, o en especies indeterminadas de cierto género.",r:"Art. 951 CC"},
+{id:"ds03",t:"Apertura de la sucesión",d:"Se abre al momento de la muerte de una persona, en su último domicilio.",r:"Art. 955 CC"},
+{id:"ds04",t:"Delación",d:"El actual llamamiento de la ley a aceptar o repudiar la asignación.",r:"Art. 956 CC"},
+{id:"ds05",t:"Capacidad para suceder",d:"Para ser capaz de suceder es necesario existir al tiempo de abrirse la sucesión.",r:"Art. 962 CC"},
+{id:"ds06",t:"Indignidad para suceder",d:"Impide suceder a quien cometió ciertas conductas graves contra el difunto, como el homicidio en su persona.",r:"Art. 968 CC"},
+{id:"ds07",t:"Testamento",d:"Acto más o menos solemne, en que una persona dispone del todo o de una parte de sus bienes para que tenga pleno efecto después de sus días, conservando la facultad de revocar las disposiciones contenidas en él.",r:"Art. 999 CC"},
+{id:"ds08",t:"Testamento abierto y cerrado",d:"Abierto: el testador hace sabedores de sus disposiciones a los testigos. Cerrado: no es necesario que los testigos tengan conocimiento de ellas.",r:"Art. 1008 CC"},
+{id:"ds09",t:"Asignaciones forzosas",d:"Las que el testador es obligado a hacer: los alimentos que se deben por ley, las legítimas y la cuarta de mejoras.",r:"Art. 1167 CC"},
+{id:"ds10",t:"Legitimarios",d:"Los hijos, personalmente o representados por su descendencia; los ascendientes; y el cónyuge sobreviviente. La Ley 20.830 agrega al conviviente civil sobreviviente.",r:"Art. 1182 CC; Ley 20.830"},
+{id:"ds11",t:"División del acervo con legitimarios",d:"La mitad legitimaria, una cuarta de mejoras y una cuarta de libre disposición.",r:"Art. 1184 CC"},
+{id:"ds12",t:"Derecho de representación",d:"Ficción legal en que se supone que una persona tiene el lugar, el grado de parentesco y los derechos hereditarios que tendría su padre o madre, si éste o ésta no quisiese o no pudiese suceder.",r:"Art. 984 CC"},
+{id:"ds13",t:"Órdenes de sucesión intestada",d:"Primero, los descendientes con el cónyuge; luego, el cónyuge y los ascendientes; después, los hermanos; luego, los demás colaterales; y, a falta de todos, el Fisco.",r:"Arts. 988 a 995 CC"},
+{id:"ds14",t:"Beneficio de inventario",d:"Consiste en no hacer responsables a los herederos que aceptan de las obligaciones hereditarias y testamentarias sino hasta el valor total de los bienes que han heredado.",r:"Art. 1247 CC"},
+{id:"ds15",t:"Acción de partición",d:"Ninguno de los coasignatarios está obligado a permanecer en la indivisión: la partición puede siempre pedirse, salvo pacto de indivisión, que no puede exceder de cinco años.",r:"Art. 1317 CC"},
+{id:"ds16",t:"Sucesión por causa de muerte",d:"Es uno de los modos de adquirir el dominio que enumera el Código Civil.",r:"Art. 588 CC"}],
+preguntas:[
+{id:"dsp1",q:"¿Dónde se abre la sucesión de una persona?",o:["Donde está la mayoría de sus bienes","En su último domicilio","En el lugar de su nacimiento","Donde vive el heredero"],ok:1,por:"El art. 955 dispone que se abre al momento de la muerte, en el último domicilio del causante.",r:"Art. 955 CC"},
+{id:"dsp2",q:"Para ser capaz de suceder es necesario:",o:["Ser mayor de edad","Existir al tiempo de abrirse la sucesión","Ser pariente del causante","Estar mencionado en el testamento"],ok:1,por:"Así lo exige el art. 962.",r:"Art. 962 CC"},
+{id:"dsp3",q:"¿Cómo se divide el acervo cuando hay descendientes, cónyuge o ascendientes?",o:["Todo para los legitimarios","Mitad legitimaria, una cuarta de mejoras y una cuarta de libre disposición","Un tercio para cada uno","Mitad de libre disposición y mitad legitimaria"],ok:1,por:"Es la división del art. 1184.",r:"Art. 1184 CC"},
+{id:"dsp4",q:"¿Cuál NO es una asignación forzosa?",o:["Los alimentos que se deben por ley","Las legítimas","La cuarta de mejoras","La cuarta de libre disposición"],ok:3,por:"La cuarta de libre disposición es justamente la parte de que el testador puede disponer a su arbitrio.",r:"Art. 1167 CC"},
+{id:"dsp5",q:"En el testamento abierto:",o:["Los testigos no conocen las disposiciones","El testador hace sabedores de sus disposiciones a los testigos","No intervienen testigos","Solo puede otorgarse en el extranjero"],ok:1,por:"Así lo distingue el art. 1008.",r:"Art. 1008 CC"},
+{id:"dsp6",q:"El beneficio de inventario limita la responsabilidad del heredero:",o:["A la mitad de las deudas","Hasta el valor total de los bienes heredados","A las deudas tributarias","No limita su responsabilidad"],ok:1,por:"El art. 1247 limita su responsabilidad al valor de los bienes heredados.",r:"Art. 1247 CC"},
+{id:"dsp7",q:"A falta de todos los demás herederos intestados, sucede:",o:["La municipalidad","El Fisco","La Iglesia","El albacea"],ok:1,por:"El art. 995 llama al Fisco a falta de todos los herederos abintestato.",r:"Art. 995 CC"},
+{id:"dsp8",q:"¿Puede un coasignatario ser obligado a permanecer en la indivisión?",o:["Sí, por diez años","No: la partición puede siempre pedirse, salvo pacto de indivisión de hasta cinco años","Sí, si lo dispone el juez","Solo si son más de tres herederos"],ok:1,por:"El art. 1317 permite pedir siempre la partición; el pacto de indivisión no puede exceder de cinco años.",r:"Art. 1317 CC"}]}
+
+});
+})();
+
+/* ═══ UApp · Estudiar: línea procesal (1 de 4) ═══ */
+window.__MAZOS_EXTRA=window.__MAZOS_EXTRA||{};
+(function(){
+var NOTA="Contenido inicial basado en la legislación vigente y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.";
+Object.assign(window.__MAZOS_EXTRA,{
+
+"organizacion-tribunales":{ramo:"Organización y Atribuciones de los Tribunales",nota:NOTA,revision:null,
+tarjetas:[
+{id:"ot01",t:"Jurisdicción",d:"La facultad de conocer las causas civiles y criminales, de juzgarlas y de hacer ejecutar lo juzgado pertenece exclusivamente a los tribunales que establece la ley.",r:"Art. 1 COT"},
+{id:"ot02",t:"Competencia",d:"La facultad que tiene cada juez o tribunal para conocer de los negocios que la ley ha colocado dentro de la esfera de sus atribuciones.",r:"Art. 108 COT"},
+{id:"ot03",t:"Inexcusabilidad",d:"Reclamada su intervención en forma legal y en negocios de su competencia, los tribunales no pueden excusarse de ejercer su autoridad ni aun por falta de ley que resuelva la contienda.",r:"Art. 10 COT"},
+{id:"ot04",t:"Pasividad",d:"Los tribunales no pueden ejercer su ministerio sino a petición de parte, salvo los casos en que la ley los faculte para proceder de oficio.",r:"Art. 10 COT"},
+{id:"ot05",t:"Territorialidad",d:"Cada tribunal ejerce su potestad en los negocios y dentro del territorio que la ley le hubiere asignado.",r:"Art. 7 COT"},
+{id:"ot06",t:"Inavocabilidad",d:"Ningún tribunal puede avocarse el conocimiento de causas o negocios pendientes ante otro tribunal, a menos que la ley le confiera expresamente esta facultad.",r:"Art. 8 COT"},
+{id:"ot07",t:"Publicidad",d:"Los actos de los tribunales son públicos, salvo las excepciones expresamente establecidas por la ley.",r:"Art. 9 COT"},
+{id:"ot08",t:"Regla de la radicación",d:"Radicado con arreglo a la ley el conocimiento de un negocio ante tribunal competente, no se alterará esta competencia por causa sobreviniente.",r:"Art. 109 COT"},
+{id:"ot09",t:"Regla del grado",d:"Fijada la competencia de un juez inferior para conocer en primera instancia de un asunto, queda igualmente fijada la del tribunal superior que debe conocer del mismo en segunda instancia.",r:"Art. 110 COT"},
+{id:"ot10",t:"Regla de la extensión",d:"El tribunal competente para conocer de un asunto lo es también para conocer de sus incidencias y de las cuestiones que se susciten por vía de reconvención o compensación.",r:"Art. 111 COT"},
+{id:"ot11",t:"Regla de la prevención",d:"Si dos o más tribunales son competentes para un mismo asunto, ninguno puede excusarse a pretexto de haber otros competentes; pero el que haya prevenido en el conocimiento excluye a los demás.",r:"Art. 112 COT"},
+{id:"ot12",t:"Tribunales ordinarios",d:"La Corte Suprema, las Cortes de Apelaciones, los Presidentes y Ministros de Corte, los tribunales de juicio oral en lo penal, los juzgados de letras y los juzgados de garantía.",r:"Art. 5 COT"},
+{id:"ot13",t:"Integración de la Corte Suprema",d:"Se compone de veintiún ministros, uno de los cuales es su presidente.",r:"Art. 93 COT"},
+{id:"ot14",t:"Juez de garantía",d:"Asegura los derechos del imputado y demás intervinientes en el proceso penal, y dirige personalmente las audiencias que procedan.",r:"Art. 14 COT"},
+{id:"ot15",t:"Auxiliares de la administración de justicia",d:"Entre otros, la Fiscalía Judicial, los defensores públicos, los relatores, los secretarios, los receptores, los procuradores del número, los notarios, los conservadores y los archiveros.",r:"Art. 285 COT"},
+{id:"ot16",t:"Notario",d:"Ministro de fe pública encargado de autorizar y guardar en su archivo los instrumentos que ante él se otorguen, y de dar a los interesados los testimonios que pidieren.",r:"Art. 399 COT"}],
+preguntas:[
+{id:"otp1",q:"¿Pueden los tribunales excusarse de resolver un asunto de su competencia por falta de ley?",o:["Sí","No: rige el principio de inexcusabilidad","Solo en materia civil","Solo si lo autoriza la Corte Suprema"],ok:1,por:"El art. 10 inciso segundo del COT impide excusarse ni aun por falta de ley que resuelva la contienda.",r:"Art. 10 COT"},
+{id:"otp2",q:"La regla según la cual el tribunal competente para un asunto lo es también para sus incidencias y la reconvención es la de:",o:["Radicación","Grado","Extensión","Prevención"],ok:2,por:"Es la regla de la extensión del art. 111 del COT.",r:"Art. 111 COT"},
+{id:"otp3",q:"¿Cuántos ministros integran la Corte Suprema?",o:["Diecisiete","Veintiuno","Quince","Veinticinco"],ok:1,por:"El art. 93 del COT dispone que se compone de veintiún ministros.",r:"Art. 93 COT"},
+{id:"otp4",q:"El principio que impide a un tribunal conocer de causas pendientes ante otro, salvo ley expresa, es:",o:["Inavocabilidad","Inexcusabilidad","Territorialidad","Pasividad"],ok:0,por:"Es la inavocabilidad del art. 8 del COT.",r:"Art. 8 COT"},
+{id:"otp5",q:"La competencia se define como:",o:["La facultad de conocer, juzgar y hacer ejecutar lo juzgado","La facultad de cada juez o tribunal para conocer de los negocios que la ley ha colocado dentro de sus atribuciones","La potestad de dictar autos acordados","El conjunto de tribunales del país"],ok:1,por:"Es la definición del art. 108 del COT; la primera alternativa corresponde a la jurisdicción.",r:"Art. 108 COT"},
+{id:"otp6",q:"¿Cuál de estos NO es un tribunal ordinario según el art. 5 del COT?",o:["Juzgado de garantía","Corte de Apelaciones","Juzgado de policía local","Tribunal de juicio oral en lo penal"],ok:2,por:"Los juzgados de policía local son tribunales especiales que no forman parte del Poder Judicial.",r:"Art. 5 COT"},
+{id:"otp7",q:"¿Qué regla impide que una causa sobreviniente altere la competencia ya fijada de un tribunal?",o:["Radicación","Grado","Extensión","Prevención"],ok:0,por:"Es la regla de la radicación o fijeza del art. 109 del COT.",r:"Art. 109 COT"},
+{id:"otp8",q:"El ministro de fe encargado de autorizar y guardar en su archivo los instrumentos que ante él se otorgan es el:",o:["Receptor","Notario","Relator","Secretario"],ok:1,por:"Así define el art. 399 del COT a los notarios.",r:"Art. 399 COT"}]},
+
+"teoria-proceso":{ramo:"Teoría del Proceso",nota:NOTA,revision:null,
+tarjetas:[
+{id:"pr01",t:"Proceso",d:"Secuencia de actos que se desenvuelven progresivamente con el objeto de resolver, mediante un juicio de la autoridad, el conflicto sometido a su decisión.",r:"Doctrina"},
+{id:"pr02",t:"Procedimiento",d:"El conjunto de formalidades y trámites a que se sujeta la realización de los actos que componen el proceso.",r:"Doctrina"},
+{id:"pr03",t:"Acción",d:"El derecho de acudir a los tribunales para obtener la tutela de un derecho o interés.",r:"Doctrina"},
+{id:"pr04",t:"Bilateralidad de la audiencia",d:"Principio según el cual ninguna resolución debe dictarse sin oír a la parte contra la cual se pide.",r:"Doctrina"},
+{id:"pr05",t:"Preclusión",d:"La pérdida o extinción de una facultad procesal por no haberse ejercido en la oportunidad legal, por haberse realizado un acto incompatible o por haberse ejercido ya válidamente.",r:"Doctrina"},
+{id:"pr06",t:"Equivalentes jurisdiccionales",d:"Medios que, sin ser una sentencia del tribunal, ponen término al conflicto con efectos similares: la transacción, el avenimiento, la conciliación y la sentencia extranjera.",r:"Doctrina"},
+{id:"pr07",t:"Clases de resoluciones judiciales",d:"Sentencias definitivas, sentencias interlocutorias, autos y decretos.",r:"Art. 158 CPC"},
+{id:"pr08",t:"Sentencia definitiva",d:"La que pone fin a la instancia, resolviendo la cuestión o asunto que ha sido objeto del juicio.",r:"Art. 158 CPC"},
+{id:"pr09",t:"Efecto de las notificaciones",d:"Las resoluciones judiciales solo producen efecto en virtud de notificación hecha con arreglo a la ley, salvo los casos expresamente exceptuados.",r:"Art. 38 CPC"},
+{id:"pr10",t:"Cosa juzgada",d:"Las sentencias definitivas o interlocutorias firmes producen la acción o la excepción de cosa juzgada.",r:"Art. 175 CPC"},
+{id:"pr11",t:"Triple identidad",d:"Para que opere la excepción de cosa juzgada debe haber identidad legal de personas, identidad de la cosa pedida e identidad de la causa de pedir.",r:"Art. 177 CPC"},
+{id:"pr12",t:"Excepciones dilatorias",d:"Las que se refieren a la corrección del procedimiento sin afectar el fondo de la acción, como la incompetencia del tribunal o la litispendencia.",r:"Art. 303 CPC"},
+{id:"pr13",t:"Partes y terceros",d:"Las partes son el demandante y el demandado. Pueden intervenir terceros coadyuvantes, excluyentes o independientes.",r:"Doctrina"},
+{id:"pr14",t:"Comparecencia en juicio",d:"Por regla general, se debe comparecer patrocinado por un abogado habilitado y representado por quien tenga ius postulandi.",r:"Ley 18.120"},
+{id:"pr15",t:"Abandono del procedimiento",d:"Se produce cuando todas las partes han cesado en su prosecución durante seis meses, contados desde la última resolución recaída en alguna gestión útil.",r:"Art. 152 CPC"},
+{id:"pr16",t:"Plazos de días del Código de Procedimiento Civil",d:"Se entienden suspendidos durante los feriados, salvo que el tribunal, por motivos justificados, haya dispuesto expresamente lo contrario.",r:"Art. 66 CPC"}],
+preguntas:[
+{id:"prp1",q:"¿Cuáles son las clases de resoluciones judiciales según el art. 158 del CPC?",o:["Sentencias definitivas, interlocutorias, autos y decretos","Sentencias, providencias y oficios","Fallos, autos acordados y decretos","Sentencias firmes y ejecutoriadas"],ok:0,por:"El art. 158 distingue sentencias definitivas, sentencias interlocutorias, autos y decretos.",r:"Art. 158 CPC"},
+{id:"prp2",q:"Para que opere la excepción de cosa juzgada se requiere:",o:["Solo identidad de partes","Identidad legal de personas, de cosa pedida y de causa de pedir","Que la sentencia sea de la Corte Suprema","Que hayan pasado cinco años"],ok:1,por:"Es la triple identidad del art. 177 del CPC.",r:"Art. 177 CPC"},
+{id:"prp3",q:"¿Desde cuándo producen efecto las resoluciones judiciales?",o:["Desde que se dictan","Desde su notificación hecha con arreglo a la ley","Desde que quedan firmes","Desde su publicación en el Diario Oficial"],ok:1,por:"El art. 38 del CPC las hace producir efecto en virtud de notificación legal, salvo excepciones.",r:"Art. 38 CPC"},
+{id:"prp4",q:"¿Cuánto tiempo de inactividad de todas las partes produce el abandono del procedimiento?",o:["Tres meses","Seis meses","Un año","Dos años"],ok:1,por:"El art. 152 del CPC exige seis meses desde la última resolución recaída en una gestión útil.",r:"Art. 152 CPC"},
+{id:"prp5",q:"La pérdida de una facultad procesal por no ejercerla en la oportunidad legal se denomina:",o:["Prescripción","Preclusión","Caducidad del derecho","Desistimiento"],ok:1,por:"Es la preclusión, que da orden y avance al procedimiento.",r:"Doctrina"},
+{id:"prp6",q:"¿Cuál de estos es un equivalente jurisdiccional?",o:["La sentencia definitiva","La transacción","La demanda","El recurso de apelación"],ok:1,por:"La transacción pone término al litigio sin sentencia y produce efectos similares.",r:"Doctrina"},
+{id:"prp7",q:"La incompetencia del tribunal se alega como:",o:["Excepción perentoria","Excepción dilatoria","Recurso de casación","Recurso de hecho"],ok:1,por:"El art. 303 del CPC la incluye entre las excepciones dilatorias.",r:"Art. 303 CPC"},
+{id:"prp8",q:"La resolución que pone fin a la instancia resolviendo la cuestión objeto del juicio es:",o:["Auto","Decreto","Sentencia interlocutoria","Sentencia definitiva"],ok:3,por:"Así define el art. 158 del CPC a la sentencia definitiva.",r:"Art. 158 CPC"}]}
+
+});
+})();
+
+/* ═══ UApp · Estudiar: línea procesal (2 de 4) ═══ */
+window.__MAZOS_EXTRA=window.__MAZOS_EXTRA||{};
+(function(){
+var NOTA="Contenido inicial basado en la legislación vigente y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.";
+Object.assign(window.__MAZOS_EXTRA,{
+
+"procedimientos-cognicion":{ramo:"Procedimientos Civiles de Cognición",nota:NOTA,revision:null,
+tarjetas:[
+{id:"cg01",t:"Aplicación del procedimiento ordinario",d:"Se aplica en todas las gestiones, trámites y actuaciones que no estén sometidos a una regla especial diversa.",r:"Art. 3 CPC"},
+{id:"cg02",t:"Requisitos de la demanda",d:"Designación del tribunal; individualización del demandante, de su representante y del demandado; exposición clara de los hechos y fundamentos de derecho; y enunciación precisa de las peticiones.",r:"Art. 254 CPC"},
+{id:"cg03",t:"Emplazamiento",d:"La notificación legal de la demanda al demandado, unida al transcurso del término que la ley le concede para contestarla.",r:"Doctrina"},
+{id:"cg04",t:"Término de emplazamiento",d:"Si el demandado es notificado en la comuna donde funciona el tribunal, dispone de quince días para contestar la demanda.",r:"Art. 258 CPC"},
+{id:"cg05",t:"Réplica y dúplica",d:"Tras la contestación, el demandante puede replicar y el demandado duplicar, ampliando, adicionando o modificando sus acciones y excepciones sin alterar las principales.",r:"Art. 312 CPC"},
+{id:"cg06",t:"Llamado a conciliación",d:"Agotados los trámites de discusión, en todo juicio civil en que sea admisible la transacción, el juez debe llamar a las partes a conciliación, salvo las excepciones legales.",r:"Art. 262 CPC"},
+{id:"cg07",t:"Recepción de la causa a prueba",d:"Si hay controversia sobre algún hecho sustancial y pertinente, el tribunal recibe la causa a prueba y fija los hechos sobre los que debe recaer.",r:"Art. 318 CPC"},
+{id:"cg08",t:"Término probatorio ordinario",d:"Es de veinte días.",r:"Art. 328 CPC"},
+{id:"cg09",t:"Medios de prueba",d:"Instrumentos, testigos, confesión de parte, inspección personal del tribunal, informes de peritos y presunciones.",r:"Art. 341 CPC"},
+{id:"cg10",t:"Citación para oír sentencia",d:"Vencido el término probatorio y el plazo para formular observaciones a la prueba, el tribunal cita a las partes para oír sentencia.",r:"Art. 432 CPC"},
+{id:"cg11",t:"Plazo para dictar la sentencia definitiva",d:"Sesenta días contados desde que la causa quede en estado de sentencia.",r:"Art. 162 CPC"},
+{id:"cg12",t:"Medidas prejudiciales",d:"Diligencias que pueden solicitarse antes de iniciar el juicio, para preparar la entrada a él.",r:"Art. 273 CPC"},
+{id:"cg13",t:"Juicio sumario",d:"Procedimiento de tramitación rápida, aplicable a falta de otra regla especial cuando la acción requiere tramitación rápida para ser eficaz, y en los casos que la ley señala.",r:"Art. 680 CPC"},
+{id:"cg14",t:"Audiencia del juicio sumario",d:"Deducida la demanda, se cita a las partes a una audiencia, en la cual el demandado contesta y el tribunal llama a conciliación.",r:"Art. 683 CPC"},
+{id:"cg15",t:"Reconvención",d:"Demanda que el demandado deduce contra el demandante, en el mismo escrito de contestación.",r:"Art. 314 CPC"},
+{id:"cg16",t:"Pluralidad de partes",d:"En un mismo juicio pueden intervenir como demandantes o demandados varias personas, siempre que se deduzca la misma acción o acciones que emanen directa e inmediatamente de un mismo hecho.",r:"Art. 18 CPC"}],
+preguntas:[
+{id:"cgp1",q:"¿En qué casos se aplica el procedimiento ordinario?",o:["Solo en juicios de cuantía superior a 500 UF","En todas las gestiones que no estén sometidas a una regla especial","Solo cuando las partes lo acuerdan","Solo en juicios de familia"],ok:1,por:"El art. 3 del CPC lo hace aplicable a todo lo que no tenga una regla especial.",r:"Art. 3 CPC"},
+{id:"cgp2",q:"Si el demandado es notificado en la comuna donde funciona el tribunal, ¿de cuántos días dispone para contestar?",o:["Diez días","Quince días","Veinte días","Treinta días"],ok:1,por:"El art. 258 del CPC fija quince días en ese caso.",r:"Art. 258 CPC"},
+{id:"cgp3",q:"¿Cuál es el término probatorio ordinario del juicio ordinario?",o:["Diez días","Quince días","Veinte días","Treinta días"],ok:2,por:"El art. 328 del CPC lo fija en veinte días.",r:"Art. 328 CPC"},
+{id:"cgp4",q:"¿Cuál NO es un medio de prueba del art. 341 del CPC?",o:["Los testigos","La inspección personal del tribunal","Las presunciones","Una declaración jurada notarial de un tercero"],ok:3,por:"El art. 341 enumera instrumentos, testigos, confesión, inspección personal, informes de peritos y presunciones.",r:"Art. 341 CPC"},
+{id:"cgp5",q:"¿Qué permite al demandado demandar al demandante en el mismo juicio?",o:["La dúplica","La reconvención","La réplica","La tercería"],ok:1,por:"Es la reconvención, que se deduce en el escrito de contestación (art. 314 del CPC).",r:"Art. 314 CPC"},
+{id:"cgp6",q:"¿En qué plazo debe dictarse la sentencia definitiva?",o:["Treinta días","Sesenta días desde que la causa queda en estado de sentencia","Noventa días","Un año"],ok:1,por:"Así lo dispone el art. 162 del CPC.",r:"Art. 162 CPC"},
+{id:"cgp7",q:"El llamado a conciliación en el juicio ordinario procede:",o:["En todo juicio civil en que sea admisible la transacción, salvo excepciones legales","Solo si las partes lo piden","Solo en juicios ejecutivos","Nunca"],ok:0,por:"Es un trámite que el art. 262 del CPC impone al juez una vez agotada la discusión.",r:"Art. 262 CPC"},
+{id:"cgp8",q:"El juicio sumario se aplica, a falta de otra regla especial, cuando:",o:["La cuantía es inferior a 10 UTM","La acción requiere tramitación rápida para ser eficaz","El demandado es una persona jurídica","Lo pide el tribunal"],ok:1,por:"Es la regla general del art. 680 del CPC.",r:"Art. 680 CPC"}]},
+
+"ejecucion-cautela":{ramo:"Procedimientos de Ejecución y Cautela",nota:NOTA,revision:null,
+tarjetas:[
+{id:"ec01",t:"Requisitos del juicio ejecutivo",d:"Título ejecutivo, obligación líquida, obligación actualmente exigible y acción ejecutiva no prescrita.",r:"Doctrina"},
+{id:"ec02",t:"Títulos ejecutivos",d:"Entre otros: la sentencia firme, la copia autorizada de escritura pública, el acta de avenimiento, el instrumento privado reconocido judicialmente y la confesión judicial.",r:"Art. 434 CPC"},
+{id:"ec03",t:"Antigüedad del título",d:"El tribunal denegará la ejecución si el título tiene más de tres años contados desde que la obligación se hizo exigible.",r:"Art. 442 CPC"},
+{id:"ec04",t:"Mandamiento de ejecución y embargo",d:"Orden del tribunal que dispone requerir de pago al deudor y, si no paga, embargarle bienes suficientes para cubrir la deuda y las costas.",r:"Art. 443 CPC"},
+{id:"ec05",t:"Plazo para oponer excepciones",d:"Si el deudor es requerido de pago en persona dentro del territorio jurisdiccional del tribunal, tiene cuatro días para deducir oposición.",r:"Art. 459 CPC"},
+{id:"ec06",t:"Excepciones del ejecutado",d:"Solo son admisibles las que la ley enumera, como la incompetencia del tribunal, la falta de algún requisito del título, el pago de la deuda o la prescripción.",r:"Art. 464 CPC"},
+{id:"ec07",t:"Cuaderno ejecutivo y cuaderno de apremio",d:"El ejecutivo contiene la demanda, las excepciones y su tramitación; el de apremio, el requerimiento de pago, el embargo y la realización de los bienes.",r:"Doctrina"},
+{id:"ec08",t:"Bienes inembargables",d:"Bienes que la ley excluye del embargo para proteger al deudor, como parte de las remuneraciones y los muebles de dormitorio, comedor y cocina de uso familiar.",r:"Art. 445 CPC"},
+{id:"ec09",t:"Tercerías",d:"Intervención de terceros en el juicio ejecutivo: de dominio, de posesión, de prelación y de pago.",r:"Art. 518 CPC"},
+{id:"ec10",t:"Cumplimiento incidental de la sentencia",d:"Ejecución de la sentencia ante el mismo tribunal que la dictó, solicitada dentro de un año desde que la ejecución se hizo exigible.",r:"Art. 233 CPC"},
+{id:"ec11",t:"Medidas precautorias",d:"El secuestro de la cosa, el nombramiento de interventores, la retención de bienes determinados y la prohibición de celebrar actos o contratos sobre bienes determinados.",r:"Art. 290 CPC"},
+{id:"ec12",t:"Requisito de las medidas precautorias",d:"El demandante debe acompañar comprobantes que constituyan a lo menos presunción grave del derecho que reclama.",r:"Art. 298 CPC"},
+{id:"ec13",t:"Medidas prejudiciales precautorias",d:"Las medidas precautorias solicitadas antes de presentar la demanda, que exigen requisitos adicionales, como expresar la acción que se deducirá y sus fundamentos.",r:"Art. 279 CPC"},
+{id:"ec14",t:"Secuestro",d:"Depósito de una cosa que se disputan dos o más individuos, en manos de otro que debe restituirla al que obtenga una decisión a su favor.",r:"Art. 2249 CC"},
+{id:"ec15",t:"Embargo",d:"Actuación por la cual se aprehenden bienes del deudor, que quedan a disposición del tribunal para pagar al acreedor con su producto.",r:"Doctrina"},
+{id:"ec16",t:"Remate",d:"Venta en pública subasta de los bienes embargados, para pagar al acreedor con su producto.",r:"Doctrina"}],
+preguntas:[
+{id:"ecp1",q:"¿Cuál NO es un requisito del juicio ejecutivo?",o:["Título ejecutivo","Obligación líquida","Obligación actualmente exigible","Sentencia de la Corte Suprema"],ok:3,por:"Se exige título ejecutivo, obligación líquida y actualmente exigible, y acción no prescrita.",r:"Doctrina"},
+{id:"ecp2",q:"¿Cuántos días tiene para oponerse el deudor requerido en persona dentro del territorio del tribunal?",o:["Dos días","Cuatro días","Diez días","Quince días"],ok:1,por:"El art. 459 del CPC le concede cuatro días.",r:"Art. 459 CPC"},
+{id:"ecp3",q:"El tribunal denegará la ejecución si el título tiene más de:",o:["Un año desde que la obligación se hizo exigible","Tres años desde que la obligación se hizo exigible","Cinco años desde su otorgamiento","Diez años desde su otorgamiento"],ok:1,por:"Así lo dispone el art. 442 del CPC.",r:"Art. 442 CPC"},
+{id:"ecp4",q:"¿Cuál de estas es una medida precautoria del art. 290 del CPC?",o:["La retención de bienes determinados","El embargo","El remate","La declaración de rebeldía"],ok:0,por:"El art. 290 enumera el secuestro, los interventores, la retención de bienes determinados y la prohibición de celebrar actos o contratos.",r:"Art. 290 CPC"},
+{id:"ecp5",q:"Para conceder una medida precautoria, el demandante debe acompañar comprobantes que constituyan a lo menos:",o:["Plena prueba","Presunción grave del derecho que reclama","Un principio de prueba por escrito","Una declaración jurada"],ok:1,por:"Es el requisito del art. 298 del CPC.",r:"Art. 298 CPC"},
+{id:"ecp6",q:"La tercería con la que un tercero pretende ser pagado con preferencia al ejecutante es la de:",o:["Dominio","Posesión","Prelación","Pago"],ok:2,por:"La tercería de prelación busca el pago preferente; la de pago, concurrir en el pago a prorrata.",r:"Art. 518 CPC"},
+{id:"ecp7",q:"¿Dentro de qué plazo puede pedirse el cumplimiento incidental de la sentencia?",o:["Seis meses","Un año desde que la ejecución se hizo exigible","Tres años","Cinco años"],ok:1,por:"El art. 233 del CPC fija el plazo de un año.",r:"Art. 233 CPC"},
+{id:"ecp8",q:"¿Cuál de estos es un título ejecutivo según el art. 434 del CPC?",o:["Una carta simple firmada por el deudor","La copia autorizada de una escritura pública","Un correo electrónico","Un presupuesto aceptado verbalmente"],ok:1,por:"La copia autorizada de escritura pública figura entre los títulos ejecutivos del art. 434.",r:"Art. 434 CPC"}]}
+
+});
+})();
+
+/* ═══ UApp · Estudiar: línea procesal (3 de 4) ═══ */
+window.__MAZOS_EXTRA=window.__MAZOS_EXTRA||{};
+(function(){
+var NOTA="Contenido inicial basado en la legislación vigente y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.";
+Object.assign(window.__MAZOS_EXTRA,{
+
+"procesal-penal":{ramo:"Derecho Procesal Penal",nota:NOTA,revision:null,
+tarjetas:[
+{id:"pp01",t:"Presunción de inocencia",d:"Ninguna persona será considerada culpable ni tratada como tal en tanto no fuere condenada por una sentencia firme.",r:"Art. 4 CPP"},
+{id:"pp02",t:"Juicio previo y única persecución",d:"Nadie puede ser condenado ni penado sino en virtud de una sentencia fundada, dictada por un tribunal imparcial, ni ser sometido a un nuevo procedimiento penal por el mismo hecho.",r:"Art. 1 CPP"},
+{id:"pp03",t:"Exclusividad de la investigación",d:"El ministerio público dirige en forma exclusiva la investigación de los hechos constitutivos de delito.",r:"Art. 3 CPP"},
+{id:"pp04",t:"Formalización de la investigación",d:"Comunicación que el fiscal efectúa al imputado, en presencia del juez de garantía, de que desarrolla actualmente una investigación en su contra respecto de uno o más delitos determinados.",r:"Art. 229 CPP"},
+{id:"pp05",t:"Plazo para cerrar la investigación",d:"Transcurrido el plazo de dos años desde la formalización, el fiscal debe proceder a cerrar la investigación.",r:"Art. 247 CPP"},
+{id:"pp06",t:"Detención",d:"Medida cautelar personal que priva de libertad al imputado para ponerlo a disposición del juez. Requiere orden judicial, salvo en caso de flagrancia.",r:"Art. 125 CPP"},
+{id:"pp07",t:"Procedencia de la prisión preventiva",d:"Procede cuando las demás medidas cautelares personales son insuficientes para asegurar las finalidades del procedimiento.",r:"Art. 139 CPP"},
+{id:"pp08",t:"Requisitos de la prisión preventiva",d:"Antecedentes que justifiquen la existencia del delito y que permitan presumir la participación del imputado, y que su libertad sea peligrosa para la investigación, la sociedad o la víctima, o exista peligro de fuga.",r:"Art. 140 CPP"},
+{id:"pp09",t:"Otras medidas cautelares personales",d:"Entre otras, el arresto domiciliario, la sujeción a vigilancia, la obligación de presentarse periódicamente ante el juez y la prohibición de salir del país.",r:"Art. 155 CPP"},
+{id:"pp10",t:"Suspensión condicional del procedimiento",d:"Salida alternativa acordada entre el fiscal y el imputado, aprobada por el juez de garantía, que sujeta al imputado a condiciones por un plazo; cumplidas, se extingue la acción penal.",r:"Art. 237 CPP"},
+{id:"pp11",t:"Acuerdos reparatorios",d:"Acuerdo entre el imputado y la víctima, aprobado por el juez, en hechos que afectan bienes jurídicos disponibles de carácter patrimonial, lesiones menos graves o delitos culposos.",r:"Art. 241 CPP"},
+{id:"pp12",t:"Principio de oportunidad",d:"Facultad del fiscal para no iniciar la persecución penal, o abandonar la iniciada, respecto de un hecho que no comprometa gravemente el interés público.",r:"Art. 170 CPP"},
+{id:"pp13",t:"Archivo provisional",d:"El fiscal puede archivar la investigación cuando no aparecen antecedentes que permitan desarrollar actividades conducentes al esclarecimiento de los hechos.",r:"Art. 167 CPP"},
+{id:"pp14",t:"Procedimiento abreviado",d:"El imputado acepta los hechos de la acusación y los antecedentes de la investigación, y el juez de garantía dicta sentencia sin juicio oral.",r:"Art. 406 CPP"},
+{id:"pp15",t:"Valoración de la prueba",d:"Los tribunales aprecian la prueba con libertad, pero sin contradecir los principios de la lógica, las máximas de la experiencia y los conocimientos científicamente afianzados.",r:"Art. 297 CPP"},
+{id:"pp16",t:"Recurso de nulidad",d:"Se concede para invalidar el juicio oral y la sentencia definitiva, o solamente esta, por las causales expresamente señaladas en la ley.",r:"Art. 372 CPP"}],
+preguntas:[
+{id:"ppp1",q:"¿Quién dirige en forma exclusiva la investigación penal?",o:["El juez de garantía","El ministerio público","La policía","El tribunal de juicio oral en lo penal"],ok:1,por:"Así lo dispone el art. 3 del CPP.",r:"Art. 3 CPP"},
+{id:"ppp2",q:"La formalización de la investigación es una comunicación del fiscal al imputado efectuada:",o:["Por carta certificada","En presencia del juez de garantía","Ante la policía","Ante el tribunal de juicio oral"],ok:1,por:"El art. 229 del CPP exige que se efectúe en presencia del juez de garantía.",r:"Art. 229 CPP"},
+{id:"ppp3",q:"¿Qué plazo tiene el fiscal para cerrar la investigación desde la formalización?",o:["Seis meses","Un año","Dos años","Cinco años"],ok:2,por:"El art. 247 del CPP fija el plazo de dos años.",r:"Art. 247 CPP"},
+{id:"ppp4",q:"¿Cuándo procede la prisión preventiva?",o:["Siempre que haya formalización","Cuando las demás medidas cautelares son insuficientes y se cumplen los requisitos legales","Solo en delitos con pena de presidio perpetuo","Cuando lo pide la víctima"],ok:1,por:"Lo exigen los arts. 139 y 140 del CPP.",r:"Art. 139 CPP"},
+{id:"ppp5",q:"Cumplidas las condiciones de la suspensión condicional del procedimiento:",o:["Se dicta sentencia condenatoria","Se extingue la acción penal","Se reabre la investigación","Se aplica una multa"],ok:1,por:"Así lo dispone el art. 240 del CPP.",r:"Art. 240 CPP"},
+{id:"ppp6",q:"Los acuerdos reparatorios se celebran entre:",o:["El fiscal y el juez","El imputado y la víctima, con aprobación judicial","El defensor y el fiscal","La policía y la víctima"],ok:1,por:"Es lo que prevé el art. 241 del CPP.",r:"Art. 241 CPP"},
+{id:"ppp7",q:"En el proceso penal, los tribunales aprecian la prueba:",o:["Conforme a la prueba legal o tasada","Con libertad, sin contradecir la lógica, las máximas de la experiencia ni los conocimientos científicamente afianzados","Según su íntima convicción, sin fundamentar","Solo según la confesión del imputado"],ok:1,por:"Es el sistema de sana crítica del art. 297 del CPP.",r:"Art. 297 CPP"},
+{id:"ppp8",q:"¿Qué recurso procede para invalidar el juicio oral y la sentencia definitiva por las causales legales?",o:["Apelación","Casación en el fondo","Nulidad","Queja"],ok:2,por:"Es el recurso de nulidad del art. 372 del CPP.",r:"Art. 372 CPP"}]},
+
+"procedimientos-orales":{ramo:"Procedimientos Especiales Orales",nota:NOTA,revision:null,
+tarjetas:[
+{id:"eo01",t:"Principios del procedimiento de familia",d:"Oralidad, concentración, desformalización, inmediación, actuación de oficio, búsqueda de soluciones colaborativas e interés superior del niño, niña o adolescente.",r:"Ley 19.968"},
+{id:"eo02",t:"Audiencias del procedimiento ordinario de familia",d:"Se desarrolla en una audiencia preparatoria y una audiencia de juicio.",r:"Ley 19.968"},
+{id:"eo03",t:"Mediación familiar previa",d:"En materias de alimentos, cuidado personal y relación directa y regular, debe intentarse una mediación antes de demandar.",r:"Art. 106 Ley 19.968"},
+{id:"eo04",t:"Interés superior del niño",d:"Principio rector de los tribunales de familia: el juez debe tener siempre como consideración principal el interés superior del niño, niña o adolescente, y su derecho a ser oído.",r:"Art. 16 Ley 19.968"},
+{id:"eo05",t:"Principios del procedimiento laboral",d:"Los procedimientos del trabajo son orales, públicos y concentrados. Priman la inmediación, el impulso procesal de oficio, la celeridad, la buena fe, la bilateralidad de la audiencia y la gratuidad.",r:"Art. 425 CT"},
+{id:"eo06",t:"Procedimiento de aplicación general",d:"Procedimiento laboral ordinario: demanda escrita, audiencia preparatoria y audiencia de juicio.",r:"Art. 446 CT"},
+{id:"eo07",t:"Procedimiento monitorio laboral",d:"Procede, entre otros casos, en contiendas cuya cuantía sea igual o inferior a diez ingresos mínimos mensuales.",r:"Art. 496 CT"},
+{id:"eo08",t:"Procedimiento de tutela laboral",d:"Se aplica a las cuestiones que afecten los derechos fundamentales de los trabajadores en la relación laboral.",r:"Art. 485 CT"},
+{id:"eo09",t:"Plazo para reclamar un despido",d:"El trabajador que estime injustificado su despido puede recurrir al juzgado dentro de sesenta días hábiles contados desde la separación.",r:"Art. 168 CT"},
+{id:"eo10",t:"Audiencia preparatoria",d:"Audiencia en que se fija el objeto del juicio, se intenta la conciliación y se ofrecen y admiten las pruebas.",r:"Doctrina"},
+{id:"eo11",t:"Audiencia de juicio",d:"Audiencia en que se rinde la prueba ante el juez y se formulan las observaciones finales, para luego dictar sentencia.",r:"Doctrina"},
+{id:"eo12",t:"Oralidad",d:"Las actuaciones se realizan de viva voz en audiencias, con registro en sistemas de audio.",r:"Doctrina"},
+{id:"eo13",t:"Inmediación",d:"El juez debe presenciar personalmente las audiencias y la rendición de la prueba, sin delegar estas funciones.",r:"Doctrina"},
+{id:"eo14",t:"Concentración",d:"Las actuaciones deben realizarse en el menor número de audiencias posible, idealmente sin interrupciones.",r:"Doctrina"},
+{id:"eo15",t:"Juzgados de familia",d:"Tribunales especiales que forman parte del Poder Judicial y conocen, entre otras materias, de alimentos, cuidado personal, divorcio y violencia intrafamiliar.",r:"Art. 5 COT; Ley 19.968"},
+{id:"eo16",t:"Juzgados de letras del trabajo",d:"Tribunales especiales del Poder Judicial que conocen de las cuestiones suscitadas entre empleadores y trabajadores por aplicación de las normas laborales.",r:"Art. 5 COT; art. 420 CT"}],
+preguntas:[
+{id:"eop1",q:"¿Cuáles son las audiencias del procedimiento ordinario ante los tribunales de familia?",o:["Una audiencia única","Una audiencia preparatoria y una audiencia de juicio","Conciliación y prueba escrita","Comparendo y vista de la causa"],ok:1,por:"El procedimiento ordinario de la Ley 19.968 se desarrolla en esas dos audiencias.",r:"Ley 19.968"},
+{id:"eop2",q:"Según el art. 425 del Código del Trabajo, los procedimientos laborales son:",o:["Escritos y reservados","Orales, públicos y concentrados","Escritos y desconcentrados","Orales y secretos"],ok:1,por:"Así lo dispone el art. 425 del Código del Trabajo.",r:"Art. 425 CT"},
+{id:"eop3",q:"El procedimiento monitorio laboral procede, entre otros casos, en contiendas cuya cuantía no supere:",o:["Cinco ingresos mínimos mensuales","Diez ingresos mínimos mensuales","Veinte ingresos mínimos mensuales","Cien unidades de fomento"],ok:1,por:"El art. 496 del Código del Trabajo fija el límite en diez ingresos mínimos mensuales.",r:"Art. 496 CT"},
+{id:"eop4",q:"¿En qué plazo puede el trabajador reclamar por un despido que estima injustificado?",o:["Treinta días corridos","Sesenta días hábiles desde la separación","Seis meses","Un año"],ok:1,por:"El art. 168 del Código del Trabajo fija sesenta días hábiles.",r:"Art. 168 CT"},
+{id:"eop5",q:"¿En qué materias se exige mediación previa a la demanda ante los tribunales de familia?",o:["Divorcio","Alimentos, cuidado personal y relación directa y regular","Violencia intrafamiliar","Filiación"],ok:1,por:"El art. 106 de la Ley 19.968 la exige en esas tres materias.",r:"Art. 106 Ley 19.968"},
+{id:"eop6",q:"El procedimiento de tutela laboral protege:",o:["Los derechos fundamentales de los trabajadores en la relación laboral","Solo el pago de remuneraciones","A los empleadores frente a la huelga","Los contratos de arrendamiento"],ok:0,por:"Así lo establece el art. 485 del Código del Trabajo.",r:"Art. 485 CT"},
+{id:"eop7",q:"El principio que exige que el juez presencie personalmente las audiencias y la rendición de la prueba es:",o:["Concentración","Inmediación","Publicidad","Desformalización"],ok:1,por:"Es la inmediación, común a los procedimientos orales.",r:"Doctrina"},
+{id:"eop8",q:"¿Qué principio deben considerar siempre los tribunales de familia?",o:["El interés superior del niño, niña o adolescente","La autonomía de la voluntad","La prueba legal tasada","El impulso exclusivo de parte"],ok:0,por:"El art. 16 de la Ley 19.968 lo establece como principio rector.",r:"Art. 16 Ley 19.968"}]}
+
+});
+})();
+
+/* ═══ UApp · Estudiar: línea procesal (4 de 4) ═══ */
+window.__MAZOS_EXTRA=window.__MAZOS_EXTRA||{};
+(function(){
+var NOTA="Contenido inicial basado en la legislación vigente y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.";
+Object.assign(window.__MAZOS_EXTRA,{
+
+"reorganizacion-liquidacion":{ramo:"Reorg. y Liquidación Patrimonial",nota:NOTA,revision:null,
+tarjetas:[
+{id:"rl01",t:"Ley 20.720",d:"Ley de Reorganización y Liquidación de Activos de Empresas y Personas, de 2014, que reemplazó al antiguo régimen de quiebras.",r:"Ley 20.720"},
+{id:"rl02",t:"Empresa deudora",d:"Toda persona jurídica privada, con o sin fines de lucro, y toda persona natural contribuyente de primera categoría o del número 2 del art. 42 de la Ley sobre Impuesto a la Renta.",r:"Art. 2 Ley 20.720"},
+{id:"rl03",t:"Persona deudora",d:"Toda persona natural no comprendida en la definición de empresa deudora.",r:"Art. 2 Ley 20.720"},
+{id:"rl04",t:"Procedimiento concursal de reorganización",d:"Permite a la empresa deudora reestructurar sus activos y pasivos mediante un acuerdo con sus acreedores, para continuar con su actividad.",r:"Ley 20.720"},
+{id:"rl05",t:"Protección financiera concursal",d:"Período durante el cual la empresa deudora en reorganización no puede ser declarada en liquidación ni sometida a ejecuciones, para negociar con sus acreedores.",r:"Ley 20.720"},
+{id:"rl06",t:"Veedor",d:"Profesional que interviene en la reorganización: propicia el acuerdo entre el deudor y sus acreedores y vela por el cumplimiento de la ley.",r:"Ley 20.720"},
+{id:"rl07",t:"Procedimiento concursal de liquidación",d:"Procedimiento destinado a realizar los bienes del deudor para pagar a sus acreedores. Puede ser voluntario o forzoso.",r:"Ley 20.720"},
+{id:"rl08",t:"Liquidador",d:"Profesional que administra y realiza los bienes del deudor en el procedimiento de liquidación, para pagar a los acreedores.",r:"Ley 20.720"},
+{id:"rl09",t:"Desasimiento",d:"Efecto de la resolución de liquidación: el deudor queda inhibido de administrar sus bienes, cuya administración pasa al liquidador.",r:"Ley 20.720"},
+{id:"rl10",t:"Vencimiento anticipado de las deudas",d:"La resolución de liquidación hace exigibles todas las deudas del deudor, aunque estuvieran sujetas a plazo, para que los acreedores participen en el procedimiento.",r:"Ley 20.720"},
+{id:"rl11",t:"Procedimiento de renegociación",d:"Procedimiento para la persona deudora, conducido por la Superintendencia de Insolvencia y Reemprendimiento, para renegociar sus deudas con sus acreedores.",r:"Ley 20.720"},
+{id:"rl12",t:"Requisitos de la renegociación",d:"Tener dos o más obligaciones vencidas por más de 90 días corridos, por un total superior a 80 UF, y no haber sido notificada de una demanda de liquidación o de un juicio ejecutivo que no sea de origen laboral.",r:"Art. 260 Ley 20.720"},
+{id:"rl13",t:"Superintendencia de Insolvencia y Reemprendimiento",d:"Organismo que fiscaliza a veedores y liquidadores, y que conduce el procedimiento de renegociación de la persona deudora.",r:"Ley 20.720"},
+{id:"rl14",t:"Liquidación voluntaria",d:"La que solicita el propio deudor para que se liquiden sus bienes.",r:"Ley 20.720"},
+{id:"rl15",t:"Liquidación forzosa",d:"La que solicita un acreedor cuando concurren las causales legales, como el incumplimiento de una obligación que conste en un título ejecutivo.",r:"Ley 20.720"},
+{id:"rl16",t:"Acuerdo de reorganización judicial",d:"Acuerdo aprobado por los acreedores con las mayorías legales, que obliga a todos los acreedores a quienes afecta una vez aprobado por el tribunal.",r:"Ley 20.720"}],
+preguntas:[
+{id:"rlp1",q:"¿Qué ley regula hoy los procedimientos concursales en Chile?",o:["La Ley 18.175 de Quiebras","La Ley 20.720","La Ley 19.496","La Ley 20.416"],ok:1,por:"La Ley 20.720, de 2014, reemplazó al antiguo régimen de quiebras de la Ley 18.175.",r:"Ley 20.720"},
+{id:"rlp2",q:"Una persona natural que no es contribuyente de primera categoría ni del N° 2 del art. 42 de la Ley de la Renta es, para la Ley 20.720:",o:["Empresa deudora","Persona deudora","Deudor calificado","Acreedor"],ok:1,por:"El art. 2 de la Ley 20.720 la define como persona deudora.",r:"Art. 2 Ley 20.720"},
+{id:"rlp3",q:"¿Qué profesional propicia el acuerdo entre el deudor y sus acreedores en la reorganización?",o:["El liquidador","El veedor","El síndico","El receptor"],ok:1,por:"Es el veedor; el liquidador actúa en el procedimiento de liquidación.",r:"Ley 20.720"},
+{id:"rlp4",q:"El efecto por el cual el deudor queda inhibido de administrar sus bienes tras la resolución de liquidación es:",o:["El embargo","El desasimiento","La prenda general","La novación"],ok:1,por:"Es el desasimiento: la administración pasa al liquidador.",r:"Ley 20.720"},
+{id:"rlp5",q:"La renegociación exige, entre otros requisitos, obligaciones vencidas por un total superior a:",o:["20 UF","50 UF","80 UF","200 UF"],ok:2,por:"El art. 260 de la Ley 20.720 exige un monto total superior a 80 UF.",r:"Art. 260 Ley 20.720"},
+{id:"rlp6",q:"¿Quién conduce el procedimiento de renegociación de la persona deudora?",o:["Un juzgado de letras","La Superintendencia de Insolvencia y Reemprendimiento","El Servicio de Impuestos Internos","La Corte de Apelaciones"],ok:1,por:"La renegociación se tramita ante la Superintendencia de Insolvencia y Reemprendimiento.",r:"Ley 20.720"},
+{id:"rlp7",q:"La liquidación que solicita el propio deudor es:",o:["Forzosa","Voluntaria","De oficio","Simplificada obligatoria"],ok:1,por:"La pide el propio deudor; la forzosa la pide un acreedor.",r:"Ley 20.720"},
+{id:"rlp8",q:"Durante la protección financiera concursal, la empresa deudora:",o:["Puede ser declarada en liquidación","No puede ser declarada en liquidación ni sometida a ejecuciones","Debe pagar todas sus deudas","Pierde la administración de sus bienes"],ok:1,por:"Esa protección le permite negociar el acuerdo con sus acreedores.",r:"Ley 20.720"}]},
+
+"recursos":{ramo:"Recursos",nota:NOTA,revision:null,
+tarjetas:[
+{id:"re01",t:"Recurso procesal",d:"Medio que la ley concede a la parte agraviada por una resolución judicial para obtener su modificación o invalidación.",r:"Doctrina"},
+{id:"re02",t:"Reposición",d:"Se pide al mismo tribunal que dictó un auto o decreto que lo modifique o deje sin efecto; por regla general, dentro de cinco días.",r:"Art. 181 CPC"},
+{id:"re03",t:"Aclaración, rectificación o enmienda",d:"Permite pedir al tribunal que dictó la sentencia que aclare puntos oscuros o dudosos, salve omisiones o rectifique errores de copia, de referencia o de cálculos numéricos.",r:"Art. 182 CPC"},
+{id:"re04",t:"Apelación",d:"Tiene por objeto obtener del tribunal superior respectivo que enmiende, con arreglo a derecho, la resolución del inferior.",r:"Art. 186 CPC"},
+{id:"re05",t:"Plazo de la apelación",d:"Cinco días desde la notificación; diez días si se trata de una sentencia definitiva.",r:"Art. 189 CPC"},
+{id:"re06",t:"Efectos de la apelación",d:"Devolutivo: el tribunal superior adquiere competencia para conocer del recurso. Suspensivo: además, se suspende la competencia del inferior para seguir conociendo de la causa.",r:"Art. 191 CPC"},
+{id:"re07",t:"Recurso de hecho",d:"Se interpone ante el tribunal superior cuando el inferior deniega una apelación que procede, la concede debiendo denegarla, o la concede en efectos que no corresponden.",r:"Art. 203 CPC"},
+{id:"re08",t:"Casación en el fondo",d:"Procede contra sentencias pronunciadas con infracción de ley, siempre que esta infracción haya influido sustancialmente en lo dispositivo de la sentencia.",r:"Art. 767 CPC"},
+{id:"re09",t:"Casación en la forma",d:"Procede por las causales que la ley enumera, como haber sido pronunciada la sentencia por un tribunal incompetente o haber sido dada ultra petita.",r:"Art. 768 CPC"},
+{id:"re10",t:"Plazo de la casación",d:"Quince días desde la notificación de la sentencia contra la cual se recurre.",r:"Art. 770 CPC"},
+{id:"re11",t:"Recurso de queja",d:"Tiene por objeto corregir las faltas o abusos graves cometidos en la dictación de resoluciones de carácter jurisdiccional.",r:"Art. 545 COT"},
+{id:"re12",t:"Recurso de protección",d:"Acción constitucional para quien, por actos u omisiones arbitrarios o ilegales, sufra privación, perturbación o amenaza en el legítimo ejercicio de ciertos derechos y garantías.",r:"Art. 20 CPR"},
+{id:"re13",t:"Recurso de amparo",d:"Acción constitucional en favor de quien sea arrestado, detenido o preso con infracción de la Constitución o las leyes, o sufra otra amenaza a su libertad personal y seguridad individual.",r:"Art. 21 CPR"},
+{id:"re14",t:"Recurso de revisión",d:"Procede contra sentencias firmes, por las causales que la ley señala, como haberse fundado en documentos declarados falsos.",r:"Art. 810 CPC"},
+{id:"re15",t:"Nulidad en el proceso penal",d:"Se concede para invalidar el juicio oral y la sentencia definitiva, o solamente esta, por las causales expresamente señaladas en la ley.",r:"Art. 372 CPP"},
+{id:"re16",t:"Apelación en el proceso penal",d:"Las resoluciones dictadas por un tribunal de juicio oral en lo penal son inapelables.",r:"Art. 364 CPP"}],
+preguntas:[
+{id:"rep1",q:"¿Cuál es el plazo para apelar de una sentencia definitiva en materia civil?",o:["Cinco días","Diez días","Quince días","Treinta días"],ok:1,por:"El art. 189 del CPC fija cinco días por regla general y diez para las sentencias definitivas.",r:"Art. 189 CPC"},
+{id:"rep2",q:"La casación en el fondo procede contra sentencias pronunciadas:",o:["Con cualquier error de hecho","Con infracción de ley que haya influido sustancialmente en lo dispositivo","Sin oír a los testigos","Fuera de plazo"],ok:1,por:"Es la causal del art. 767 del CPC.",r:"Art. 767 CPC"},
+{id:"rep3",q:"¿Cuál es el plazo para interponer el recurso de casación?",o:["Cinco días","Diez días","Quince días","Treinta días"],ok:2,por:"El art. 770 del CPC fija quince días desde la notificación de la sentencia.",r:"Art. 770 CPC"},
+{id:"rep4",q:"El recurso que corrige faltas o abusos graves en la dictación de resoluciones jurisdiccionales es el de:",o:["Queja","Hecho","Revisión","Reposición"],ok:0,por:"Es el recurso de queja del art. 545 del COT.",r:"Art. 545 COT"},
+{id:"rep5",q:"Si el tribunal inferior deniega una apelación que procede, la parte puede interponer:",o:["Recurso de queja","Recurso de hecho","Recurso de revisión","Recurso de protección"],ok:1,por:"Así lo prevé el art. 203 del CPC.",r:"Art. 203 CPC"},
+{id:"rep6",q:"¿Son apelables las resoluciones de un tribunal de juicio oral en lo penal?",o:["Sí, siempre","No: son inapelables","Solo las sentencias absolutorias","Solo si lo autoriza la Corte"],ok:1,por:"El art. 364 del CPP las declara inapelables; contra la sentencia procede el recurso de nulidad.",r:"Art. 364 CPP"},
+{id:"rep7",q:"La acción constitucional para quien sufre privación, perturbación o amenaza en el ejercicio de ciertos derechos, por actos arbitrarios o ilegales, es el recurso de:",o:["Amparo","Protección","Inaplicabilidad","Revisión"],ok:1,por:"Es el recurso de protección del art. 20 de la Constitución.",r:"Art. 20 CPR"},
+{id:"rep8",q:"El recurso de revisión procede contra:",o:["Autos y decretos","Sentencias firmes, por las causales legales","Sentencias aún apelables","Resoluciones administrativas"],ok:1,por:"Así lo establece el art. 810 del CPC.",r:"Art. 810 CPC"}]}
+
+});
+})();
+
+/* ═══ UApp · Estudiar: tarjetas con semáforo y selección múltiple ═══
+   El contenido vive aquí; el progreso de cada estudiante, en su teléfono (localStorage).
+   Repaso espaciado: verde = vuelve en cada vez más días; amarillo = vuelve pronto;
+   rojo = vuelve en la misma sesión y mañana. */
+(function(){
+  var CLAVE="uapp_estudio_v1", NUEVAS_DEF=20, OPCIONES=[10,20,30,0], MAX_SESION=100, PREG_SESION=10;   /* 0 = todas */
+
+  var MAZOS={
+    "acto-juridico":{
+      ramo:"Acto Jurídico",
+      nota:"Contenido inicial basado en el Código Civil y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.",
+      revision:null,   /* al aprobarlo la cátedra: {docente:"…", fecha:"AAAA-MM-DD"} */
+      tarjetas:[
+        {id:"aj01",t:"Acto jurídico",d:"Manifestación de voluntad hecha con el propósito de crear, modificar o extinguir derechos, que produce los efectos queridos por su autor o por las partes porque el derecho la sanciona.",r:"Doctrina"},
+        {id:"aj02",t:"Acto unilateral y acto bilateral",d:"Unilateral: para nacer requiere la voluntad de una sola parte, como el testamento. Bilateral: requiere el acuerdo de dos o más partes; si crea obligaciones, se llama contrato.",r:"Doctrina; art. 1438 CC"},
+        {id:"aj03",t:"Requisitos de existencia",d:"Voluntad, objeto, causa y, cuando la ley las exige, solemnidades. Sin ellos, el acto no nace a la vida del derecho.",r:"Doctrina"},
+        {id:"aj04",t:"Requisitos de validez",d:"Voluntad exenta de vicios, capacidad, objeto lícito y causa lícita. Si falta alguno, el acto puede ser anulado.",r:"Art. 1445 CC"},
+        {id:"aj05",t:"Cosas de la esencia",d:"Aquellas sin las cuales el contrato no produce efecto alguno, o degenera en otro contrato diferente.",r:"Art. 1444 CC"},
+        {id:"aj06",t:"Cosas de la naturaleza",d:"Las que, no siendo esenciales, se entienden pertenecer al contrato sin necesidad de una cláusula especial.",r:"Art. 1444 CC"},
+        {id:"aj07",t:"Cosas accidentales",d:"Las que ni esencial ni naturalmente le pertenecen al contrato, y que se le agregan por medio de cláusulas especiales.",r:"Art. 1444 CC"},
+        {id:"aj08",t:"Capacidad legal o de ejercicio",d:"Poder obligarse por sí misma, sin el ministerio o la autorización de otra persona. La regla general es la capacidad: toda persona es capaz, salvo las que la ley declara incapaces.",r:"Arts. 1445 y 1446 CC"},
+        {id:"aj09",t:"Incapaces absolutos",d:"Los dementes, los impúberes y los sordos o sordomudos que no pueden darse a entender claramente. Sus actos no producen ni aun obligaciones naturales.",r:"Art. 1447 CC"},
+        {id:"aj10",t:"Incapaces relativos",d:"Los menores adultos y los disipadores que se hallan bajo interdicción. Sus actos pueden tener valor en ciertas circunstancias y bajo ciertos respectos determinados por las leyes.",r:"Art. 1447 CC"},
+        {id:"aj11",t:"Vicios del consentimiento",d:"Error, fuerza y dolo. En los casos que la ley señala expresamente, también la lesión.",r:"Art. 1451 CC"},
+        {id:"aj12",t:"Error de derecho",d:"El error sobre un punto de derecho no vicia el consentimiento.",r:"Art. 1452 CC"},
+        {id:"aj13",t:"Error esencial u obstáculo",d:"El que recae sobre la especie de acto o contrato que se celebra, o sobre la identidad de la cosa específica de que se trata.",r:"Art. 1453 CC"},
+        {id:"aj14",t:"Error sustancial",d:"El que recae sobre la sustancia o calidad esencial del objeto sobre el que versa el acto o contrato.",r:"Art. 1454 CC"},
+        {id:"aj15",t:"Error en la persona",d:"No vicia el consentimiento, salvo que la consideración de la persona sea la causa principal del contrato.",r:"Art. 1455 CC"},
+        {id:"aj16",t:"Fuerza que vicia el consentimiento",d:"Debe ser grave: capaz de producir una impresión fuerte en una persona de sano juicio. La doctrina exige además que sea injusta y determinante. El temor reverencial no basta.",r:"Art. 1456 CC; doctrina"},
+        {id:"aj17",t:"Dolo que vicia el consentimiento",d:"En los contratos, debe ser obra de una de las partes y aparecer claramente que sin él no se habría contratado. En los demás casos, solo da lugar a la acción de perjuicios.",r:"Art. 1458 CC"},
+        {id:"aj18",t:"Prueba del dolo",d:"El dolo no se presume, salvo en los casos especialmente previstos por la ley. En los demás, debe probarse.",r:"Art. 1459 CC"},
+        {id:"aj19",t:"Requisitos del objeto, cuando es una cosa",d:"Debe ser real (existir o esperarse que exista), comerciable y determinado, a lo menos en cuanto a su género.",r:"Art. 1461 CC"},
+        {id:"aj20",t:"Causa",d:"El motivo que induce al acto o contrato. No puede haber obligación sin una causa real y lícita, pero no es necesario expresarla.",r:"Art. 1467 CC"},
+        {id:"aj21",t:"Causa ilícita",d:"La prohibida por ley, o contraria a las buenas costumbres o al orden público.",r:"Art. 1467 CC"},
+        {id:"aj22",t:"Representación",d:"Lo que una persona ejecuta a nombre de otra, estando facultada por ella o por la ley para representarla, produce respecto del representado iguales efectos que si hubiese contratado él mismo.",r:"Art. 1448 CC"},
+        {id:"aj23",t:"Causales de nulidad absoluta",d:"Objeto o causa ilícita; omisión de requisitos o formalidades exigidos en consideración a la naturaleza del acto; y actos de personas absolutamente incapaces.",r:"Art. 1682 CC"},
+        {id:"aj24",t:"Nulidad relativa",d:"La que produce cualquier otra especie de vicio. Da derecho a la rescisión del acto o contrato.",r:"Art. 1682 CC"},
+        {id:"aj25",t:"Saneamiento de la nulidad absoluta",d:"No se sanea por ratificación de las partes, sino solo por el transcurso de diez años.",r:"Art. 1683 CC"},
+        {id:"aj26",t:"Saneamiento de la nulidad relativa",d:"Por ratificación de las partes o por el transcurso del tiempo: el plazo para pedir la rescisión es de cuatro años.",r:"Arts. 1684 y 1691 CC"},
+        {id:"aj27",t:"Condición",d:"Acontecimiento futuro que puede suceder o no, del cual depende el nacimiento o la extinción de un derecho.",r:"Arts. 1473 y 1479 CC"},
+        {id:"aj28",t:"Plazo",d:"La época que se fija para el cumplimiento de la obligación. Puede ser expreso o tácito.",r:"Art. 1494 CC"},
+        {id:"aj29",t:"Modo",d:"La obligación de aplicar lo que se recibe a un fin especial, como hacer ciertas obras o sujetarse a ciertas cargas. No es una condición suspensiva.",r:"Art. 1089 CC"},
+        {id:"aj30",t:"Simulación",d:"Declaración de voluntad no real, emitida conscientemente y de acuerdo entre las partes, para producir con fines de engaño la apariencia de un acto que no existe o que es distinto del que realmente se celebró.",r:"Doctrina; art. 1707 CC"}
+      ],
+      preguntas:[
+        {id:"ap01",q:"¿Cuál de estos NO es uno de los vicios del consentimiento que enumera el artículo 1451?",o:["El error","La fuerza","El dolo","La lesión"],ok:3,por:"El art. 1451 enumera solo el error, la fuerza y el dolo. La lesión vicia el acto únicamente en los casos que la ley señala, como la compraventa de inmuebles.",r:"Art. 1451 CC"},
+        {id:"ap02",q:"Una persona celebra un contrato creyendo, por error, que la ley le permitía hacerlo. ¿Qué efecto tiene ese error?",o:["Produce nulidad absoluta","Produce nulidad relativa","No vicia el consentimiento","Hace inexistente el contrato"],ok:2,por:"Es un error de derecho, y el error sobre un punto de derecho no vicia el consentimiento.",r:"Art. 1452 CC"},
+        {id:"ap03",q:"¿Cuál es el plazo para pedir la rescisión de un acto por nulidad relativa?",o:["Dos años","Cuatro años","Cinco años","Diez años"],ok:1,por:"El plazo para pedir la rescisión es de cuatro años, contados según el vicio de que se trate.",r:"Art. 1691 CC"},
+        {id:"ap04",q:"¿Cómo se sanea la nulidad absoluta?",o:["Por ratificación de las partes","Por el transcurso de diez años","Por el transcurso de cuatro años","No puede sanearse nunca"],ok:1,por:"La nulidad absoluta no puede sanearse por ratificación de las partes, ni por un lapso de tiempo que no pase de diez años.",r:"Art. 1683 CC"},
+        {id:"ap05",q:"Las cosas que, sin ser esenciales, se entienden pertenecer al contrato sin necesidad de una cláusula especial son:",o:["De la esencia","De la naturaleza","Accidentales","Solemnes"],ok:1,por:"Así define el art. 1444 a las cosas de la naturaleza. Un ejemplo es la obligación de saneamiento en la compraventa.",r:"Art. 1444 CC"},
+        {id:"ap06",q:"¿Qué sanción tienen los actos de las personas absolutamente incapaces?",o:["Nulidad relativa","Nulidad absoluta","Son válidos si los autoriza el representante","Inoponibilidad"],ok:1,por:"El art. 1682 establece que hay nulidad absoluta en los actos y contratos de personas absolutamente incapaces.",r:"Art. 1682 CC"},
+        {id:"ap07",q:"En un contrato, ¿cuándo vicia el consentimiento el dolo?",o:["Siempre que exista","Cuando proviene de un tercero","Cuando es obra de una de las partes y sin él no se habría contratado","Cuando la ley lo presume"],ok:2,por:"El dolo vicia el consentimiento solo cuando es obra de una de las partes y es determinante. En los demás casos da lugar a la acción de perjuicios.",r:"Art. 1458 CC"},
+        {id:"ap08",q:"Según el Código Civil, la causa es:",o:["El objeto sobre el que recae el contrato","El motivo que induce al acto o contrato","La forma exigida por la ley","La capacidad de las partes"],ok:1,por:"El art. 1467 define la causa como el motivo que induce al acto o contrato, y exige que sea real y lícita.",r:"Art. 1467 CC"},
+        {id:"ap09",q:"¿Quiénes pueden alegar la nulidad relativa?",o:["Cualquier persona que tenga interés","El ministerio público","Aquellos en cuyo beneficio la establecen las leyes, o sus herederos o cesionarios","El juez, de oficio"],ok:2,por:"La nulidad relativa no puede declararse de oficio ni pedirse por el ministerio público en el solo interés de la ley. Solo pueden alegarla aquellos en cuyo beneficio la han establecido las leyes, o sus herederos o cesionarios.",r:"Art. 1684 CC"},
+        {id:"ap10",q:"¿Cuándo debe el juez declarar de oficio la nulidad absoluta?",o:["En todo caso","Cuando aparece de manifiesto en el acto o contrato","Solo si lo pide el ministerio público","Nunca: siempre debe pedirla una parte"],ok:1,por:"La nulidad absoluta puede y debe ser declarada por el juez, aun sin petición de parte, cuando aparece de manifiesto en el acto o contrato.",r:"Art. 1683 CC"},
+        {id:"ap11",q:"Pedro entiende que vende su auto a Juan, y Juan entiende que lo recibe en donación. ¿Qué error hay?",o:["Error sustancial","Error esencial u obstáculo","Error accidental","Error en la persona"],ok:1,por:"El error sobre la especie de acto o contrato que se celebra es error esencial u obstáculo. El propio art. 1453 pone un ejemplo similar: uno entiende préstamo y el otro donación.",r:"Art. 1453 CC"},
+        {id:"ap12",q:"¿Basta el temor reverencial para viciar el consentimiento?",o:["Sí, siempre","Sí, si el contrato es gratuito","No: el solo temor de desagradar a quienes se debe respeto no basta","Solo si proviene de los padres"],ok:2,por:"El art. 1456 señala que el temor reverencial, esto es, el solo temor de desagradar a las personas a quienes se debe sumisión y respeto, no basta para viciar el consentimiento.",r:"Art. 1456 CC"},
+        {id:"ap13",q:"¿Cuál de estos es un requisito de validez del acto jurídico?",o:["La voluntad","El objeto","La causa lícita","Las solemnidades"],ok:2,por:"Voluntad, objeto y causa son requisitos de existencia. La causa lícita, el objeto lícito, la capacidad y la voluntad sin vicios son requisitos de validez.",r:"Art. 1445 CC; doctrina"},
+        {id:"ap14",q:"En materia de capacidad, la regla general es:",o:["La incapacidad","La capacidad","Depende de la edad","Depende del acto"],ok:1,por:"Toda persona es legalmente capaz, excepto aquellas que la ley declara incapaces.",r:"Art. 1446 CC"}
+      ]
+    }
+  };
+  if(window.__MAZOS_EXTRA){ for(var _k in window.__MAZOS_EXTRA){ if(!MAZOS[_k]) MAZOS[_k]=window.__MAZOS_EXTRA[_k]; } }
+  var LINEAS=[{area:"Civil",nombre:"Línea civil"},{area:"Procesal",nombre:"Línea procesal"}];
+
+  /* ── utilidades ── */
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+  function norm(s){ return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim(); }
+  function mazoDe(ramo){ var n=norm(ramo); for(var m in MAZOS){ if(norm(MAZOS[m].ramo)===n) return m; } return null; }
+  function dia(d){ d=d||new Date(); return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2); }
+  function mas(f,n){ var p=f.split("-"), d=new Date(+p[0],+p[1]-1,+p[2]); d.setDate(d.getDate()+n); return dia(d); }
+  function mezclar(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)), x=a[i]; a[i]=a[j]; a[j]=x; } return a; }
+  function plural(n,s,p){ return n+" "+(n===1?s:p); }
+  /* una fuente del Código Civil enlaza al texto vigente en LeyChile (BCN) */
+  var CODIGOS={CC:{n:"Código Civil",id:172986},CPC:{n:"Código de Procedimiento Civil",id:22740},COT:{n:"Código Orgánico de Tribunales",id:25563},
+               CPP:{n:"Código Procesal Penal",id:176595},CT:{n:"Código del Trabajo",id:207436}};
+  function fuente(r){ var m=String(r).match(/\b(CC|CPC|COT|CPP|CT)\b/), C=m?CODIGOS[m[1]]:null;
+    return C
+    ? '<a class="es-ref" href="https://www.bcn.cl/leychile/navegar?idNorma='+C.id+'" target="_blank" rel="noopener" aria-label="'+esc(r)+', ver el '+C.n+' en LeyChile">'+esc(r)+' ↗</a>'
+    : '<span class="es-ref">'+esc(r)+'</span>'; }
+
+  /* ── progreso guardado en el teléfono ── */
+  function cargar(){ try{ var o=JSON.parse(localStorage.getItem(CLAVE)||"{}"); o.c=o.c||{}; o.h=o.h||{}; o.p=o.p||{}; o.n=o.n||{}; o.cfg=o.cfg||{}; return o; }catch(e){ return {c:{},h:{},p:{},n:{},cfg:{}}; } }
+  var E=cargar();
+  function guardar(){ try{ localStorage.setItem(CLAVE,JSON.stringify(E)); }catch(e){} }
+  /* tarjetas nuevas por día: la elige cada estudiante (10, 20, 30 o todas) */
+  function ajuste(){ var n=E.cfg&&E.cfg.nuevas; return (n===undefined||n===null)?NUEVAS_DEF:n; }
+  function limite(){ var n=ajuste(); return n===0?Infinity:n; }
+  function sinVer(m){ return MAZOS[m].tarjetas.filter(function(t){ return !E.c[clave(m,t.id)]; }).map(function(t){ return t.id; }); }
+  function clave(m,id){ return m+"/"+id; }
+  function hist(){ var h=dia(); E.h[h]=E.h[h]||{v:0,a:0,r:0,ok:0,tot:0}; return E.h[h]; }
+  function empezado(m){ for(var x in E.c){ if(x.indexOf(m+"/")===0) return true; } return !!(E.p[m]&&E.p[m].int&&E.p[m].int.length); }
+
+  /* repaso espaciado con tres respuestas */
+  function calificar(m,id,color){
+    var k=clave(m,id), s=E.c[k], hoy=dia();
+    if(!s){ s={iv:0,ef:2.5,n:0,l:0}; E.n[hoy]=(E.n[hoy]||0)+1; }
+    var falloHoy=(s.rh===hoy);   /* si hoy estuvo en rojo, acertarla en la misma sesión no basta: vuelve mañana */
+    if(color==="v"){ s.iv=falloHoy?1:((s.iv===0)?3:Math.max(s.iv+1,Math.round(s.iv*s.ef))); if(!falloHoy) s.ef=Math.min(3,s.ef+0.05); }
+    else if(color==="a"){ s.iv=falloHoy?1:Math.max(1,Math.round(s.iv*1.2)); s.ef=Math.max(1.3,s.ef-0.15); }
+    else { s.iv=1; s.ef=Math.max(1.3,s.ef-0.2); s.l=(s.l||0)+1; s.rh=hoy; }
+    s.n++; s.u=color; s.due=mas(hoy,s.iv); s.f=hoy;
+    E.c[k]=s; hist()[color]++; guardar();
+  }
+  function resumen(m){
+    var M=MAZOS[m], hoy=dia(), r={total:M.tarjetas.length,nuevas:0,repaso:0,dominadas:0,vencidas:0};
+    M.tarjetas.forEach(function(t){ var s=E.c[clave(m,t.id)]; if(!s){ r.nuevas++; return; } if(s.u==="v"&&s.iv>=21) r.dominadas++; else r.repaso++; if(s.due<=hoy) r.vencidas++; });
+    r.nuevasHoy=Math.min(Math.max(0,limite()-(E.n[hoy]||0)),r.nuevas);
+    r.paraHoy=Math.min(MAX_SESION,r.vencidas+r.nuevasHoy);
+    var p=(E.p[m]&&E.p[m].int)||[]; r.intentos=p.length;
+    r.mejor=p.reduce(function(b,x){ return (!b||x.ok/x.tot>b.ok/b.tot)?x:b; },null);
+    r.manana=M.tarjetas.filter(function(t){ var s=E.c[clave(m,t.id)]; return s&&s.due===mas(hoy,1); }).length;
+    return r;
+  }
+  function activo(f){ var x=E.h[f]; return !!x&&(x.v+x.a+x.r+x.tot)>0; }
+  function racha(){ var d=dia(), n=0; if(!activo(d)) d=mas(d,-1); while(activo(d)){ n++; d=mas(d,-1); } return n; }
+
+  /* ── estado de la pantalla ── */
+  var V={m:null}, S=null, teclado=false;   /* el foco automático solo ayuda a quien usa teclado */
+  document.addEventListener("keydown",function(){ teclado=true; },true);
+  document.addEventListener("pointerdown",function(){ teclado=false; },true);
+  function registrar(t){ try{ if(typeof logInteraccion==="function") logInteraccion("estudio",t+": "+MAZOS[V.m].ramo); }catch(e){} }
+  function iniciarTarjetas(m,modo){
+    var M=MAZOS[m], hoy=dia(), venc=[], nuevas=[], cola;
+    M.tarjetas.forEach(function(t){ var s=E.c[clave(m,t.id)]; if(!s) nuevas.push(t.id); else if(s.due<=hoy) venc.push(t.id); });
+    venc.sort(function(a,b){ return E.c[clave(m,a)].due.localeCompare(E.c[clave(m,b)].due); });
+    if(modo==="mas") cola=nuevas.slice(0,10);   /* «Estudiar 10 nuevas más», sin tocar el ajuste diario */
+    else {
+      var cupo=Math.max(0,limite()-(E.n[hoy]||0));
+      cola=venc.concat(nuevas.slice(0,cupo)).slice(0,MAX_SESION);
+      if(!cola.length&&modo==="extra") cola=mezclar(M.tarjetas.map(function(t){ return t.id; })).slice(0,10);
+    }
+    S={tipo:"t",m:m,cola:cola,i:0,vista:false,res:{v:0,a:0,r:0}};
+    registrar("tarjetas"); pintar();
+  }
+  function tarjeta(m,id){ return MAZOS[m].tarjetas.filter(function(t){ return t.id===id; })[0]; }
+  function pregunta(m,id){ var L=(S&&S.pregs)||MAZOS[m].preguntas; return L.filter(function(q){ return q.id===id; })[0]; }
+  /* Modo Artículos: cada tarjeta que cita un único artículo del Código Civil se vuelve una pregunta */
+  function preguntasDeArticulos(m){
+    var RE=/^Art\. (\d+) (CC|CPC|COT|CPP|CT)$/, por={};
+    MAZOS[m].tarjetas.forEach(function(t){ var x=RE.exec(t.r); if(!x) return; (por[x[2]]=por[x[2]]||{t:[],n:[]}); por[x[2]].t.push(t); if(por[x[2]].n.indexOf(+x[1])<0) por[x[2]].n.push(+x[1]); });
+    var out=[];
+    Object.keys(por).forEach(function(cod){
+      var G=por[cod]; if(G.n.length<4) return;   /* hacen falta 4 artículos distintos del mismo código para las alternativas */
+      G.t.forEach(function(t){
+        var n=+RE.exec(t.r)[1], ops=mezclar(G.n.filter(function(x){ return x!==n; })).slice(0,3).concat([n]).sort(function(a,b){ return a-b; });
+        out.push({id:"art-"+t.id,cita:t.d,q:"¿Qué artículo del "+CODIGOS[cod].n+" lo establece?",o:ops.map(function(x){ return "Art. "+x; }),ok:ops.indexOf(n),
+                  por:"Es el art. "+n+" del "+CODIGOS[cod].n+": "+t.t.charAt(0).toLowerCase()+t.t.slice(1)+".",r:t.r,fijo:true});
+      });
+    });
+    return out;
+  }
+  function notaTarjeta(color){
+    if(!S||S.tipo!=="t"||!S.vista) return;
+    var id=S.cola[S.i]; calificar(S.m,id,color); S.res[color]++;
+    if(color==="r") S.cola.splice(Math.min(S.cola.length,S.i+4),0,id);   /* vuelve en esta misma sesión */
+    S.i++; S.vista=false; pintar();
+  }
+  function iniciarPreguntas(m,lista,clave){
+    var P=mezclar((lista||MAZOS[m].preguntas).slice()).slice(0,PREG_SESION);
+    S={tipo:"p",m:m,clave:clave||m,pregs:P,cola:P.map(function(q){ var o=q.o.map(function(_,i){ return i; }); return {id:q.id,orden:q.fijo?o:mezclar(o)}; }),i:0,elegida:null,ok:0,malas:[]};
+    registrar(clave&&clave!==m?"artículos":"preguntas"); pintar();
+  }
+  function responder(idx){
+    if(!S||S.tipo!=="p"||S.elegida!==null) return;
+    var it=S.cola[S.i], q=pregunta(S.m,it.id), bien=(it.orden[idx]===q.ok);
+    S.elegida=idx; if(bien) S.ok++; else S.malas.push(q.id);
+    var h=hist(); h.tot++; if(bien) h.ok++; guardar(); pintar();
+  }
+  function siguiente(){
+    if(!S||S.tipo!=="p"||S.elegida===null) return;
+    S.i++; S.elegida=null;
+    if(S.i>=S.cola.length){ var p=E.p[S.clave]=E.p[S.clave]||{int:[]}; p.int.push({f:dia(),ok:S.ok,tot:S.cola.length}); if(p.int.length>30) p.int=p.int.slice(-30); guardar(); }
+    pintar();
+  }
+
+  /* ── vistas ── */
+  var ICO_TARJ='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="6" width="13" height="14" rx="2.5"/><path d="M8 3.5h10a2.5 2.5 0 0 1 2.5 2.5v11"/></svg>';
+  var ICO_PREG='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.4a2.5 2.5 0 0 1 4.8 1c0 1.7-2.4 2.2-2.4 3.6"/><path d="M12 17.2v.01"/></svg>';
+  function barraAvance(r){
+    var t=Math.max(1,r.total);
+    return '<span class="es-barra" aria-hidden="true"><i class="es-dom" style="width:'+(r.dominadas/t*100)+'%"></i><i class="es-rep" style="width:'+(r.repaso/t*100)+'%"></i><i class="es-nue" style="width:'+(r.nuevas/t*100)+'%"></i></span>';
+  }
+  function ramosDe(area){
+    var C=[]; try{ var P=window.__mallaSnap&&window.__mallaSnap(); C=(P&&P[P.cur]&&P[P.cur].C)||[]; }catch(e){}
+    var l=C.filter(function(c){ return c.a===area; }).sort(function(a,b){ return a.t-b.t; });
+    if(!l.length&&area==="Civil") l=[{n:"Acto Jurídico",t:4}];
+    return l;
+  }
+  function vistaInicio(){
+    var h='<h1 class="h1 serif">Estudiar</h1><p class="lead">Repasa tus ramos con tarjetas y preguntas. Tu progreso se guarda en este teléfono.</p>';
+    var rc=racha(); if(rc) h+='<p class="es-racha">Racha de '+plural(rc,"día","días")+'</p>';
+    LINEAS.forEach(function(L){
+      var lista=ramosDe(L.area); if(!lista.length) return;
+      h+='<h2 class="es-linea">'+L.nombre+'</h2><div class="es-lista">';
+      lista.forEach(function(c){
+        var m=mazoDe(c.n);
+        if(!m){ h+='<div class="es-ramo pronto"><span class="es-fila"><b>'+esc(c.n)+'</b> <small>Nivel '+c.t+'</small></span><small>Próximamente</small></div>'; return; }
+        var r=resumen(m), M=MAZOS[m];
+        var estado=empezado(m) ? (r.paraHoy?'<span class="es-chip">Para hoy: '+r.paraHoy+'</span>':'<span class="es-chip ok">Al día</span>')
+                               : '<span class="es-chip">Nuevo</span>';
+        h+='<button type="button" class="es-ramo" data-es="abrir" data-v="'+m+'"><span class="es-fila"><b>'+esc(M.ramo)+'</b>'+estado+'</span>'+
+           '<small>'+plural(M.tarjetas.length,"tarjeta","tarjetas")+' y '+plural(M.preguntas.length,"pregunta","preguntas")+(empezado(m)?', '+r.dominadas+' dominadas':'')+'</small>'+barraAvance(r)+'</button>';
+      });
+      h+='</div>';
+    });
+    h+='<p class="es-nota">¿Quieres aportar tarjetas o preguntas de tu ramo? Escríbele al Centro de Estudiantes.</p>';
+    return h;
+  }
+  function vistaRamo(m){
+    var M=MAZOS[m], r=resumen(m), h='<div class="es-top"><button type="button" class="es-volver" data-es="ramos">‹ Ramos</button></div>';
+    h+='<h1 class="h1 serif">'+esc(M.ramo)+'</h1><p class="lead">'+esc(M.nota)+'</p>'+
+       (M.revision?'<p class="es-rev ok">Revisado por la cátedra: '+esc(M.revision.docente)+'</p>':'<p class="es-rev">Contenido en revisión docente</p>')+'<div class="es-modos">';
+    h+='<button type="button" class="es-modo" data-es="tarjetas"><span class="es-modo-ico">'+ICO_TARJ+'</span><b>Tarjetas</b><span>Recuerda la definición de cada término y evalúa tu dominio.</span>'+
+       (r.paraHoy?'<span class="es-chip">Para hoy: '+plural(r.paraHoy,"tarjeta","tarjetas")+'</span>':'<span class="es-chip ok">Al día: vuelve mañana</span>')+'</button>';
+    h+='<button type="button" class="es-modo" data-es="preguntas"><span class="es-modo-ico">'+ICO_PREG+'</span><b>Selección múltiple</b><span>Responde y revisa la justificación de cada alternativa.</span>'+
+       '<span class="es-chip">'+(r.mejor?'Tu mejor resultado: '+r.mejor.ok+' de '+r.mejor.tot:plural(Math.min(PREG_SESION,M.preguntas.length),"pregunta","preguntas")+' por ronda')+'</span></button>';
+    var nArt=preguntasDeArticulos(m).length, pa=(E.p[m+'#art']&&E.p[m+'#art'].int)||[], mejA=pa.reduce(function(b,x){ return (!b||x.ok/x.tot>b.ok/b.tot)?x:b; },null);
+    if(nArt>=4) h+='<button type="button" class="es-modo" data-es="articulos"><span class="es-modo-ico es-par" aria-hidden="true">§</span><b>Artículos</b><span>Lee la regla y reconoce de qué artículo sale.</span>'+
+       '<span class="es-chip">'+(mejA?'Tu mejor resultado: '+mejA.ok+' de '+mejA.tot:plural(Math.min(PREG_SESION,nArt),"regla","reglas")+' por ronda')+'</span></button>';
+    h+='</div>';
+    var cur=ajuste();
+    h+='<div class="es-ajuste"><span>Nuevas por día</span><div class="es-opc" role="radiogroup" aria-label="Tarjetas nuevas por día">'+
+       OPCIONES.map(function(n){ return '<button type="button" role="radio" aria-checked="'+(cur===n)+'" class="es-opc-b'+(cur===n?' on':'')+'" data-es="limite" data-v="'+n+'">'+(n||'Todas')+'</button>'; }).join("")+'</div></div>';
+    if(!r.paraHoy) h+='<p class="es-extra"><button type="button" class="es-btn2" data-es="tarjetas" data-v="'+(r.nuevas?'mas':'extra')+'">'+(r.nuevas?'Estudiar '+Math.min(10,r.nuevas)+' nuevas más':'Repasar 10 tarjetas adicionales')+'</button></p>';
+    /* estadísticas */
+    var dias=[], max=1, hoy=dia();
+    for(var k=6;k>=0;k--){ var f=mas(hoy,-k), x=E.h[f]||{v:0,a:0,r:0,tot:0}, n=x.v+x.a+x.r+x.tot; max=Math.max(max,n); dias.push({f:f,n:n}); }
+    var nom=["D","L","M","X","J","V","S"];
+    h+='<section class="es-stats" aria-label="Tu avance en '+esc(M.ramo)+'"><div class="es-fila"><b>Tu avance</b> <small>'+r.dominadas+' de '+r.total+' dominadas</small></div>'+barraAvance(r)+
+       '<p class="es-ley"><span><i class="es-dom"></i>Dominadas: '+r.dominadas+'</span><span><i class="es-rep"></i>En repaso: '+r.repaso+'</span><span><i class="es-nue"></i>Nuevas: '+r.nuevas+'</span></p>'+
+       '<div class="es-fila"><b>Últimos 7 días</b> <small>'+(racha()?'Racha de '+plural(racha(),"día","días"):'Sin racha todavía')+'</small></div><div class="es-semana" aria-hidden="true">'+
+       dias.map(function(d){ var p=d.f.split("-"), wd=new Date(+p[0],+p[1]-1,+p[2]).getDay(); return '<div><i style="height:'+Math.max(3,Math.round(d.n/max*48))+'px;opacity:'+(d.n?1:.25)+'"></i>'+nom[wd]+'</div>'; }).join("")+
+       '</div>'+(r.intentos?'<div class="es-fila"><b>Selección múltiple</b> <small>'+plural(r.intentos,"ronda","rondas")+', mejor: '+r.mejor.ok+' de '+r.mejor.tot+'</small></div>':'')+
+       (pa.length?'<div class="es-fila"><b>Artículos</b> <small>'+plural(pa.length,"ronda","rondas")+', mejor: '+mejA.ok+' de '+mejA.tot+'</small></div>':'')+'</section>';
+    return h;
+  }
+  function progreso(i,n,txt){ return '<div class="es-prog"><button type="button" class="es-volver" data-es="salir" aria-label="Salir de la sesión">✕</button><span class="es-barra"><i style="width:'+(n?i/n*100:0)+'%"></i></span><span>'+txt+'</span></div>'; }
+  function vistaTarjeta(){
+    if(S.i>=S.cola.length){
+      var r=resumen(S.m), t=S.res.v+S.res.a+S.res.r;
+      if(!t) return '<div class="es-fin"><p class="es-grande">Al día</p><p>No tienes tarjetas pendientes para hoy en '+esc(MAZOS[S.m].ramo)+'.</p><div class="es-botones"><button type="button" class="es-btn2" data-es="salir">Volver al ramo</button></div></div>';
+      return '<div class="es-fin"><p class="es-etq">Sesión lista</p><p class="es-grande">'+plural(t,"repaso","repasos")+'</p>'+
+        '<p class="es-cuentas"><span class="es-chip v">La domino: '+S.res.v+'</span><span class="es-chip a">Con dudas: '+S.res.a+'</span><span class="es-chip r">No la domino: '+S.res.r+'</span></p>'+
+        '<p>'+(r.manana?'Mañana te esperan '+plural(r.manana,"tarjeta","tarjetas")+'.':'Vuelve en los próximos días: la app te avisará en Inicio.')+'</p>'+
+        '<div class="es-botones">'+(sinVer(S.m).length?'<button type="button" class="es-btn2 es-prim" data-es="tarjetas" data-v="mas">Estudiar '+Math.min(10,sinVer(S.m).length)+' nuevas más</button>':'')+
+        '<button type="button" class="es-btn2" data-es="salir">Volver al ramo</button><button type="button" class="es-btn2" data-es="preguntas">Hacer selección múltiple</button></div></div>';
+    }
+    var c=tarjeta(S.m,S.cola[S.i]);
+    var h=progreso(S.i,S.cola.length,(S.i+1)+' de '+S.cola.length);
+    h+='<div class="es-escena"><div class="es-carta'+(S.vista?' vista':'')+'"'+(S.vista?'':' data-es="voltear" role="button" tabindex="0" aria-label="Ver la definición de '+esc(c.t)+'"')+'>'+
+       '<div class="es-cara"><span class="es-etq">Término</span><span class="es-termino">'+esc(c.t)+'</span><span class="es-pista">Recuerda la definición y luego compárala.</span></div>'+
+       '<div class="es-cara es-dorso" aria-hidden="'+(S.vista?'false':'true')+'"><span class="es-etq">'+esc(c.t)+'</span><span class="es-def">'+esc(c.d)+'</span>'+fuente(c.r)+'</div></div></div>';
+    h+='<div class="es-acciones">'+(S.vista
+      ? '<p class="es-pista es-centro">Evalúa tu respuesta</p><div class="es-semaforo" role="group" aria-label="Evalúa tu respuesta">'+
+        '<button type="button" class="es-luz r" data-es="nota" data-v="r"><i></i>No la domino <small>Se repite hoy</small></button>'+
+        '<button type="button" class="es-luz a" data-es="nota" data-v="a"><i></i>Con dudas <small>Se repite mañana</small></button>'+
+        '<button type="button" class="es-luz v" data-es="nota" data-v="v"><i></i>La domino <small>Repaso espaciado</small></button></div>'
+      : '<button type="button" class="es-btn" data-es="voltear">Ver definición</button>')+'</div>';
+    return h;
+  }
+  function vistaPregunta(){
+    var L="ABCD";
+    if(S.i>=S.cola.length){
+      var n=S.cola.length, pct=n?S.ok/n:0, msj=pct>=.9?"¡Excelente!":pct>=.7?"Muy bien":pct>=.5?"Vas bien, sigue practicando":"A repasar: las tarjetas te pueden ayudar";
+      var h='<div class="es-fin"><p class="es-etq">Resultado</p><p class="es-grande">'+S.ok+' de '+n+'</p><p>'+msj+'</p>';
+      if(S.malas.length){
+        h+='<div class="es-malas"><b>Para repasar</b>'+S.malas.map(function(id){ var q=pregunta(S.m,id); return '<div><p>'+esc(q.cita||q.q)+'</p><p><b>Correcta:</b> '+esc(q.o[q.ok])+'.</p>'+fuente(q.r)+'</div>'; }).join("")+'</div>';
+      }
+      return h+'<div class="es-botones"><button type="button" class="es-btn2" data-es="'+(S.clave!==S.m?'articulos':'preguntas')+'">Otra ronda</button><button type="button" class="es-btn2" data-es="salir">Volver al ramo</button></div></div>';
+    }
+    var it=S.cola[S.i], q=pregunta(S.m,it.id), lista="";
+    it.orden.forEach(function(real,idx){
+      var cls="es-op";
+      if(S.elegida!==null){ if(real===q.ok) cls+=" ok"; else if(idx===S.elegida) cls+=" mal"; }
+      lista+='<button type="button" class="'+cls+'" data-es="op" data-v="'+idx+'"'+(S.elegida!==null?' disabled':'')+'><b>'+L.charAt(idx)+'</b><span>'+esc(q.o[real])+'</span></button>';
+    });
+    var h=progreso(S.i,S.cola.length,'Pregunta '+(S.i+1)+' de '+S.cola.length)+(q.cita?'<blockquote class="es-cita">'+esc(q.cita)+'</blockquote>':'')+'<p class="es-preg">'+esc(q.q)+'</p><div class="es-ops">'+lista+'</div>';
+    if(S.elegida!==null){
+      var bien=(it.orden[S.elegida]===q.ok);
+      h+='<div class="es-por" role="status"><b>'+(bien?"Correcto":"La correcta era la "+L.charAt(it.orden.indexOf(q.ok)))+'</b><p>'+esc(q.por)+'</p>'+fuente(q.r)+'</div>'+
+         '<div class="es-acciones"><button type="button" class="es-btn" data-es="sig">'+(S.i+1<S.cola.length?"Siguiente":"Ver resultado")+'</button></div>';
+    }
+    return h;
+  }
+  function pintar(){
+    var app=document.getElementById("estudioApp");
+    if(app){
+      app.innerHTML=S?(S.tipo==="t"?vistaTarjeta():vistaPregunta()):(V.m?vistaRamo(V.m):vistaInicio());
+      var f=app.querySelector(".es-luz.v")||app.querySelector('.es-btn')||app.querySelector('.es-op:not([disabled])');
+      if(f&&S&&teclado&&document.getElementById("estudio").style.display!=="none"){ try{ f.focus({preventScroll:true}); }catch(e){} }
+    }
+    pintarRepaso();
+  }
+
+  /* ── tarjeta en Inicio ── */
+  function pintarRepaso(){
+    var box=document.getElementById("repasoBox"); if(!box) return;
+    var pend=0, cual=null, alguno=false;
+    for(var m in MAZOS){ if(empezado(m)){ alguno=true; var r=resumen(m); if(r.vencidas>0&&(!cual||r.vencidas>pend)){ pend=r.vencidas; cual=m; } } }
+    if(cual){
+      box.innerHTML='<button type="button" class="es-repaso" data-ir2="'+cual+'"><span class="es-ico">'+ICO_TARJ+'</span><span><b>Repaso de hoy</b> <small>'+plural(pend,"tarjeta","tarjetas")+' de '+esc(MAZOS[cual].ramo)+'</small></span><span class="i2-avc-ir">Repasar</span></button>';
+    }else if(!alguno){
+      var m0=Object.keys(MAZOS)[0];
+      box.innerHTML='<button type="button" class="es-repaso" data-ir2="'+m0+'"><span class="es-ico">'+ICO_TARJ+'</span><span><b>Nuevo: Estudiar</b> <small>Tarjetas y preguntas de tus ramos, con repaso inteligente.</small></span><span class="i2-avc-ir">Probar</span></button>';
+    }else box.innerHTML="";
+  }
+  function abrirDesdeInicio(m,directo){
+    var b=document.querySelector('[data-ir="estudio"]'); if(b) b.click();
+    V.m=m; S=null; if(directo) iniciarTarjetas(m); else pintar();
+  }
+
+  /* ── eventos ── */
+  function iniciar(){
+    var app=document.getElementById("estudioApp");
+    if(app) app.addEventListener("click",function(e){
+      var b=e.target.closest?e.target.closest("[data-es]"):null; if(!b) return;
+      var a=b.getAttribute("data-es"), v=b.getAttribute("data-v");
+      if(a==="abrir"){ V.m=v; S=null; pintar(); window.scrollTo(0,0); }
+      else if(a==="ramos"){ V.m=null; S=null; pintar(); }
+      else if(a==="tarjetas") iniciarTarjetas(V.m,v);
+      else if(a==="limite"){ E.cfg.nuevas=+v; guardar(); pintar(); }
+      else if(a==="preguntas") iniciarPreguntas(V.m);
+      else if(a==="articulos") iniciarPreguntas(V.m,preguntasDeArticulos(V.m),V.m+"#art");
+      else if(a==="voltear"){ if(S&&S.tipo==="t"){ S.vista=true; pintar(); } }
+      else if(a==="nota") notaTarjeta(v);
+      else if(a==="op") responder(+v);
+      else if(a==="sig") siguiente();
+      else if(a==="salir"){ S=null; pintar(); }
+    });
+    document.addEventListener("click",function(e){
+      var r=e.target.closest?e.target.closest("[data-ir2]"):null;
+      if(r){ var m=r.getAttribute("data-ir2"); abrirDesdeInicio(m,empezado(m)&&resumen(m).vencidas>0); return; }
+      if(e.target.closest&&e.target.closest('[data-ir="estudio"]')) setTimeout(pintar,0);
+      if(e.target.closest&&e.target.closest('.tab[data-tab="mural"],.brand2')) setTimeout(pintarRepaso,0);
+    });
+    document.addEventListener("keydown",function(e){
+      var sec=document.getElementById("estudio"); if(!S||!sec||sec.style.display==="none") return;
+      if(e.target&&/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
+      if(S.tipo==="t"){
+        if(!S.vista&&(e.key===" "||e.key==="Enter")){ e.preventDefault(); S.vista=true; pintar(); }
+        else if(S.vista&&{"1":"r","2":"a","3":"v"}[e.key]) notaTarjeta({"1":"r","2":"a","3":"v"}[e.key]);
+      }else if(S.tipo==="p"){
+        if(S.elegida===null&&/^[1-4]$/.test(e.key)) responder(+e.key-1);
+        else if(S.elegida!==null&&e.key==="Enter"){ e.preventDefault(); siguiente(); }
+      }
+    });
+    pintar();
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",iniciar); else setTimeout(iniciar,0);
+  window.__estudio={mazos:MAZOS,estado:function(){ return E; },resumen:resumen,pintar:pintar,racha:racha,
+    recargar:function(){ E=cargar(); V={m:null}; S=null; pintar(); }};
+})();
+
+</script>
+<script>
+/* ═══ UApp · funciones tomadas de la revisión de apps similares ═══
+   1. Horario de clases al calendario del teléfono (como TUM Campus App)
+   2. Conversor de puntaje a nota (como escaladenotas.cl)
+   3. Fuente en las respuestas de Dona (como NotebookLM)
+   4. Guía para primer año (como la guía de supervivencia de CEEINF UTFSM) */
+(function(){
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+  function min(hm){ var p=String(hm).split(":"); return (+p[0])*60+(+p[1]||0); }
+  function dia(d){ return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2); }
+  function fecha(f){ var p=f.split("-"); return new Date(+p[0],+p[1]-1,+p[2]); }
+  function aviso(t){ try{ if(typeof showHorMsg==="function") showHorMsg(t,"info"); }catch(e){} }
+  function registrar(a,b){ try{ if(typeof logInteraccion==="function") logInteraccion(a,b); }catch(e){} }
+
+  /* ═════════ 1 · Horario de clases al calendario ═════════ */
+  /* Fechas del Calendario Académico 2026 (Res. de Rectoría N°289/2025) */
+  var PERIODOS={
+    tech:{ini:"2026-09-07",fin:"2026-12-04",sin:["2026-09-14","2026-09-15","2026-09-16","2026-09-17","2026-09-18","2026-10-12"]}
+  };
+  var FERIADOS_2026=["2026-10-12","2026-10-31","2026-11-01","2026-12-08"];
+  var LETRA=["D","L","M","X","J","V","S"];
+  function periodo(){
+    var j=window.__jornada||"tech", hoy=dia(new Date());
+    var P=PERIODOS[j];
+    if(!P){
+      /* jornadas semestrales: hasta la última evaluación de su calendario */
+      var fin="2026-12-04";
+      try{
+        var D=window.__pruDatos&&window.__pruDatos(), y=new Date().getFullYear();
+        (D&&D.EVALS||[]).forEach(function(e){ ["e1","e2","e3"].forEach(function(k){ (e[k]||[]).forEach(function(v){
+          var md=String(Array.isArray(v)?v[0]:v).split("~").pop(); if(/^\d\d-\d\d$/.test(md)&&md!=="99-99"){ var f=y+"-"+md; if(f>fin) fin=f; } }); }); });
+      }catch(e){}
+      P={ini:hoy,fin:fin,sin:FERIADOS_2026};
+    }
+    return {ini:(P.ini>hoy?P.ini:hoy),fin:P.fin,sin:P.sin};
+  }
+  function clasesDeLaSemana(){
+    var I={},H={};
+    try{ I=(typeof insc!=="undefined"&&insc)?insc:{}; H=(typeof HOR!=="undefined"&&HOR)?HOR:{}; }catch(e){}
+    var out=[];
+    Object.keys(I).forEach(function(id){
+      var B=H[I[id]]; if(!B||!B.s) return;
+      B.s.forEach(function(se){ if(String(se[6])===String(id)&&se[8]!=="Sin clases") out.push(se); });
+    });
+    out.sort(function(a,b){ return ("LMXJVS".indexOf(a[0])-"LMXJVS".indexOf(b[0]))||(min(a[1])-min(b[1])); });
+    var u=[];   /* une bloques seguidos del mismo ramo el mismo día */
+    out.forEach(function(se){
+      var p=u[u.length-1];
+      if(p&&p.dia===se[0]&&p.ramo===se[3]&&min(se[1])-min(p.fin)<=15){ p.fin=se[2]; if(se[7]&&p.nrc.indexOf(se[7])<0) p.nrc.push(se[7]); }
+      else u.push({dia:se[0],ini:se[1],fin:se[2],ramo:se[3],sala:se[4],prof:se[5],nrc:se[7]?[se[7]]:[],modo:se[8]||"",id:se[6]});
+    });
+    return u;
+  }
+  function txt(s){ return String(s||"").replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\r?\n/g,"\\n"); }
+  function plegar(l){
+    var out=[],cur="",b=0;
+    Array.from(l).forEach(function(ch){ var n=encodeURIComponent(ch).replace(/%[0-9A-F]{2}/gi,"x").length; if(b+n>74){ out.push(cur); cur=" "+ch; b=1+n; } else { cur+=ch; b+=n; } });
+    out.push(cur); return out.join("\r\n");
+  }
+  function hhmm(hm){ var p=hm.split(":"); return ("0"+p[0]).slice(-2)+("0"+(p[1]||"0")).slice(-2)+"00"; }
+  function idEstable(s){ var x=5381; for(var i=0;i<s.length;i++){ x=((x<<5)+x+s.charCodeAt(i))>>>0; } return x.toString(36); }
+  function horarioICS(){
+    var P=periodo(), clases=clasesDeLaSemana(), stamp=new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"");
+    var L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//UApp//Horario//ES","CALSCALE:GREGORIAN","METHOD:PUBLISH","X-WR-CALNAME:UApp · Horario de clases"], n=0;
+    clases.forEach(function(c){
+      var d=fecha(P.ini), meta=LETRA.indexOf(c.dia); if(meta<0) return;
+      while(d.getDay()!==meta) d.setDate(d.getDate()+1);
+      var primera=dia(d); if(primera>P.fin) return;
+      var excl=P.sin.filter(function(f){ return f>=primera&&f<=P.fin&&fecha(f).getDay()===meta; });
+      var enLinea=/online|l[ií]nea/i.test(c.modo);
+      L.push("BEGIN:VEVENT","UID:"+idEstable((window.__jornada||"")+"|"+c.id+"|"+c.dia+"|"+c.ini)+"@miuapp.cl","DTSTAMP:"+stamp,
+             "SUMMARY:"+txt(c.ramo),
+             "DTSTART:"+primera.replace(/-/g,"")+"T"+hhmm(c.ini),"DTEND:"+primera.replace(/-/g,"")+"T"+hhmm(c.fin),
+             "RRULE:FREQ=WEEKLY;UNTIL="+P.fin.replace(/-/g,"")+"T235959");
+      if(excl.length) L.push("EXDATE:"+excl.map(function(f){ return f.replace(/-/g,"")+"T"+hhmm(c.ini); }).join(","));
+      if(enLinea) L.push("LOCATION:En línea"); else if(c.sala&&c.sala!=="—") L.push("LOCATION:"+txt("Sala "+c.sala));
+      var det=[]; if(c.nrc.length) det.push("NRC "+c.nrc.join(" y ")); if(c.prof) det.push(c.prof); if(c.modo) det.push(enLinea?"Clase en línea":"Presencial");
+      L.push("DESCRIPTION:"+txt(det.join(". ")+"\nmiuapp.cl"),"END:VEVENT"); n++;
+    });
+    L.push("END:VCALENDAR");
+    return {ics:L.map(plegar).join("\r\n")+"\r\n",n:n,fin:P.fin};
+  }
+  function horarioAlCalendario(){
+    var r=horarioICS();
+    if(!r.n){ aviso("Marca tus ramos en Horario para pasar tus clases al calendario."); return; }
+    window.__ultimoICSHorario=r.ics;
+    try{
+      var url=URL.createObjectURL(new Blob([r.ics],{type:"text/calendar;charset=utf-8"})), a=document.createElement("a");
+      a.href=url; a.download="UApp-horario.ics"; document.body.appendChild(a); a.click();
+      setTimeout(function(){ try{ URL.revokeObjectURL(url); a.remove(); }catch(e){} },2000);
+    }catch(e){}
+    var F=fecha(r.fin), MES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+    aviso("📅 Listo: abre el archivo descargado para agregar tus "+r.n+(r.n===1?" clase semanal":" clases semanales")+" al calendario, hasta el "+F.getDate()+" de "+MES[F.getMonth()]+". El receso y los feriados quedan fuera.");
+    registrar("horario","al calendario");
+  }
+
+  /* ═════════ 2 · Conversor de puntaje a nota ═════════ */
+  /* Escala chilena: 1,0 a 7,0, aprobación 4,0 con la exigencia indicada */
+  function notaDesde(p,P,E){
+    var corte=E*P;
+    var n=(p<corte)?1+3*p/corte:4+3*(p-corte)/(P-corte);
+    return Math.round((n+1e-9)*10)/10;
+  }
+  function num(v){ var x=parseFloat(String(v||"").replace(",",".")); return isNaN(x)?null:x; }
+  function coma(x,d){ return x.toFixed(d).replace(".",","); }
+  function pintarConversor(){
+    var box=document.getElementById("convBox"); if(!box||box.getAttribute("data-listo")) return;
+    box.setAttribute("data-listo","1");
+    box.innerHTML='<section class="cv-card" aria-label="Convertir puntaje en nota"><div class="cv-cab"><b>Puntaje a nota</b><span>Escala de 1,0 a 7,0</span></div>'+
+      '<div class="cv-campos"><label>Tu puntaje<input id="cvP" inputmode="decimal" placeholder="Ej.: 45"></label>'+
+      '<label>Puntaje total<input id="cvT" inputmode="decimal" placeholder="Ej.: 60"></label>'+
+      '<label>Exigencia (%)<input id="cvE" inputmode="decimal" value="60"></label></div><div class="cv-res" id="cvR" aria-live="polite"></div></section>';
+    ["cvP","cvT","cvE"].forEach(function(id){ document.getElementById(id).addEventListener("input",calcularConversor); });
+    calcularConversor();
+  }
+  function calcularConversor(){
+    var p=num((document.getElementById("cvP")||{}).value), P=num((document.getElementById("cvT")||{}).value), e=num((document.getElementById("cvE")||{}).value), out=document.getElementById("cvR");
+    if(!out) return;
+    if(e===null||e<1||e>99){ out.innerHTML='<span class="cv-msg">La exigencia debe estar entre 1 % y 99 %.</span>'; return; }
+    if(P===null||P<=0){ out.innerHTML='<span class="cv-msg">Escribe el puntaje total de la prueba y tu puntaje.</span>'; return; }
+    var corte=Math.round(e/100*P*100)/100;
+    var pie='Con '+coma(e,0)+' % de exigencia, el 4,0 se logra con '+(corte%1?coma(corte,1):corte)+' de '+P+' puntos.';
+    if(p===null){ out.innerHTML='<span class="cv-msg">'+pie+'</span>'; return; }
+    if(p<0||p>P){ out.innerHTML='<span class="cv-msg">Tu puntaje debe estar entre 0 y '+P+'.</span>'; return; }
+    var n=notaDesde(p,P,e/100);
+    out.innerHTML='<span class="cv-nota '+(n>=4?'ok':'no')+'">'+coma(n,1)+'</span><span class="cv-msg">'+pie+'</span>';
+  }
+  window.__notaDesde=notaDesde;
+
+  /* ═════════ 3 · Fuente en las respuestas de Dona ═════════ */
+  /* Solo se muestra cuando la respuesta permite afirmarla con certeza */
+  window.__fuenteDona=function(f){
+    try{
+      var t=String(f.a||"").replace(/<[^>]+>/g," "), arts=[], m, re=/art(?:[ií]culo|\.)\s*(\d+)/gi, src=null, doc=null;
+      while((m=re.exec(t))) if(arts.indexOf(m[1])<0) arts.push(m[1]);
+      if(/Validaci[oó]n de Estudios y Traslados/i.test(t)) src="Reglamento de Validación de Estudios y Traslados";
+      else if(arts.length){ src="Reglamento General del Estudiante de Pregrado, "+(arts.length>1?"arts. ":"art. ")+arts.join(" y "); doc="reg"; }
+      else if(/Calendario/.test(f.c||"")) src="Calendario Académico 2026, Res. de Rectoría N°289/2025";
+      if(!src) return "";
+      return '<div class="dona-fuente"><span>Fuente: '+esc(src)+'</span>'+(doc?'<button type="button" class="dona-ver" data-doc="'+doc+'">Abrir</button>':'')+'</div>';
+    }catch(e){ return ""; }
+  };
+
+  /* ═════════ 4 · Guía para primer año ═════════ */
+  var GUIA=[
+    {g:"Asistencia y evaluaciones",q:["¿Cuánta asistencia necesito?","¿Con qué nota apruebo un ramo?","¿Cómo se calcula la nota final del ramo?","¿Qué pasa si falto a una prueba?","¿Cómo justifico una inasistencia o falta médica?","¿Qué es el examen de repetición y cuándo lo puedo dar?"]},
+    {g:"Si algo no sale bien",q:["Si repruebo un ramo, ¿qué tengo que hacer?","¿Cuántas veces puedo reprobar un ramo antes de que me eliminen?"]},
+    {g:"Primeros trámites y apoyo",q:["¿Cómo accedo a mi correo institucional o recupero mi clave?","¿Cómo pido apoyo psicopedagógico?"]}
+  ];
+  function pintarGuia(){
+    var box=document.getElementById("guiaBox"); if(!box) return;
+    var n=GUIA.reduce(function(s,x){ return s+x.q.length; },0);
+    box.innerHTML='<details class="guia"><summary><span class="guia-ico" aria-hidden="true">🧭</span><span><b>Guía para primer año</b><small>'+n+' preguntas esenciales, respondidas por Dona con su fuente.</small></span></summary>'+
+      GUIA.map(function(G){ return '<p class="guia-g">'+esc(G.g)+'</p>'+G.q.map(function(q){ return '<button type="button" class="guia-q" data-q="'+esc(q)+'">'+esc(q)+'</button>'; }).join(""); }).join("")+'</details>';
+  }
+  function preguntarADona(q){
+    var abrir=document.getElementById("abrirDona"), fab=document.getElementById("chatFab");
+    if(abrir) abrir.click(); else if(fab) fab.click();
+    setTimeout(function(){
+      var inp=document.getElementById("chatIn"), send=document.getElementById("chatSend");
+      if(inp&&send){ inp.value=q; send.click(); }
+    },120);
+    registrar("guia",q);
+  }
+
+  function iniciar(){
+    var b=document.getElementById("icsHor"); if(b) b.addEventListener("click",horarioAlCalendario);
+    pintarConversor(); pintarGuia();
+    document.addEventListener("click",function(e){
+      var v=e.target.closest?e.target.closest(".dona-ver"):null;
+      if(v){ try{ if(typeof window.openDoc==="function") window.openDoc(v.getAttribute("data-doc")); }catch(x){} return; }
+      var g=e.target.closest?e.target.closest(".guia-q"):null;
+      if(g) preguntarADona(g.getAttribute("data-q"));
+    });
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",iniciar); else setTimeout(iniciar,0);
+  window.__horarioICS=horarioICS;
+})();
+
+</script>
+<script>
+/* ═══ UApp · Avance: más funciones tomadas de apps similares ═══
+   1. Mantener presionado un ramo ilumina lo que exige y lo que desbloquea (Malla FCFM)
+   2. Celebración al completar un año (Malla FCFM)
+   3. Descargar la malla con tu avance en PDF (malla interactiva UNAB) */
+(function(){
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+  function malla(){ try{ var P=window.__mallaSnap&&window.__mallaSnap(); return P?{P:P,A:P[P.cur]}:null; }catch(e){ return null; } }
+  function aviso(t){ try{ if(typeof showHorMsg==="function") showHorMsg(t,"info"); }catch(e){} }
+  function lista(n){ return n.length<2?n.join(""):n.slice(0,-1).join(", ")+" y "+n[n.length-1]; }
+  function sinMovimiento(){ return document.body.classList.contains("reduce-motion")||(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches); }
+
+  /* ═════════ 1 · Prerrequisitos al mantener presionado ═════════ */
+  /* misma regla que la malla: {upTo:id} = todos los ramos hasta el nivel de ese ramo */
+  function prerreqs(c,C){
+    if(c.p&&c.p.upTo){ var tope=C.filter(function(x){ return x.id===c.p.upTo; })[0], t=tope?tope.t:0;
+      return C.filter(function(x){ return x.t<=t&&x.id!==c.id; }).map(function(x){ return x.id; }); }
+    return Array.isArray(c.p)?c.p:[];
+  }
+  var foco=null, suprimir=false, timer=null, x0=0, y0=0;
+  function banner(){
+    var b=document.getElementById("mvBanner");
+    if(!b){ b=document.createElement("div"); b.id="mvBanner"; b.className="mv-banner"; b.setAttribute("role","status"); document.body.appendChild(b); }
+    return b;
+  }
+  function enfocar(id){
+    var M=malla(), yrs=document.getElementById("years"); if(!M||!yrs) return;
+    var C=M.A.C, c=C.filter(function(x){ return x.id===id; })[0]; if(!c) return;
+    var req=prerreqs(c,C), des=C.filter(function(x){ return prerreqs(x,C).indexOf(id)>=0; }).map(function(x){ return x.id; });
+    var tramo=(c.p&&c.p.upTo)?C.filter(function(x){ return x.id===c.p.upTo; })[0]:null;
+    var nom=function(ids){ return ids.map(function(i){ var y=C.filter(function(x){ return x.id===i; })[0]; return y?y.n:""; }).filter(Boolean); };
+    yrs.classList.add("mv-foco");
+    yrs.querySelectorAll(".tile").forEach(function(t){
+      var tid=+t.getAttribute("data-id");
+      t.classList.toggle("mv-este",tid===id); t.classList.toggle("mv-req",req.indexOf(tid)>=0); t.classList.toggle("mv-des",des.indexOf(tid)>=0);
+    });
+    var b=banner();
+    b.innerHTML='<div class="mv-b-txt"><b>'+esc(c.n)+'</b>'+
+      '<span><i class="mv-pt req"></i>'+(tramo?'Requiere: todos los ramos hasta '+esc(tramo.n)+' (nivel '+tramo.t+')':(req.length?'Requiere: '+esc(lista(nom(req))):'Sin prerrequisitos'))+'</span>'+
+      '<span><i class="mv-pt des"></i>'+(des.length?'Desbloquea: '+esc(lista(nom(des))):'No desbloquea otros ramos')+'</span></div>'+
+      '<button type="button" class="mv-b-cerrar">Listo</button>';
+    b.classList.add("ver"); foco=id;
+    try{ if(navigator.vibrate) navigator.vibrate(12); }catch(e){}
+    try{ if(typeof logInteraccion==="function") logInteraccion("malla","ver prerrequisitos"); }catch(e){}
+  }
+  function salir(){
+    var yrs=document.getElementById("years");
+    if(yrs){ yrs.classList.remove("mv-foco"); yrs.querySelectorAll(".mv-este,.mv-req,.mv-des").forEach(function(t){ t.classList.remove("mv-este","mv-req","mv-des"); }); }
+    var b=document.getElementById("mvBanner"); if(b) b.classList.remove("ver");
+    foco=null;
+  }
+  function baldosa(e){ var t=e.target&&e.target.closest?e.target.closest("#years .tile"):null; return t; }
+  function cancelar(){ if(timer){ clearTimeout(timer); timer=null; } }
+
+  /* ═════════ 2 · Celebración al completar un año ═════════ */
+  var completos=null;
+  function aniosCompletos(){
+    var r={};
+    document.querySelectorAll("#years .lvl").forEach(function(l){
+      var e=l.querySelector(".lvl-eyebrow"); if(!e) return; var y=e.textContent.trim();
+      if(!(y in r)) r[y]=true;
+      l.querySelectorAll(".tile").forEach(function(t){ if(!t.classList.contains("ok")) r[y]=false; });
+    });
+    return Object.keys(r).filter(function(k){ return r[k]; });
+  }
+  function confeti(){
+    if(sinMovimiento()) return;
+    var c=document.createElement("canvas"), x=null; c.className="mv-confeti"; c.setAttribute("aria-hidden","true");
+    try{ x=c.getContext&&c.getContext("2d"); }catch(e){}
+    if(!x) return;
+    c.width=window.innerWidth; c.height=window.innerHeight; document.body.appendChild(c);
+    var col=["#AE2C2C","#E0A526","#2F9E5B","#F2A5A1","#FFFFFF"], P=[], t0=performance.now();
+    for(var i=0;i<110;i++) P.push({x:c.width/2+(Math.random()-.5)*140,y:c.height*.38,vx:(Math.random()-.5)*10,vy:-Math.random()*10-4,r:Math.random()*360,vr:(Math.random()-.5)*14,w:6+Math.random()*6,h:8+Math.random()*8,c:col[i%col.length]});
+    (function paso(t){
+      x.clearRect(0,0,c.width,c.height);
+      P.forEach(function(p){ p.vy+=.32; p.vx*=.99; p.x+=p.vx; p.y+=p.vy; p.r+=p.vr; x.save(); x.translate(p.x,p.y); x.rotate(p.r*Math.PI/180); x.fillStyle=p.c; x.fillRect(-p.w/2,-p.h/2,p.w,p.h); x.restore(); });
+      if(t-t0<1900) requestAnimationFrame(paso); else if(c.parentNode) c.parentNode.removeChild(c);
+    })(t0);
+  }
+  function revisarAnios(){
+    var ahora=aniosCompletos();
+    if(completos){
+      var nuevos=ahora.filter(function(y){ return completos.indexOf(y)<0; });
+      if(nuevos.length){
+        var y=nuevos[nuevos.length-1];
+        aviso("🎉 ¡Completaste el "+y+"! "+(ahora.length>1?"Ya llevas "+ahora.length+" años completos.":"Tu primer año completo."));
+        confeti();
+        try{ if(typeof logInteraccion==="function") logInteraccion("malla","año completo"); }catch(e){}
+      }
+    }
+    completos=ahora;
+  }
+
+  /* ═════════ 3 · Descargar la malla con tu avance ═════════ */
+  function mallaPDF(){
+    var M=malla(); if(!M){ aviso("No pudimos leer tu malla."); return; }
+    var A=M.A, S=A.S||{}, C=A.C.slice().sort(function(a,b){ return a.t-b.t; });
+    var ok=C.filter(function(c){ return S[c.id]==="ok"; }).length, no=C.filter(function(c){ return S[c.id]==="no"; }).length, pct=Math.round(ok/C.length*100);
+    var J={tech:"Vespertina TECH",diurno:"Diurna",vregular:"Vespertina Regular"}[window.__jornada||"tech"]||"";
+    var plan=M.P.cur==="na"?"Plan No Ajustado (2017)":"Plan Ajustado";
+    var hoy=new Date(), MES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+    var fecha=hoy.getDate()+" de "+MES[hoy.getMonth()]+" de "+hoy.getFullYear();
+    var estado=function(c){
+      if(S[c.id]==="ok"){ var nt=window.__notasCarrera&&window.__notasCarrera()[c.id]; return ["Aprobado"+(typeof nt==="number"?", "+nt.toFixed(1).replace(".",","):""),"ok"]; }
+      if(S[c.id]==="no") return ["Reprobado","no"];
+      var t=document.querySelector('#years .tile[data-id="'+c.id+'"]');
+      return (t&&t.classList.contains("lock"))?["Bloqueado","lock"]:["Pendiente","pend"];
+    };
+    var filas="", nivel=null;
+    C.forEach(function(c){
+      if(c.t!==nivel){ nivel=c.t; filas+='<tr class="niv"><td colspan="3">Nivel '+nivel+'</td></tr>'; }
+      var e=estado(c); filas+='<tr><td>'+esc(c.n)+'</td><td>'+esc(c.a||"")+'</td><td class="e '+e[1]+'">'+e[0]+'</td></tr>';
+    });
+    var css="*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#2E2828;background:#fff}#hoja{padding:28px 34px}"+
+      "h1{margin:0;font-size:22px;color:#AE2C2C}.sub{margin:4px 0 16px;font-size:12px;color:#776E6E}"+
+      ".res{display:flex;gap:18px;align-items:center;padding:14px 16px;border:1px solid #EFE4E3;border-radius:12px;margin-bottom:16px}"+
+      ".res b{font-size:30px;color:#2E2828}.barra{height:10px;border-radius:6px;background:#F8E4E2;overflow:hidden;flex:1}.barra i{display:block;height:100%;background:#AE2C2C}"+
+      "table{width:100%;border-collapse:collapse;font-size:11.5px}td{padding:6px 8px;border-bottom:1px solid #EFE4E3}tr{page-break-inside:avoid}"+
+      ".niv td{background:#FBF5F5;font-weight:bold;color:#AE2C2C;padding-top:9px}.e{font-weight:bold;text-align:right;white-space:nowrap}"+
+      ".ok{color:#1F6B3A}.no{color:#8F2323}.lock{color:#9A9090}.pend{color:#8A5A00}.pie{margin-top:16px;font-size:10px;color:#9A9090}";
+    var interno='<div id="hoja"><h1>Avance curricular</h1><p class="sub">Derecho, Universidad Autónoma de Chile, sede Temuco. Jornada '+esc(J)+', '+esc(plan)+'. '+fecha+'.</p>'+
+      '<div class="res"><b>'+pct+' %</b><div style="flex:1"><div style="font-size:12px;margin-bottom:6px">'+ok+' de '+C.length+' asignaturas aprobadas'+(no?', '+no+' reprobada'+(no>1?'s':''):'')+(function(){ var R=window.__promedioCarrera&&window.__promedioCarrera(); return R?'. Promedio de las notas anotadas: '+R.prom.toFixed(2).replace('.',',')+' ('+R.con+' ramos)':''; })()+'</div><div class="barra"><i style="width:'+pct+'%"></i></div></div></div>'+
+      '<table><tbody>'+filas+'</tbody></table>'+
+      '<p class="pie">Documento generado por UApp a partir de lo que marcaste en tu teléfono. No es un certificado oficial: para eso, solicita tu concentración de notas en Registro Curricular.</p></div>';
+    var html='<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Avance curricular</title><style>'+css+'</style></head><body>'+interno+'</body></html>';
+    window.__mallaPdfHTML=html;
+    try{ if(typeof descargarPDF==="function") descargarPDF("Avance curricular",css,interno,html); }catch(e){}
+    try{ if(typeof logInteraccion==="function") logInteraccion("malla","descargar PDF"); }catch(e){}
+  }
+
+  /* ═════════ eventos ═════════ */
+  function iniciar(){
+    document.addEventListener("pointerdown",function(e){
+      var t=baldosa(e); if(!t||(e.button&&e.button!==0)) return;
+      x0=e.clientX||0; y0=e.clientY||0; cancelar();
+      timer=setTimeout(function(){ timer=null; suprimir=true; enfocar(+t.getAttribute("data-id")); },450);
+    },true);
+    document.addEventListener("pointermove",function(e){ if(timer&&(Math.abs((e.clientX||0)-x0)>10||Math.abs((e.clientY||0)-y0)>10)) cancelar(); },true);
+    ["pointerup","pointercancel","pointerleave"].forEach(function(ev){ document.addEventListener(ev,cancelar,true); });
+    document.addEventListener("contextmenu",function(e){ var t=baldosa(e); if(!t) return; e.preventDefault(); suprimir=true; enfocar(+t.getAttribute("data-id")); },true);
+    /* el toque que termina un «mantener presionado», o que cierra la vista, no marca el ramo */
+    document.addEventListener("click",function(e){
+      if(e.target.closest&&e.target.closest(".mv-b-cerrar")){ salir(); return; }
+      /* se registra aquí, antes de que la malla se redibuje y la baldosa deje de estar en la página */
+      if(!suprimir&&foco===null&&e.target.closest&&e.target.closest("#years")) setTimeout(revisarAnios,80);
+      if(suprimir){ suprimir=false; if(baldosa(e)){ e.stopPropagation(); e.preventDefault(); } return; }
+      if(foco!==null){
+        var enMalla=e.target.closest&&e.target.closest("#years");
+        salir();
+        if(enMalla){ e.stopPropagation(); e.preventDefault(); }
+      }
+    },true);
+    document.addEventListener("keydown",function(e){
+      var t=document.activeElement&&document.activeElement.closest?document.activeElement.closest("#years .tile"):null;
+      if(t&&(e.key==="p"||e.key==="P")){ e.preventDefault(); if(foco===+t.getAttribute("data-id")) salir(); else enfocar(+t.getAttribute("data-id")); }
+      else if(e.key==="Escape"&&foco!==null) salir();
+    });
+    /* celebración: se compara el estado de los años antes y después de cada toque en la malla */
+    document.addEventListener("click",function(e){
+      if(e.target.closest&&e.target.closest('.tab[data-tab="malla"]')) setTimeout(function(){ completos=aniosCompletos(); },60);
+      if(e.target.closest&&!e.target.closest("#malla")&&foco!==null) salir();
+    });
+    var b=document.getElementById("mallaPdf"); if(b) b.addEventListener("click",mallaPDF);
+    setTimeout(function(){ completos=aniosCompletos(); },300);
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",iniciar); else setTimeout(iniciar,0);
+  window.__mallaPDF=mallaPDF; window.__enfocarRamo=enfocar;
+})();
+
+/* ═══ UApp · Promedio acumulado de la carrera (como Power Planner) ═══
+   Promedio simple de las notas finales de los ramos aprobados (art. 51 del Reglamento),
+   con la equivalencia del art. 50. Las notas se guardan en este teléfono. */
+(function(){
+  var CLAVE="uapp_notas_carrera_v1", abierto=false;
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+  function malla(){ try{ var P=window.__mallaSnap&&window.__mallaSnap(); return P?{P:P,A:P[P.cur]}:null; }catch(e){ return null; } }
+  function cargar(){ try{ return JSON.parse(localStorage.getItem(CLAVE)||"{}")||{}; }catch(e){ return {}; } }
+  var N=cargar();
+  function guardar(){ try{ localStorage.setItem(CLAVE,JSON.stringify(N)); }catch(e){} }
+  function notas(){ var M=malla(), p=M?M.P.cur:"aj"; N[p]=N[p]||{}; return N[p]; }
+  function coma(x,d){ return x.toFixed(d).replace(".",","); }
+  /* acepta 5,5 · 5.5 · 55 (formato 10 a 70) */
+  function leer(v){
+    v=String(v||"").trim().replace(",","."); if(!v) return null;
+    var x=Number(v); if(isNaN(x)) return NaN;
+    if(x>=10&&x<=70&&v.indexOf(".")<0) x=x/10;
+    return Math.round((x+1e-9)*10)/10;
+  }
+  function aprobados(){ var M=malla(); if(!M) return []; var S=M.A.S||{}; return M.A.C.filter(function(c){ return S[c.id]==="ok"; }).sort(function(a,b){ return a.t-b.t||a.id-b.id; }); }
+  function promedio(){
+    var L=aprobados(), n=notas(), v=L.map(function(c){ return n[c.id]; }).filter(function(x){ return typeof x==="number"; });
+    if(!v.length) return null;
+    return {prom:v.reduce(function(a,b){ return a+b; },0)/v.length,con:v.length,total:L.length};
+  }
+  /* art. 50: 4,0–4,9 Aprobado · 5,0–5,9 con distinción · 6,0–7,0 con distinción máxima */
+  function categoria(p){ var r=Math.round((p+1e-9)*10)/10; return r>=6?"Aprobado con distinción máxima":r>=5?"Aprobado con distinción":"Aprobado"; }
+  function pintar(){
+    var box=document.getElementById("promedioBox"); if(!box) return;
+    var L=aprobados(); if(!L.length){ box.innerHTML=""; return; }
+    var R=promedio(), n=notas();
+    var h='<section class="pr-card" aria-label="Promedio de notas"><div class="pr-cab"><div><b>Promedio de notas</b><small>'+
+      (R?R.con+' de '+R.total+' ramos aprobados con nota':'Anota la nota final de tus ramos aprobados para calcularlo')+'</small></div>'+
+      (R?'<span class="pr-valor">'+coma(R.prom,2)+'</span>':'')+'</div>';
+    if(R) h+='<p class="pr-cat">Equivale a «'+categoria(R.prom)+'» según el art. 50 del Reglamento.</p>';
+    h+='<button type="button" class="pr-btn" id="prToggle" aria-expanded="'+abierto+'">'+(abierto?'Listo':(R?'Editar notas':'Anotar notas'))+'</button>';
+    if(abierto){
+      h+='<div class="pr-lista">'; var nivel=null;
+      L.forEach(function(c){
+        if(c.t!==nivel){ nivel=c.t; h+='<p class="pr-niv">Nivel '+nivel+'</p>'; }
+        var v=n[c.id];
+        h+='<label class="pr-fila"><span>'+esc(c.n)+'</span><input inputmode="decimal" autocomplete="off" data-id="'+c.id+'" value="'+(typeof v==="number"?coma(v,1):"")+'" placeholder="—" aria-label="Nota final de '+esc(c.n)+'"></label>';
+      });
+      h+='</div><p class="pr-nota">Escribe notas de 4,0 a 7,0 (también sirve 55 para 5,5). Es el promedio simple de las notas que anotes; el oficial lo calcula la Universidad según tu plan de estudios (art. 51 del Reglamento).</p>';
+    }
+    box.innerHTML=h+'</section>';
+  }
+  function anotar(inp){
+    var id=+inp.getAttribute("data-id"), x=leer(inp.value), n=notas();
+    if(x===null){ delete n[id]; inp.classList.remove("mal"); guardar(); return true; }
+    if(isNaN(x)||x<4||x>7){ inp.classList.add("mal"); inp.setAttribute("aria-invalid","true"); return false; }
+    n[id]=x; inp.classList.remove("mal"); inp.removeAttribute("aria-invalid"); guardar(); return true;
+  }
+  function iniciar(){
+    document.addEventListener("click",function(e){
+      if(e.target.closest&&e.target.closest("#prToggle")){ abierto=!abierto; pintar(); return; }
+      if(e.target.closest&&e.target.closest('#years,.tab[data-tab="malla"],#mallaToggle')) setTimeout(pintar,120);
+    });
+    document.addEventListener("change",function(e){
+      var inp=e.target; if(!inp||!inp.closest||!inp.closest("#promedioBox .pr-fila")) return;
+      if(anotar(inp)){ var R=promedio(), box=document.getElementById("promedioBox"), v=box.querySelector(".pr-valor");
+        /* actualiza el encabezado sin redibujar la lista, para no perder el foco */
+        var cab=box.querySelector(".pr-cab small"), cat=box.querySelector(".pr-cat");
+        if(R&&v&&cab&&cat){ v.textContent=coma(R.prom,2); cab.textContent=R.con+" de "+R.total+" ramos aprobados con nota"; cat.textContent="Equivale a «"+categoria(R.prom)+"» según el art. 50 del Reglamento."; }
+        else { var f=document.activeElement&&document.activeElement.getAttribute?document.activeElement.getAttribute("data-id"):null; pintar(); if(f){ var nx=document.querySelector('#promedioBox input[data-id="'+f+'"]'); if(nx) nx.focus(); } }
+      }
+    });
+    document.addEventListener("input",function(e){ var inp=e.target; if(inp&&inp.closest&&inp.closest("#promedioBox .pr-fila")&&inp.classList.contains("mal")){ var x=leer(inp.value); if(x===null||(x>=4&&x<=7)) inp.classList.remove("mal"); } });
+    pintar();
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",iniciar); else setTimeout(iniciar,0);
+  window.__promedioCarrera=function(){ return promedio(); };
+  window.__notasCarrera=function(){ return notas(); };
+  window.__pintarPromedio=pintar;
 })();
 
 </script>
