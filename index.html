@@ -1385,7 +1385,7 @@ body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition
   </div>
   <div id="inscBox" class="inscbox" style="display:none"></div>
   <div id="pruList"></div>
-  <div class="pinfo" style="margin-top:14px"><b>Fechas relevantes del 3er trimestre 2026.</b> Inicio de clases: lun 7 sep · Modificación de inscripción: 7–11 sep · Receso de Fiestas Patrias: 14–17 sep · Feriados: 18 sep, 12 oct, 8 dic · Solicitudes de rebaja de carga: 9–13 nov · Plazo 2ª evaluación regular: 6 nov · Última evaluación regular y fin del período lectivo: vie 4 dic · Examen de repetición: 9–11 dic.<br><span style="font-size:.72rem;opacity:.8">Fuente: Calendario Académico 2026, Resolución de Rectoría N°289/2025.</span></div>
+  <div class="pinfo" style="margin-top:14px"><b>Fechas relevantes del 3er trimestre 2026.</b> Inicio de clases: lun 7 sep · Modificación de inscripción: 7–11 sep · Receso de Fiestas Patrias: 14–18 sep · Feriado: 12 oct · Solicitudes de rebaja de carga: 9–13 nov · Plazo 2ª evaluación regular: 6 nov · Última evaluación regular y fin del período lectivo: vie 4 dic · Examen de repetición: 9–11 dic.<br><span style="font-size:.72rem;opacity:.8">Fuente: Calendario Académico 2026, Resolución de Rectoría N°289/2025.</span></div>
   <p class="note">Fechas oficiales de la Carrera (TECH · 3er trimestre 2026). Algunas asignaturas tienen distinta fecha según sección (S1/S2/S3); revisa la tuya. La actividad acumulativa no tiene fecha fija.</p>
 </div></section>
 
@@ -3464,10 +3464,10 @@ const EVALS_TECH=[
  {id:22,asig:"Derechos y Garantías Constitucionales",niv:6,act:"10%",p1:[["10-29",null]],p2:[["11-26",null]],fin:"12-11"},
  {id:24,asig:"Taller de Integración I",niv:6,act:"10%",p1:[["11-02~11-06",null]],p2:[["~11-30",null]],fin:"?",note:"Planificación especial."},
  /* ── TERCER AÑO · 9º trimestre ── */
- {id:33,asig:"Derecho Mercantil",niv:9,act:"10%",p1:[["10-14",null]],p2:[["11-11",null]],fin:"12-09"},
- {id:null,naId:33,plan:"na",asig:"Derecho Económico",niv:9,act:"10%",p1:[["10-14",null]],p2:[["11-11",null]],fin:"12-09"},
- {id:34,naId:34,asig:"Derecho Colectivo del Trabajo y Seg. Social",niv:9,act:"10%",p1:[["10-19",null]],p2:[["11-16",null]],fin:"12-10"},
- {id:32,naId:32,asig:"Procedimientos de Ejecución y Cautela",niv:9,act:"10%",p1:[["10-27",null]],p2:[["11-24",null]],fin:"12-11"},
+ {id:33,asig:"Derecho Mercantil",niv:9,act:"10%",p1:[["10-21",null]],p2:[["11-11",null]],fin:"12-09"},
+ {id:null,naId:33,plan:"na",asig:"Derecho Económico",niv:9,act:"10%",p1:[["10-21",null]],p2:[["11-11",null]],fin:"12-09"},
+ {id:34,naId:34,asig:"Derecho Colectivo del Trabajo y Seg. Social",niv:9,act:"10%",p1:[["10-26",null]],p2:[["11-16",null]],fin:"12-10"},
+ {id:32,naId:32,asig:"Procedimientos de Ejecución y Cautela",niv:9,act:"10%",p1:[["10-16",null]],p2:[["11-24",null]],fin:"12-11",note:"La 1ª evaluación es SENA: se rinde en la misma fecha en todas las secciones."},
  /* ── CUARTO AÑO · 12º trimestre ── */
  {id:46,asig:"Derecho Tributario I",niv:12,act:"10%",p1:[["10-29",null]],p2:[["11-26",null]],fin:"12-09"},
  {id:null,naId:42,plan:"na",asig:"Derecho Sucesorio",niv:12,act:"10%",p1:[["10-28",null]],p2:[["11-25",null]],fin:"12-10"},
@@ -4059,7 +4059,7 @@ function importData(file){
    // Calendario académico (régimen trimestral · TECH)
    {c:"📅 Calendario",q:"¿Cuándo empiezan las clases?",k:"empiezan inician comienzan empieza inicio clases partida partir comienzo cuando empiezan",a:"Inicio de clases de cada trimestre 2026 (Derecho vespertino TECH):<br>• <b>1er trimestre:</b> lunes 2 de marzo<br>• <b>2º trimestre:</b> lunes 1 de junio<br>• <b>3er trimestre:</b> lunes 7 de septiembre",j:"tech"},
    {c:"📅 Calendario",q:"¿Cuándo termina cada trimestre?",k:"termina termino fin final acaba periodo lectivo cuando termina cierre",a:"Fin del período lectivo 2026:<br>• <b>1er trimestre:</b> viernes 22 de mayo<br>• <b>2º trimestre:</b> viernes 28 de agosto<br>• <b>3er trimestre:</b> viernes 4 de diciembre",j:"tech"},
-   {c:"📅 Calendario",q:"¿Cuándo es el receso?",k:"receso vacaciones descanso intertrimestral semana libre feriado largo",a:"Recesos 2026:<br>• <b>1er trimestre:</b> 25 al 29 de mayo<br>• <b>2º trimestre:</b> 13 al 17 de julio<br>• <b>Fiestas Patrias (3er trim.):</b> 14 al 17 de septiembre",j:"tech"},
+   {c:"📅 Calendario",q:"¿Cuándo es el receso?",k:"receso vacaciones descanso intertrimestral semana libre feriado largo",a:"Recesos 2026:<br>• <b>1er trimestre:</b> 25 al 29 de mayo<br>• <b>2º trimestre:</b> 13 al 17 de julio<br>• <b>Fiestas Patrias (3er trim.):</b> 14 al 18 de septiembre",j:"tech"},
    {c:"📅 Calendario",q:"¿Qué feriados hay en 2026?",k:"feriado feriados festivo festivos asueto no hay clases dias libres",a:"Feriados 2026: Viernes Santo 3 abr · Día del Trabajo 1 may · Glorias Navales 21 may · San Pedro y San Pablo 29 jun · Virgen del Carmen 16 jul · Asunción 15 ago · Fiestas Patrias 18 sep · Encuentro de Dos Mundos 12 oct · Inmaculada Concepción 8 dic · Navidad 25 dic."},
    // Inscripción de ramos
    {c:"📝 Inscripción",q:"¿Hasta cuándo puedo inscribir ramos?",k:"inscribir inscripcion ramos asignaturas tomar inscribo carga academica cuando inscribo escribir ramo",a:"Inscripción de asignaturas 2026 (TECH):<br>• <b>1er trimestre:</b> 9 y 10 de enero<br>• <b>2º trimestre:</b> viernes 29 de mayo<br>• <b>3er trimestre:</b> viernes 4 de septiembre",j:"tech"},
