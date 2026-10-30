@@ -30,7 +30,7 @@ ART = re.compile(r"Art\. (\d+) (CC|CPC|COT|CPP|CT)", re.ASCII)
 
 
 def huella(datos: bytes) -> str:
-    return hashlib.sha1(datos).hexdigest()[:10]
+    return hashlib.sha1(datos).hexdigest()[:12]
 
 
 def revisar_mazo(clave, M):
