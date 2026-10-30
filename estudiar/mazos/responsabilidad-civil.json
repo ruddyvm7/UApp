@@ -1,0 +1,33 @@
+{
+  "ramo": "Responsabilidad Civil",
+  "nota": "Contenido inicial basado en la legislación vigente y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.",
+  "revision": null,
+  "tarjetas": [
+    {"id":"rc01","t":"Delito civil","d":"Hecho ilícito cometido con intención de dañar.","r":"Art. 2284 CC"},
+    {"id":"rc02","t":"Cuasidelito civil","d":"Hecho culpable, pero cometido sin intención de dañar.","r":"Art. 2284 CC"},
+    {"id":"rc03","t":"Regla general de responsabilidad extracontractual","d":"El que ha cometido un delito o cuasidelito que ha inferido daño a otro es obligado a la indemnización, sin perjuicio de la pena que le impongan las leyes.","r":"Art. 2314 CC"},
+    {"id":"rc04","t":"Capacidad delictual","d":"No son capaces de delito o cuasidelito los menores de siete años ni los dementes. Respecto del mayor de siete y menor de dieciséis, el juez decide si cometió el hecho con discernimiento.","r":"Art. 2319 CC"},
+    {"id":"rc05","t":"Responsabilidad por el hecho ajeno","d":"Toda persona es responsable no solo de sus propias acciones, sino del hecho de quienes estuvieren a su cuidado, como los padres respecto de sus hijos menores que habiten en la misma casa.","r":"Art. 2320 CC"},
+    {"id":"rc06","t":"Responsabilidad solidaria","d":"Si un delito o cuasidelito ha sido cometido por dos o más personas, cada una de ellas es solidariamente responsable de todo perjuicio procedente del mismo delito o cuasidelito.","r":"Art. 2317 CC"},
+    {"id":"rc07","t":"Exposición imprudente al daño","d":"La apreciación del daño está sujeta a reducción si el que lo ha sufrido se expuso a él imprudentemente.","r":"Art. 2330 CC"},
+    {"id":"rc08","t":"Prescripción de la acción","d":"Las acciones por daño o dolo prescriben en cuatro años contados desde la perpetración del acto.","r":"Art. 2332 CC"},
+    {"id":"rc09","t":"Daño imputable a malicia o negligencia","d":"Por regla general, todo daño que pueda imputarse a malicia o negligencia de otra persona debe ser reparado por ésta.","r":"Art. 2329 CC"},
+    {"id":"rc10","t":"Responsabilidad por animales","d":"El dueño de un animal es responsable de los daños causados por él, aun después de soltado o extraviado, salvo que no sea imputable a culpa suya o de su dependiente.","r":"Art. 2326 CC"},
+    {"id":"rc11","t":"Ruina de un edificio","d":"El dueño responde de los daños que ocasione su ruina, si ésta ocurrió por haber omitido las reparaciones necesarias o por haber faltado de otra manera al cuidado de un buen padre de familia.","r":"Art. 2323 CC"},
+    {"id":"rc12","t":"Elementos de la responsabilidad extracontractual","d":"Capacidad, hecho culpable o doloso, daño y relación de causalidad entre el hecho y el daño.","r":"Doctrina"},
+    {"id":"rc13","t":"Daño emergente y lucro cesante","d":"Daño emergente: empobrecimiento real del patrimonio. Lucro cesante: la ganancia que se deja de percibir a causa del hecho dañoso.","r":"Doctrina"},
+    {"id":"rc14","t":"Daño moral","d":"Lesión de intereses extrapatrimoniales, como el sufrimiento o la afectación de derechos de la personalidad. La jurisprudencia admite su indemnización en sede extracontractual.","r":"Doctrina"},
+    {"id":"rc15","t":"Responsabilidad contractual y extracontractual","d":"La contractual deriva del incumplimiento de una obligación nacida de un contrato; la extracontractual, de un hecho ilícito sin vínculo previo entre las partes.","r":"Doctrina"},
+    {"id":"rc16","t":"Acción popular por daño contingente","d":"La ley concede acción popular cuando un daño contingente, por imprudencia o negligencia de alguien, amenaza a personas indeterminadas.","r":"Art. 2333 CC"}
+  ],
+  "preguntas": [
+    {"id":"rcp1","q":"¿Cuál es el plazo de prescripción de la acción de responsabilidad extracontractual?","o":["Dos años","Cuatro años desde la perpetración del acto","Cinco años desde que se conoce el daño","Diez años"],"ok":1,"por":"El art. 2332 fija cuatro años contados desde la perpetración del acto.","r":"Art. 2332 CC"},
+    {"id":"rcp2","q":"Si un cuasidelito es cometido por dos personas, su responsabilidad es:","o":["Simplemente conjunta","Solidaria","Subsidiaria","Proporcional a su culpa"],"ok":1,"por":"El art. 2317 establece la responsabilidad solidaria de los coautores.","r":"Art. 2317 CC"},
+    {"id":"rcp3","q":"¿Son capaces de delito o cuasidelito civil los menores de siete años?","o":["Sí","No","Solo si actuaron con discernimiento","Solo si sus padres lo autorizan"],"ok":1,"por":"El art. 2319 declara incapaces de delito o cuasidelito a los menores de siete años y a los dementes.","r":"Art. 2319 CC"},
+    {"id":"rcp4","q":"La diferencia entre el delito y el cuasidelito civil está en:","o":["El monto del daño","La intención de dañar","La edad del autor","El tipo de bien afectado"],"ok":1,"por":"Según el art. 2284, el delito se comete con intención de dañar; el cuasidelito, sin ella.","r":"Art. 2284 CC"},
+    {"id":"rcp5","q":"Si la víctima se expuso imprudentemente al daño, la indemnización:","o":["Se mantiene íntegra","Queda sujeta a reducción","Se extingue","Se duplica"],"ok":1,"por":"Así lo dispone el art. 2330.","r":"Art. 2330 CC"},
+    {"id":"rcp6","q":"Los padres responden por el hecho de sus hijos menores:","o":["Siempre","Que habiten en la misma casa","Solo si fueron condenados penalmente","Nunca"],"ok":1,"por":"El art. 2320 se refiere a los hijos menores que habiten en la misma casa.","r":"Art. 2320 CC"},
+    {"id":"rcp7","q":"¿Cuál NO es un elemento de la responsabilidad extracontractual?","o":["El daño","La relación de causalidad","Un contrato previo entre las partes","El hecho culpable o doloso"],"ok":2,"por":"Justamente, la responsabilidad extracontractual no supone un vínculo contractual previo.","r":"Doctrina"},
+    {"id":"rcp8","q":"La ganancia que se deja de percibir a causa del hecho dañoso es el:","o":["Daño emergente","Lucro cesante","Daño moral","Daño indirecto"],"ok":1,"por":"Es el lucro cesante; el daño emergente es el empobrecimiento real del patrimonio.","r":"Doctrina"}
+  ]
+}

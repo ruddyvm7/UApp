@@ -1,0 +1,33 @@
+{
+  "ramo": "Teoría de la Ley y las Personas",
+  "nota": "Contenido inicial basado en la legislación vigente y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.",
+  "revision": null,
+  "tarjetas": [
+    {"id":"tl01","t":"Ley","d":"Declaración de la voluntad soberana que, manifestada en la forma prescrita por la Constitución, manda, prohíbe o permite.","r":"Art. 1 CC"},
+    {"id":"tl02","t":"Costumbre","d":"No constituye derecho sino en los casos en que la ley se remite a ella.","r":"Art. 2 CC"},
+    {"id":"tl03","t":"Obligatoriedad de la ley","d":"Nadie podrá alegar ignorancia de la ley después que ésta haya entrado en vigencia.","r":"Art. 8 CC"},
+    {"id":"tl04","t":"Irretroactividad","d":"La ley puede sólo disponer para lo futuro, y no tendrá jamás efecto retroactivo.","r":"Art. 9 CC"},
+    {"id":"tl05","t":"Elemento gramatical de interpretación","d":"Cuando el sentido de la ley es claro, no se desatenderá su tenor literal, a pretexto de consultar su espíritu.","r":"Art. 19 CC"},
+    {"id":"tl06","t":"Sentido de las palabras de la ley","d":"Se entienden en su sentido natural y obvio, según el uso general; pero si el legislador las ha definido expresamente, se les da su significado legal.","r":"Art. 20 CC"},
+    {"id":"tl07","t":"Elemento sistemático","d":"El contexto de la ley sirve para ilustrar el sentido de cada una de sus partes, de manera que haya entre todas ellas la debida correspondencia y armonía.","r":"Art. 22 CC"},
+    {"id":"tl08","t":"Territorialidad de la ley","d":"La ley es obligatoria para todos los habitantes de la República, incluso los extranjeros.","r":"Art. 14 CC"},
+    {"id":"tl09","t":"Forma de los instrumentos públicos","d":"Se determina por la ley del país en que hayan sido otorgados.","r":"Art. 17 CC"},
+    {"id":"tl10","t":"Derogación tácita","d":"La que se produce cuando la nueva ley contiene disposiciones que no pueden conciliarse con las de la ley anterior.","r":"Art. 52 CC"},
+    {"id":"tl11","t":"Persona natural","d":"Todos los individuos de la especie humana, cualquiera que sea su edad, sexo, estirpe o condición.","r":"Art. 55 CC"},
+    {"id":"tl12","t":"Principio de la existencia legal","d":"Principia al nacer, esto es, al separarse completamente de su madre y sobrevivir a la separación un momento siquiera.","r":"Art. 74 CC"},
+    {"id":"tl13","t":"Presunción de la época de la concepción","d":"La concepción precede al nacimiento no menos de 180 días cabales y no más de 300, contados hacia atrás desde la medianoche en que principie el día del nacimiento.","r":"Art. 76 CC"},
+    {"id":"tl14","t":"Domicilio","d":"La residencia, acompañada, real o presuntivamente, del ánimo de permanecer en ella.","r":"Art. 59 CC"},
+    {"id":"tl15","t":"Estado civil","d":"La calidad de un individuo, en cuanto le habilita para ejercer ciertos derechos o contraer ciertas obligaciones civiles.","r":"Art. 304 CC"},
+    {"id":"tl16","t":"Persona jurídica","d":"Persona ficticia, capaz de ejercer derechos y contraer obligaciones civiles, y de ser representada judicial y extrajudicialmente.","r":"Art. 545 CC"}
+  ],
+  "preguntas": [
+    {"id":"tlp1","q":"Según el Código Civil, ¿cuándo constituye derecho la costumbre?","o":["Siempre","Solo en los casos en que la ley se remite a ella","Cuando la ley es oscura","Cuando las partes lo acuerdan"],"ok":1,"por":"El art. 2 dispone que la costumbre no constituye derecho sino en los casos en que la ley se remite a ella.","r":"Art. 2 CC"},
+    {"id":"tlp2","q":"¿Desde cuándo nadie puede alegar ignorancia de la ley?","o":["Desde su promulgación","Desde que entra en vigencia","Desde su aprobación por el Congreso","Desde que se discute en el Senado"],"ok":1,"por":"Según el art. 8, nadie puede alegar ignorancia de la ley después que ésta haya entrado en vigencia.","r":"Art. 8 CC"},
+    {"id":"tlp3","q":"Cuando el sentido de la ley es claro, el intérprete:","o":["Debe preferir su espíritu","No desatenderá su tenor literal a pretexto de consultar su espíritu","Debe aplicar la equidad natural","Debe consultar la historia fidedigna"],"ok":1,"por":"Es el elemento gramatical del art. 19: con sentido claro, no se desatiende el tenor literal.","r":"Art. 19 CC"},
+    {"id":"tlp4","q":"La existencia legal de la persona natural principia:","o":["Con la concepción","Al nacer, separándose completamente de su madre y sobreviviendo un momento siquiera","Con la inscripción en el Registro Civil","A las 24 horas de nacer"],"ok":1,"por":"El art. 74 fija el principio de la existencia legal en el nacimiento, con separación completa y sobrevida de un momento siquiera.","r":"Art. 74 CC"},
+    {"id":"tlp5","q":"Según el art. 76, la concepción precede al nacimiento:","o":["Entre 150 y 280 días","No menos de 180 ni más de 300 días","No menos de 200 ni más de 300 días","Exactamente 270 días"],"ok":1,"por":"La presunción del art. 76 fija un mínimo de 180 días cabales y un máximo de 300.","r":"Art. 76 CC"},
+    {"id":"tlp6","q":"La derogación que ocurre cuando la nueva ley no puede conciliarse con la anterior es:","o":["Expresa","Tácita","Orgánica","Parcial"],"ok":1,"por":"El art. 52 llama tácita a la derogación que resulta de disposiciones inconciliables con la ley anterior.","r":"Art. 52 CC"},
+    {"id":"tlp7","q":"«La residencia, acompañada, real o presuntivamente, del ánimo de permanecer en ella» define:","o":["La nacionalidad","El estado civil","El domicilio","La habitación"],"ok":2,"por":"Es la definición de domicilio del art. 59.","r":"Art. 59 CC"},
+    {"id":"tlp8","q":"¿La ley chilena obliga a los extranjeros que habitan en Chile?","o":["No, solo a los chilenos","Sí: es obligatoria para todos los habitantes, incluso los extranjeros","Solo si tienen residencia definitiva","Solo en materia penal"],"ok":1,"por":"El art. 14 consagra la territorialidad: la ley obliga a todos los habitantes de la República, incluso los extranjeros.","r":"Art. 14 CC"}
+  ]
+}

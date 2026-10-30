@@ -1,0 +1,33 @@
+{
+  "ramo": "Reorg. y Liquidación Patrimonial",
+  "nota": "Contenido inicial basado en la legislación vigente y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.",
+  "revision": null,
+  "tarjetas": [
+    {"id":"rl01","t":"Ley 20.720","d":"Ley de Reorganización y Liquidación de Activos de Empresas y Personas, de 2014, que reemplazó al antiguo régimen de quiebras.","r":"Ley 20.720"},
+    {"id":"rl02","t":"Empresa deudora","d":"Toda persona jurídica privada, con o sin fines de lucro, y toda persona natural contribuyente de primera categoría o del número 2 del art. 42 de la Ley sobre Impuesto a la Renta.","r":"Art. 2 Ley 20.720"},
+    {"id":"rl03","t":"Persona deudora","d":"Toda persona natural no comprendida en la definición de empresa deudora.","r":"Art. 2 Ley 20.720"},
+    {"id":"rl04","t":"Procedimiento concursal de reorganización","d":"Permite a la empresa deudora reestructurar sus activos y pasivos mediante un acuerdo con sus acreedores, para continuar con su actividad.","r":"Ley 20.720"},
+    {"id":"rl05","t":"Protección financiera concursal","d":"Período durante el cual la empresa deudora en reorganización no puede ser declarada en liquidación ni sometida a ejecuciones, para negociar con sus acreedores.","r":"Ley 20.720"},
+    {"id":"rl06","t":"Veedor","d":"Profesional que interviene en la reorganización: propicia el acuerdo entre el deudor y sus acreedores y vela por el cumplimiento de la ley.","r":"Ley 20.720"},
+    {"id":"rl07","t":"Procedimiento concursal de liquidación","d":"Procedimiento destinado a realizar los bienes del deudor para pagar a sus acreedores. Puede ser voluntario o forzoso.","r":"Ley 20.720"},
+    {"id":"rl08","t":"Liquidador","d":"Profesional que administra y realiza los bienes del deudor en el procedimiento de liquidación, para pagar a los acreedores.","r":"Ley 20.720"},
+    {"id":"rl09","t":"Desasimiento","d":"Efecto de la resolución de liquidación: el deudor queda inhibido de administrar sus bienes, cuya administración pasa al liquidador.","r":"Ley 20.720"},
+    {"id":"rl10","t":"Vencimiento anticipado de las deudas","d":"La resolución de liquidación hace exigibles todas las deudas del deudor, aunque estuvieran sujetas a plazo, para que los acreedores participen en el procedimiento.","r":"Ley 20.720"},
+    {"id":"rl11","t":"Procedimiento de renegociación","d":"Procedimiento para la persona deudora, conducido por la Superintendencia de Insolvencia y Reemprendimiento, para renegociar sus deudas con sus acreedores.","r":"Ley 20.720"},
+    {"id":"rl12","t":"Requisitos de la renegociación","d":"Tener dos o más obligaciones vencidas por más de 90 días corridos, por un total superior a 80 UF, y no haber sido notificada de una demanda de liquidación o de un juicio ejecutivo que no sea de origen laboral.","r":"Art. 260 Ley 20.720"},
+    {"id":"rl13","t":"Superintendencia de Insolvencia y Reemprendimiento","d":"Organismo que fiscaliza a veedores y liquidadores, y que conduce el procedimiento de renegociación de la persona deudora.","r":"Ley 20.720"},
+    {"id":"rl14","t":"Liquidación voluntaria","d":"La que solicita el propio deudor para que se liquiden sus bienes.","r":"Ley 20.720"},
+    {"id":"rl15","t":"Liquidación forzosa","d":"La que solicita un acreedor cuando concurren las causales legales, como el incumplimiento de una obligación que conste en un título ejecutivo.","r":"Ley 20.720"},
+    {"id":"rl16","t":"Acuerdo de reorganización judicial","d":"Acuerdo aprobado por los acreedores con las mayorías legales, que obliga a todos los acreedores a quienes afecta una vez aprobado por el tribunal.","r":"Ley 20.720"}
+  ],
+  "preguntas": [
+    {"id":"rlp1","q":"¿Qué ley regula hoy los procedimientos concursales en Chile?","o":["La Ley 18.175 de Quiebras","La Ley 20.720","La Ley 19.496","La Ley 20.416"],"ok":1,"por":"La Ley 20.720, de 2014, reemplazó al antiguo régimen de quiebras de la Ley 18.175.","r":"Ley 20.720"},
+    {"id":"rlp2","q":"Una persona natural que no es contribuyente de primera categoría ni del N° 2 del art. 42 de la Ley de la Renta es, para la Ley 20.720:","o":["Empresa deudora","Persona deudora","Deudor calificado","Acreedor"],"ok":1,"por":"El art. 2 de la Ley 20.720 la define como persona deudora.","r":"Art. 2 Ley 20.720"},
+    {"id":"rlp3","q":"¿Qué profesional propicia el acuerdo entre el deudor y sus acreedores en la reorganización?","o":["El liquidador","El veedor","El síndico","El receptor"],"ok":1,"por":"Es el veedor; el liquidador actúa en el procedimiento de liquidación.","r":"Ley 20.720"},
+    {"id":"rlp4","q":"El efecto por el cual el deudor queda inhibido de administrar sus bienes tras la resolución de liquidación es:","o":["El embargo","El desasimiento","La prenda general","La novación"],"ok":1,"por":"Es el desasimiento: la administración pasa al liquidador.","r":"Ley 20.720"},
+    {"id":"rlp5","q":"La renegociación exige, entre otros requisitos, obligaciones vencidas por un total superior a:","o":["20 UF","50 UF","80 UF","200 UF"],"ok":2,"por":"El art. 260 de la Ley 20.720 exige un monto total superior a 80 UF.","r":"Art. 260 Ley 20.720"},
+    {"id":"rlp6","q":"¿Quién conduce el procedimiento de renegociación de la persona deudora?","o":["Un juzgado de letras","La Superintendencia de Insolvencia y Reemprendimiento","El Servicio de Impuestos Internos","La Corte de Apelaciones"],"ok":1,"por":"La renegociación se tramita ante la Superintendencia de Insolvencia y Reemprendimiento.","r":"Ley 20.720"},
+    {"id":"rlp7","q":"La liquidación que solicita el propio deudor es:","o":["Forzosa","Voluntaria","De oficio","Simplificada obligatoria"],"ok":1,"por":"La pide el propio deudor; la forzosa la pide un acreedor.","r":"Ley 20.720"},
+    {"id":"rlp8","q":"Durante la protección financiera concursal, la empresa deudora:","o":["Puede ser declarada en liquidación","No puede ser declarada en liquidación ni sometida a ejecuciones","Debe pagar todas sus deudas","Pierde la administración de sus bienes"],"ok":1,"por":"Esa protección le permite negociar el acuerdo con sus acreedores.","r":"Ley 20.720"}
+  ]
+}

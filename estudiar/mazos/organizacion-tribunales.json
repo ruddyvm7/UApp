@@ -1,0 +1,33 @@
+{
+  "ramo": "Organización y Atribuciones de los Tribunales",
+  "nota": "Contenido inicial basado en la legislación vigente y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.",
+  "revision": null,
+  "tarjetas": [
+    {"id":"ot01","t":"Jurisdicción","d":"La facultad de conocer las causas civiles y criminales, de juzgarlas y de hacer ejecutar lo juzgado pertenece exclusivamente a los tribunales que establece la ley.","r":"Art. 1 COT"},
+    {"id":"ot02","t":"Competencia","d":"La facultad que tiene cada juez o tribunal para conocer de los negocios que la ley ha colocado dentro de la esfera de sus atribuciones.","r":"Art. 108 COT"},
+    {"id":"ot03","t":"Inexcusabilidad","d":"Reclamada su intervención en forma legal y en negocios de su competencia, los tribunales no pueden excusarse de ejercer su autoridad ni aun por falta de ley que resuelva la contienda.","r":"Art. 10 COT"},
+    {"id":"ot04","t":"Pasividad","d":"Los tribunales no pueden ejercer su ministerio sino a petición de parte, salvo los casos en que la ley los faculte para proceder de oficio.","r":"Art. 10 COT"},
+    {"id":"ot05","t":"Territorialidad","d":"Cada tribunal ejerce su potestad en los negocios y dentro del territorio que la ley le hubiere asignado.","r":"Art. 7 COT"},
+    {"id":"ot06","t":"Inavocabilidad","d":"Ningún tribunal puede avocarse el conocimiento de causas o negocios pendientes ante otro tribunal, a menos que la ley le confiera expresamente esta facultad.","r":"Art. 8 COT"},
+    {"id":"ot07","t":"Publicidad","d":"Los actos de los tribunales son públicos, salvo las excepciones expresamente establecidas por la ley.","r":"Art. 9 COT"},
+    {"id":"ot08","t":"Regla de la radicación","d":"Radicado con arreglo a la ley el conocimiento de un negocio ante tribunal competente, no se alterará esta competencia por causa sobreviniente.","r":"Art. 109 COT"},
+    {"id":"ot09","t":"Regla del grado","d":"Fijada la competencia de un juez inferior para conocer en primera instancia de un asunto, queda igualmente fijada la del tribunal superior que debe conocer del mismo en segunda instancia.","r":"Art. 110 COT"},
+    {"id":"ot10","t":"Regla de la extensión","d":"El tribunal competente para conocer de un asunto lo es también para conocer de sus incidencias y de las cuestiones que se susciten por vía de reconvención o compensación.","r":"Art. 111 COT"},
+    {"id":"ot11","t":"Regla de la prevención","d":"Si dos o más tribunales son competentes para un mismo asunto, ninguno puede excusarse a pretexto de haber otros competentes; pero el que haya prevenido en el conocimiento excluye a los demás.","r":"Art. 112 COT"},
+    {"id":"ot12","t":"Tribunales ordinarios","d":"La Corte Suprema, las Cortes de Apelaciones, los Presidentes y Ministros de Corte, los tribunales de juicio oral en lo penal, los juzgados de letras y los juzgados de garantía.","r":"Art. 5 COT"},
+    {"id":"ot13","t":"Integración de la Corte Suprema","d":"Se compone de veintiún ministros, uno de los cuales es su presidente.","r":"Art. 93 COT"},
+    {"id":"ot14","t":"Juez de garantía","d":"Asegura los derechos del imputado y demás intervinientes en el proceso penal, y dirige personalmente las audiencias que procedan.","r":"Art. 14 COT"},
+    {"id":"ot15","t":"Auxiliares de la administración de justicia","d":"Entre otros, la Fiscalía Judicial, los defensores públicos, los relatores, los secretarios, los receptores, los procuradores del número, los notarios, los conservadores y los archiveros.","r":"Art. 285 COT"},
+    {"id":"ot16","t":"Notario","d":"Ministro de fe pública encargado de autorizar y guardar en su archivo los instrumentos que ante él se otorguen, y de dar a los interesados los testimonios que pidieren.","r":"Art. 399 COT"}
+  ],
+  "preguntas": [
+    {"id":"otp1","q":"¿Pueden los tribunales excusarse de resolver un asunto de su competencia por falta de ley?","o":["Sí","No: rige el principio de inexcusabilidad","Solo en materia civil","Solo si lo autoriza la Corte Suprema"],"ok":1,"por":"El art. 10 inciso segundo del COT impide excusarse ni aun por falta de ley que resuelva la contienda.","r":"Art. 10 COT"},
+    {"id":"otp2","q":"La regla según la cual el tribunal competente para un asunto lo es también para sus incidencias y la reconvención es la de:","o":["Radicación","Grado","Extensión","Prevención"],"ok":2,"por":"Es la regla de la extensión del art. 111 del COT.","r":"Art. 111 COT"},
+    {"id":"otp3","q":"¿Cuántos ministros integran la Corte Suprema?","o":["Diecisiete","Veintiuno","Quince","Veinticinco"],"ok":1,"por":"El art. 93 del COT dispone que se compone de veintiún ministros.","r":"Art. 93 COT"},
+    {"id":"otp4","q":"El principio que impide a un tribunal conocer de causas pendientes ante otro, salvo ley expresa, es:","o":["Inavocabilidad","Inexcusabilidad","Territorialidad","Pasividad"],"ok":0,"por":"Es la inavocabilidad del art. 8 del COT.","r":"Art. 8 COT"},
+    {"id":"otp5","q":"La competencia se define como:","o":["La facultad de conocer, juzgar y hacer ejecutar lo juzgado","La facultad de cada juez o tribunal para conocer de los negocios que la ley ha colocado dentro de sus atribuciones","La potestad de dictar autos acordados","El conjunto de tribunales del país"],"ok":1,"por":"Es la definición del art. 108 del COT; la primera alternativa corresponde a la jurisdicción.","r":"Art. 108 COT"},
+    {"id":"otp6","q":"¿Cuál de estos NO es un tribunal ordinario según el art. 5 del COT?","o":["Juzgado de garantía","Corte de Apelaciones","Juzgado de policía local","Tribunal de juicio oral en lo penal"],"ok":2,"por":"Los juzgados de policía local son tribunales especiales que no forman parte del Poder Judicial.","r":"Art. 5 COT"},
+    {"id":"otp7","q":"¿Qué regla impide que una causa sobreviniente altere la competencia ya fijada de un tribunal?","o":["Radicación","Grado","Extensión","Prevención"],"ok":0,"por":"Es la regla de la radicación o fijeza del art. 109 del COT.","r":"Art. 109 COT"},
+    {"id":"otp8","q":"El ministro de fe encargado de autorizar y guardar en su archivo los instrumentos que ante él se otorgan es el:","o":["Receptor","Notario","Relator","Secretario"],"ok":1,"por":"Así define el art. 399 del COT a los notarios.","r":"Art. 399 COT"}
+  ]
+}

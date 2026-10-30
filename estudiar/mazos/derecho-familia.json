@@ -1,0 +1,33 @@
+{
+  "ramo": "Derecho de Familia",
+  "nota": "Contenido inicial basado en la legislación vigente y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.",
+  "revision": null,
+  "tarjetas": [
+    {"id":"df01","t":"Matrimonio","d":"Contrato solemne por el cual dos personas se unen actual e indisolublemente, y por toda la vida, con el fin de vivir juntos, de procrear y de auxiliarse mutuamente.","r":"Art. 102 CC"},
+    {"id":"df02","t":"Esponsales","d":"La promesa de matrimonio mutuamente aceptada. Es un hecho privado que no produce obligación alguna ante la ley civil.","r":"Art. 98 CC"},
+    {"id":"df03","t":"Parentesco por consanguinidad","d":"El que existe entre dos personas que descienden una de la otra o de un mismo progenitor, en cualquiera de sus grados.","r":"Art. 28 CC"},
+    {"id":"df04","t":"Parentesco por afinidad","d":"El que existe entre una persona que está o ha estado casada y los consanguíneos de su cónyuge.","r":"Art. 31 CC"},
+    {"id":"df05","t":"Divorcio por cese de la convivencia","d":"De común acuerdo, procede tras un año de cese efectivo de la convivencia. Si lo pide uno solo de los cónyuges, se exige un cese de al menos tres años.","r":"Art. 55 Ley 19.947"},
+    {"id":"df06","t":"Divorcio por culpa","d":"Lo puede demandar un cónyuge por falta imputable al otro que constituya una violación grave de los deberes del matrimonio, o para con los hijos, que torne intolerable la vida en común.","r":"Art. 54 Ley 19.947"},
+    {"id":"df07","t":"Compensación económica","d":"Derecho del cónyuge que, por dedicarse al cuidado de los hijos o a las labores del hogar, no pudo desarrollar una actividad remunerada o lo hizo en menor medida, a ser compensado del menoscabo económico al terminar el matrimonio por divorcio o nulidad.","r":"Art. 61 Ley 19.947"},
+    {"id":"df08","t":"Regímenes patrimoniales del matrimonio","d":"La sociedad conyugal, la separación total de bienes y la participación en los gananciales.","r":"Doctrina"},
+    {"id":"df09","t":"Bienes familiares","d":"El inmueble que sirve de residencia principal de la familia, y los muebles que la guarnecen, pueden declararse bienes familiares, cualquiera sea el régimen de bienes del matrimonio.","r":"Art. 141 CC"},
+    {"id":"df10","t":"Clases de filiación","d":"Por naturaleza, que puede ser matrimonial o no matrimonial, y adoptiva.","r":"Art. 179 CC"},
+    {"id":"df11","t":"Igualdad de los hijos","d":"La ley considera iguales a todos los hijos.","r":"Art. 33 CC"},
+    {"id":"df12","t":"Patria potestad","d":"Conjunto de derechos y deberes que corresponden al padre o a la madre sobre los bienes de sus hijos no emancipados.","r":"Art. 243 CC"},
+    {"id":"df13","t":"Cuidado personal compartido","d":"Régimen de vida que procura estimular la corresponsabilidad de ambos padres que viven separados en la crianza y educación de los hijos comunes.","r":"Art. 225 CC"},
+    {"id":"df14","t":"Alimentos: a quiénes se deben","d":"Entre otros, al cónyuge, a los descendientes, a los ascendientes y a los hermanos.","r":"Art. 321 CC"},
+    {"id":"df15","t":"Acuerdo de Unión Civil","d":"Contrato celebrado entre dos personas que comparten un hogar, con el propósito de regular los efectos jurídicos derivados de su vida afectiva en común, de carácter estable y permanente.","r":"Art. 1 Ley 20.830"},
+    {"id":"df16","t":"Mediación familiar previa","d":"En las causas de alimentos, cuidado personal y relación directa y regular, debe intentarse una mediación antes de presentar la demanda.","r":"Art. 106 Ley 19.968"}
+  ],
+  "preguntas": [
+    {"id":"dfp1","q":"Según el Código Civil, los esponsales:","o":["Obligan a casarse","No producen obligación alguna ante la ley civil","Dan derecho a indemnización si se rompen","Deben constar por escritura pública"],"ok":1,"por":"El art. 98 los define como un hecho privado que no produce obligación alguna ante la ley civil.","r":"Art. 98 CC"},
+    {"id":"dfp2","q":"¿Cuánto tiempo de cese de la convivencia exige el divorcio solicitado por uno solo de los cónyuges?","o":["Un año","Dos años","Tres años","Cinco años"],"ok":2,"por":"El art. 55 de la Ley 19.947 exige un año si es de común acuerdo y tres años si lo pide uno solo de los cónyuges.","r":"Art. 55 Ley 19.947"},
+    {"id":"dfp3","q":"La compensación económica procede a favor del cónyuge que:","o":["Tiene menos bienes al casarse","Por dedicarse a los hijos o al hogar, no pudo trabajar remuneradamente o lo hizo en menor medida","Fue engañado por el otro cónyuge","Pide el divorcio"],"ok":1,"por":"El art. 61 de la Ley 19.947 la concede para compensar ese menoscabo económico.","r":"Art. 61 Ley 19.947"},
+    {"id":"dfp4","q":"La patria potestad se refiere a:","o":["El cuidado personal de los hijos","Los derechos y deberes de los padres sobre los bienes de sus hijos no emancipados","El deber de alimentos","La relación directa y regular"],"ok":1,"por":"Así la define el art. 243: recae sobre los bienes de los hijos no emancipados.","r":"Art. 243 CC"},
+    {"id":"dfp5","q":"¿Qué inmueble puede declararse bien familiar?","o":["Cualquier inmueble de los cónyuges","El que sirve de residencia principal de la familia","Solo el adquirido durante el matrimonio","Solo el de propiedad de ambos cónyuges"],"ok":1,"por":"El art. 141 se refiere al inmueble que sirve de residencia principal de la familia, cualquiera sea el régimen de bienes.","r":"Art. 141 CC"},
+    {"id":"dfp6","q":"Hoy la filiación puede ser:","o":["Legítima o ilegítima","Por naturaleza, matrimonial o no matrimonial, o adoptiva","Natural o simplemente ilegítima","Solo matrimonial o adoptiva"],"ok":1,"por":"El art. 179, tras la Ley 19.585, distingue la filiación por naturaleza, matrimonial o no matrimonial, y la adoptiva.","r":"Art. 179 CC"},
+    {"id":"dfp7","q":"¿En qué causas se exige mediación previa a la demanda ante los tribunales de familia?","o":["Divorcio y nulidad","Alimentos, cuidado personal y relación directa y regular","Violencia intrafamiliar","Adopción"],"ok":1,"por":"El art. 106 de la Ley 19.968 exige mediación previa en esas tres materias.","r":"Art. 106 Ley 19.968"},
+    {"id":"dfp8","q":"El Acuerdo de Unión Civil es:","o":["Un contrato entre dos personas que comparten un hogar para regular los efectos de su vida afectiva en común","Un tipo de matrimonio religioso","Un régimen patrimonial del matrimonio","Una promesa de matrimonio"],"ok":0,"por":"Así lo define el art. 1 de la Ley 20.830.","r":"Art. 1 Ley 20.830"}
+  ]
+}

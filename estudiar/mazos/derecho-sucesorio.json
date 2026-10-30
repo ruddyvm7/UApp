@@ -1,0 +1,33 @@
+{
+  "ramo": "Derecho Sucesorio",
+  "nota": "Contenido inicial basado en la legislación vigente y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.",
+  "revision": null,
+  "tarjetas": [
+    {"id":"ds01","t":"Asignaciones por causa de muerte","d":"Las que hace la ley, o el testamento de una persona difunta, para suceder en sus bienes.","r":"Art. 953 CC"},
+    {"id":"ds02","t":"Título universal y título singular","d":"Universal: se sucede en todos los bienes, derechos y obligaciones transmisibles del difunto, o en una cuota de ellos. Singular: se sucede en una o más especies o cuerpos ciertos, o en especies indeterminadas de cierto género.","r":"Art. 951 CC"},
+    {"id":"ds03","t":"Apertura de la sucesión","d":"Se abre al momento de la muerte de una persona, en su último domicilio.","r":"Art. 955 CC"},
+    {"id":"ds04","t":"Delación","d":"El actual llamamiento de la ley a aceptar o repudiar la asignación.","r":"Art. 956 CC"},
+    {"id":"ds05","t":"Capacidad para suceder","d":"Para ser capaz de suceder es necesario existir al tiempo de abrirse la sucesión.","r":"Art. 962 CC"},
+    {"id":"ds06","t":"Indignidad para suceder","d":"Impide suceder a quien cometió ciertas conductas graves contra el difunto, como el homicidio en su persona.","r":"Art. 968 CC"},
+    {"id":"ds07","t":"Testamento","d":"Acto más o menos solemne, en que una persona dispone del todo o de una parte de sus bienes para que tenga pleno efecto después de sus días, conservando la facultad de revocar las disposiciones contenidas en él.","r":"Art. 999 CC"},
+    {"id":"ds08","t":"Testamento abierto y cerrado","d":"Abierto: el testador hace sabedores de sus disposiciones a los testigos. Cerrado: no es necesario que los testigos tengan conocimiento de ellas.","r":"Art. 1008 CC"},
+    {"id":"ds09","t":"Asignaciones forzosas","d":"Las que el testador es obligado a hacer: los alimentos que se deben por ley, las legítimas y la cuarta de mejoras.","r":"Art. 1167 CC"},
+    {"id":"ds10","t":"Legitimarios","d":"Los hijos, personalmente o representados por su descendencia; los ascendientes; y el cónyuge sobreviviente. La Ley 20.830 agrega al conviviente civil sobreviviente.","r":"Art. 1182 CC; Ley 20.830"},
+    {"id":"ds11","t":"División del acervo con legitimarios","d":"La mitad legitimaria, una cuarta de mejoras y una cuarta de libre disposición.","r":"Art. 1184 CC"},
+    {"id":"ds12","t":"Derecho de representación","d":"Ficción legal en que se supone que una persona tiene el lugar, el grado de parentesco y los derechos hereditarios que tendría su padre o madre, si éste o ésta no quisiese o no pudiese suceder.","r":"Art. 984 CC"},
+    {"id":"ds13","t":"Órdenes de sucesión intestada","d":"Primero, los descendientes con el cónyuge; luego, el cónyuge y los ascendientes; después, los hermanos; luego, los demás colaterales; y, a falta de todos, el Fisco.","r":"Arts. 988 a 995 CC"},
+    {"id":"ds14","t":"Beneficio de inventario","d":"Consiste en no hacer responsables a los herederos que aceptan de las obligaciones hereditarias y testamentarias sino hasta el valor total de los bienes que han heredado.","r":"Art. 1247 CC"},
+    {"id":"ds15","t":"Acción de partición","d":"Ninguno de los coasignatarios está obligado a permanecer en la indivisión: la partición puede siempre pedirse, salvo pacto de indivisión, que no puede exceder de cinco años.","r":"Art. 1317 CC"},
+    {"id":"ds16","t":"Sucesión por causa de muerte","d":"Es uno de los modos de adquirir el dominio que enumera el Código Civil.","r":"Art. 588 CC"}
+  ],
+  "preguntas": [
+    {"id":"dsp1","q":"¿Dónde se abre la sucesión de una persona?","o":["Donde está la mayoría de sus bienes","En su último domicilio","En el lugar de su nacimiento","Donde vive el heredero"],"ok":1,"por":"El art. 955 dispone que se abre al momento de la muerte, en el último domicilio del causante.","r":"Art. 955 CC"},
+    {"id":"dsp2","q":"Para ser capaz de suceder es necesario:","o":["Ser mayor de edad","Existir al tiempo de abrirse la sucesión","Ser pariente del causante","Estar mencionado en el testamento"],"ok":1,"por":"Así lo exige el art. 962.","r":"Art. 962 CC"},
+    {"id":"dsp3","q":"¿Cómo se divide el acervo cuando hay descendientes, cónyuge o ascendientes?","o":["Todo para los legitimarios","Mitad legitimaria, una cuarta de mejoras y una cuarta de libre disposición","Un tercio para cada uno","Mitad de libre disposición y mitad legitimaria"],"ok":1,"por":"Es la división del art. 1184.","r":"Art. 1184 CC"},
+    {"id":"dsp4","q":"¿Cuál NO es una asignación forzosa?","o":["Los alimentos que se deben por ley","Las legítimas","La cuarta de mejoras","La cuarta de libre disposición"],"ok":3,"por":"La cuarta de libre disposición es justamente la parte de que el testador puede disponer a su arbitrio.","r":"Art. 1167 CC"},
+    {"id":"dsp5","q":"En el testamento abierto:","o":["Los testigos no conocen las disposiciones","El testador hace sabedores de sus disposiciones a los testigos","No intervienen testigos","Solo puede otorgarse en el extranjero"],"ok":1,"por":"Así lo distingue el art. 1008.","r":"Art. 1008 CC"},
+    {"id":"dsp6","q":"El beneficio de inventario limita la responsabilidad del heredero:","o":["A la mitad de las deudas","Hasta el valor total de los bienes heredados","A las deudas tributarias","No limita su responsabilidad"],"ok":1,"por":"El art. 1247 limita su responsabilidad al valor de los bienes heredados.","r":"Art. 1247 CC"},
+    {"id":"dsp7","q":"A falta de todos los demás herederos intestados, sucede:","o":["La municipalidad","El Fisco","La Iglesia","El albacea"],"ok":1,"por":"El art. 995 llama al Fisco a falta de todos los herederos abintestato.","r":"Art. 995 CC"},
+    {"id":"dsp8","q":"¿Puede un coasignatario ser obligado a permanecer en la indivisión?","o":["Sí, por diez años","No: la partición puede siempre pedirse, salvo pacto de indivisión de hasta cinco años","Sí, si lo dispone el juez","Solo si son más de tres herederos"],"ok":1,"por":"El art. 1317 permite pedir siempre la partición; el pacto de indivisión no puede exceder de cinco años.","r":"Art. 1317 CC"}
+  ]
+}

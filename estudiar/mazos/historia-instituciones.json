@@ -1,0 +1,33 @@
+{
+  "ramo": "Historia y Ev. de las Instituciones Civiles",
+  "nota": "Contenido inicial basado en la legislación vigente y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.",
+  "revision": null,
+  "tarjetas": [
+    {"id":"hi01","t":"Ius civile","d":"Derecho propio de los ciudadanos romanos, aplicable solo a ellos.","r":"Doctrina"},
+    {"id":"hi02","t":"Ius gentium","d":"Derecho aplicable en Roma a las relaciones entre romanos y extranjeros, o entre extranjeros; más flexible que el ius civile.","r":"Doctrina"},
+    {"id":"hi03","t":"Ley de las XII Tablas","d":"Primera codificación escrita del derecho romano, de mediados del siglo V a. C., que dio publicidad y certeza a normas antes consuetudinarias.","r":"Doctrina"},
+    {"id":"hi04","t":"Pretor","d":"Magistrado romano encargado de administrar justicia. Sus edictos dieron origen al derecho honorario, que adaptó el ius civile a nuevas necesidades.","r":"Doctrina"},
+    {"id":"hi05","t":"Corpus Iuris Civilis","d":"Compilación del derecho romano ordenada por el emperador Justiniano en el siglo VI: Instituciones, Digesto, Código y Novelas.","r":"Doctrina"},
+    {"id":"hi06","t":"Glosadores","d":"Juristas de la escuela de Bolonia (siglos XI a XIII) que estudiaron el Corpus Iuris Civilis mediante notas o glosas a los textos.","r":"Doctrina"},
+    {"id":"hi07","t":"Siete Partidas","d":"Cuerpo legal castellano de Alfonso X (siglo XIII), de fuerte influencia romana, aplicado en Chile durante la Colonia y fuente del Código Civil.","r":"Doctrina"},
+    {"id":"hi08","t":"Código Civil francés","d":"Código de Napoleón de 1804: modelo de la codificación moderna e importante fuente del Código Civil chileno.","r":"Doctrina"},
+    {"id":"hi09","t":"Andrés Bello","d":"Jurista venezolano radicado en Chile, autor principal del proyecto de Código Civil chileno.","r":"Doctrina"},
+    {"id":"hi10","t":"Promulgación y vigencia del Código Civil","d":"Fue promulgado el 14 de diciembre de 1855 y entró en vigencia el 1 de enero de 1857.","r":"Doctrina"},
+    {"id":"hi11","t":"Codificación","d":"Proceso de reunir el derecho de una materia en un cuerpo legal único, ordenado y sistemático, característico del siglo XIX.","r":"Doctrina"},
+    {"id":"hi12","t":"Fuentes del Código Civil chileno","d":"Principalmente el derecho romano, la legislación castellana, como las Siete Partidas, el Código Civil francés y la doctrina de autores como Pothier y Savigny.","r":"Doctrina"},
+    {"id":"hi13","t":"Ley 18.802 (1989)","d":"Otorgó plena capacidad a la mujer casada en sociedad conyugal.","r":"Doctrina"},
+    {"id":"hi14","t":"Ley 19.585 (1998)","d":"Estableció la igualdad de los hijos y eliminó la distinción entre hijos legítimos e ilegítimos.","r":"Doctrina"},
+    {"id":"hi15","t":"Ley 19.947 (2004)","d":"Nueva Ley de Matrimonio Civil, que incorporó el divorcio vincular al derecho chileno.","r":"Doctrina"},
+    {"id":"hi16","t":"Ley 21.400 (2021)","d":"Permitió el matrimonio entre personas del mismo sexo, modificando la definición de matrimonio del art. 102 del Código Civil.","r":"Doctrina; art. 102 CC"}
+  ],
+  "preguntas": [
+    {"id":"hp01","q":"¿Qué emperador ordenó la compilación conocida como Corpus Iuris Civilis?","o":["Augusto","Constantino","Justiniano","Teodosio"],"ok":2,"por":"Justiniano ordenó la compilación en el siglo VI, reuniendo las Instituciones, el Digesto, el Código y las Novelas.","r":"Doctrina"},
+    {"id":"hp02","q":"¿Desde cuándo rige el Código Civil chileno?","o":["14 de diciembre de 1855","1 de enero de 1857","18 de septiembre de 1810","1 de marzo de 1903"],"ok":1,"por":"Fue promulgado el 14 de diciembre de 1855 y rige desde el 1 de enero de 1857. El 1 de marzo de 1903 entró en vigencia el Código de Procedimiento Civil.","r":"Doctrina"},
+    {"id":"hp03","q":"¿Quién fue el autor principal del proyecto de Código Civil chileno?","o":["Andrés Bello","Mariano Egaña","Diego Portales","Juan Egaña"],"ok":0,"por":"Andrés Bello redactó el proyecto que, tras su revisión, se convirtió en el Código Civil de 1855.","r":"Doctrina"},
+    {"id":"hp04","q":"El derecho aplicable en Roma a las relaciones entre romanos y extranjeros era el:","o":["Ius civile","Ius gentium","Derecho honorario","Ius naturale"],"ok":1,"por":"El ius gentium regía las relaciones con extranjeros; el ius civile era exclusivo de los ciudadanos romanos.","r":"Doctrina"},
+    {"id":"hp05","q":"¿Qué escuela medieval estudió el Corpus Iuris Civilis mediante notas a los textos?","o":["Los glosadores","Los comentaristas","La escuela histórica","Los humanistas"],"ok":0,"por":"Los glosadores de la escuela de Bolonia trabajaron con glosas o notas a los textos justinianeos.","r":"Doctrina"},
+    {"id":"hp06","q":"¿Qué código extranjero fue una de las principales fuentes del Código Civil chileno?","o":["El Código Civil alemán (BGB)","El Código Civil francés de 1804","El Código Civil suizo","El Código Civil argentino"],"ok":1,"por":"El Código de Napoleón de 1804 fue una fuente central. El Código alemán es de 1900, posterior al chileno.","r":"Doctrina"},
+    {"id":"hp07","q":"¿Qué ley estableció la igualdad de los hijos, eliminando la distinción entre legítimos e ilegítimos?","o":["Ley 18.802","Ley 19.585","Ley 19.947","Ley 20.830"],"ok":1,"por":"La Ley 19.585, de 1998, reformó el régimen de filiación y consagró la igualdad de los hijos.","r":"Doctrina"},
+    {"id":"hp08","q":"El magistrado romano cuyos edictos dieron origen al derecho honorario era el:","o":["Cónsul","Pretor","Censor","Tribuno de la plebe"],"ok":1,"por":"El pretor, a través de sus edictos, creó el derecho honorario o pretoriano.","r":"Doctrina"}
+  ]
+}

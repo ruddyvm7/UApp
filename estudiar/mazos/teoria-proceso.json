@@ -1,0 +1,33 @@
+{
+  "ramo": "Teoría del Proceso",
+  "nota": "Contenido inicial basado en la legislación vigente y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.",
+  "revision": null,
+  "tarjetas": [
+    {"id":"pr01","t":"Proceso","d":"Secuencia de actos que se desenvuelven progresivamente con el objeto de resolver, mediante un juicio de la autoridad, el conflicto sometido a su decisión.","r":"Doctrina"},
+    {"id":"pr02","t":"Procedimiento","d":"El conjunto de formalidades y trámites a que se sujeta la realización de los actos que componen el proceso.","r":"Doctrina"},
+    {"id":"pr03","t":"Acción","d":"El derecho de acudir a los tribunales para obtener la tutela de un derecho o interés.","r":"Doctrina"},
+    {"id":"pr04","t":"Bilateralidad de la audiencia","d":"Principio según el cual ninguna resolución debe dictarse sin oír a la parte contra la cual se pide.","r":"Doctrina"},
+    {"id":"pr05","t":"Preclusión","d":"La pérdida o extinción de una facultad procesal por no haberse ejercido en la oportunidad legal, por haberse realizado un acto incompatible o por haberse ejercido ya válidamente.","r":"Doctrina"},
+    {"id":"pr06","t":"Equivalentes jurisdiccionales","d":"Medios que, sin ser una sentencia del tribunal, ponen término al conflicto con efectos similares: la transacción, el avenimiento, la conciliación y la sentencia extranjera.","r":"Doctrina"},
+    {"id":"pr07","t":"Clases de resoluciones judiciales","d":"Sentencias definitivas, sentencias interlocutorias, autos y decretos.","r":"Art. 158 CPC"},
+    {"id":"pr08","t":"Sentencia definitiva","d":"La que pone fin a la instancia, resolviendo la cuestión o asunto que ha sido objeto del juicio.","r":"Art. 158 CPC"},
+    {"id":"pr09","t":"Efecto de las notificaciones","d":"Las resoluciones judiciales solo producen efecto en virtud de notificación hecha con arreglo a la ley, salvo los casos expresamente exceptuados.","r":"Art. 38 CPC"},
+    {"id":"pr10","t":"Cosa juzgada","d":"Las sentencias definitivas o interlocutorias firmes producen la acción o la excepción de cosa juzgada.","r":"Art. 175 CPC"},
+    {"id":"pr11","t":"Triple identidad","d":"Para que opere la excepción de cosa juzgada debe haber identidad legal de personas, identidad de la cosa pedida e identidad de la causa de pedir.","r":"Art. 177 CPC"},
+    {"id":"pr12","t":"Excepciones dilatorias","d":"Las que se refieren a la corrección del procedimiento sin afectar el fondo de la acción, como la incompetencia del tribunal o la litispendencia.","r":"Art. 303 CPC"},
+    {"id":"pr13","t":"Partes y terceros","d":"Las partes son el demandante y el demandado. Pueden intervenir terceros coadyuvantes, excluyentes o independientes.","r":"Doctrina"},
+    {"id":"pr14","t":"Comparecencia en juicio","d":"Por regla general, se debe comparecer patrocinado por un abogado habilitado y representado por quien tenga ius postulandi.","r":"Ley 18.120"},
+    {"id":"pr15","t":"Abandono del procedimiento","d":"Se produce cuando todas las partes han cesado en su prosecución durante seis meses, contados desde la última resolución recaída en alguna gestión útil.","r":"Art. 152 CPC"},
+    {"id":"pr16","t":"Plazos de días del Código de Procedimiento Civil","d":"Se entienden suspendidos durante los feriados, salvo que el tribunal, por motivos justificados, haya dispuesto expresamente lo contrario.","r":"Art. 66 CPC"}
+  ],
+  "preguntas": [
+    {"id":"prp1","q":"¿Cuáles son las clases de resoluciones judiciales según el art. 158 del CPC?","o":["Sentencias definitivas, interlocutorias, autos y decretos","Sentencias, providencias y oficios","Fallos, autos acordados y decretos","Sentencias firmes y ejecutoriadas"],"ok":0,"por":"El art. 158 distingue sentencias definitivas, sentencias interlocutorias, autos y decretos.","r":"Art. 158 CPC"},
+    {"id":"prp2","q":"Para que opere la excepción de cosa juzgada se requiere:","o":["Solo identidad de partes","Identidad legal de personas, de cosa pedida y de causa de pedir","Que la sentencia sea de la Corte Suprema","Que hayan pasado cinco años"],"ok":1,"por":"Es la triple identidad del art. 177 del CPC.","r":"Art. 177 CPC"},
+    {"id":"prp3","q":"¿Desde cuándo producen efecto las resoluciones judiciales?","o":["Desde que se dictan","Desde su notificación hecha con arreglo a la ley","Desde que quedan firmes","Desde su publicación en el Diario Oficial"],"ok":1,"por":"El art. 38 del CPC las hace producir efecto en virtud de notificación legal, salvo excepciones.","r":"Art. 38 CPC"},
+    {"id":"prp4","q":"¿Cuánto tiempo de inactividad de todas las partes produce el abandono del procedimiento?","o":["Tres meses","Seis meses","Un año","Dos años"],"ok":1,"por":"El art. 152 del CPC exige seis meses desde la última resolución recaída en una gestión útil.","r":"Art. 152 CPC"},
+    {"id":"prp5","q":"La pérdida de una facultad procesal por no ejercerla en la oportunidad legal se denomina:","o":["Prescripción","Preclusión","Caducidad del derecho","Desistimiento"],"ok":1,"por":"Es la preclusión, que da orden y avance al procedimiento.","r":"Doctrina"},
+    {"id":"prp6","q":"¿Cuál de estos es un equivalente jurisdiccional?","o":["La sentencia definitiva","La transacción","La demanda","El recurso de apelación"],"ok":1,"por":"La transacción pone término al litigio sin sentencia y produce efectos similares.","r":"Doctrina"},
+    {"id":"prp7","q":"La incompetencia del tribunal se alega como:","o":["Excepción perentoria","Excepción dilatoria","Recurso de casación","Recurso de hecho"],"ok":1,"por":"El art. 303 del CPC la incluye entre las excepciones dilatorias.","r":"Art. 303 CPC"},
+    {"id":"prp8","q":"La resolución que pone fin a la instancia resolviendo la cuestión objeto del juicio es:","o":["Auto","Decreto","Sentencia interlocutoria","Sentencia definitiva"],"ok":3,"por":"Así define el art. 158 del CPC a la sentencia definitiva.","r":"Art. 158 CPC"}
+  ]
+}

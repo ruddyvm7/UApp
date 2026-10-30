@@ -1,0 +1,4 @@
+# Pruebas automáticas: lo que se instala o se arma al correrlas
+_desarrollo/pruebas/node_modules/
+_desarrollo/pruebas/package-lock.json
+_desarrollo/pruebas/trabajo.html

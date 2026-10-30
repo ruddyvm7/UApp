@@ -1,0 +1,33 @@
+{
+  "ramo": "Bienes",
+  "nota": "Contenido inicial basado en la legislación vigente y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.",
+  "revision": null,
+  "tarjetas": [
+    {"id":"bi01","t":"Cosas corporales e incorporales","d":"Corporales: tienen un ser real y pueden ser percibidas por los sentidos. Incorporales: consisten en meros derechos, como los créditos y las servidumbres activas.","r":"Art. 565 CC"},
+    {"id":"bi02","t":"Bienes muebles","d":"Los que pueden transportarse de un lugar a otro, sea moviéndose ellos a sí mismos, como los animales, sea por una fuerza externa, como las cosas inanimadas.","r":"Art. 567 CC"},
+    {"id":"bi03","t":"Bienes inmuebles","d":"Las cosas que no pueden transportarse de un lugar a otro, como las tierras y minas, y las que adhieren permanentemente a ellas, como los edificios y los árboles.","r":"Art. 568 CC"},
+    {"id":"bi04","t":"Inmuebles por destinación","d":"Las cosas que están permanentemente destinadas al uso, cultivo y beneficio de un inmueble, aunque puedan separarse sin detrimento.","r":"Art. 570 CC"},
+    {"id":"bi05","t":"Derecho real","d":"El que tenemos sobre una cosa sin respecto a determinada persona.","r":"Art. 577 CC"},
+    {"id":"bi06","t":"Derechos reales que enumera el Código","d":"Dominio, herencia, usufructo, uso o habitación, servidumbres activas, prenda e hipoteca.","r":"Art. 577 CC"},
+    {"id":"bi07","t":"Derecho personal o crédito","d":"El que sólo puede reclamarse de ciertas personas que, por un hecho suyo o la sola disposición de la ley, han contraído las obligaciones correlativas.","r":"Art. 578 CC"},
+    {"id":"bi08","t":"Dominio","d":"Derecho real en una cosa corporal, para gozar y disponer de ella arbitrariamente, no siendo contra la ley o contra derecho ajeno.","r":"Art. 582 CC"},
+    {"id":"bi09","t":"Modos de adquirir el dominio","d":"La ocupación, la accesión, la tradición, la sucesión por causa de muerte y la prescripción.","r":"Art. 588 CC"},
+    {"id":"bi10","t":"Bienes nacionales de uso público","d":"Aquellos cuyo dominio pertenece a la nación toda y cuyo uso pertenece a todos sus habitantes, como calles, plazas, puentes y caminos.","r":"Art. 589 CC"},
+    {"id":"bi11","t":"Tradición","d":"Modo de adquirir que consiste en la entrega que el dueño hace de una cosa a otro, habiendo por una parte la facultad e intención de transferir el dominio, y por otra la capacidad e intención de adquirirlo.","r":"Art. 670 CC"},
+    {"id":"bi12","t":"Tradición de bienes raíces","d":"Se efectúa por la inscripción del título en el Registro del Conservador de Bienes Raíces.","r":"Art. 686 CC"},
+    {"id":"bi13","t":"Posesión","d":"La tenencia de una cosa determinada con ánimo de señor o dueño.","r":"Art. 700 CC"},
+    {"id":"bi14","t":"Mera tenencia","d":"La que se ejerce sobre una cosa, no como dueño, sino en lugar o a nombre del dueño, como el acreedor prendario o el arrendatario.","r":"Art. 714 CC"},
+    {"id":"bi15","t":"Plazos de la prescripción adquisitiva","d":"Ordinaria: dos años para los muebles y cinco para los inmuebles. Extraordinaria: diez años.","r":"Arts. 2508 y 2511 CC"},
+    {"id":"bi16","t":"Acción reivindicatoria","d":"La que tiene el dueño de una cosa singular, de que no está en posesión, para que el poseedor sea condenado a restituírsela.","r":"Art. 889 CC"}
+  ],
+  "preguntas": [
+    {"id":"bip1","q":"¿Cuál de estos NO es un modo de adquirir el dominio según el art. 588?","o":["La ocupación","La tradición","El contrato de compraventa","La prescripción"],"ok":2,"por":"El art. 588 enumera ocupación, accesión, tradición, sucesión por causa de muerte y prescripción. La compraventa es un título, no un modo de adquirir.","r":"Art. 588 CC"},
+    {"id":"bip2","q":"¿Cómo se efectúa la tradición de un bien raíz?","o":["Por la entrega material","Por la escritura pública de compraventa","Por la inscripción del título en el Registro del Conservador de Bienes Raíces","Por el pago del precio"],"ok":2,"por":"Según el art. 686, la tradición del dominio de los bienes raíces se efectúa por la inscripción del título en el Conservador.","r":"Art. 686 CC"},
+    {"id":"bip3","q":"¿Cuál es el plazo de la prescripción adquisitiva ordinaria de un inmueble?","o":["Dos años","Cinco años","Diez años","Quince años"],"ok":1,"por":"El art. 2508 fija dos años para los muebles y cinco para los bienes raíces.","r":"Art. 2508 CC"},
+    {"id":"bip4","q":"Respecto de la cosa arrendada, el arrendatario es:","o":["Poseedor regular","Poseedor irregular","Mero tenedor","Dueño"],"ok":2,"por":"El art. 714 menciona al arrendatario entre los meros tenedores: tiene la cosa a nombre del dueño.","r":"Art. 714 CC"},
+    {"id":"bip5","q":"El derecho que tenemos sobre una cosa sin respecto a determinada persona es un:","o":["Derecho personal","Derecho real","Crédito","Derecho potestativo"],"ok":1,"por":"Es la definición de derecho real del art. 577.","r":"Art. 577 CC"},
+    {"id":"bip6","q":"Una maquinaria destinada permanentemente al cultivo de un predio agrícola es un inmueble:","o":["Por naturaleza","Por adherencia","Por destinación","Por analogía"],"ok":2,"por":"El art. 570 considera inmuebles por destinación las cosas permanentemente destinadas al uso, cultivo y beneficio de un inmueble.","r":"Art. 570 CC"},
+    {"id":"bip7","q":"¿Qué acción tiene el dueño que no está en posesión de su cosa para que el poseedor se la restituya?","o":["Acción posesoria","Acción reivindicatoria","Acción pauliana","Acción de precario"],"ok":1,"por":"Es la acción reivindicatoria o de dominio del art. 889.","r":"Art. 889 CC"},
+    {"id":"bip8","q":"Las calles, plazas y puentes son:","o":["Bienes fiscales","Bienes nacionales de uso público","Bienes municipales privados","Cosas que no pertenecen a nadie"],"ok":1,"por":"El art. 589 los pone como ejemplo de bienes nacionales de uso público.","r":"Art. 589 CC"}
+  ]
+}

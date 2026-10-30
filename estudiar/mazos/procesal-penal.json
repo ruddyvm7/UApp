@@ -1,0 +1,33 @@
+{
+  "ramo": "Derecho Procesal Penal",
+  "nota": "Contenido inicial basado en la legislación vigente y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.",
+  "revision": null,
+  "tarjetas": [
+    {"id":"pp01","t":"Presunción de inocencia","d":"Ninguna persona será considerada culpable ni tratada como tal en tanto no fuere condenada por una sentencia firme.","r":"Art. 4 CPP"},
+    {"id":"pp02","t":"Juicio previo y única persecución","d":"Nadie puede ser condenado ni penado sino en virtud de una sentencia fundada, dictada por un tribunal imparcial, ni ser sometido a un nuevo procedimiento penal por el mismo hecho.","r":"Art. 1 CPP"},
+    {"id":"pp03","t":"Exclusividad de la investigación","d":"El ministerio público dirige en forma exclusiva la investigación de los hechos constitutivos de delito.","r":"Art. 3 CPP"},
+    {"id":"pp04","t":"Formalización de la investigación","d":"Comunicación que el fiscal efectúa al imputado, en presencia del juez de garantía, de que desarrolla actualmente una investigación en su contra respecto de uno o más delitos determinados.","r":"Art. 229 CPP"},
+    {"id":"pp05","t":"Plazo para cerrar la investigación","d":"Transcurrido el plazo de dos años desde la formalización, el fiscal debe proceder a cerrar la investigación.","r":"Art. 247 CPP"},
+    {"id":"pp06","t":"Detención","d":"Medida cautelar personal que priva de libertad al imputado para ponerlo a disposición del juez. Requiere orden judicial, salvo en caso de flagrancia.","r":"Art. 125 CPP"},
+    {"id":"pp07","t":"Procedencia de la prisión preventiva","d":"Procede cuando las demás medidas cautelares personales son insuficientes para asegurar las finalidades del procedimiento.","r":"Art. 139 CPP"},
+    {"id":"pp08","t":"Requisitos de la prisión preventiva","d":"Antecedentes que justifiquen la existencia del delito y que permitan presumir la participación del imputado, y que su libertad sea peligrosa para la investigación, la sociedad o la víctima, o exista peligro de fuga.","r":"Art. 140 CPP"},
+    {"id":"pp09","t":"Otras medidas cautelares personales","d":"Entre otras, el arresto domiciliario, la sujeción a vigilancia, la obligación de presentarse periódicamente ante el juez y la prohibición de salir del país.","r":"Art. 155 CPP"},
+    {"id":"pp10","t":"Suspensión condicional del procedimiento","d":"Salida alternativa acordada entre el fiscal y el imputado, aprobada por el juez de garantía, que sujeta al imputado a condiciones por un plazo; cumplidas, se extingue la acción penal.","r":"Art. 237 CPP"},
+    {"id":"pp11","t":"Acuerdos reparatorios","d":"Acuerdo entre el imputado y la víctima, aprobado por el juez, en hechos que afectan bienes jurídicos disponibles de carácter patrimonial, lesiones menos graves o delitos culposos.","r":"Art. 241 CPP"},
+    {"id":"pp12","t":"Principio de oportunidad","d":"Facultad del fiscal para no iniciar la persecución penal, o abandonar la iniciada, respecto de un hecho que no comprometa gravemente el interés público.","r":"Art. 170 CPP"},
+    {"id":"pp13","t":"Archivo provisional","d":"El fiscal puede archivar la investigación cuando no aparecen antecedentes que permitan desarrollar actividades conducentes al esclarecimiento de los hechos.","r":"Art. 167 CPP"},
+    {"id":"pp14","t":"Procedimiento abreviado","d":"El imputado acepta los hechos de la acusación y los antecedentes de la investigación, y el juez de garantía dicta sentencia sin juicio oral.","r":"Art. 406 CPP"},
+    {"id":"pp15","t":"Valoración de la prueba","d":"Los tribunales aprecian la prueba con libertad, pero sin contradecir los principios de la lógica, las máximas de la experiencia y los conocimientos científicamente afianzados.","r":"Art. 297 CPP"},
+    {"id":"pp16","t":"Recurso de nulidad","d":"Se concede para invalidar el juicio oral y la sentencia definitiva, o solamente esta, por las causales expresamente señaladas en la ley.","r":"Art. 372 CPP"}
+  ],
+  "preguntas": [
+    {"id":"ppp1","q":"¿Quién dirige en forma exclusiva la investigación penal?","o":["El juez de garantía","El ministerio público","La policía","El tribunal de juicio oral en lo penal"],"ok":1,"por":"Así lo dispone el art. 3 del CPP.","r":"Art. 3 CPP"},
+    {"id":"ppp2","q":"La formalización de la investigación es una comunicación del fiscal al imputado efectuada:","o":["Por carta certificada","En presencia del juez de garantía","Ante la policía","Ante el tribunal de juicio oral"],"ok":1,"por":"El art. 229 del CPP exige que se efectúe en presencia del juez de garantía.","r":"Art. 229 CPP"},
+    {"id":"ppp3","q":"¿Qué plazo tiene el fiscal para cerrar la investigación desde la formalización?","o":["Seis meses","Un año","Dos años","Cinco años"],"ok":2,"por":"El art. 247 del CPP fija el plazo de dos años.","r":"Art. 247 CPP"},
+    {"id":"ppp4","q":"¿Cuándo procede la prisión preventiva?","o":["Siempre que haya formalización","Cuando las demás medidas cautelares son insuficientes y se cumplen los requisitos legales","Solo en delitos con pena de presidio perpetuo","Cuando lo pide la víctima"],"ok":1,"por":"Lo exigen los arts. 139 y 140 del CPP.","r":"Art. 139 CPP"},
+    {"id":"ppp5","q":"Cumplidas las condiciones de la suspensión condicional del procedimiento:","o":["Se dicta sentencia condenatoria","Se extingue la acción penal","Se reabre la investigación","Se aplica una multa"],"ok":1,"por":"Así lo dispone el art. 240 del CPP.","r":"Art. 240 CPP"},
+    {"id":"ppp6","q":"Los acuerdos reparatorios se celebran entre:","o":["El fiscal y el juez","El imputado y la víctima, con aprobación judicial","El defensor y el fiscal","La policía y la víctima"],"ok":1,"por":"Es lo que prevé el art. 241 del CPP.","r":"Art. 241 CPP"},
+    {"id":"ppp7","q":"En el proceso penal, los tribunales aprecian la prueba:","o":["Conforme a la prueba legal o tasada","Con libertad, sin contradecir la lógica, las máximas de la experiencia ni los conocimientos científicamente afianzados","Según su íntima convicción, sin fundamentar","Solo según la confesión del imputado"],"ok":1,"por":"Es el sistema de sana crítica del art. 297 del CPP.","r":"Art. 297 CPP"},
+    {"id":"ppp8","q":"¿Qué recurso procede para invalidar el juicio oral y la sentencia definitiva por las causales legales?","o":["Apelación","Casación en el fondo","Nulidad","Queja"],"ok":2,"por":"Es el recurso de nulidad del art. 372 del CPP.","r":"Art. 372 CPP"}
+  ]
+}

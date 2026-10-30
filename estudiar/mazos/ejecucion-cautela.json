@@ -1,0 +1,33 @@
+{
+  "ramo": "Procedimientos de Ejecución y Cautela",
+  "nota": "Contenido inicial basado en la legislación vigente y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.",
+  "revision": null,
+  "tarjetas": [
+    {"id":"ec01","t":"Requisitos del juicio ejecutivo","d":"Título ejecutivo, obligación líquida, obligación actualmente exigible y acción ejecutiva no prescrita.","r":"Doctrina"},
+    {"id":"ec02","t":"Títulos ejecutivos","d":"Entre otros: la sentencia firme, la copia autorizada de escritura pública, el acta de avenimiento, el instrumento privado reconocido judicialmente y la confesión judicial.","r":"Art. 434 CPC"},
+    {"id":"ec03","t":"Antigüedad del título","d":"El tribunal denegará la ejecución si el título tiene más de tres años contados desde que la obligación se hizo exigible.","r":"Art. 442 CPC"},
+    {"id":"ec04","t":"Mandamiento de ejecución y embargo","d":"Orden del tribunal que dispone requerir de pago al deudor y, si no paga, embargarle bienes suficientes para cubrir la deuda y las costas.","r":"Art. 443 CPC"},
+    {"id":"ec05","t":"Plazo para oponer excepciones","d":"Si el deudor es requerido de pago en persona dentro del territorio jurisdiccional del tribunal, tiene cuatro días para deducir oposición.","r":"Art. 459 CPC"},
+    {"id":"ec06","t":"Excepciones del ejecutado","d":"Solo son admisibles las que la ley enumera, como la incompetencia del tribunal, la falta de algún requisito del título, el pago de la deuda o la prescripción.","r":"Art. 464 CPC"},
+    {"id":"ec07","t":"Cuaderno ejecutivo y cuaderno de apremio","d":"El ejecutivo contiene la demanda, las excepciones y su tramitación; el de apremio, el requerimiento de pago, el embargo y la realización de los bienes.","r":"Doctrina"},
+    {"id":"ec08","t":"Bienes inembargables","d":"Bienes que la ley excluye del embargo para proteger al deudor, como parte de las remuneraciones y los muebles de dormitorio, comedor y cocina de uso familiar.","r":"Art. 445 CPC"},
+    {"id":"ec09","t":"Tercerías","d":"Intervención de terceros en el juicio ejecutivo: de dominio, de posesión, de prelación y de pago.","r":"Art. 518 CPC"},
+    {"id":"ec10","t":"Cumplimiento incidental de la sentencia","d":"Ejecución de la sentencia ante el mismo tribunal que la dictó, solicitada dentro de un año desde que la ejecución se hizo exigible.","r":"Art. 233 CPC"},
+    {"id":"ec11","t":"Medidas precautorias","d":"El secuestro de la cosa, el nombramiento de interventores, la retención de bienes determinados y la prohibición de celebrar actos o contratos sobre bienes determinados.","r":"Art. 290 CPC"},
+    {"id":"ec12","t":"Requisito de las medidas precautorias","d":"El demandante debe acompañar comprobantes que constituyan a lo menos presunción grave del derecho que reclama.","r":"Art. 298 CPC"},
+    {"id":"ec13","t":"Medidas prejudiciales precautorias","d":"Las medidas precautorias solicitadas antes de presentar la demanda, que exigen requisitos adicionales, como expresar la acción que se deducirá y sus fundamentos.","r":"Art. 279 CPC"},
+    {"id":"ec14","t":"Secuestro","d":"Depósito de una cosa que se disputan dos o más individuos, en manos de otro que debe restituirla al que obtenga una decisión a su favor.","r":"Art. 2249 CC"},
+    {"id":"ec15","t":"Embargo","d":"Actuación por la cual se aprehenden bienes del deudor, que quedan a disposición del tribunal para pagar al acreedor con su producto.","r":"Doctrina"},
+    {"id":"ec16","t":"Remate","d":"Venta en pública subasta de los bienes embargados, para pagar al acreedor con su producto.","r":"Doctrina"}
+  ],
+  "preguntas": [
+    {"id":"ecp1","q":"¿Cuál NO es un requisito del juicio ejecutivo?","o":["Título ejecutivo","Obligación líquida","Obligación actualmente exigible","Sentencia de la Corte Suprema"],"ok":3,"por":"Se exige título ejecutivo, obligación líquida y actualmente exigible, y acción no prescrita.","r":"Doctrina"},
+    {"id":"ecp2","q":"¿Cuántos días tiene para oponerse el deudor requerido en persona dentro del territorio del tribunal?","o":["Dos días","Cuatro días","Diez días","Quince días"],"ok":1,"por":"El art. 459 del CPC le concede cuatro días.","r":"Art. 459 CPC"},
+    {"id":"ecp3","q":"El tribunal denegará la ejecución si el título tiene más de:","o":["Un año desde que la obligación se hizo exigible","Tres años desde que la obligación se hizo exigible","Cinco años desde su otorgamiento","Diez años desde su otorgamiento"],"ok":1,"por":"Así lo dispone el art. 442 del CPC.","r":"Art. 442 CPC"},
+    {"id":"ecp4","q":"¿Cuál de estas es una medida precautoria del art. 290 del CPC?","o":["La retención de bienes determinados","El embargo","El remate","La declaración de rebeldía"],"ok":0,"por":"El art. 290 enumera el secuestro, los interventores, la retención de bienes determinados y la prohibición de celebrar actos o contratos.","r":"Art. 290 CPC"},
+    {"id":"ecp5","q":"Para conceder una medida precautoria, el demandante debe acompañar comprobantes que constituyan a lo menos:","o":["Plena prueba","Presunción grave del derecho que reclama","Un principio de prueba por escrito","Una declaración jurada"],"ok":1,"por":"Es el requisito del art. 298 del CPC.","r":"Art. 298 CPC"},
+    {"id":"ecp6","q":"La tercería con la que un tercero pretende ser pagado con preferencia al ejecutante es la de:","o":["Dominio","Posesión","Prelación","Pago"],"ok":2,"por":"La tercería de prelación busca el pago preferente; la de pago, concurrir en el pago a prorrata.","r":"Art. 518 CPC"},
+    {"id":"ecp7","q":"¿Dentro de qué plazo puede pedirse el cumplimiento incidental de la sentencia?","o":["Seis meses","Un año desde que la ejecución se hizo exigible","Tres años","Cinco años"],"ok":1,"por":"El art. 233 del CPC fija el plazo de un año.","r":"Art. 233 CPC"},
+    {"id":"ecp8","q":"¿Cuál de estos es un título ejecutivo según el art. 434 del CPC?","o":["Una carta simple firmada por el deudor","La copia autorizada de una escritura pública","Un correo electrónico","Un presupuesto aceptado verbalmente"],"ok":1,"por":"La copia autorizada de escritura pública figura entre los títulos ejecutivos del art. 434.","r":"Art. 434 CPC"}
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "ramo": "Procedimientos Especiales Orales",
+  "nota": "Contenido inicial basado en la legislación vigente y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.",
+  "revision": null,
+  "tarjetas": [
+    {"id":"eo01","t":"Principios del procedimiento de familia","d":"Oralidad, concentración, desformalización, inmediación, actuación de oficio, búsqueda de soluciones colaborativas e interés superior del niño, niña o adolescente.","r":"Ley 19.968"},
+    {"id":"eo02","t":"Audiencias del procedimiento ordinario de familia","d":"Se desarrolla en una audiencia preparatoria y una audiencia de juicio.","r":"Ley 19.968"},
+    {"id":"eo03","t":"Mediación familiar previa","d":"En materias de alimentos, cuidado personal y relación directa y regular, debe intentarse una mediación antes de demandar.","r":"Art. 106 Ley 19.968"},
+    {"id":"eo04","t":"Interés superior del niño","d":"Principio rector de los tribunales de familia: el juez debe tener siempre como consideración principal el interés superior del niño, niña o adolescente, y su derecho a ser oído.","r":"Art. 16 Ley 19.968"},
+    {"id":"eo05","t":"Principios del procedimiento laboral","d":"Los procedimientos del trabajo son orales, públicos y concentrados. Priman la inmediación, el impulso procesal de oficio, la celeridad, la buena fe, la bilateralidad de la audiencia y la gratuidad.","r":"Art. 425 CT"},
+    {"id":"eo06","t":"Procedimiento de aplicación general","d":"Procedimiento laboral ordinario: demanda escrita, audiencia preparatoria y audiencia de juicio.","r":"Art. 446 CT"},
+    {"id":"eo07","t":"Procedimiento monitorio laboral","d":"Procede, entre otros casos, en contiendas cuya cuantía sea igual o inferior a diez ingresos mínimos mensuales.","r":"Art. 496 CT"},
+    {"id":"eo08","t":"Procedimiento de tutela laboral","d":"Se aplica a las cuestiones que afecten los derechos fundamentales de los trabajadores en la relación laboral.","r":"Art. 485 CT"},
+    {"id":"eo09","t":"Plazo para reclamar un despido","d":"El trabajador que estime injustificado su despido puede recurrir al juzgado dentro de sesenta días hábiles contados desde la separación.","r":"Art. 168 CT"},
+    {"id":"eo10","t":"Audiencia preparatoria","d":"Audiencia en que se fija el objeto del juicio, se intenta la conciliación y se ofrecen y admiten las pruebas.","r":"Doctrina"},
+    {"id":"eo11","t":"Audiencia de juicio","d":"Audiencia en que se rinde la prueba ante el juez y se formulan las observaciones finales, para luego dictar sentencia.","r":"Doctrina"},
+    {"id":"eo12","t":"Oralidad","d":"Las actuaciones se realizan de viva voz en audiencias, con registro en sistemas de audio.","r":"Doctrina"},
+    {"id":"eo13","t":"Inmediación","d":"El juez debe presenciar personalmente las audiencias y la rendición de la prueba, sin delegar estas funciones.","r":"Doctrina"},
+    {"id":"eo14","t":"Concentración","d":"Las actuaciones deben realizarse en el menor número de audiencias posible, idealmente sin interrupciones.","r":"Doctrina"},
+    {"id":"eo15","t":"Juzgados de familia","d":"Tribunales especiales que forman parte del Poder Judicial y conocen, entre otras materias, de alimentos, cuidado personal, divorcio y violencia intrafamiliar.","r":"Art. 5 COT; Ley 19.968"},
+    {"id":"eo16","t":"Juzgados de letras del trabajo","d":"Tribunales especiales del Poder Judicial que conocen de las cuestiones suscitadas entre empleadores y trabajadores por aplicación de las normas laborales.","r":"Art. 5 COT; art. 420 CT"}
+  ],
+  "preguntas": [
+    {"id":"eop1","q":"¿Cuáles son las audiencias del procedimiento ordinario ante los tribunales de familia?","o":["Una audiencia única","Una audiencia preparatoria y una audiencia de juicio","Conciliación y prueba escrita","Comparendo y vista de la causa"],"ok":1,"por":"El procedimiento ordinario de la Ley 19.968 se desarrolla en esas dos audiencias.","r":"Ley 19.968"},
+    {"id":"eop2","q":"Según el art. 425 del Código del Trabajo, los procedimientos laborales son:","o":["Escritos y reservados","Orales, públicos y concentrados","Escritos y desconcentrados","Orales y secretos"],"ok":1,"por":"Así lo dispone el art. 425 del Código del Trabajo.","r":"Art. 425 CT"},
+    {"id":"eop3","q":"El procedimiento monitorio laboral procede, entre otros casos, en contiendas cuya cuantía no supere:","o":["Cinco ingresos mínimos mensuales","Diez ingresos mínimos mensuales","Veinte ingresos mínimos mensuales","Cien unidades de fomento"],"ok":1,"por":"El art. 496 del Código del Trabajo fija el límite en diez ingresos mínimos mensuales.","r":"Art. 496 CT"},
+    {"id":"eop4","q":"¿En qué plazo puede el trabajador reclamar por un despido que estima injustificado?","o":["Treinta días corridos","Sesenta días hábiles desde la separación","Seis meses","Un año"],"ok":1,"por":"El art. 168 del Código del Trabajo fija sesenta días hábiles.","r":"Art. 168 CT"},
+    {"id":"eop5","q":"¿En qué materias se exige mediación previa a la demanda ante los tribunales de familia?","o":["Divorcio","Alimentos, cuidado personal y relación directa y regular","Violencia intrafamiliar","Filiación"],"ok":1,"por":"El art. 106 de la Ley 19.968 la exige en esas tres materias.","r":"Art. 106 Ley 19.968"},
+    {"id":"eop6","q":"El procedimiento de tutela laboral protege:","o":["Los derechos fundamentales de los trabajadores en la relación laboral","Solo el pago de remuneraciones","A los empleadores frente a la huelga","Los contratos de arrendamiento"],"ok":0,"por":"Así lo establece el art. 485 del Código del Trabajo.","r":"Art. 485 CT"},
+    {"id":"eop7","q":"El principio que exige que el juez presencie personalmente las audiencias y la rendición de la prueba es:","o":["Concentración","Inmediación","Publicidad","Desformalización"],"ok":1,"por":"Es la inmediación, común a los procedimientos orales.","r":"Doctrina"},
+    {"id":"eop8","q":"¿Qué principio deben considerar siempre los tribunales de familia?","o":["El interés superior del niño, niña o adolescente","La autonomía de la voluntad","La prueba legal tasada","El impulso exclusivo de parte"],"ok":0,"por":"El art. 16 de la Ley 19.968 lo establece como principio rector.","r":"Art. 16 Ley 19.968"}
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "ramo": "Recursos",
+  "nota": "Contenido inicial basado en la legislación vigente y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.",
+  "revision": null,
+  "tarjetas": [
+    {"id":"re01","t":"Recurso procesal","d":"Medio que la ley concede a la parte agraviada por una resolución judicial para obtener su modificación o invalidación.","r":"Doctrina"},
+    {"id":"re02","t":"Reposición","d":"Se pide al mismo tribunal que dictó un auto o decreto que lo modifique o deje sin efecto; por regla general, dentro de cinco días.","r":"Art. 181 CPC"},
+    {"id":"re03","t":"Aclaración, rectificación o enmienda","d":"Permite pedir al tribunal que dictó la sentencia que aclare puntos oscuros o dudosos, salve omisiones o rectifique errores de copia, de referencia o de cálculos numéricos.","r":"Art. 182 CPC"},
+    {"id":"re04","t":"Apelación","d":"Tiene por objeto obtener del tribunal superior respectivo que enmiende, con arreglo a derecho, la resolución del inferior.","r":"Art. 186 CPC"},
+    {"id":"re05","t":"Plazo de la apelación","d":"Cinco días desde la notificación; diez días si se trata de una sentencia definitiva.","r":"Art. 189 CPC"},
+    {"id":"re06","t":"Efectos de la apelación","d":"Devolutivo: el tribunal superior adquiere competencia para conocer del recurso. Suspensivo: además, se suspende la competencia del inferior para seguir conociendo de la causa.","r":"Art. 191 CPC"},
+    {"id":"re07","t":"Recurso de hecho","d":"Se interpone ante el tribunal superior cuando el inferior deniega una apelación que procede, la concede debiendo denegarla, o la concede en efectos que no corresponden.","r":"Art. 203 CPC"},
+    {"id":"re08","t":"Casación en el fondo","d":"Procede contra sentencias pronunciadas con infracción de ley, siempre que esta infracción haya influido sustancialmente en lo dispositivo de la sentencia.","r":"Art. 767 CPC"},
+    {"id":"re09","t":"Casación en la forma","d":"Procede por las causales que la ley enumera, como haber sido pronunciada la sentencia por un tribunal incompetente o haber sido dada ultra petita.","r":"Art. 768 CPC"},
+    {"id":"re10","t":"Plazo de la casación","d":"Quince días desde la notificación de la sentencia contra la cual se recurre.","r":"Art. 770 CPC"},
+    {"id":"re11","t":"Recurso de queja","d":"Tiene por objeto corregir las faltas o abusos graves cometidos en la dictación de resoluciones de carácter jurisdiccional.","r":"Art. 545 COT"},
+    {"id":"re12","t":"Recurso de protección","d":"Acción constitucional para quien, por actos u omisiones arbitrarios o ilegales, sufra privación, perturbación o amenaza en el legítimo ejercicio de ciertos derechos y garantías.","r":"Art. 20 CPR"},
+    {"id":"re13","t":"Recurso de amparo","d":"Acción constitucional en favor de quien sea arrestado, detenido o preso con infracción de la Constitución o las leyes, o sufra otra amenaza a su libertad personal y seguridad individual.","r":"Art. 21 CPR"},
+    {"id":"re14","t":"Recurso de revisión","d":"Procede contra sentencias firmes, por las causales que la ley señala, como haberse fundado en documentos declarados falsos.","r":"Art. 810 CPC"},
+    {"id":"re15","t":"Nulidad en el proceso penal","d":"Se concede para invalidar el juicio oral y la sentencia definitiva, o solamente esta, por las causales expresamente señaladas en la ley.","r":"Art. 372 CPP"},
+    {"id":"re16","t":"Apelación en el proceso penal","d":"Las resoluciones dictadas por un tribunal de juicio oral en lo penal son inapelables.","r":"Art. 364 CPP"}
+  ],
+  "preguntas": [
+    {"id":"rep1","q":"¿Cuál es el plazo para apelar de una sentencia definitiva en materia civil?","o":["Cinco días","Diez días","Quince días","Treinta días"],"ok":1,"por":"El art. 189 del CPC fija cinco días por regla general y diez para las sentencias definitivas.","r":"Art. 189 CPC"},
+    {"id":"rep2","q":"La casación en el fondo procede contra sentencias pronunciadas:","o":["Con cualquier error de hecho","Con infracción de ley que haya influido sustancialmente en lo dispositivo","Sin oír a los testigos","Fuera de plazo"],"ok":1,"por":"Es la causal del art. 767 del CPC.","r":"Art. 767 CPC"},
+    {"id":"rep3","q":"¿Cuál es el plazo para interponer el recurso de casación?","o":["Cinco días","Diez días","Quince días","Treinta días"],"ok":2,"por":"El art. 770 del CPC fija quince días desde la notificación de la sentencia.","r":"Art. 770 CPC"},
+    {"id":"rep4","q":"El recurso que corrige faltas o abusos graves en la dictación de resoluciones jurisdiccionales es el de:","o":["Queja","Hecho","Revisión","Reposición"],"ok":0,"por":"Es el recurso de queja del art. 545 del COT.","r":"Art. 545 COT"},
+    {"id":"rep5","q":"Si el tribunal inferior deniega una apelación que procede, la parte puede interponer:","o":["Recurso de queja","Recurso de hecho","Recurso de revisión","Recurso de protección"],"ok":1,"por":"Así lo prevé el art. 203 del CPC.","r":"Art. 203 CPC"},
+    {"id":"rep6","q":"¿Son apelables las resoluciones de un tribunal de juicio oral en lo penal?","o":["Sí, siempre","No: son inapelables","Solo las sentencias absolutorias","Solo si lo autoriza la Corte"],"ok":1,"por":"El art. 364 del CPP las declara inapelables; contra la sentencia procede el recurso de nulidad.","r":"Art. 364 CPP"},
+    {"id":"rep7","q":"La acción constitucional para quien sufre privación, perturbación o amenaza en el ejercicio de ciertos derechos, por actos arbitrarios o ilegales, es el recurso de:","o":["Amparo","Protección","Inaplicabilidad","Revisión"],"ok":1,"por":"Es el recurso de protección del art. 20 de la Constitución.","r":"Art. 20 CPR"},
+    {"id":"rep8","q":"El recurso de revisión procede contra:","o":["Autos y decretos","Sentencias firmes, por las causales legales","Sentencias aún apelables","Resoluciones administrativas"],"ok":1,"por":"Así lo establece el art. 810 del CPC.","r":"Art. 810 CPC"}
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "private": true,
+  "description": "Pruebas automáticas de UApp (jsdom). Ver _desarrollo/ESTRUCTURA.md",
+  "devDependencies": { "jsdom": "^24.0.0" }
+}

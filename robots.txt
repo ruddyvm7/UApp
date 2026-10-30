@@ -6,4 +6,7 @@ Disallow: /prueba-diurno/
 Disallow: /panel-admin.html
 Disallow: /prueba-diurno/panel-admin.html
 
+# Contenido de Estudiar: se usa dentro de la app, no como página suelta
+Disallow: /estudiar/mazos/
+
 Sitemap: https://miuapp.cl/sitemap.xml

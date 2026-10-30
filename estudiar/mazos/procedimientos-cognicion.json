@@ -1,0 +1,33 @@
+{
+  "ramo": "Procedimientos Civiles de Cognición",
+  "nota": "Contenido inicial basado en la legislación vigente y la doctrina nacional. Si encuentras un error, avísale al Centro de Estudiantes.",
+  "revision": null,
+  "tarjetas": [
+    {"id":"cg01","t":"Aplicación del procedimiento ordinario","d":"Se aplica en todas las gestiones, trámites y actuaciones que no estén sometidos a una regla especial diversa.","r":"Art. 3 CPC"},
+    {"id":"cg02","t":"Requisitos de la demanda","d":"Designación del tribunal; individualización del demandante, de su representante y del demandado; exposición clara de los hechos y fundamentos de derecho; y enunciación precisa de las peticiones.","r":"Art. 254 CPC"},
+    {"id":"cg03","t":"Emplazamiento","d":"La notificación legal de la demanda al demandado, unida al transcurso del término que la ley le concede para contestarla.","r":"Doctrina"},
+    {"id":"cg04","t":"Término de emplazamiento","d":"Si el demandado es notificado en la comuna donde funciona el tribunal, dispone de quince días para contestar la demanda.","r":"Art. 258 CPC"},
+    {"id":"cg05","t":"Réplica y dúplica","d":"Tras la contestación, el demandante puede replicar y el demandado duplicar, ampliando, adicionando o modificando sus acciones y excepciones sin alterar las principales.","r":"Art. 312 CPC"},
+    {"id":"cg06","t":"Llamado a conciliación","d":"Agotados los trámites de discusión, en todo juicio civil en que sea admisible la transacción, el juez debe llamar a las partes a conciliación, salvo las excepciones legales.","r":"Art. 262 CPC"},
+    {"id":"cg07","t":"Recepción de la causa a prueba","d":"Si hay controversia sobre algún hecho sustancial y pertinente, el tribunal recibe la causa a prueba y fija los hechos sobre los que debe recaer.","r":"Art. 318 CPC"},
+    {"id":"cg08","t":"Término probatorio ordinario","d":"Es de veinte días.","r":"Art. 328 CPC"},
+    {"id":"cg09","t":"Medios de prueba","d":"Instrumentos, testigos, confesión de parte, inspección personal del tribunal, informes de peritos y presunciones.","r":"Art. 341 CPC"},
+    {"id":"cg10","t":"Citación para oír sentencia","d":"Vencido el término probatorio y el plazo para formular observaciones a la prueba, el tribunal cita a las partes para oír sentencia.","r":"Art. 432 CPC"},
+    {"id":"cg11","t":"Plazo para dictar la sentencia definitiva","d":"Sesenta días contados desde que la causa quede en estado de sentencia.","r":"Art. 162 CPC"},
+    {"id":"cg12","t":"Medidas prejudiciales","d":"Diligencias que pueden solicitarse antes de iniciar el juicio, para preparar la entrada a él.","r":"Art. 273 CPC"},
+    {"id":"cg13","t":"Juicio sumario","d":"Procedimiento de tramitación rápida, aplicable a falta de otra regla especial cuando la acción requiere tramitación rápida para ser eficaz, y en los casos que la ley señala.","r":"Art. 680 CPC"},
+    {"id":"cg14","t":"Audiencia del juicio sumario","d":"Deducida la demanda, se cita a las partes a una audiencia, en la cual el demandado contesta y el tribunal llama a conciliación.","r":"Art. 683 CPC"},
+    {"id":"cg15","t":"Reconvención","d":"Demanda que el demandado deduce contra el demandante, en el mismo escrito de contestación.","r":"Art. 314 CPC"},
+    {"id":"cg16","t":"Pluralidad de partes","d":"En un mismo juicio pueden intervenir como demandantes o demandados varias personas, siempre que se deduzca la misma acción o acciones que emanen directa e inmediatamente de un mismo hecho.","r":"Art. 18 CPC"}
+  ],
+  "preguntas": [
+    {"id":"cgp1","q":"¿En qué casos se aplica el procedimiento ordinario?","o":["Solo en juicios de cuantía superior a 500 UF","En todas las gestiones que no estén sometidas a una regla especial","Solo cuando las partes lo acuerdan","Solo en juicios de familia"],"ok":1,"por":"El art. 3 del CPC lo hace aplicable a todo lo que no tenga una regla especial.","r":"Art. 3 CPC"},
+    {"id":"cgp2","q":"Si el demandado es notificado en la comuna donde funciona el tribunal, ¿de cuántos días dispone para contestar?","o":["Diez días","Quince días","Veinte días","Treinta días"],"ok":1,"por":"El art. 258 del CPC fija quince días en ese caso.","r":"Art. 258 CPC"},
+    {"id":"cgp3","q":"¿Cuál es el término probatorio ordinario del juicio ordinario?","o":["Diez días","Quince días","Veinte días","Treinta días"],"ok":2,"por":"El art. 328 del CPC lo fija en veinte días.","r":"Art. 328 CPC"},
+    {"id":"cgp4","q":"¿Cuál NO es un medio de prueba del art. 341 del CPC?","o":["Los testigos","La inspección personal del tribunal","Las presunciones","Una declaración jurada notarial de un tercero"],"ok":3,"por":"El art. 341 enumera instrumentos, testigos, confesión, inspección personal, informes de peritos y presunciones.","r":"Art. 341 CPC"},
+    {"id":"cgp5","q":"¿Qué permite al demandado demandar al demandante en el mismo juicio?","o":["La dúplica","La reconvención","La réplica","La tercería"],"ok":1,"por":"Es la reconvención, que se deduce en el escrito de contestación (art. 314 del CPC).","r":"Art. 314 CPC"},
+    {"id":"cgp6","q":"¿En qué plazo debe dictarse la sentencia definitiva?","o":["Treinta días","Sesenta días desde que la causa queda en estado de sentencia","Noventa días","Un año"],"ok":1,"por":"Así lo dispone el art. 162 del CPC.","r":"Art. 162 CPC"},
+    {"id":"cgp7","q":"El llamado a conciliación en el juicio ordinario procede:","o":["En todo juicio civil en que sea admisible la transacción, salvo excepciones legales","Solo si las partes lo piden","Solo en juicios ejecutivos","Nunca"],"ok":0,"por":"Es un trámite que el art. 262 del CPC impone al juez una vez agotada la discusión.","r":"Art. 262 CPC"},
+    {"id":"cgp8","q":"El juicio sumario se aplica, a falta de otra regla especial, cuando:","o":["La cuantía es inferior a 10 UTM","La acción requiere tramitación rápida para ser eficaz","El demandado es una persona jurídica","Lo pide el tribunal"],"ok":1,"por":"Es la regla general del art. 680 del CPC.","r":"Art. 680 CPC"}
+  ]
+}
