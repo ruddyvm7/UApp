@@ -170,6 +170,55 @@
   function activo(f){ var x=E.h[f]; return !!x&&(x.v+x.a+x.r+x.tot)>0; }
   function racha(){ var d=dia(), n=0; if(!activo(d)) d=mas(d,-1); while(activo(d)){ n++; d=mas(d,-1); } return n; }
 
+  /* ── v2.7 · mediciones. Cálculos puros a partir del avance guardado: no tocan la pantalla ── */
+  var MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+  function pct(a,b){ return b?Math.round(a/b*100):0; }
+  function fechaTxt(f){ var p=String(f).split("-"); return (+p[2])+" de "+MESES[+p[1]-1]; }
+  function dominio(m){ var r=resumen(m); return pct(r.dominadas,r.total); }
+  /* tema de cada tarjeta y pregunta; una pregunta de «Artículos» (art-<tarjeta>) lleva el de su tarjeta */
+  function temasPorId(m){ var M=MAZOS[m], t={}; M.tarjetas.concat(M.preguntas).forEach(function(x){ if(x.u!=null) t[x.id]=x.u; }); return t; }
+  /* acierto con el registro de respuestas: en preguntas cuenta la correcta; en tarjetas, el verde («La domino») */
+  function aciertos(m){
+    var T=temasPorId(m), r={preg:{ok:0,tot:0},tarj:{ok:0,tot:0},temas:{}};
+    E.r.forEach(function(x){
+      if(x[1]!==m) return;
+      var id=String(x[2]), v=x[3], esPreg=(v===1||v===0), bien=esPreg?v===1:v==="v", u=T[id.indexOf("art-")===0?id.slice(4):id];
+      var b=esPreg?r.preg:r.tarj; b.tot++; if(bien) b.ok++;
+      if(u!=null){ var t=r.temas[u]||(r.temas[u]={ok:0,tot:0}); t.tot++; if(bien) t.ok++; }
+    });
+    return r;
+  }
+  /* los temas con menos acierto: con al menos 5 respuestas, para que el porcentaje diga algo, y bajo 80 % */
+  var MIN_DEBIL=5, TOPE_DEBIL=80;
+  function temasDebiles(m,n){
+    var M=MAZOS[m]; if(!M.temas) return [];
+    var A=aciertos(m).temas;
+    return M.temas.map(function(t){ var a=A[t.n]; return a&&a.tot>=MIN_DEBIL?{n:t.n,t:t.t,p:pct(a.ok,a.tot),tot:a.tot}:null; })
+      .filter(function(x){ return x&&x.p<TOPE_DEBIL; }).sort(function(a,b){ return a.p-b.p||b.tot-a.tot; }).slice(0,n||3);
+  }
+  /* actividad de las últimas 12 semanas, de lunes a domingo; los días que aún no llegan quedan fuera (n = -1) */
+  function actividad(){
+    var hoy=dia(), d=new Date(), lunes=(d.getDay()+6)%7, ini=mas(hoy,-(77+lunes)), out={dias:[],total:0,activos:0,max:0};
+    for(var i=0;i<84;i++){
+      var f=mas(ini,i); if(f>hoy){ out.dias.push({f:f,n:-1}); continue; }
+      var x=E.h[f], n=x?(x.v+x.a+x.r+x.tot):0; out.dias.push({f:f,n:n}); out.total+=n; if(n>0) out.activos++; if(n>out.max) out.max=n;
+    }
+    return out;
+  }
+  /* la próxima evaluación del ramo, según Fechas (solo si el estudiante lo tiene inscrito) */
+  function proxima(m){ try{ return (window.__fechas&&window.__fechas.proxima)?window.__fechas.proxima(MAZOS[m].ramo):null; }catch(e){ return null; } }
+  /* las tarjetas nuevas que faltan: cuándo se terminan al ritmo elegido y cuántas por día hacen falta antes de una fecha */
+  function planNuevas(m,dias){
+    var r=resumen(m), lim=ajuste(), ritmo=lim===0?r.nuevas:lim, out={nuevas:r.nuevas,ritmo:lim};
+    out.diasAlRitmo=r.nuevas&&ritmo?Math.ceil(r.nuevas/ritmo):0;
+    out.fin=out.diasAlRitmo?mas(dia(),out.diasAlRitmo-1):null;
+    if(dias!=null&&dias>0&&r.nuevas) out.necesarias=Math.ceil(r.nuevas/dias);
+    return out;
+  }
+  /* escala chilena de 1,0 a 7,0 con 60 % de exigencia: la misma fórmula del conversor de puntaje a nota */
+  function nota(p,P){ if(!P) return 1; var corte=0.6*P, n=(p<corte)?1+3*p/corte:4+3*(p-corte)/(P-corte); return Math.round((n+1e-9)*10)/10; }
+  function coma1(x){ return x.toFixed(1).replace(".",","); }
+
   /* ── estado de la pantalla ── */
   /* V.l: línea abierta; V.m: ramo abierto; V.vt: pantalla de temas del ramo; V.sel: temas elegidos por ramo.
      El foco automático solo ayuda a quien usa teclado */
@@ -284,6 +333,7 @@
   function vistaInicio(){
     var h='<h1 class="h1 serif">Estudiar</h1><p class="lead">Elige una línea y luego tu ramo para repasar con tarjetas y preguntas. Tu progreso se guarda en este teléfono.</p>';
     var rc=racha(); if(rc) h+='<p class="es-racha">Racha de '+plural(rc,"día","días")+'</p>';
+    var sc=simulacroCercano(); if(sc) h+=botonSimulacro(sc);
     var p=masPendiente(); if(p) h+=botonRepaso(p,true);
     var cupo=Math.max(0,limite()-(E.n[dia()]||0));
     h+='<h2 class="es-linea">Elige una línea</h2><div class="es-lineas">';
@@ -304,8 +354,37 @@
          '<small>'+cuantos+' · '+miles(nT)+' tarjetas</small>'+
          (emp?(hoy?'<span class="es-chip">Para hoy: '+hoy+'</span>':'<span class="es-chip ok">Al día</span>'):'')+barraAvance(t)+'</button>';
     });
-    h+='</div><p class="es-nota">¿Quieres aportar tarjetas o preguntas de tu ramo? Escríbele al Centro de Estudiantes.</p>';
+    h+='</div>';
+    if(window.__envivo) h+='<button type="button" class="es-repaso es-vivo" data-es="vivo-unirme"><span class="es-ico">'+ICO_VIVO+'</span><span><b>Modo en vivo</b> <small>¿Tu ayudantía usa UApp? Entra con el código de la sala.</small></span><span class="i2-avc-ir">Unirme</span></button>';
+    h+=calendarioHTML()+'<p class="es-nota">¿Quieres aportar tarjetas o preguntas de tu ramo? Escríbele al Centro de Estudiantes.</p>';
     return h;
+  }
+  /* v2.7 · calendario de actividad de las últimas 12 semanas: una columna por semana, de lunes a domingo */
+  function calendarioHTML(){
+    var A=actividad(); if(!A.activos) return '';
+    var cel=A.dias.map(function(x){
+      if(x.n<0) return '<i class="es-cal-d fut"></i>';
+      var nv=!x.n?0:(x.n<=A.max/4?1:(x.n<=A.max/2?2:(x.n<=A.max*3/4?3:4)));
+      return '<i class="es-cal-d n'+nv+'" title="'+fechaTxt(x.f)+': '+(x.n?plural(x.n,"respuesta","respuestas"):"sin estudio")+'"></i>';
+    }).join("");
+    return '<section class="es-cal" aria-label="Tu actividad en las últimas 12 semanas"><div class="es-fila"><b>Últimas 12 semanas</b> <small>'+plural(A.activos,"día","días")+' con estudio</small></div>'+
+      '<div class="es-cal-g" role="img" aria-label="Estudiaste '+plural(A.activos,"día","días")+' de las últimas 12 semanas, con '+miles(A.total)+' '+(A.total===1?'respuesta':'respuestas')+'">'+cel+'</div>'+
+      '<p class="es-cal-ley" aria-hidden="true">Menos <i class="es-cal-d n0"></i><i class="es-cal-d n1"></i><i class="es-cal-d n2"></i><i class="es-cal-d n3"></i><i class="es-cal-d n4"></i> Más</p></section>';
+  }
+  /* v2.7 · la semana antes de una prueba de un ramo que ya empezó, la portada le propone un simulacro */
+  function simulacroCercano(){
+    var mejor=null;
+    for(var m in MAZOS){
+      if(!empezado(m)||!MAZOS[m].preguntas.length) continue;
+      var p=proxima(m); if(p&&p.dias>=0&&p.dias<=7&&(!mejor||p.dias<mejor.p.dias)) mejor={m:m,p:p};
+    }
+    return mejor;
+  }
+  function cuandoTxt(p){ return p.dias<=0?(p.falta==="Esta semana"?'esta semana':'hoy'):(p.dias===1?'mañana':'en '+p.dias+' días'); }
+  function botonSimulacro(x){
+    var n=Math.min(SIM_MAX,MAZOS[x.m].preguntas.length);
+    return '<button type="button" class="es-repaso es-sim-sug" data-es="sim-ir" data-v="'+x.m+'"><span class="es-ico">'+ICO_RELOJ+'</span><span><b>Simulacro</b> <small>Tu '+esc(x.p.nombre.toLowerCase())+' de '+esc(MAZOS[x.m].ramo)+' es '+cuandoTxt(x.p)+'. '+
+           plural(n,"pregunta","preguntas")+' en '+plural(n,"minuto","minutos")+'.</small></span><span class="i2-avc-ir">Empezar</span></button>';
   }
   /* una línea: sus ramos en el orden de la malla */
   function vistaLinea(L){
@@ -319,7 +398,7 @@
       var estado=empezado(m) ? (r.paraHoy?'<span class="es-chip">Para hoy: '+r.paraHoy+'</span>':'<span class="es-chip ok">Al día</span>')
                              : '<span class="es-chip">Nuevo</span>';
       h+='<button type="button" class="es-ramo" data-es="abrir" data-v="'+m+'"><span class="es-fila"><b>'+esc(M.ramo)+'</b>'+estado+'</span>'+
-         '<small>'+nivel(c.t)+' · '+plural(M.tarjetas.length,"tarjeta","tarjetas")+' y '+plural(M.preguntas.length,"pregunta","preguntas")+(empezado(m)?', '+r.dominadas+' dominadas':'')+'</small>'+barraAvance(r)+'</button>';
+         '<small>'+nivel(c.t)+' · '+plural(M.tarjetas.length,"tarjeta","tarjetas")+' y '+plural(M.preguntas.length,"pregunta","preguntas")+(empezado(m)?', '+r.dominadas+' dominadas ('+pct(r.dominadas,r.total)+' %)':'')+'</small>'+barraAvance(r)+'</button>';
     });
     h+='</div><p class="es-nota">¿Quieres aportar tarjetas o preguntas '+(hay?'de tu ramo':'para estos ramos')+'? Escríbele al Centro de Estudiantes.</p>';
     return h;
@@ -327,7 +406,10 @@
   function vistaRamo(m){
     var L=linea(V.l), M=MAZOS[m], r=resumen(m), h='<div class="es-top"><button type="button" class="es-volver" data-es="ramos">‹ '+(L?esc(L.titulo):'Líneas')+'</button></div>';
     h+='<h1 class="h1 serif">'+esc(M.ramo)+'</h1><p class="lead">'+esc(M.nota)+'</p>'+
-       (M.revision?'<p class="es-rev ok">Revisado por la cátedra: '+esc(M.revision.docente)+'</p>':'<p class="es-rev">Contenido en revisión docente</p>')+'<div class="es-modos">';
+       (M.revision?'<p class="es-rev ok">Revisado por la cátedra: '+esc(M.revision.docente)+'</p>':'<p class="es-rev">Contenido en revisión docente</p>');
+    var px=proxima(m), pl=planNuevas(m,px?px.dias:null);
+    if(px) h+=avisoPrueba(m,px,pl);
+    h+='<div class="es-modos">';
     h+='<button type="button" class="es-modo" data-es="tarjetas"><span class="es-modo-ico">'+ICO_TARJ+'</span><b>Tarjetas</b><span>Recuerda la definición de cada término y evalúa tu dominio.</span>'+
        (r.paraHoy?'<span class="es-chip">Para hoy: '+plural(r.paraHoy,"tarjeta","tarjetas")+'</span>':'<span class="es-chip ok">Al día: vuelve mañana</span>')+'</button>';
     h+='<button type="button" class="es-modo" data-es="preguntas"><span class="es-modo-ico">'+ICO_PREG+'</span><b>Selección múltiple</b><span>Responde y revisa la justificación de cada alternativa.</span>'+
@@ -335,6 +417,10 @@
     var nArt=LISTOS[m]?preguntasDeArticulos(m).length:(M.art||0), pa=(E.p[m+'#art']&&E.p[m+'#art'].int)||[], mejA=pa.reduce(function(b,x){ return (!b||x.ok/x.tot>b.ok/b.tot)?x:b; },null);
     if(nArt>=4) h+='<button type="button" class="es-modo" data-es="articulos"><span class="es-modo-ico es-par" aria-hidden="true">§</span><b>Artículos</b><span>Lee la regla y reconoce de qué artículo sale.</span>'+
        '<span class="es-chip">'+(mejA?'Tu mejor resultado: '+mejA.ok+' de '+mejA.tot:plural(Math.min(PREG_SESION,nArt),"regla","reglas")+' por ronda')+'</span></button>';
+    var fSel=seleccion(m), nS=Math.min(SIM_MAX,(fSel.length?pregsTema(m,fSel):M.preguntas).length), sm=historialSim(m);
+    if(M.preguntas.length) h+='<button type="button" class="es-modo" data-es="simulacro"'+(nS?'':' disabled')+'><span class="es-modo-ico">'+ICO_RELOJ+'</span><b>Simulacro</b><span>'+
+       (fSel.length?'De tus temas elegidos: ':'Como una prueba: ')+plural(nS,"pregunta","preguntas")+', un minuto cada una y nota de 1,0 a 7,0.</span>'+
+       '<span class="es-chip">'+(!nS?'Sin preguntas en esos temas':(sm.ult?'Tu última nota: '+coma1(sm.ult.nota):plural(nS,"minuto","minutos")))+'</span></button>';
     h+='</div>';
     if(M.temas&&M.temas.length){
       var nSel=seleccion(m).length;
@@ -354,9 +440,149 @@
        '<div class="es-fila"><b>Últimos 7 días</b> <small>'+(racha()?'Racha de '+plural(racha(),"día","días"):'Sin racha todavía')+'</small></div><div class="es-semana" aria-hidden="true">'+
        dias.map(function(d){ var p=d.f.split("-"), wd=new Date(+p[0],+p[1]-1,+p[2]).getDay(); return '<div><i style="height:'+Math.max(3,Math.round(d.n/max*48))+'px;opacity:'+(d.n?1:.25)+'"></i>'+nom[wd]+'</div>'; }).join("")+
        '</div>'+(r.intentos?'<div class="es-fila"><b>Selección múltiple</b> <small>'+plural(r.intentos,"ronda","rondas")+', mejor: '+r.mejor.ok+' de '+r.mejor.tot+'</small></div>':'')+
-       (pa.length?'<div class="es-fila"><b>Artículos</b> <small>'+plural(pa.length,"ronda","rondas")+', mejor: '+mejA.ok+' de '+mejA.tot+'</small></div>':'')+'</section>';
+       (pa.length?'<div class="es-fila"><b>Artículos</b> <small>'+plural(pa.length,"ronda","rondas")+', mejor: '+mejA.ok+' de '+mejA.tot+'</small></div>':'')+
+       medicionesHTML(m,r,px,pl,sm)+'</section>';
+    if(window.__envivo&&M.preguntas.length) h+='<p class="es-vivo-crear"><button type="button" class="es-link" data-es="vivo-crear">¿Diriges una ayudantía? Crea una sala en vivo con estas preguntas</button></p>';
     return h;
   }
+  /* v2.7 · lo que se mide en cada ramo: dominio, acierto, temas más débiles, simulacros y cuándo se terminan las nuevas */
+  function medicionesHTML(m,r,px,pl,sm){
+    var A=aciertos(m), h='<div class="es-fila"><b>Dominio</b> <small>'+pct(r.dominadas,r.total)+' % de las tarjetas</small></div>';
+    if(A.preg.tot) h+='<div class="es-fila"><b>Acierto en preguntas</b> <small>'+pct(A.preg.ok,A.preg.tot)+' % ('+A.preg.ok+' de '+A.preg.tot+')</small></div>';
+    if(sm.n) h+='<div class="es-fila"><b>Simulacros</b> <small>'+plural(sm.n,"simulacro","simulacros")+', mejor nota: '+coma1(sm.mejor.nota)+'</small></div>';
+    if(pl.nuevas&&!px) h+='<div class="es-fila"><b>Tarjetas nuevas</b> <small>'+miles(pl.nuevas)+' por ver; '+(pl.ritmo===0||pl.diasAlRitmo<=1?'puedes verlas todas hoy':'a tu ritmo terminas el '+fechaTxt(pl.fin))+'</small></div>';
+    var M=MAZOS[m];
+    if(M.temas&&M.temas.length){
+      var D=temasDebiles(m,3), conDatos=M.temas.some(function(t){ return A.temas[t.n]&&A.temas[t.n].tot>=MIN_DEBIL; });
+      if(D.length) h+='<div class="es-debiles"><b>Temas más débiles</b><ol>'+D.map(function(d){ return '<li><span>'+esc(d.t)+'</span> <small>'+d.p+' % de acierto</small></li>'; }).join("")+'</ol></div>';
+      else if(conDatos) h+='<div class="es-fila"><b>Temas más débiles</b> <small>Ninguno bajo '+TOPE_DEBIL+' %: vas parejo</small></div>';
+    }
+    return h;
+  }
+  /* v2.7 · la próxima evaluación del ramo (de Fechas), con el tema más débil y el plan para ver las nuevas a tiempo */
+  function avisoPrueba(m,px,pl){
+    var cuando=cuandoTxt(px), t='<b>'+(px.dias>1?'Faltan '+px.dias+' días para tu '+esc(px.nombre.toLowerCase()):(cuando.charAt(0).toUpperCase()+cuando.slice(1)+' es tu '+esc(px.nombre.toLowerCase())))+'</b>'+(px.texto?' ('+esc(px.texto)+')':'')+'.';
+    var d=temasDebiles(m,1)[0];
+    if(d) t+=' Tu tema más débil: <b>'+esc(d.t)+'</b>, con '+d.p+' % de acierto.';
+    if(pl.nuevas&&px.dias>0){
+      if(pl.ritmo===0||pl.necesarias<=pl.ritmo) t+=' A tu ritmo alcanzas a ver las '+miles(pl.nuevas)+' tarjetas nuevas que te faltan.';
+      else t+=' Para ver antes las '+miles(pl.nuevas)+' tarjetas nuevas que te faltan, necesitas '+pl.necesarias+' por día (ahora tienes '+pl.ritmo+').';
+    } else if(!pl.nuevas) t+=' Ya viste todas las tarjetas: repasa y haz un simulacro.';
+    return '<p class="es-plan">'+t+'</p>';
+  }
+  /* ── v2.7 · simulacro: como una prueba, con tiempo, sin ver la respuesta correcta hasta el final, y nota de 1,0 a 7,0 ── */
+  var SIM_MAX=20, SIM_SEG=60, relojSim=null;
+  var ICO_VIVO='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2"/><path d="M8.5 15.5a5 5 0 0 1 0-7M15.5 8.5a5 5 0 0 1 0 7M5.6 18.4a9 9 0 0 1 0-12.8M18.4 5.6a9 9 0 0 1 0 12.8"/></svg>';
+  var ICO_RELOJ='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9.5 2.5h5"/></svg>';
+  function historialSim(m){ var p=(E.p[m+'#sim']&&E.p[m+'#sim'].int)||[]; return {n:p.length,ult:p[p.length-1]||null,mejor:p.reduce(function(b,x){ return (!b||x.nota>b.nota)?x:b; },null)}; }
+  function iniciarSimulacro(m,f){
+    f=(f&&f.length)?f:null;
+    var P=mezclar((f?pregsTema(m,f):MAZOS[m].preguntas).slice()).slice(0,SIM_MAX);
+    if(!P.length) return;
+    S={tipo:"s",m:m,clave:m+"#sim",modo:"simulacro",f:f,pregs:P,cola:P.map(function(q){ var o=q.o.map(function(_,i){ return i; }); return {id:q.id,orden:mezclar(o),r:null}; }),
+       i:0,t0:Date.now(),lim:P.length*SIM_SEG*1000,listo:false,rep:null,repOk:null};
+    registrar(f?"simulacro por tema":"simulacro"); pintar(); andarReloj();
+  }
+  function restante(){ return (S&&S.tipo==="s")?Math.max(0,S.lim-(Date.now()-S.t0)):0; }
+  function mmss(ms){ var s=Math.ceil(ms/1000); return Math.floor(s/60)+":"+("0"+(s%60)).slice(-2); }
+  function pararReloj(){ if(relojSim){ clearInterval(relojSim); relojSim=null; } }
+  function andarReloj(){
+    pararReloj();
+    relojSim=setInterval(function(){
+      if(!S||S.tipo!=="s"||S.listo){ pararReloj(); return; }
+      var r=restante(), el=document.getElementById("esReloj");
+      if(el){ el.textContent=mmss(r); el.classList.toggle("poco",r<=60000); }
+      if(r<=0) terminarSimulacro();
+    },1000);
+  }
+  function elegirSim(idx){ if(!S||S.tipo!=="s"||S.listo) return; var it=S.cola[S.i]; it.r=(it.r===idx)?null:idx; pintar(); }
+  function sigSim(){ if(!S||S.tipo!=="s"||S.listo) return; if(S.i+1<S.cola.length){ S.i++; pintar(); } else terminarSimulacro(); }
+  function antSim(){ if(!S||S.tipo!=="s"||S.listo||!S.i) return; S.i--; pintar(); }
+  /* al terminar (o al acabarse el tiempo) se corrige, se anotan las respuestas y se guarda la nota */
+  function terminarSimulacro(){
+    if(!S||S.tipo!=="s"||S.listo) return;
+    pararReloj(); S.listo=true; S.usado=Math.min(S.lim,Date.now()-S.t0);
+    var ok=0, h=hist();
+    S.cola.forEach(function(it){ if(it.r===null) return; var q=pregunta(S.m,it.id), bien=it.orden[it.r]===q.ok; if(bien) ok++; h.tot++; if(bien) h.ok++; anotar(S.m,q.id,bien?1:0); });
+    S.ok=ok; S.nota=nota(ok,S.cola.length);
+    var p=E.p[S.clave]=E.p[S.clave]||{int:[]}; p.int.push({f:dia(),ok:ok,tot:S.cola.length,nota:S.nota}); if(p.int.length>30) p.int=p.int.slice(-30);
+    guardar(); S.i=0; pintar(); window.scrollTo(0,0);
+  }
+  function vistaSimulacro(){
+    var L="ABCD", n=S.cola.length, volver=S.f?'Volver a los temas':'Volver al ramo';
+    if(S.listo){
+      var aprob=S.nota>=4, malas=S.cola.filter(function(it){ var q=pregunta(S.m,it.id); return it.r===null||it.orden[it.r]!==q.ok; });
+      var h='<div class="es-fin"><p class="es-etq">'+(S.desafio?'Desafío · simulacro':'Simulacro')+(S.f?' · '+esc(nombreFiltro(S.m,S.f)):'')+'</p><p class="es-grande es-nota '+(aprob?'ok':'no')+'">'+coma1(S.nota)+'</p>'+
+        '<p>'+S.ok+' de '+n+' correctas · '+mmss(S.usado)+' de '+mmss(S.lim)+' minutos</p><p>'+
+        (aprob?(S.nota>=6?'¡Excelente! Vas muy bien para la prueba.':'Aprobado. Repasa las que fallaste para subir la nota.'):'Todavía no llega al 4,0. Repasa las que fallaste y vuelve a intentarlo.')+'</p>'+lineaDesafio()+botonesDesafio();
+      if(malas.length) h+='<div class="es-malas"><b>Para repasar</b>'+malas.map(function(it){ var q=pregunta(S.m,it.id);
+        return '<div><p>'+esc(q.q)+'</p><p>'+(it.r===null?'Sin responder. ':'Tu respuesta: '+esc(q.o[it.orden[it.r]])+'. ')+'<b>Correcta:</b> '+esc(q.o[q.ok])+'.</p><p>'+esc(q.por)+'</p>'+fuente(q.r)+bloqueReporte(q.id,"pregunta")+'</div>'; }).join("")+'</div>';
+      return h+'<div class="es-botones"><button type="button" class="es-btn2 es-prim" data-es="simulacro">Otro simulacro</button><button type="button" class="es-btn2" data-es="salir">'+volver+'</button></div></div>';
+    }
+    var it=S.cola[S.i], q=pregunta(S.m,it.id), lista="", resp=S.cola.filter(function(x){ return x.r!==null; }).length, r=restante();
+    it.orden.forEach(function(real,idx){ lista+='<button type="button" class="es-op'+(it.r===idx?' sel':'')+'" data-es="sim-op" data-v="'+idx+'" aria-pressed="'+(it.r===idx)+'"><b>'+L.charAt(idx)+'</b><span>'+esc(q.o[real])+'</span></button>'; });
+    return '<div class="es-prog"><button type="button" class="es-volver" data-es="salir" aria-label="Salir del simulacro sin nota">✕</button><span class="es-barra"><i style="width:'+(S.i/n*100)+'%"></i></span>'+
+      '<span class="es-reloj'+(r<=60000?' poco':'')+'" id="esReloj" role="timer" aria-label="Tiempo que queda">'+mmss(r)+'</span><span>'+(S.i+1)+' de '+n+'</span></div>'+
+      (S.f?'<p class="es-filtro">'+esc(nombreFiltro(S.m,S.f))+'</p>':'')+
+      (S.desafio?'<p class="es-filtro">Desafío: quien te desafió sacó '+S.desafio.ok+' de '+S.desafio.tot+'</p>':'')+
+      '<p class="es-preg">'+esc(q.q)+'</p><div class="es-ops">'+lista+'</div>'+
+      '<div class="es-acciones es-sim-acc">'+(S.i?'<button type="button" class="es-btn2" data-es="sim-ant">Anterior</button>':'')+
+      '<button type="button" class="es-btn" data-es="sim-sig">'+(S.i+1<n?'Siguiente':'Terminar y ver nota')+'</button></div>'+
+      '<p class="es-pista es-centro">'+resp+' de '+n+' respondidas'+(S.i+1<n?' · <button type="button" class="es-link" data-es="sim-fin">Terminar ahora</button>':'')+'</p>';
+  }
+  /* ── v2.8 · desafío por enlace: las mismas preguntas, en el mismo orden y con las alternativas igual de
+     ordenadas, para comparar resultados por WhatsApp. Sin nombres: el enlace lleva solo el puntaje ── */
+  function enlaceDesafio(){
+    var p={m:S.m,t:S.tipo==="s"?"s":"p",q:S.cola.map(function(it){ return it.id; }).join(","),o:S.cola.map(function(it){ return it.orden.join(""); }).join("-"),r:S.ok+"-"+S.cola.length};
+    if(S.f) p.f=S.f.join(",");
+    return location.origin+location.pathname+"#desafio?"+Object.keys(p).map(function(k){ return k+"="+encodeURIComponent(p[k]); }).join("&");
+  }
+  function textoDesafio(){
+    var que=S.f?nombreFiltro(S.m,S.f):MAZOS[S.m].ramo, n=S.cola.length, mio=S.ok+" de "+n+(S.tipo==="s"?" (nota "+coma1(S.nota)+")":"");
+    if(S.desafio) return "Hice tu desafío de "+que+" en UApp: saqué "+mio+"; tú, "+S.desafio.ok+" de "+S.desafio.tot+". ¿Otra?";
+    return "Te desafío en UApp: "+plural(n,"pregunta","preguntas")+" de "+que+(S.tipo==="s"?", con tiempo":"")+". Yo saqué "+mio+". ¿Me ganas?";
+  }
+  function lineaDesafio(){
+    if(!S||!S.desafio) return '';
+    var d=S.desafio, yo=S.ok/S.cola.length, otro=d.ok/d.tot;
+    return '<p class="es-reto">Quien te desafió sacó <b>'+d.ok+' de '+d.tot+'</b>. '+(yo>otro?'¡Ganaste!':yo<otro?'Esta vez te ganó.':'Empate.')+'</p>';
+  }
+  function botonesDesafio(){
+    if(!S||S.modo==="articulos") return '';
+    return '<div class="es-desafio"><button type="button" class="es-btn2 es-wa" data-es="desafiar">'+(S.desafio?'Responder por WhatsApp':'Desafiar por WhatsApp')+'</button>'+
+      '<button type="button" class="es-btn2" data-es="desafio-copiar">Copiar enlace</button></div>'+(S.copiado?'<p class="es-pista es-centro" role="status">Enlace copiado.</p>':'')+
+      (S.enlace?'<label class="es-enlace">Copia el mensaje con el enlace:<textarea readonly rows="3">'+esc(S.enlace)+'</textarea></label>':'');   /* sin portapapeles, el texto queda a mano */
+  }
+  /* lee un enlace de desafío (#desafio?m=…&q=…): solo acepta preguntas que existen y órdenes válidos */
+  function leerDesafio(h){
+    if(!/^#desafio\?/.test(h||"")) return null;
+    var p={}; String(h).slice(9).split("&").forEach(function(x){ var i=x.indexOf("="); if(i>0) p[x.slice(0,i)]=decodeURIComponent(x.slice(i+1)); });
+    if(!p.m||!INDICE[p.m]||!p.q) return null;
+    var r=/^(\d+)-(\d+)$/.exec(p.r||""), f=(p.f||"").split(",").map(Number).filter(function(x){ return x>0; });
+    return {m:p.m,t:p.t==="s"?"s":"p",q:p.q.split(",").slice(0,SIM_MAX),o:(p.o||"").split("-"),r:r?{ok:+r[1],tot:+r[2]}:null,f:f.length?f:null};
+  }
+  function iniciarDesafio(d){
+    var M=MAZOS[d.m], cola=[], P=[];
+    d.q.forEach(function(id,i){
+      var q=M.preguntas.filter(function(x){ return x.id===id; })[0]; if(!q) return;
+      var o=(d.o[i]||"").split("").map(Number), ok=o.length===q.o.length&&o.slice().sort().every(function(x,k){ return x===k; });
+      P.push(q); cola.push({id:q.id,orden:ok?o:mezclar(q.o.map(function(_,k){ return k; })),r:null});
+    });
+    if(!cola.length) return false;
+    var base={m:d.m,clave:d.m+"#desafio",f:d.f,pregs:P,cola:cola,i:0,rep:null,repOk:null,desafio:d.r&&d.r.tot===cola.length?d.r:null};
+    if(d.t==="s"){ S=base; S.tipo="s"; S.modo="simulacro"; S.t0=Date.now(); S.lim=cola.length*SIM_SEG*1000; S.listo=false; registrar("desafío recibido (simulacro)"); pintar(); andarReloj(); }
+    else { S=base; S.tipo="p"; S.modo="preguntas"; S.elegida=null; S.ok=0; S.malas=[]; registrar("desafío recibido"); pintar(); }
+    return true;
+  }
+  function abrirDesafioDelEnlace(){
+    var d=leerDesafio(location.hash); if(!d) return;
+    try{ history.replaceState(null,"",location.pathname+location.search); }catch(e){}
+    var b=document.querySelector('[data-ir="estudio"]'); if(b) b.click();
+    V.m=d.m; V.vt=false; V.l=lineaDe(d.m); S=null;
+    conMazo(d.m,function(){ if(!iniciarDesafio(d)) pintar(); });
+    window.scrollTo(0,0);
+  }
+
   /* pantalla de temas: cada tema con su barra; se eligen uno o varios para repasar solo esa materia */
   function nombreFiltro(m,f){ var T=MAZOS[m].temas||[]; return f.length===1&&T[f[0]-1]?T[f[0]-1].t:plural(f.length,"tema elegido","temas elegidos"); }
   function vistaTemas(m){
@@ -364,10 +590,12 @@
     var h='<div class="es-top"><button type="button" class="es-volver" data-es="ramo">‹ '+esc(M.ramo)+'</button></div>'+
           '<h1 class="h1 serif">Temas</h1><p class="lead">Elige uno o varios para repasar solo esa materia. La barra muestra tus tarjetas dominadas, en repaso y nuevas de cada tema.</p>'+
           '<p class="es-tsel"><button type="button" class="es-btn2" data-es="temas-todos">'+(todos?'Quitar todos':'Elegir todos')+'</button></p><div class="es-temas">';
+    var A=aciertos(m).temas;
     T.forEach(function(t){
-      var r=resumenF(m,[t.n]), on=sel.indexOf(t.n)>=0;
+      var r=resumenF(m,[t.n]), on=sel.indexOf(t.n)>=0, a=A[t.n];
       h+='<button type="button" class="es-tfila" data-es="tema" data-v="'+t.n+'" aria-pressed="'+on+'"><span class="es-tcheck" aria-hidden="true">'+(on?'✓':'')+'</span>'+
-         '<span class="es-ttxt"><b>'+esc(t.t)+'</b><small>'+plural(r.total,"tarjeta","tarjetas")+' y '+plural(r.nP,"pregunta","preguntas")+(r.vistas?', '+r.dominadas+' dominadas':'')+'</small>'+barraAvance(r)+'</span></button>';
+         '<span class="es-ttxt"><b>'+esc(t.t)+'</b><small>'+plural(r.total,"tarjeta","tarjetas")+' y '+plural(r.nP,"pregunta","preguntas")+(r.vistas?', '+r.dominadas+' dominadas':'')+
+         (a&&a.tot>=MIN_DEBIL?', '+pct(a.ok,a.tot)+' % de acierto':'')+'</small>'+barraAvance(r)+'</span></button>';
     });
     h+='</div>';
     var acc;
@@ -403,7 +631,8 @@
     return '<button type="button" class="es-reportar" data-es="reportar" data-v="'+esc(id)+'">Reportar un error</button>';
   }
   function progreso(i,n,txt){ return '<div class="es-prog"><button type="button" class="es-volver" data-es="salir" aria-label="Salir de la sesión">✕</button><span class="es-barra"><i style="width:'+(n?i/n*100:0)+'%"></i></span><span>'+txt+'</span></div>'+
-    (S&&S.f?'<p class="es-filtro">'+esc(nombreFiltro(S.m,S.f))+'</p>':''); }
+    (S&&S.f?'<p class="es-filtro">'+esc(nombreFiltro(S.m,S.f))+'</p>':'')+
+    (S&&S.desafio&&!S.listo&&S.i<S.cola.length?'<p class="es-filtro">Desafío: quien te desafió sacó '+S.desafio.ok+' de '+S.desafio.tot+'</p>':''); }
   function vistaTarjeta(){
     if(S.i>=S.cola.length){
       var r=resumen(S.m), t=S.res.v+S.res.a+S.res.r, nV=S.f?sinVerF(S.m,S.f):sinVer(S.m).length, volver=S.f?'Volver a los temas':'Volver al ramo';
@@ -432,7 +661,7 @@
     var L="ABCD";
     if(S.i>=S.cola.length){
       var n=S.cola.length, pct=n?S.ok/n:0, msj=pct>=.9?"¡Excelente!":pct>=.7?"Muy bien":pct>=.5?"Vas bien, sigue practicando":"A repasar: las tarjetas te pueden ayudar";
-      var h='<div class="es-fin"><p class="es-etq">Resultado</p><p class="es-grande">'+S.ok+' de '+n+'</p><p>'+msj+'</p>';
+      var h='<div class="es-fin"><p class="es-etq">'+(S.desafio?'Desafío':'Resultado')+'</p><p class="es-grande">'+S.ok+' de '+n+'</p><p>'+msj+'</p>'+lineaDesafio()+botonesDesafio();
       if(S.malas.length){
         h+='<div class="es-malas"><b>Para repasar</b>'+S.malas.map(function(id){ var q=pregunta(S.m,id); return '<div><p>'+esc(q.cita||q.q)+'</p><p><b>Correcta:</b> '+esc(q.o[q.ok])+'.</p>'+fuente(q.r)+'</div>'; }).join("")+'</div>';
       }
@@ -456,7 +685,7 @@
     var app=document.getElementById("estudioApp");
     if(app){
       var L=linea(V.l), conTemas=V.m&&MAZOS[V.m]&&MAZOS[V.m].temas&&MAZOS[V.m].temas.length;
-      app.innerHTML=ESPERA?vistaEspera():S?(S.tipo==="t"?vistaTarjeta():vistaPregunta()):(V.m?(V.vt&&conTemas?vistaTemas(V.m):vistaRamo(V.m)):(L?vistaLinea(L):vistaInicio()));
+      app.innerHTML=ESPERA?vistaEspera():S?(S.tipo==="t"?vistaTarjeta():S.tipo==="s"?vistaSimulacro():vistaPregunta()):(V.m?(V.vt&&conTemas?vistaTemas(V.m):vistaRamo(V.m)):(L?vistaLinea(L):vistaInicio()));
       var txt=S&&S.rep?app.querySelector("#esRepTxt"):null;   /* al abrir el reporte, el cursor va al cuadro de texto */
       if(txt){ try{ txt.focus({preventScroll:true}); }catch(e){} }
       else {
@@ -511,13 +740,24 @@
       else if(a==="limite"){ E.cfg.nuevas=+v; guardar(); pintar(); }
       else if(a==="preguntas"){ var m2=V.m; conMazo(m2,function(){ iniciarPreguntas(m2,f?pregsTema(m2,f):null,f?m2+"#temas":null,f); }); }
       else if(a==="articulos"){ var m3=V.m; conMazo(m3,function(){ iniciarPreguntas(m3,preguntasDeArticulos(m3),m3+"#art"); }); }
+      else if(a==="simulacro"){ var m4=V.m, f4=f||seleccion(m4).slice(); conMazo(m4,function(){ iniciarSimulacro(m4,f4); }); window.scrollTo(0,0); }
+      else if(a==="sim-ir"){ V.m=v; V.vt=false; V.l=lineaDe(v); conMazo(v,function(){ iniciarSimulacro(v,null); }); window.scrollTo(0,0); }
+      else if(a==="sim-op") elegirSim(+v);
+      else if(a==="sim-sig") sigSim();
+      else if(a==="sim-ant") antSim();
+      else if(a==="sim-fin") terminarSimulacro();
+      else if(a==="desafiar"){ if(S){ var u1=enlaceDesafio(); try{ window.open("https://wa.me/?text="+encodeURIComponent(textoDesafio()+" "+u1),"_blank","noopener"); }catch(x){} registrar(S.desafio?"desafío respondido":"desafío enviado"); } }
+      else if(a==="desafio-copiar"){ if(S){ var u2=enlaceDesafio(), tx=textoDesafio()+" "+u2, yaEsta=function(){ S.copiado=true; S.enlace=null; pintar(); }, aMano=function(){ S.enlace=tx; S.copiado=false; pintar(); };
+        try{ if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(tx).then(yaEsta,aMano); else aMano(); }catch(x){ aMano(); } } }
+      else if(a==="vivo-unirme"){ if(window.__envivo) window.__envivo.unirme(); }
+      else if(a==="vivo-crear"){ var m5=V.m, f5=seleccion(m5).slice(); if(window.__envivo) conMazo(m5,function(){ pintar(); window.__envivo.crear(m5,f5.length?f5:null); }); }
       else if(a==="reintentar"){ if(ESPERA){ var e2=ESPERA; ESPERA=null; conMazo(e2.m,e2.fn); } }
       else if(a==="espera-volver"){ ESPERA=null; pintar(); }
       else if(a==="voltear"){ if(S&&S.tipo==="t"){ S.vista=true; pintar(); } }
       else if(a==="nota") notaTarjeta(v);
       else if(a==="op") responder(+v);
       else if(a==="sig") siguiente();
-      else if(a==="salir"){ S=null; pintar(); }
+      else if(a==="salir"){ pararReloj(); S=null; pintar(); }
     });
     document.addEventListener("click",function(e){
       var r=e.target.closest?e.target.closest("[data-ir2]"):null;
@@ -538,14 +778,20 @@
       }else if(S.tipo==="p"){
         if(S.elegida===null&&/^[1-4]$/.test(e.key)) responder(+e.key-1);
         else if(S.elegida!==null&&e.key==="Enter"){ if(enBoton) return; e.preventDefault(); siguiente(); }
+      }else if(S.tipo==="s"&&!S.listo){
+        if(/^[1-4]$/.test(e.key)) elegirSim(+e.key-1);
+        else if(e.key==="Enter"){ if(enBoton) return; e.preventDefault(); sigSim(); }
       }
     });
     pintar();
+    abrirDesafioDelEnlace();   /* v2.8: si se abrió un enlace de desafío */
+    window.addEventListener("hashchange",abrirDesafioDelEnlace);
     setTimeout(guardarEmpezados,4000);   /* cuando la app ya se mostró, sin competir con lo que se está viendo */
   }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",iniciar); else setTimeout(iniciar,0);
   window.__estudio={mazos:MAZOS,estado:function(){ return E; },resumen:resumen,pintar:pintar,racha:racha,
     lineas:LINEAS, lineaDe:lineaDe, indice:INDICE, listos:LISTOS, cargar:cargarMazo,
+    medir:{aciertos:aciertos,temasDebiles:temasDebiles,actividad:actividad,dominio:dominio,proxima:proxima,planNuevas:planNuevas,nota:nota,simulacros:historialSim},
     articulos:function(m){ return preguntasDeArticulos(m).length; },
     recargar:function(){ E=cargar(); V={m:null,l:null,vt:false,sel:{}}; S=null; pintar(); }};
 })();

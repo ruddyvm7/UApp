@@ -1133,7 +1133,9 @@ body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition
 .pr-nota{margin:0;font-size:12px;color:var(--muted);line-height:1.45}
 
 </style>
-<link rel="stylesheet" href="estudiar/estudiar.css?v=eb3fcbc25d4f">
+<link rel="stylesheet" href="estudiar/estudiar.css?v=7e90d70f4807">
+<link rel="stylesheet" href="respaldo/respaldo.css?v=1433a5a01eee">
+<link rel="stylesheet" href="envivo/envivo.css?v=a61a2dfbfc5d">
 <div id="jornadaOverlay" class="jov">
   <div class="jov-card">
     <img class="jov-logo" id="jovLogo" alt="UApp">
@@ -1303,6 +1305,8 @@ body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition
 
   <div id="guiaBox"></div>
 
+  <div id="respaldoBox"></div>
+
   <div id="infoCCEE">
   <div class="ihd">Tu Centro de Estudiantes</div>
   <div id="infoSolic" class="solbox" style="margin-bottom:10px">
@@ -1403,7 +1407,7 @@ body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition
   <div class="legal-box">
     <button class="legal-x" id="legalX" aria-label="Cerrar">✕</button>
     <h3 class="serif">Privacidad</h3>
-    <p>UApp es una herramienta gratuita creada por el Centro de Estudiantes de Derecho Vespertino TECH. Tu avance, notas y ramos inscritos se guardan <b>únicamente en este dispositivo</b> (en el navegador): no se envían a ningún servidor ni los vemos nosotros, y no recopilamos datos personales. Los formularios externos (reportes y solicitudes) son de Microsoft y se rigen por sus propias políticas.</p><p>Las preguntas que escribes al asistente <b>Dona Tech</b> se registran de forma <b>anónima</b> —solo el texto de la pregunta, sin tu identidad, sesión ni dispositivo— con el único fin de mejorar las respuestas. No son visibles para quienes administran la aplicación, se revisan periódicamente y se eliminan pasado el tiempo necesario. Por eso te pedimos <b>no escribir datos personales</b> en el asistente.</p>
+    <p>UApp es una herramienta gratuita creada por el Centro de Estudiantes de Derecho Vespertino TECH. Tu avance, notas y ramos inscritos se guardan <b>únicamente en este dispositivo</b> (en el navegador): no se envían a ningún servidor ni los vemos nosotros, y no recopilamos datos personales. Los formularios externos (reportes y solicitudes) son de Microsoft y se rigen por sus propias políticas.</p><p>Las preguntas que escribes al asistente <b>Dona Tech</b> se registran de forma <b>anónima</b> —solo el texto de la pregunta, sin tu identidad, sesión ni dispositivo— con el único fin de mejorar las respuestas. No son visibles para quienes administran la aplicación, se revisan periódicamente y se eliminan pasado el tiempo necesario. Por eso te pedimos <b>no escribir datos personales</b> en el asistente.</p><p>En el <b>modo en vivo</b> solo se envía la alternativa que eliges, junto a un código al azar de tu teléfono: nunca tu nombre. Las salas se cierran al día siguiente. Los <b>reportes de error</b> de las tarjetas llegan al CCEE sin tu nombre, y un <b>desafío</b> lleva tu resultado en el enlace, no tu nombre. El <b>respaldo</b> es un archivo que queda en tu teléfono: UApp no lo recibe y no incluye tu RUT.</p>
     <h3 class="serif">Términos de uso</h3>
     <p>UApp es una <b>herramienta de apoyo referencial</b> hecha por estudiantes; no es un sistema oficial de la Universidad. La información (fechas, horarios, calendario, oferta de ramos y reglamento) puede cambiar: confirma siempre con las fuentes oficiales (Registro Curricular y la Dirección de Carrera) antes de tomar decisiones. El uso de la app es de tu responsabilidad.</p>
   </div>
@@ -3564,6 +3568,31 @@ function _pruColHTML(c,prox){
   return `<div class="ecol${c.st==="pasada"?" pasada":""}${prox?" prox":""}"><div class="ecl">${c.lbl}</div><div class="ecv">${c.html}</div>`+
     (c.st==="pasada"?'<span class="eya-sr">, ya pasó</span>':(prox?`<div class="efalta">${prox}</div>`:""))+`</div>`;   /* el tachado no se lee en voz alta */
 }
+/* Para otras secciones (Estudiar, v2.7): la próxima evaluación de un ramo que el estudiante tiene inscrito,
+   con su sección si la eligió. null si no lo tiene inscrito, si el calendario no está publicado o si ya no le quedan fechas. */
+function _pruNorm(s){ return String(s||"").replace(/\([^)]*\)/g," ").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g," ").trim().replace(/\breorg\b/g,"reorganizacion"); }
+window.__fechas={proxima:function(nombre){
+  try{
+    if(!pruebasVisibles())return null;
+    var n=_pruNorm(nombre), ids=Object.keys(insc).map(Number), e=null;
+    for(var i=0;i<EVALS.length;i++){ if(_pruNorm(EVALS[i].asig)===n){ e=EVALS[i]; break; } }
+    if(!e||e.solo)return null;
+    var cols;
+    if(PRU_REG==="sem"){
+      if(!ids.some(function(id){ var p=String(insc[id]||"").indexOf("na_")===0?"na":"aj"; return (e[p]||[]).indexOf(id)>=0; }))return null;
+      cols=[{lbl:"1ª evaluación",mds:e.e1||[]},{lbl:"2ª evaluación",mds:e.e2||[]}];
+      if(e.e3&&e.e3.length)cols.push({lbl:"3ª evaluación",mds:e.e3});
+      cols.push({lbl:"Examen",mds:e.noExam?[]:["12-05~12-11"],na:!!e.noExam});
+    } else {
+      var idIns=_pruIdIns(e,ids); if(idIns==null)return null;
+      var sec=keySec(insc[idIns]);
+      cols=[{lbl:"1ª prueba",mds:_pruMds(e.p1,sec)},{lbl:"2ª prueba",mds:_pruMds(e.p2,sec)},{lbl:"Examen final",mds:(e.fin&&e.fin!=="?")?[e.fin]:[],na:!e.fin}];
+    }
+    var t=_pruTarjeta(cols); if(!t.next)return null;
+    var md=null; cols[t.ip].mds.forEach(function(x){ var r=_pruRango(x); if(r&&r.a.getTime()===t.next.getTime())md=x; });
+    return {nombre:cols[t.ip].lbl, dias:Math.round((t.next-_pruHoy())/864e5), texto:md?fmtOne(md):"", falta:t.falta};
+  }catch(err){ return null; }
+}};
 function renderPru(mode,dest){
   const ib=document.getElementById("inscBox"), el=dest||document.getElementById("pruList");
   const ids=Object.keys(insc).map(Number);
@@ -5652,7 +5681,9 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
 })();
 
 </script>
-<script src="estudiar/estudiar.js?v=005d1cc9bd0e"></script>
+<script src="estudiar/estudiar.js?v=d945b2735f76"></script>
+<script src="respaldo/respaldo.js?v=9f2d396f5e3a"></script>
+<script src="envivo/envivo.js?v=18521860b35e"></script>
 <script>
 /* ═══ UApp · funciones tomadas de la revisión de apps similares ═══
    1. Horario de clases al calendario del teléfono (como TUM Campus App)

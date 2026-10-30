@@ -1,0 +1,51 @@
+/* ═══ UApp · Modo en vivo: estilos (prefijo «ev-») ═══ */
+html.ev-abierto body{overflow:hidden}
+.ev-panel{position:fixed;inset:0;z-index:9000;background:var(--bg);color:var(--ink);overflow-y:auto;-webkit-overflow-scrolling:touch}
+.ev-cab{position:sticky;top:0;display:flex;align-items:center;gap:10px;padding:14px 16px;background:var(--bg);border-bottom:1px solid var(--cb);z-index:1}
+.ev-cab b{font-size:17px;font-weight:900;color:var(--wine)}
+.ev-sala{font-size:13px;font-weight:800;color:var(--muted)}
+.ev-x{margin-left:auto;width:40px;height:40px;border:0;border-radius:999px;background:var(--u2-tinte);color:var(--wine);font:inherit;font-size:16px;font-weight:900;cursor:pointer}
+.ev-cuerpo{max-width:640px;margin:0 auto;padding:20px 16px 48px;display:flex;flex-direction:column;gap:12px}
+.ev-h{margin:0;font-size:22px;font-weight:900;line-height:1.2}
+.ev-txt{margin:0;font-size:15px;line-height:1.5}
+.ev-nota{margin:0;font-size:13px;color:var(--muted);line-height:1.45}
+.ev-msj{margin:0;padding:10px 12px;border-radius:14px;background:var(--u2-no);color:var(--ink);font-size:14px}
+.ev-form{display:flex;flex-direction:column;gap:12px}
+.ev-lbl{margin:0;font-size:13px;font-weight:800;color:var(--muted)}
+.ev-cod{font:inherit;font-size:30px;font-weight:900;letter-spacing:.3em;text-transform:uppercase;text-align:center;padding:12px;border:2px solid var(--cb);border-radius:18px;background:var(--card);color:var(--ink)}
+.ev-cod:focus{outline:none;border-color:var(--wine)}
+.ev-btn{min-height:52px;border:0;border-radius:18px;background:var(--wine);color:#fff;font:inherit;font-size:16px;font-weight:800;cursor:pointer}
+.ev-btn[disabled]{opacity:.6;cursor:default}
+.ev-cant{display:flex;gap:8px;flex-wrap:wrap}
+.ev-c{min-width:56px;min-height:44px;border:1.5px solid var(--cb);border-radius:999px;background:var(--card);color:var(--ink);font:inherit;font-size:15px;font-weight:800;cursor:pointer}
+.ev-c.on{background:var(--wine);border-color:var(--wine);color:#fff}
+.ev-codigo{margin:6px 0;font-size:56px;font-weight:900;letter-spacing:.18em;text-align:center;color:var(--wine);font-variant-numeric:tabular-nums}
+.ev-paso{margin:0;font-size:13px;font-weight:800;color:var(--muted)}
+.ev-preg{margin:0;font-size:18px;font-weight:800;line-height:1.4}
+.ev-ops{display:flex;flex-direction:column;gap:8px}
+.ev-op{display:flex;align-items:center;gap:12px;width:100%;text-align:left;min-height:52px;padding:11px 14px;border:1.5px solid var(--cb);border-radius:16px;background:var(--card);font:inherit;font-size:15px;line-height:1.35;color:var(--ink);cursor:pointer}
+.ev-op b{flex:0 0 28px;height:28px;border-radius:999px;background:var(--u2-tinte);color:var(--wine);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800}
+.ev-op[disabled]{cursor:default}
+.ev-op.sel{border-color:var(--wine);background:var(--u2-tinte)}
+.ev-op.sel b{background:var(--wine);color:#fff}
+.ev-op.ok{border-color:var(--u2-okb);background:var(--u2-ok)}
+.ev-op.ok b{background:var(--u2-okt);color:var(--card)}
+.ev-op.mal{border-color:var(--u2-nob);background:var(--u2-no)}
+.ev-op.mal b{background:var(--u2-not);color:var(--card)}
+.ev-cuenta{margin:0;text-align:center;font-size:22px;font-weight:900;color:var(--wine)}
+.ev-por{padding:12px 14px;border-radius:16px;background:var(--card);box-shadow:var(--u2-sombra);font-size:14px;line-height:1.45}
+.ev-por p{margin:6px 0 0}
+.ev-barras{display:flex;flex-direction:column;gap:6px}
+.ev-barra{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:800}
+.ev-b-l{width:20px;color:var(--muted)}
+.ev-b-t{flex:1;height:14px;border-radius:999px;background:var(--cb);overflow:hidden}
+.ev-b-t i{display:block;height:100%;border-radius:999px;background:var(--muted)}
+.ev-barra.ok .ev-b-t i{background:var(--ok)}
+.ev-b-n{min-width:28px;text-align:right;font-variant-numeric:tabular-nums}
+.ev-grande{margin:0;font-size:44px;font-weight:900;color:var(--wine)}
+.ev-espera{animation:ev-pulso 1.6s ease-in-out infinite}
+@keyframes ev-pulso{50%{opacity:.45}}
+@media (prefers-reduced-motion:reduce){.ev-espera{animation:none}}
+body.reduce-motion .ev-espera{animation:none}
+.ev-resumen{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.4}
+.ev-resumen small{display:block;color:var(--muted)}

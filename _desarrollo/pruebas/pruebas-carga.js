@@ -6,7 +6,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const STUB_SB='<script>window.supabase={createClient:function(){var q={select:function(){return q},eq:function(){return q},gte:function(){return q},order:function(){return q},insert:function(){return Promise.resolve({error:null})},then:function(ok){return Promise.resolve({data:[],error:null}).then(ok)}};return {from:function(){return q}}}};<\/script>';
 const prep=f=>fs.readFileSync(f,'utf8').replace(/<script src="https:\/\/cdn[^>]*supabase[^>]*><\/script>/,STUB_SB);
 const NUEVO=prep(process.argv[2]||'trabajo.html');
-/* opcional: la versión anterior de index.html, para comparar que todas las pantallas se vean igual */
+/* opcional: otra versión de index.html para comparar pantallas; sin ella se compara el contenido completo con solo el índice */
 const ORIGINAL=process.argv[3]&&fs.existsSync(process.argv[3])?prep(process.argv[3]):null;
 const MAZOS_DIR=process.argv[4]||[require('path').join(__dirname,'..','..','estudiar','mazos'),'uapp/estudiar/mazos'].find(p=>fs.existsSync(p));
 const DATOS={}; fs.readdirSync(MAZOS_DIR).filter(f=>f.endsWith('.json')).forEach(f=>DATOS[f.slice(0,-5)]=JSON.parse(fs.readFileSync(MAZOS_DIR+'/'+f,'utf8')));
@@ -33,9 +33,10 @@ idsTO.forEach((id,i)=>{ PROG.c['teoria-obligaciones/'+id]={iv:i<3?1:30,ef:2.5,n:
 const LS={'uapp_estudio_v1':JSON.stringify(PROG)};
 
 /* recorre todas las pantallas de Estudiar que no necesitan el contenido y guarda lo que muestran */
-async function recorrido(html,nuevo){
+async function recorrido(html,modo){
   const d=abrir(html,[2026,9,13,10,0],LS), w=d.window, doc=w.document; await sleep(1100);
-  if(nuevo) w.fetch=()=>new Promise(()=>{});   /* el contenido nunca llega: todo sale del índice */
+  if(modo==='indice') w.fetch=()=>new Promise(()=>{});   /* el contenido nunca llega: todo sale del índice */
+  else if(modo==='completo') await Promise.all(Object.keys(w.__estudio.indice).map(k=>w.__estudio.cargar(k)));   /* todo descargado antes de mirar */
   const out={}, app=()=>doc.getElementById('estudioApp').innerHTML;
   out.inicio=doc.getElementById('repasoBox').innerHTML;
   clic(doc,'.tab[data-tab="pru"]'); await sleep(100); clic(doc,'#pru [data-ir="estudio"]'); await sleep(100);
@@ -58,11 +59,11 @@ async function recorrido(html,nuevo){
 
 (async()=>{try{
   /* ═══ 1. Todo se ve igual que antes, sin descargar ningún mazo ═══ */
-  if(ORIGINAL){
-  const A=await recorrido(ORIGINAL,false), B=await recorrido(NUEVO,true);
+  {
+  const A=await recorrido(ORIGINAL||NUEVO,ORIGINAL?'original':'completo'), B=await recorrido(NUEVO,'indice');
   const claves=Object.keys(A), distintas=claves.filter(k=>A[k]!==B[k]);
-  ok('Mismas pantallas que antes: '+claves.length+' vistas comparadas (Inicio, portada, 9 líneas, 17 ramos y sus temas)', claves.length>=30 && claves.join()===Object.keys(B).join());
-  ok('  idénticas, aunque el contenido de los ramos no se descargó'+(distintas.length?' — distintas: '+distintas.slice(0,4).join(', '):''), distintas.length===0);
+  ok('Mismas pantallas '+(ORIGINAL?'que la otra versión':'con el contenido completo y solo con el índice')+': '+claves.length+' vistas comparadas (Inicio, portada, 9 líneas, 17 ramos y sus temas)', claves.length>=30 && claves.join()===Object.keys(B).join());
+  ok('  idénticas, sin descargar el contenido de ningún ramo'+(distintas.length?' — distintas: '+distintas.slice(0,4).join(', '):''), distintas.length===0);
   ok('  el recorrido incluye la portada con racha, «Repaso de hoy», los ramos con temas y la opción Artículos', /Racha de/.test(A.portada) && /Repaso de hoy/.test(A.inicio) && /Artículos/.test(A['ramo acto-juridico']) && !!A['temas teoria-obligaciones (2)']);
   }
 

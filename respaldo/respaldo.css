@@ -1,0 +1,15 @@
+/* ═══ UApp · Respaldo de tus datos: estilos (prefijo «rs-») ═══ */
+.rs-card{background:var(--card);border-radius:22px;box-shadow:var(--u2-sombra);padding:16px 18px;margin:14px 0;display:flex;flex-direction:column;gap:10px}
+.rs-cab{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.rs-cab b{font-size:16px;font-weight:800;color:var(--ink)}
+.rs-cab span{font-size:12px;color:var(--muted)}
+.rs-txt{margin:0;font-size:14px;line-height:1.45;color:var(--ink)}
+.rs-btns,.rs-conf{display:flex;flex-wrap:wrap;gap:8px}
+.rs-conf{margin-top:10px}
+.rs-btn{min-height:44px;padding:0 16px;border:0;border-radius:999px;background:var(--wine);color:#fff;font:inherit;font-size:14px;font-weight:800;cursor:pointer}
+.rs-btn.sec{background:var(--u2-tinte);color:var(--wine)}
+.rs-oculto{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.rs-msg{font-size:13.5px;line-height:1.45;color:var(--ink)}
+.rs-msg:empty{display:none}
+.rs-msg.ok{color:var(--ok)}
+.rs-msg.mal{color:var(--no)}
