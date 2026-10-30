@@ -908,6 +908,18 @@ body.dark{--u2-ok:#16301F;--u2-okb:#2C5A3A;--u2-okt:#8FD3A6;--u2-no:#3A1F1C;--u2
 .ecol{background:var(--bg)!important;border:0!important;border-radius:16px!important;padding:10px 12px!important}
 .ecl{text-transform:none!important;letter-spacing:0!important;color:var(--muted)!important;font-size:12px!important;font-weight:700!important;margin-bottom:2px!important}
 .ecv,.edbig{color:var(--ink)!important;font-size:15px!important;font-weight:800!important}
+/* Fechas: lo que ya pasó se tacha y la próxima evaluación de cada ramo se destaca */
+.ecol.pasada{background:transparent!important;box-shadow:inset 0 0 0 1px var(--cb)}
+.ecol.pasada .ecl,.ecol.pasada .ecv,.ecol.pasada .edbig,.ecol.pasada .edsec{color:var(--muted)!important}
+.ecol.pasada .ecv{text-decoration:line-through;text-decoration-thickness:1.5px}
+.edpast{color:var(--muted)!important;text-decoration:line-through;text-decoration-thickness:1.5px}
+.eya-sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ecol.prox{background:var(--u2-tinte)!important;box-shadow:inset 0 0 0 1.5px var(--wine)}
+.ecol.prox .ecl{color:var(--wine)!important}
+.efalta{margin-top:3px;font-size:12px;font-weight:800;color:var(--wine)}
+.ecard.eterm{background:transparent!important;box-shadow:none!important;border:1.5px dashed var(--cb2)!important}
+.ecard.eterm .ehead b{color:var(--muted)!important}
+.eya-sep{margin:18px 4px 10px;font-size:13px;font-weight:800;color:var(--muted)}
 
 /* ── Calculadora de notas ── */
 .calchead{text-align:left!important}
@@ -3658,11 +3670,58 @@ function fmtEval(arr){
   return arr.map(([md,s])=>`<span class="edseg"><span class="edsec">S${s}</span> ${fmtOne(md)}</span>`).join("");
 }
 function pruEarliest(e){const ds=[...(e.p1||[]),...(e.p2||[])].map(x=>x[0]).concat(e.e1||[],e.e2||[],e.e3||[]).filter(Boolean).map(x=>String(x).replace(/^~/,""));return ds.length?ds.slice().sort()[0]:"99-99";}
+/* ── Fechas que ya pasaron: se tachan, y cada ramo destaca su próxima evaluación ──
+   Una fecha del calendario puede ser "MM-DD", "~MM-DD" (la semana que parte ese día) o "MM-DD~MM-DD" (un rango). */
+var PRU_ANIO=2026;
+function _pruDia(s){ return new Date(PRU_ANIO,+s.slice(0,2)-1,+s.slice(3)); }
+function _pruHoy(){ var t=new Date(); return new Date(t.getFullYear(),t.getMonth(),t.getDate()); }
+function _pruRango(md){
+  if(!md||md==="?")return null; md=String(md);
+  if(md.indexOf("~")<0){ var d=_pruDia(md); return {a:d,b:d}; }
+  var p=md.split("~");
+  if(!p[0]){ var a=_pruDia(p[1]), b=new Date(a); b.setDate(b.getDate()+6); return {a:a,b:b}; }
+  return {a:_pruDia(p[0]),b:_pruDia(p[1])};
+}
+/* "pasada" si ya terminó, "hoy" si es hoy o está en curso, "" si viene o no tiene fecha */
+function pruEstado(md){ var r=_pruRango(md); if(!r)return ""; var h=_pruHoy(); return r.b<h?"pasada":(r.a<=h?"hoy":""); }
+function pruFalta(md){
+  var r=_pruRango(md); if(!r)return ""; var n=Math.round((r.a-_pruHoy())/864e5);
+  if(n<=0)return r.a.getTime()===r.b.getTime()?"Hoy":"Esta semana";
+  return n===1?"Mañana":"En "+n+" días";
+}
+function _pruCls(md){ return pruEstado(md)==="pasada"?" edpast":""; }
 function fmtEvalCol(arr,sec){
   if(!arr||!arr.length)return '<span class="ednone">Por confirmar</span>';
-  if(sec){const f=arr.find(x=>String(x[1])===String(sec));if(f)return `<span class="edbig">${fmtOne(f[0])}</span>`;}
-  if(arr.length===1){const [md,s]=arr[0];return `<span class="edbig">${fmtOne(md)}</span>`+(s!=null?`<span class="edsec"> (S${s})</span>`:"");}
-  return arr.map(([md,s])=>`<span class="edseg"><span class="edsec">S${s}</span> ${fmtOne(md)}</span>`).join("");
+  if(sec){const f=arr.find(x=>String(x[1])===String(sec));if(f)return `<span class="edbig${_pruCls(f[0])}">${fmtOne(f[0])}</span>`;}
+  if(arr.length===1){const [md,s]=arr[0];return `<span class="edbig${_pruCls(md)}">${fmtOne(md)}</span>`+(s!=null?`<span class="edsec"> (S${s})</span>`:"");}
+  return arr.map(([md,s])=>`<span class="edseg${_pruCls(md)}"><span class="edsec">S${s}</span> ${fmtOne(md)}</span>`).join("");
+}
+/* fechas que se muestran en una columna: con sección conocida, solo la de esa sección */
+function _pruMds(arr,sec){
+  if(!arr||!arr.length)return [];
+  if(sec){const f=arr.find(x=>String(x[1])===String(sec));if(f)return [f[0]];}
+  return arr.map(x=>x[0]);
+}
+/* Estado de cada columna y de la tarjeta: la próxima evaluación pendiente y si ya pasó todo.
+   «Por confirmar» cuenta como pendiente; «No aplica» y «No rinde examen», no. */
+function _pruTarjeta(cols){
+  var next=null, nextMd=null, ip=-1, conFecha=false, pend=false;
+  cols.forEach(function(c,i){
+    if(c.na){ c.st=""; return; }
+    var est=c.mds.map(pruEstado);
+    c.st=!c.mds.length?"":(est.every(function(s){ return s==="pasada"; })?"pasada":(est.indexOf("hoy")>=0?"hoy":""));
+    if(c.mds.length)conFecha=true;
+    if(c.st!=="pasada")pend=true;
+    c.mds.forEach(function(md){
+      var r=_pruRango(md); if(!r||pruEstado(md)==="pasada")return;
+      if(!next||r.a<next){ next=r.a; nextMd=md; ip=i; }
+    });
+  });
+  return {next:next, ip:ip, falta:nextMd?pruFalta(nextMd):"", term:conFecha&&!pend};
+}
+function _pruColHTML(c,prox){
+  return `<div class="ecol${c.st==="pasada"?" pasada":""}${prox?" prox":""}"><div class="ecl">${c.lbl}</div><div class="ecv">${c.html}</div>`+
+    (c.st==="pasada"?'<span class="eya-sr">, ya pasó</span>':(prox?`<div class="efalta">${prox}</div>`:""))+`</div>`;   /* el tachado no se lee en voz alta */
 }
 function renderPru(mode,dest){
   const ib=document.getElementById("inscBox"), el=dest||document.getElementById("pruList");
@@ -3688,8 +3747,8 @@ function renderPru(mode,dest){
     return _pruIdIns(e,ids)!=null;
   });
   if(mode==="mine"&&!list.length){el.innerHTML="";return;}
-  const colD=a=>(!a||!a.length)?'<span class="ednone">Por confirmar</span>':(a.length===1?`<span class="edbig">${fmtOne(a[0])}</span>`:a.map(md=>`<span class="edseg">${fmtOne(md)}</span>`).join(""));
-  el.innerHTML=(PRU_NOTE?`<div class="pinfo">📅 ${PRU_NOTE}</div>`:"")+list.map(e=>{
+  const colD=a=>(!a||!a.length)?'<span class="ednone">Por confirmar</span>':(a.length===1?`<span class="edbig${_pruCls(a[0])}">${fmtOne(a[0])}</span>`:a.map(md=>`<span class="edseg${_pruCls(md)}">${fmtOne(md)}</span>`).join(""));
+  const tarjetas=list.map(e=>{
     if(PRU_REG==="sem"){
       let secTxt="";
       if(mode==="mine"){
@@ -3700,22 +3759,32 @@ function renderPru(mode,dest){
       /* La 3ª columna solo se muestra si el ramo tiene tercera evaluación.
          Si e1 falta en primer año (niv 1-2), la evaluación existe pero la fija el departamento → "Por confirmar". */
       const tieneE3=!!(e.e3&&e.e3.length);
-      const cols=[
-        `<div class="ecol"><div class="ecl">1ª evaluación</div><div class="ecv">${colD(e.e1)}</div></div>`,
-        `<div class="ecol"><div class="ecl">2ª evaluación</div><div class="ecv">${colD(e.e2)}</div></div>`
-      ];
-      if(tieneE3)cols.push(`<div class="ecol"><div class="ecl">3ª evaluación</div><div class="ecv">${colD(e.e3)}</div></div>`);
-      cols.push(`<div class="ecol"><div class="ecl">Examen</div><div class="ecv">${ex}</div></div>`);
-      const gridCls=tieneE3?"ecols ecols4":"ecols ecols3";
-      return `<div class="ecard"><div class="ehead"><b>${e.asig}</b><span class="eniv">Nivel ${e.niv}${e.plan==="na"?" · No ajustada":""}${e.alt?" · alterna":""}${secTxt}</span></div><div class="${gridCls}">${cols.join("")}</div>${e.note?`<div class="enote">${e.note}</div>`:""}</div>`;
+      const cols=[{lbl:"1ª evaluación",mds:e.e1||[],html:colD(e.e1)},{lbl:"2ª evaluación",mds:e.e2||[],html:colD(e.e2)}];
+      if(tieneE3)cols.push({lbl:"3ª evaluación",mds:e.e3,html:colD(e.e3)});
+      cols.push({lbl:"Examen",mds:e.noExam?[]:["12-05~12-11"],na:!!e.noExam,html:ex});
+      const t=_pruTarjeta(cols), gridCls=tieneE3?"ecols ecols4":"ecols ecols3";
+      return {next:t.next,term:t.term,html:`<div class="ecard${t.term?" eterm":""}"><div class="ehead"><b>${e.asig}</b><span class="eniv">Nivel ${e.niv}${e.plan==="na"?" · No ajustada":""}${e.alt?" · alterna":""}${secTxt}</span></div><div class="${gridCls}">${cols.map((c,i)=>_pruColHTML(c,i===t.ip?t.falta:"")).join("")}</div>${e.note?`<div class="enote">${e.note}</div>`:""}</div>`};
     }
     const idIns=(mode==="mine")?_pruIdIns(e,ids):null;
     const sec=(idIns!=null)?keySec(insc[idIns]):0;
     const secTxt=sec?` · S${sec}`:"";
-    const finTxt=(e.fin==="?")?'<span class="ednone">Por confirmar</span>':(e.fin?`<span class="edbig">${fmtOne(e.fin)}</span>`:"No aplica");
-    const colsTri=e.solo?"":`<div class="ecols"><div class="ecol"><div class="ecl">1ª prueba</div><div class="ecv">${fmtEvalCol(e.p1,sec)}</div></div><div class="ecol"><div class="ecl">2ª prueba</div><div class="ecv">${fmtEvalCol(e.p2,sec)}</div></div><div class="ecol"><div class="ecl">Examen final</div><div class="ecv">${finTxt}</div></div></div>`;
-    return `<div class="ecard"><div class="ehead"><b>${e.asig}</b><span class="eniv">Nivel ${e.niv}${e.plan==="na"?" · Plan No Ajustado":""}${e.alt?" · alterno":""}${secTxt}</span></div>${colsTri}${e.note?`<div class="enote">${e.note}</div>`:""}</div>`;
-  }).join("");
+    const finTxt=(e.fin==="?")?'<span class="ednone">Por confirmar</span>':(e.fin?`<span class="edbig${_pruCls(e.fin)}">${fmtOne(e.fin)}</span>`:"No aplica");
+    const cols=e.solo?[]:[{lbl:"1ª prueba",mds:_pruMds(e.p1,sec),html:fmtEvalCol(e.p1,sec)},{lbl:"2ª prueba",mds:_pruMds(e.p2,sec),html:fmtEvalCol(e.p2,sec)},
+                          {lbl:"Examen final",mds:(e.fin&&e.fin!=="?")?[e.fin]:[],na:!e.fin,html:finTxt}];
+    const t=_pruTarjeta(cols);
+    const colsTri=e.solo?"":`<div class="ecols">${cols.map((c,i)=>_pruColHTML(c,i===t.ip?t.falta:"")).join("")}</div>`;
+    return {next:t.next,term:t.term,html:`<div class="ecard${t.term?" eterm":""}"><div class="ehead"><b>${e.asig}</b><span class="eniv">Nivel ${e.niv}${e.plan==="na"?" · Plan No Ajustado":""}${e.alt?" · alterno":""}${secTxt}</span></div>${colsTri}${e.note?`<div class="enote">${e.note}</div>`:""}</div>`};
+  });
+  /* En «tus ramos», primero lo que viene (por fecha) y al final los ramos que ya rindieron todo */
+  let cuerpo;
+  if(mode==="mine"){
+    const orden=tarjetas.map((t,i)=>({t:t,i:i}));
+    const grupo=x=>x.t.term?2:(x.t.next?0:1);
+    orden.sort((x,y)=>grupo(x)-grupo(y)||(grupo(x)===0?x.t.next-y.t.next:0)||x.i-y.i);
+    const vivas=orden.filter(x=>!x.t.term), listas=orden.filter(x=>x.t.term);
+    cuerpo=vivas.map(x=>x.t.html).join("")+(listas.length?`<div class="eya-sep">Ya pasaron todas sus fechas</div>`+listas.map(x=>x.t.html).join(""):"");
+  } else cuerpo=tarjetas.map(t=>t.html).join("");
+  el.innerHTML=(PRU_NOTE?`<div class="pinfo">📅 ${PRU_NOTE}</div>`:"")+cuerpo;
 }
 /* ---------- Todas las pruebas (calendario completo, en ventana) ---------- */
 var allPruModal=document.getElementById("allPruModal");
