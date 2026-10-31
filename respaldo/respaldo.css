@@ -6,7 +6,7 @@
 .rs-txt{margin:0;font-size:14px;line-height:1.45;color:var(--ink)}
 .rs-btns,.rs-conf{display:flex;flex-wrap:wrap;gap:8px}
 .rs-conf{margin-top:10px}
-.rs-btn{min-height:44px;padding:0 16px;border:0;border-radius:999px;background:var(--wine);color:#fff;font:inherit;font-size:14px;font-weight:800;cursor:pointer}
+.rs-btn{min-height:44px;padding:0 16px;border:0;border-radius:999px;background:var(--wine-fondo);color:#fff;font:inherit;font-size:14px;font-weight:800;cursor:pointer}
 .rs-btn.sec{background:var(--u2-tinte);color:var(--wine)}
 .rs-oculto{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 .rs-msg{font-size:13.5px;line-height:1.45;color:var(--ink)}

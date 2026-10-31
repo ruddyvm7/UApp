@@ -13,10 +13,13 @@ const stub=`<script>(function(){
   window.supabase={createClient:function(){return {from:function(t){return new Q(t);}};}};
 })();<\/script>`;
 const html=base.replace(/<script src="https:\/\/cdn[^>]*supabase[^>]*><\/script>/,stub);
-const dia=n=>{const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+n);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
+/* v2.8.1 · fecha fija (14 de octubre de 2026): antes la prueba dependía del día en que se corría */
+const HOY=new Date(2026,9,14,10,0);
+const dia=n=>{const d=new Date(HOY);d.setHours(0,0,0,0);d.setDate(d.getDate()+n);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
 let confirmados=0;
 function abrir(url,tablas,ls){return new JSDOM(html,{runScripts:"dangerously",pretendToBeVisual:true,url,
-  beforeParse(w){ w.__TABLAS=tablas||{}; Object.entries(ls||{}).forEach(([k,v])=>w.localStorage.setItem(k,v));
+  beforeParse(w){ const Re=w.Date,fx=HOY.getTime();class F extends Re{constructor(...a){if(a.length)super(...a);else super(fx);}static now(){return fx;}}F.UTC=Re.UTC;F.parse=Re.parse;w.Date=F;
+    w.__TABLAS=tablas||{}; Object.entries(ls||{}).forEach(([k,v])=>w.localStorage.setItem(k,v));
     w.URL.createObjectURL=()=>"blob:x"; w.URL.revokeObjectURL=()=>{};
     w.scrollTo=()=>{};w.confirm=()=>{confirmados++;return true;};w.matchMedia=q=>({matches:false,addEventListener(){},removeEventListener(){},addListener(){},removeListener(){}});}});}
 const T=el=>el?el.textContent.replace(/\s+/g,' ').trim():'';

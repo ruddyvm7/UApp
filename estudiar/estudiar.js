@@ -61,8 +61,8 @@
     });
   }
   function cargarMazo(m){
+    if(!Object.prototype.hasOwnProperty.call(INDICE,m)) return Promise.reject(new Error("Mazo desconocido: "+m));   /* «constructor» no es un ramo */
     if(LISTOS[m]) return Promise.resolve(MAZOS[m]);
-    if(!INDICE[m]) return Promise.reject(new Error("Mazo desconocido: "+m));
     if(CARGANDO[m]) return CARGANDO[m];
     var p=traer(urlMazo(m)).then(function(M){
       if(!M||!Array.isArray(M.tarjetas)||!Array.isArray(M.preguntas)) throw new Error("Mazo incompleto: "+m);
@@ -119,12 +119,52 @@
   function refs(x){ var t=tema(x); return t?'<div class="es-meta">'+fuente(x.r)+'<span class="es-tema">'+esc(t)+'</span></div>':fuente(x.r); }
 
   /* ── progreso guardado en el teléfono ── */
-  function cargar(){ try{ var o=JSON.parse(localStorage.getItem(CLAVE)||"{}"); o.c=o.c||{}; o.h=o.h||{}; o.p=o.p||{}; o.n=o.n||{}; o.cfg=o.cfg||{}; o.r=Array.isArray(o.r)?o.r:[]; o.rep=o.rep||{}; return o; }catch(e){ return {c:{},h:{},p:{},n:{},cfg:{},r:[],rep:{}}; } }
-  var E=cargar();
-  function guardar(){ try{ localStorage.setItem(CLAVE,JSON.stringify(E)); }catch(e){} }
   /* registro de cada respuesta: [día, ramo, id, resultado]; tarjetas «v», «a» o «r», preguntas 1 o 0.
      Todavía no se muestra: sirve para que las estadísticas por tema tengan historia desde el primer día */
   var MAX_REGISTRO=4000;
+  /* v2.8.1 · lo guardado se revisa al cargar y se rehace con la forma que escribe la app: números donde van números,
+     fechas donde van fechas, y nada más. Así un respaldo editado a mano no puede meter texto (ni código) en la pantalla */
+  var RE_CLAVE=/^[a-z0-9-]{1,60}\/[A-Za-z0-9_-]{1,70}$/, RE_RONDA=/^[a-z0-9-]{1,60}(#[a-z]{1,12})?$/, RE_ID=/^[A-Za-z0-9_-]{1,70}$/;
+  function num(x,d){ x=+x; return isFinite(x)?x:(d||0); }
+  function esFecha(x){ return typeof x==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(x); }
+  function esObj(x){ return !!x&&typeof x==="object"&&!Array.isArray(x); }
+  function cada(o,fn){ if(esObj(o)) Object.keys(o).forEach(function(k){ fn(k,o[k]); }); }
+  function sanear(o){
+    var out={c:{},h:{},p:{},n:{},cfg:{},r:[],rep:{}};
+    if(!esObj(o)) return out;
+    cada(o.c,function(k,s){
+      if(!RE_CLAVE.test(k)||!esObj(s)||!esFecha(s.due)) return;
+      var t={iv:Math.max(0,num(s.iv)),ef:Math.min(3,Math.max(1.3,num(s.ef,2.5))),n:Math.max(0,num(s.n)),l:Math.max(0,num(s.l)),due:s.due};
+      if(s.u==="v"||s.u==="a"||s.u==="r") t.u=s.u;
+      if(esFecha(s.f)) t.f=s.f;
+      if(esFecha(s.rh)) t.rh=s.rh;
+      out.c[k]=t;
+    });
+    cada(o.h,function(k,x){ if(esFecha(k)&&esObj(x)) out.h[k]={v:Math.max(0,num(x.v)),a:Math.max(0,num(x.a)),r:Math.max(0,num(x.r)),ok:Math.max(0,num(x.ok)),tot:Math.max(0,num(x.tot))}; });
+    cada(o.p,function(k,x){
+      if(!RE_RONDA.test(k)||!esObj(x)||!Array.isArray(x.int)) return;
+      var L=[];
+      x.int.forEach(function(i){
+        if(!esObj(i)) return;
+        var ok=num(i.ok,-1), tot=num(i.tot);
+        if(tot<1||ok<0||ok>tot) return;
+        var y={f:esFecha(i.f)?i.f:"",ok:ok,tot:tot};
+        if(i.nota!=null) y.nota=Math.min(7,Math.max(1,num(i.nota,1)));
+        L.push(y);
+      });
+      if(L.length) out.p[k]={int:L.slice(-30)};
+    });
+    cada(o.n,function(k,x){ if(esFecha(k)) out.n[k]=Math.max(0,num(x)); });
+    if(esObj(o.cfg)&&OPCIONES.indexOf(o.cfg.nuevas)>=0) out.cfg.nuevas=o.cfg.nuevas;
+    if(Array.isArray(o.r)) out.r=o.r.filter(function(x){
+      return Array.isArray(x)&&esFecha(x[0])&&RE_RONDA.test(String(x[1]))&&RE_ID.test(String(x[2]))&&(x[3]==="v"||x[3]==="a"||x[3]==="r"||x[3]===1||x[3]===0);
+    }).map(function(x){ return [x[0],String(x[1]),String(x[2]),x[3]]; }).slice(-MAX_REGISTRO);
+    cada(o.rep,function(k,x){ if(RE_CLAVE.test(k)&&esFecha(x)) out.rep[k]=x; });
+    return out;
+  }
+  function cargar(){ try{ return sanear(JSON.parse(localStorage.getItem(CLAVE)||"{}")); }catch(e){ return sanear(null); } }
+  var E=cargar();
+  function guardar(){ try{ localStorage.setItem(CLAVE,JSON.stringify(E)); }catch(e){} }
   function anotar(m,id,x){ E.r.push([dia(),m,id,x]); if(E.r.length>MAX_REGISTRO) E.r=E.r.slice(-MAX_REGISTRO); }
   /* tarjetas nuevas por día: la elige cada estudiante (10, 20, 30 o todas) */
   function ajuste(){ var n=E.cfg&&E.cfg.nuevas; return (n===undefined||n===null)?NUEVAS_DEF:n; }
@@ -232,6 +272,7 @@
      Con una conexión que no responde, a los 20 s se avisa igual; si el contenido llega después, la sesión empieza sola */
   var ESPERA=null;
   function conMazo(m,fn){
+    if(!Object.prototype.hasOwnProperty.call(INDICE,m)) return;
     if(LISTOS[m]){ fn(); return; }
     var esta={m:m,fn:fn,error:false}; ESPERA=esta; S=null; pintar();
     var reloj=setTimeout(function(){ if(ESPERA===esta&&!esta.error){ esta.error=true; pintar(); } },(+window.__esperaMax)||20000);
@@ -556,10 +597,11 @@
   /* lee un enlace de desafío (#desafio?m=…&q=…): solo acepta preguntas que existen y órdenes válidos */
   function leerDesafio(h){
     if(!/^#desafio\?/.test(h||"")) return null;
-    var p={}; String(h).slice(9).split("&").forEach(function(x){ var i=x.indexOf("="); if(i>0) p[x.slice(0,i)]=decodeURIComponent(x.slice(i+1)); });
-    if(!p.m||!INDICE[p.m]||!p.q) return null;
-    var r=/^(\d+)-(\d+)$/.exec(p.r||""), f=(p.f||"").split(",").map(Number).filter(function(x){ return x>0; });
-    return {m:p.m,t:p.t==="s"?"s":"p",q:p.q.split(",").slice(0,SIM_MAX),o:(p.o||"").split("-"),r:r?{ok:+r[1],tot:+r[2]}:null,f:f.length?f:null};
+    var p={};
+    try{ String(h).slice(9).split("&").forEach(function(x){ var i=x.indexOf("="); if(i>0) p[x.slice(0,i)]=decodeURIComponent(x.slice(i+1)); }); }catch(e){ return null; }   /* enlace cortado o mal copiado */
+    if(!p.m||!Object.prototype.hasOwnProperty.call(INDICE,p.m)||!p.q) return null;   /* solo ramos del índice («constructor» no es un ramo) */
+    var r=/^(\d{1,3})-(\d{1,3})$/.exec(p.r||""), f=(p.f||"").split(",").map(Number).filter(function(x){ return x>0&&x<100&&x%1===0; });
+    return {m:p.m,t:p.t==="s"?"s":"p",q:p.q.split(",").slice(0,SIM_MAX),o:(p.o||"").split("-"),r:r&&+r[1]<=+r[2]?{ok:+r[1],tot:+r[2]}:null,f:f.length?f:null};
   }
   function iniciarDesafio(d){
     var M=MAZOS[d.m], cola=[], P=[];
@@ -693,10 +735,21 @@
         if(f&&(S||ESPERA)&&teclado&&document.getElementById("estudio").style.display!=="none"){ try{ f.focus({preventScroll:true}); }catch(e){} }
       }
     }
+    avisar(app);
     pintarRepaso();
   }
 
   /* ── tarjeta en Inicio ── */
+  /* v2.8.1 · la pantalla de Estudiar ya no es entera una región viva (el lector la leía completa en cada cambio):
+     solo se anuncian sus mensajes de estado («Correcto», «Enlace copiado», «Sin conexión»…) en un aviso aparte */
+  var ultimoAviso="";
+  function avisar(app){
+    var box=document.getElementById("estudioAviso"); if(!box||!app) return;
+    var m=app.querySelector('[role="status"],[role="alert"]'), txt=m?m.textContent.replace(/\s+/g," ").trim().slice(0,240):"";
+    if(txt===ultimoAviso) return;
+    ultimoAviso=txt; box.textContent="";
+    if(txt) setTimeout(function(){ if(ultimoAviso===txt) box.textContent=txt; },60);
+  }
   function pintarRepaso(){
     var box=document.getElementById("repasoBox"); if(!box) return;
     var p=masPendiente(), alguno=false;

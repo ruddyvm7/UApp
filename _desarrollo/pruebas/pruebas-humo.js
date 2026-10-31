@@ -41,7 +41,7 @@ function abrir(url){return new JSDOM(html,{runScripts:"dangerously",pretendToBeV
   ok('Botón de solicitud presente', !!b);
   if(b){ b.click(); await sleep(300); }
   ok('Abre el formulario oficial prellenado', /977P_dy_581Asij/.test(w.__ab||"") && /r(6e1b|c0ce|f345)/.test(w.__ab||""));
-  ok('Con el resumen de una línea', /Validado%20por%20UApp/.test(w.__ab||""));
+  ok('Con el resumen de una línea (autodeclarado, no «validado»)', /Autodeclarado%20en%20UApp/.test(w.__ab||"") && !/Validado/.test(decodeURIComponent(w.__ab||"")));
   console.log(R.join('\n'));
   const f=R.filter(x=>x[0]==='❌').length;
   console.log('\n'+(f===0?'🎉 '+R.length+' checks OK':'⚠️ '+f+' fallos de '+R.length));

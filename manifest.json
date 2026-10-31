@@ -1,11 +1,13 @@
 {
+  "id": "/",
   "name": "UApp · Centro de Estudiantes Derecho",
   "short_name": "UApp",
   "description": "Tu carrera de Derecho en un solo lugar — UA Temuco",
+  "lang": "es-CL",
+  "dir": "ltr",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
   "background_color": "#FBF5F5",
   "theme_color": "#FBF5F5",
   "icons": [

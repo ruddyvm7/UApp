@@ -17,7 +17,8 @@ function servidor(){
     if(nombre==='vivo_mover'){ if(!s||s.clave!==p.p_clave||!['espera','pregunta','respuesta','fin'].includes(p.p_fase)) return false; s.actual=p.p_actual; s.fase=p.p_fase; return true; }
     if(nombre==='vivo_responder'){ if(!/^[a-f0-9]{8,64}$/.test(p.p_participante)||!s||s.fase!=='pregunta'||s.actual!==p.p_pregunta) return false;
       const ya=resp.find(r=>r.sala===s.codigo&&r.pregunta===p.p_pregunta&&r.participante===p.p_participante); if(ya) ya.opcion=p.p_opcion; else resp.push({sala:s.codigo,pregunta:p.p_pregunta,participante:p.p_participante,opcion:p.p_opcion}); return true; }
-    if(nombre==='vivo_resultados'){ const c={}; resp.filter(r=>s&&r.sala===s.codigo&&r.pregunta===p.p_pregunta).forEach(r=>c[r.opcion]=(c[r.opcion]||0)+1); return Object.keys(c).map(k=>({opcion:+k,n:c[k]})); }
+    if(nombre==='vivo_resultados'){ if(!s||!(s.fase==='fin'||p.p_pregunta<s.actual||(p.p_pregunta===s.actual&&s.fase==='respuesta'))) return [];   /* v2.8.1: como envivo.sql, recién al mostrar la respuesta */
+      const c={}; resp.filter(r=>s&&r.sala===s.codigo&&r.pregunta===p.p_pregunta).forEach(r=>c[r.opcion]=(c[r.opcion]||0)+1); return Object.keys(c).map(k=>({opcion:+k,n:c[k]})); }
     throw new Error('función desconocida');
   }};
 }

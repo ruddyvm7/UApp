@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<meta name="theme-color" content="#FBF5F5">
+<meta name="theme-color" content="#FBF5F5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171213" media="(prefers-color-scheme: dark)">
 <meta name="robots" content="index, follow">
 <meta name="description" content="UApp · Plataforma estudiantil de la Carrera de Derecho de la Universidad Autónoma de Chile, sede Temuco: malla y avance curricular, horarios, planificador de carga, calendario de evaluaciones, simulador de notas y avisos oficiales.">
 <meta property="og:type" content="website">
@@ -22,10 +23,10 @@
 <link rel="icon" type="image/svg+xml" href="./favicon-uapp.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="./favicon-uapp-32.png">
 <title>UApp · Centro de Estudiantes Derecho</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+<link crossorigin="anonymous" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" crossorigin="anonymous" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
 <style>
 :root{
   --wine:#8b0c0c;--wine2:#6c0909;--gold:#c79a3e;--gold2:#a8821f;--navy:#2c080a;--cream:#f1d9b0;
@@ -44,7 +45,7 @@ body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--i
 .tabbar::-webkit-scrollbar-track{background:transparent}
 .tab.tab-first{margin-left:auto}
 .tab.tab-last{margin-right:auto}
-.brandbar{display:flex;align-items:center;gap:12px;padding:11px 16px;background:var(--wine);color:#fff}
+.brandbar{display:flex;align-items:center;gap:12px;padding:11px 16px;background:var(--wine-fondo);color:#fff}
 .brandlogo{width:48px;height:48px;flex:0 0 48px;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:3px}
 .brandlogo img{width:100%;height:100%;object-fit:contain}
 .brandtxt{display:flex;flex-direction:column;line-height:1.25}
@@ -53,7 +54,7 @@ body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--i
 .tab{background:none;border:0;padding:13px 12px 11px;font-family:inherit;font-size:13.5px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2.5px solid transparent;white-space:nowrap}
 .tab.active{color:var(--wine);border-color:var(--gold)}
 .wrap{max-width:760px;margin:0 auto;padding:0 16px}
-.toprule{height:3px;background:var(--wine);border-radius:2px;max-width:760px;margin:18px auto 0}
+.toprule{height:3px;background:var(--wine-fondo);border-radius:2px;max-width:760px;margin:18px auto 0}
 .h1{text-align:center;color:var(--wine);font-size:34px;font-weight:800;margin:14px 0 8px;letter-spacing:.3px}
 .lead{text-align:center;color:#555;font-size:15px;max-width:600px;margin:0 auto 4px}
 .cycle{text-align:center;color:#444;font-size:15px;margin-top:6px}
@@ -104,8 +105,8 @@ body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--i
 
 /* Simulador */
 .seg{display:flex;border:1.5px solid var(--cb);border-radius:11px;overflow:hidden;max-width:560px;margin:16px auto 18px}
-.seg button{flex:1;background:#fff;border:0;padding:11px 8px;font-family:inherit;font-size:12.5px;font-weight:700;color:#777;cursor:pointer;border-right:1.5px solid var(--cb)}
-.seg button:last-child{border-right:0}.seg button.on{background:var(--wine);color:#fff}
+.seg button{flex:1;background:#fff;border:0;padding:11px 8px;font-family:inherit;font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer;border-right:1.5px solid var(--cb)}
+.seg button:last-child{border-right:0}.seg button.on{background:var(--wine-fondo);color:#fff}
 .tablehead{display:grid;grid-template-columns:1fr 96px 108px;gap:10px;padding:0 4px 10px;max-width:760px;margin:6px auto 0}
 .tablehead span{color:var(--wine);font-weight:700;font-size:13px;letter-spacing:.6px}
 .tablehead .c{text-align:center}
@@ -115,9 +116,9 @@ body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--i
 .del{background:#fbe9e6;border:0;border-radius:10px;height:46px;color:var(--no);font-size:20px;cursor:pointer}
 .simbtns{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:6px 0 0}
 .addn{background:#f0eefb;color:var(--wine);border:1.5px dashed #c9c2e6;border-radius:11px;padding:14px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:.3px}
-.calcn{background:var(--wine);color:#fff;border:0;border-radius:11px;padding:14px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.3px}
+.calcn{background:var(--wine-fondo);color:#fff;border:0;border-radius:11px;padding:14px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.3px}
 .result{background:#fdf8e9;border:1px solid #f0e4bf;border-radius:16px;padding:22px;margin:18px 0;text-align:center}
-.result .lab{color:#777;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.result .lab{color:var(--muted);font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
 .result .big{color:var(--wine);font-family:"Fraunces",serif;font-size:60px;font-weight:800;line-height:1.05;margin:4px 0}
 .result .vt{font-size:18px;font-weight:700;margin:8px 0 6px}
 .result .vd{color:#666;font-size:14.5px;line-height:1.55;max-width:520px;margin:0 auto}
@@ -138,7 +139,7 @@ body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--i
 .test .ty{font-size:11px;font-weight:700;color:var(--gold2);text-transform:uppercase}
 .icard{background:#fff;border:1px solid var(--cb);border-radius:12px;padding:15px;margin-bottom:11px}
 .icard a{color:var(--wine);font-weight:700;font-size:15px;text-decoration:none}
-.icard p{color:#777;font-size:13px;margin-top:3px}
+.icard p{color:var(--muted);font-size:13px;margin-top:3px}
 .example{background:#fdf8e9;border:1px solid #ecdcaf;border-radius:9px;padding:8px 12px;font-size:12px;color:#7c6213;margin-bottom:14px;text-align:center}
 .sel2{width:100%;font-family:inherit;font-size:14.5px;font-weight:600;padding:12px;border:1px solid var(--cb2);border-radius:11px;background:#fff;color:var(--wine);margin-bottom:16px}
 .hwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px;border:1px solid var(--cb2)}
@@ -198,15 +199,15 @@ body.dark .pflag4,body.dark .plg-blue{background:#1e2a3a;color:#9fc0e8}
 body.dark .plg-red{background:#3a1f1c;color:#e8a89f}
 body.dark .palt{color:#8fd0a5}
 .pflag{background:#b3445a;color:#fff;font-size:10px;padding:1px 7px;border-radius:8px;vertical-align:middle;font-weight:600}
-.pflag2{background:var(--gold);color:#fff;font-size:10px;padding:1px 7px;border-radius:8px;vertical-align:middle;font-weight:600}
-.pexc{font-size:12.5px;color:#777;margin:5px 0;padding-left:2px}
+.pflag2{background:var(--wine-fondo);color:#fff;font-size:10px;padding:1px 7px;border-radius:8px;vertical-align:middle;font-weight:600}
+.pexc{font-size:12.5px;color:var(--muted);margin:5px 0;padding-left:2px}
 .pinfo{background:#eef3fb;border:1px solid #cdd9ee;border-radius:10px;padding:9px 12px;font-size:12.5px;color:#2f3f63;margin:6px 0}
 .hortbl{border-collapse:collapse;width:100%;min-width:680px;font-size:11.5px;table-layout:fixed}
 .hortbl td.cell .cr,.hortbl td.cell .cs,.hortbl td.cell .cp{overflow-wrap:anywhere;hyphens:auto}
-.hortbl th{background:var(--wine);color:#fff;font-weight:700;padding:9px 6px;font-size:11px;letter-spacing:.4px;text-align:center;border:1px solid #7d3340}
+.hortbl th{background:var(--wine-fondo);color:#fff;font-weight:700;padding:9px 6px;font-size:11px;letter-spacing:.4px;text-align:center;border:1px solid #7d3340}
 .hortbl th.th-h{background:var(--navy);width:58px}
 .hortbl td{border:1px solid var(--cb2);padding:5px;vertical-align:middle;text-align:center;height:34px}
-.hortbl td.tm2{background:#f4f1ee;color:#777;font-weight:700;font-size:10px;white-space:nowrap;width:58px}
+.hortbl td.tm2{background:#f4f1ee;color:var(--muted);font-weight:700;font-size:10px;white-space:nowrap;width:58px}
 .hortbl td.cell{background:#fbf6ea;border-color:#ecdcaf;position:relative}
 .hortbl .cr{display:block;font-weight:700;color:var(--wine);line-height:1.2}
 .hortbl .cn{display:block;font-size:9.4px;font-weight:700;color:var(--gold,#c79a3e);letter-spacing:.2px;line-height:1.25;margin-top:1px}
@@ -215,7 +216,7 @@ body.dark .palt{color:#8fd0a5}
 .autochips{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
 .autochip{background:#fff;border:1.5px solid var(--cb2,#cfc9bd);border-radius:9px;padding:6px 10px;font:600 .76rem/1.3 inherit;color:var(--ink,#2b2724);cursor:pointer;text-align:left}
 .autochip.on{border-color:#1f6b3a;background:#eaf6ee}
-.autochip .ac-nrc{color:var(--gold,#c79a3e);font-weight:800}
+.autochip .ac-nrc{color:var(--gold2);font-weight:800}
 .autochip .ac-sct{color:var(--muted,#6b6660);font-weight:600}
 body.dark .autochip{background:#221f1c;color:#eee}
 body.dark .autochip.on{background:#1e3327}
@@ -224,10 +225,10 @@ body.dark .hortbl .cn{color:#d9b871}
 .hortbl .cp{display:block;color:#9a6b72;font-size:9.5px;margin-top:2px;font-style:italic;line-height:1.15}
 footer{background:var(--navy);color:#cdd5e3;text-align:center;padding:26px 18px 30px;margin-top:10px}
 .fbk{display:inline-block;margin:6px 0 14px;background:var(--cream);color:var(--wine);font-weight:700;font-size:14px;padding:11px 22px;border-radius:24px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)}
-footer .fn{font-family:"Fraunces",serif;color:var(--gold);font-size:24px;font-weight:700}
+footer .fn{font-family:"Fraunces",serif;color:var(--gold2);font-size:24px;font-weight:700}
 footer p{font-size:13px;margin-top:6px}footer .sm{color:#8794ab;font-size:12px}
-footer a{color:var(--gold);text-decoration:none}
-footer .motto{font-style:italic;color:var(--gold);font-size:15px;margin-top:4px;opacity:.95;letter-spacing:.3px}
+footer a{color:var(--gold2);text-decoration:none}
+footer .motto{font-style:italic;color:var(--gold2);font-size:15px;margin-top:4px;opacity:.95;letter-spacing:.3px}
 /* ===== Rediseño UApp: malla horizontal + medidor de notas ===== */
 .h1{letter-spacing:-.4px}
 .cycle{font-size:12.5px}
@@ -249,7 +250,7 @@ body.reduce .progfill{transition:none}
 .boardhint{text-align:center;color:var(--muted);font-size:12px;font-weight:600;margin:8px 0 0}
 .ynav{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 4px}
 .ynav button{background:var(--soft,#f3f1ec);border:1px solid var(--cb2,#d8cfba);color:var(--muted,#6b6660);font:inherit;font-weight:700;font-size:.72rem;padding:5px 11px;border-radius:999px;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.ynav button.on{background:var(--wine,#8b0c0c);border-color:var(--wine,#8b0c0c);color:#fff}
+.ynav button.on{background:var(--wine-fondo,#8b0c0c);border-color:var(--wine,#8b0c0c);color:#fff}
 .board{display:flex;gap:11px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 2px 18px;scroll-snap-type:x proximity}
 .lvl{flex:0 0 156px;scroll-snap-align:start}
 .lvl.ystart{border-left:2px dashed #e7d9bf;padding-left:11px}
@@ -258,7 +259,7 @@ body.reduce .progfill{transition:none}
 .lvl-num{font-family:"Fraunces",serif;font-size:17px;font-weight:700;color:var(--ink);line-height:1.15}
 .lvl-tiles{display:flex;flex-direction:column;gap:9px}
 .yrbtn{margin-top:8px;width:100%;background:#fff;border:1.5px solid var(--gold);color:var(--wine);border-radius:9px;padding:6px 8px;font-family:inherit;font-size:10.5px;font-weight:800;letter-spacing:.3px;cursor:pointer;text-transform:uppercase}
-.yrbtn.on{background:var(--wine);color:#fff;border-color:var(--wine)}
+.yrbtn.on{background:var(--wine-fondo);color:#fff;border-color:var(--wine)}
 .tile{position:relative;border:1.5px solid #e7ddcc;border-radius:12px;padding:10px 11px 10px 15px;background:#fffdf8;cursor:pointer;overflow:hidden;transition:transform .08s,box-shadow .15s}
 .tile:active{transform:scale(.985)}
 .tile .abar{position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--muted)}
@@ -275,7 +276,7 @@ body.reduce .progfill{transition:none}
 .tile.showpre .tpre{display:block}
 .tile.ok{background:#1f6b3a;border-color:#175a30}
 .tile.ok .tname{color:#eff8f1}.tile.ok .tstat{color:#bfe6cc}.tile.ok .abar{background:#bfe6cc}
-.tile.no{background:var(--wine);border-color:var(--wine2)}
+.tile.no{background:var(--wine-fondo);border-color:var(--wine2)}
 .tile.no .tname{color:#f8e7e5}.tile.no .tstat{color:#eab8b2}.tile.no .abar{background:#e7b3ad}
 .tile.lock{background:#f3efe6;border-color:#e4dbc9;opacity:.78;cursor:default}
 .tile.lock .tname{color:#8a8170}.tile.lock .tstat{color:#a59a86}
@@ -297,7 +298,7 @@ body.reduce .progfill{transition:none}
 .inscbox{display:flex;flex-wrap:wrap;gap:7px;margin:2px 0 14px;padding:12px;background:#fffdf8;border:1px solid #ece0c6;border-radius:14px}
 .inscbox .ititle{flex-basis:100%;font-size:12px;font-weight:700;color:var(--wine);margin-bottom:3px}
 .chip{font-family:inherit;font-size:12px;font-weight:600;padding:7px 12px;border-radius:20px;border:1.5px solid #d8c9ab;background:#fff;color:#6b5b3f;cursor:pointer}
-.chip.on{background:var(--wine);border-color:var(--wine);color:#fff}
+.chip.on{background:var(--wine-fondo);border-color:var(--wine);color:#fff}
 .ecard{background:#fffdf8;border:1px solid #ece0c6;border-left:4px solid var(--gold);border-radius:12px;padding:12px 14px;margin-bottom:10px}
 .ehead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:6px}
 .ehead b{font-size:14px;color:var(--wine);font-weight:700;line-height:1.2}
@@ -314,7 +315,7 @@ body.reduce .progfill{transition:none}
 #miniHor .mgc{height:7px;border-radius:2px;background:var(--soft,#f3f1ec)}
 #miniHor .mgh{font-size:7.6px;font-weight:700;color:var(--muted,#6b6660);text-align:center;line-height:1}
 #miniHor .mhf{margin-top:6px;font-size:9.6px;color:var(--muted,#6b6660);line-height:1.3;cursor:pointer;text-decoration:underline}
-#miniPill{position:fixed;right:10px;bottom:96px;z-index:46;display:none;background:var(--wine,#8b0c0c);color:#fff;border:0;border-radius:20px;padding:6px 11px;font:700 11px/1 Inter,system-ui,sans-serif;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+#miniPill{position:fixed;right:10px;bottom:96px;z-index:46;display:none;background:var(--wine-fondo,#8b0c0c);color:#fff;border:0;border-radius:20px;padding:6px 11px;font:700 11px/1 Inter,system-ui,sans-serif;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.2)}
 #miniPill.on{display:block}
 @media(min-width:820px){#miniHor{width:184px;bottom:104px}}
 #allHorModal .a11y-box{max-width:min(97vw,1120px);border-radius:16px;padding:20px 16px}
@@ -357,7 +358,7 @@ body.dark .mlink{color:var(--gold,#c79a3e)}
 /* Simulador de notas */
 .calchead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
 .allcalc{background:var(--card);border:1px solid var(--gold);color:var(--gold2);font-size:12.5px;font-weight:700;padding:8px 13px;border-radius:999px;cursor:pointer;white-space:nowrap;flex-shrink:0}
-.allcalc:hover,.allcalc:focus-visible{background:var(--gold);color:#fff}
+.allcalc:hover,.allcalc:focus-visible{background:var(--wine-fondo);color:#fff}
 .ccempty{background:var(--card);border:1px dashed var(--cb2);border-radius:14px;padding:22px 18px;color:var(--muted);font-size:14px;line-height:1.55;text-align:center}
 .ccalc{padding:15px 16px;margin:0 0 13px}
 .cchead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px}
@@ -399,7 +400,7 @@ td.cell.selc{cursor:pointer}
 .hortally .htrow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .hortally .htleft{flex:1;min-width:120px}
 .htclear{background:transparent;border:1px solid var(--cb2);color:var(--muted);font-size:12.5px;font-weight:600;padding:5px 11px;border-radius:999px;cursor:pointer;white-space:nowrap}
-.htclear:hover,.htclear:focus-visible{background:var(--wine);border-color:var(--wine);color:#fff}
+.htclear:hover,.htclear:focus-visible{background:var(--wine-fondo);border-color:var(--wine);color:#fff}
 body.dark .htclear{border-color:var(--cb2)}
 .hortally .htn{font-weight:700;color:var(--wine)}
 .hortally .htc{font-weight:700}
@@ -432,28 +433,28 @@ td.cell.selon{background:#eaf6ee !important;outline:2px solid #1f6b3a;outline-of
 .svcn{font-weight:700;color:#2a2118;flex:0 0 36%}
 .svch{color:#3a3026;text-align:right;line-height:1.4}
 /* ===== Chatbox ===== */
-#chatFab{position:fixed;right:16px;bottom:16px;width:58px;height:58px;border:none;border-radius:50%;background:var(--wine);color:#fff;font-size:26px;box-shadow:0 6px 18px rgba(0,0,0,.28);cursor:pointer;z-index:9999;display:flex;align-items:center;justify-content:center}
+#chatFab{position:fixed;right:16px;bottom:16px;width:58px;height:58px;border:none;border-radius:50%;background:var(--wine-fondo);color:#fff;font-size:26px;box-shadow:0 6px 18px rgba(0,0,0,.28);cursor:pointer;z-index:9999;display:flex;align-items:center;justify-content:center}
 #chatFab:active{transform:scale(.94)}
 .chatpanel{position:fixed;right:14px;bottom:14px;width:min(380px,calc(100vw - 28px));height:min(560px,calc(100vh - 90px));background:#fff;border-radius:18px;box-shadow:0 12px 40px rgba(0,0,0,.32);display:flex;flex-direction:column;overflow:hidden;z-index:9999;border:1px solid #e7d9bf}
-.chathead{background:linear-gradient(135deg,var(--wine),var(--wine2));color:#fff;padding:13px 16px;position:relative;flex-shrink:0}
+.chathead{background:linear-gradient(135deg,var(--wine-fondo),var(--wine2));color:#fff;padding:13px 16px;position:relative;flex-shrink:0}
 .chatname{font-size:21px;font-weight:700;line-height:1}
-.chatname .ia{color:var(--gold)}
+.chatname .ia{color:#FFE3E0}
 .chatsub{font-size:11.5px;opacity:.88;margin-top:3px}
 #chatClose{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.16);border:none;color:#fff;width:28px;height:28px;border-radius:50%;font-size:14px;cursor:pointer}
 .chatmsgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:9px;background:#faf6ee}
 .cmsg{max-width:84%;padding:9px 12px;border-radius:14px;font-size:13px;line-height:1.45;word-wrap:break-word}
 .cmsg.bot{align-self:flex-start;background:#fff;border:1px solid #ece0c6;color:#2a2118;border-bottom-left-radius:4px}
-.cmsg.user{align-self:flex-end;background:var(--wine);color:#fff;border-bottom-right-radius:4px}
+.cmsg.user{align-self:flex-end;background:var(--wine-fondo);color:#fff;border-bottom-right-radius:4px}
 .cmsg.bot b{color:var(--wine)}
 .cmsg a{color:inherit}
 .chatchips{display:flex;flex-wrap:wrap;gap:6px;padding:8px 12px;border-top:1px solid #eee;max-height:128px;overflow-y:auto;background:#fff;flex-shrink:0}
 .cchip{background:#fff;border:1.5px solid var(--gold);color:var(--wine);border-radius:999px;padding:6px 11px;font-size:11.5px;font-weight:600;cursor:pointer;text-align:left;line-height:1.25}
 .cchip:active{background:#f7efdc}
-.cchip.back{border-color:#ccc;color:#777}
+.cchip.back{border-color:#ccc;color:var(--muted)}
 .chatinput{display:flex;gap:8px;padding:10px 12px;border-top:1px solid #eee;background:#fff;flex-shrink:0}
 .chatinput input{flex:1;border:1.5px solid #ddd;border-radius:999px;padding:9px 14px;font-size:14px;outline:none}
 .chatinput input:focus{border-color:var(--wine)}
-.chatinput button{background:var(--wine);color:#fff;border:none;border-radius:50%;width:40px;height:40px;font-size:16px;cursor:pointer;flex-shrink:0}
+.chatinput button{background:var(--wine-fondo);color:#fff;border:none;border-radius:50%;width:40px;height:40px;font-size:16px;cursor:pointer;flex-shrink:0}
 .muralempty{text-align:center;color:var(--muted);padding:42px 12px;font-size:14px}
 .mcard{background:#fffdf8;border:1px solid #ece0c6;border-left:4px solid var(--wine);border-radius:14px;padding:14px 16px;margin-bottom:12px}
 .mtop{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
@@ -475,7 +476,7 @@ body.dark .volver{color:#e0a0a0}
 .solbox{background:#fffdf8;border:1.5px solid var(--gold);border-radius:16px;padding:20px 18px;text-align:center;margin-top:6px}
 .soltitle{font-size:18px;font-weight:700;color:var(--wine);margin-bottom:6px}
 .soltext{font-size:13.5px;color:#3a3026;line-height:1.5;margin-bottom:15px}
-.solbtn{display:inline-block;background:var(--wine);color:#fff;font-weight:700;font-size:15px;padding:13px 26px;border-radius:999px;text-decoration:none}
+.solbtn{display:inline-block;background:var(--wine-fondo);color:#fff;font-weight:700;font-size:15px;padding:13px 26px;border-radius:999px;text-decoration:none}
 .solbtn:active{background:var(--wine2)}
 .bkrow{display:flex;gap:9px;margin:14px 0 4px}
 .bkbtn{flex:1;background:#fffdf8;border:1.5px solid var(--gold);color:var(--wine);font-weight:700;font-size:13px;padding:11px;border-radius:12px;cursor:pointer}
@@ -483,12 +484,12 @@ body.dark .volver{color:#e0a0a0}
 .bknote{font-size:11.5px;color:var(--muted);line-height:1.4;margin:2px 0 10px;text-align:center}
 .legal-ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:10000;display:flex;align-items:center;justify-content:center;padding:18px}
 .legal-box{background:#fff;border-radius:16px;max-width:440px;width:100%;max-height:80vh;overflow-y:auto;padding:24px 22px;position:relative}
-.legal-box h3{color:var(--wine);font-size:17px;margin:16px 0 6px}
-.legal-box h3:first-of-type{margin-top:0}
+.legal-box h2,.legal-box h3{color:var(--wine);font-size:17px;margin:16px 0 6px}
+.legal-box h2:first-of-type{margin-top:0}
 .legal-box p{font-size:13px;color:#3a3026;line-height:1.55;margin:0 0 6px}
 .legal-x{position:absolute;top:12px;right:12px;background:#f0e7d4;border:none;width:30px;height:30px;border-radius:50%;font-size:15px;cursor:pointer;color:var(--wine)}
 /* ===== Accesibilidad: panel ===== */
-#a11yFab{position:fixed;left:16px;bottom:16px;width:52px;height:52px;border:none;border-radius:50%;background:var(--wine);color:#fff;font-size:23px;box-shadow:0 6px 18px rgba(0,0,0,.28);cursor:pointer;z-index:9999;display:flex;align-items:center;justify-content:center}
+#a11yFab{position:fixed;left:16px;bottom:16px;width:52px;height:52px;border:none;border-radius:50%;background:var(--wine-fondo);color:#fff;font-size:23px;box-shadow:0 6px 18px rgba(0,0,0,.28);cursor:pointer;z-index:9999;display:flex;align-items:center;justify-content:center}
 #ttsFab{position:fixed;left:16px;bottom:78px;width:52px;height:52px;border:none;border-radius:50%;background:var(--gold);color:#fff;font-size:22px;box-shadow:0 6px 18px rgba(0,0,0,.28);cursor:pointer;z-index:9999;align-items:center;justify-content:center}
 #ttsFab.speaking{background:#b3445a}
 /* Foco visible al navegar con teclado */
@@ -533,17 +534,17 @@ body.dark.cb .tile.no{background:#a04200;border-color:#7c3300}
 .docbody .docsrc{font-size:11.5px;color:var(--muted);margin-top:14px;font-style:italic;border-top:1px solid var(--cb);padding-top:8px}
 body.dark .docbody h4{color:var(--gold)}
 .a11y-x{position:absolute;top:14px;right:14px;background:rgba(127,127,127,.2);border:none;width:30px;height:30px;border-radius:50%;font-size:15px;cursor:pointer;color:var(--ink)}
-.a11y-title{color:var(--wine);font-size:21px;font-weight:800;margin-bottom:16px}
+.a11y-title{color:var(--wine);font-size:21px;font-weight:800;margin-top:0;margin-bottom:16px}
 .a11y-grp{margin-bottom:18px}
 .a11y-lab{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:8px}
 .a11y-hint{font-size:11.5px;color:var(--muted);font-weight:500}
 .a11y-seg{display:flex;gap:6px}
 .a11y-seg button{flex:1;background:transparent;border:1.5px solid var(--cb2);color:var(--ink);border-radius:11px;padding:11px 6px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer}
-.a11y-seg button.on{background:var(--wine);border-color:var(--wine);color:#fff}
+.a11y-seg button.on{background:var(--wine-fondo);border-color:var(--wine);color:#fff}
 .a11y-row{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:2px}
 .a11y-tog{width:50px;height:30px;border-radius:99px;border:none;background:#b9b3a6;position:relative;cursor:pointer;flex-shrink:0;transition:background .2s}
 .a11y-tog span{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .2s}
-.a11y-tog.on{background:var(--wine)}
+.a11y-tog.on{background:var(--wine-fondo)}
 .a11y-tog.on span{left:23px}
 body.reduce-motion *,body.reduce-motion *::before,body.reduce-motion *::after{transition:none !important;animation:none !important;scroll-behavior:auto !important}
 /* ===== Modo oscuro ===== */
@@ -566,7 +567,7 @@ body.dark .erow input,body.dark .chatinput input,body.dark .sel2,body.dark .pctr
 body.dark .resetbtn{border-color:#5a332e}
 body.dark .lvl.ystart{border-left-color:#3c332a}
 body.dark .legal-x{background:rgba(127,127,127,.2);color:var(--ink)}
-body.dark .cchip.back{border-color:#4d4338;color:var(--muted)}
+body.dark .cchip{background:var(--card)}body.dark .cchip:active{background:var(--cb)}body.dark .cchip.back{border-color:#4d4338;color:var(--muted)}
 body.dark .mallaSwitch .mSwBtn{border-color:#4d4338;color:var(--muted)}
 body.dark .mallaSwitch .mSwBtn:hover{background:rgba(127,127,127,.12)}
 body.dark .mallaSwitch .mSwBtn.na{background:rgba(199,154,62,.14);border-color:#6b5726;color:#e0c88f}
@@ -600,7 +601,7 @@ body.dark .mallaNote{background:rgba(199,154,62,.12);border-color:#5a4a2a;color:
 #cierreBox .ci-op.on[data-v="no"]{background:#ae2c2c;border-color:#ae2c2c;color:#fff}
 #cierreBox .ci-op.on[data-v="skip"]{background:#e7e4e4;border-color:#cfcaca;color:#312b2b}
 #cierreBox .ci-acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-#cierreBox .ci-save{min-height:44px;padding:0 18px;border-radius:999px;border:0;background:var(--wine,#8b0c0c);color:#fff;font:inherit;font-weight:700;cursor:pointer}
+#cierreBox .ci-save{min-height:44px;padding:0 18px;border-radius:999px;border:0;background:var(--wine-fondo,#8b0c0c);color:#fff;font:inherit;font-weight:700;cursor:pointer}
 #cierreBox .ci-save:disabled{opacity:.5;cursor:default}
 #cierreBox .ci-later{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid rgba(0,0,0,.18);background:transparent;font:inherit;cursor:pointer;color:inherit}
 body.dark #cierreBox{background:#1f1c1c;border-color:rgba(255,255,255,.12)}
@@ -644,6 +645,21 @@ body.dark .seg2-b.on{background:#2a2626}
 body.dark .infoDona{background:#1f1c1c;border-color:rgba(255,255,255,.12)}
 /* Dona ya no flota sobre el contenido: se abre desde Info */
 #chatFab{display:none!important}
+/* v2.8.1 · accesibilidad: saltar al contenido, foco que no queda bajo la barra inferior, botones con aspecto de enlace */
+html{scroll-padding-bottom:calc(90px + env(safe-area-inset-bottom))}
+.saltar{position:absolute;left:12px;top:-60px;z-index:20000;background:var(--wine-fondo);color:#fff;padding:10px 16px;border-radius:999px;font-weight:700;text-decoration:none}
+.saltar:focus{top:12px}
+main:focus{outline:none}
+body:not(.i2-listo) footer{visibility:hidden}
+#nuevaVersion{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(96px + env(safe-area-inset-bottom));z-index:9000;display:flex;align-items:center;gap:12px;max-width:calc(100% - 32px);padding:10px 12px 10px 16px;border-radius:999px;background:var(--ink);color:var(--bg);font-size:14px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+#nuevaVersion button{border:0;border-radius:999px;padding:8px 14px;background:var(--wine-fondo);color:#fff;font:inherit;cursor:pointer;white-space:nowrap}
+.sr-solo{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+.lnk-legal{background:none;border:0;padding:0;font:inherit;color:var(--gold2);cursor:pointer;text-decoration:none}
+.lnk-legal:hover{text-decoration:underline}
+.lnk-legal:focus-visible,#miniHor .mhf:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:4px}
+.chatname{margin:0}
+.chatinput input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+#miniHor .mhf{display:block;width:100%;background:none;border:0;padding:0;font-family:inherit;text-align:left;color:var(--muted,#6b6660)}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.7/dist/umd/supabase.js" integrity="sha384-hazsLVND17GNLVdtV19te6qbFT2YuLgl8SamcF+QR5eIOC+W4dGKrUNMxU1jH1zD" crossorigin="anonymous"></script>
 </head>
@@ -713,11 +729,11 @@ section.pend-on .wrap>*:not(.mh):not(.pendCard){display:none!important}
    y da forma nueva a la cabecera, la navegación y el Inicio. */
 
 /* ── Paleta: rojo institucional para las tres jornadas ── */
-:root{--wine:#AE2C2C;--wine2:#8F2323;--gold:#D46A63;--gold2:#AE2C2C;--navy:#2E2828;--cream:#F8E4E2;
-  --bg:#FBF5F5;--card:#FFFFFF;--ink:#2E2828;--muted:#776E6E;--lockbg:#F6EEED;--cb:#EFE4E3;--cb2:#E2D3D1;
+:root{--wine:#AE2C2C;--wine-fondo:#AE2C2C;--wine2:#8F2323;--gold:#D46A63;--gold2:#AE2C2C;--navy:#2E2828;--cream:#F8E4E2;
+  --bg:#FBF5F5;--card:#FFFFFF;--ink:#2E2828;--muted:#6A6161;--lockbg:#F6EEED;--cb:#EFE4E3;--cb2:#E2D3D1;
   --u2-tinte:#F8E4E2;--u2-sombra:0 10px 28px -16px rgba(174,44,44,.30)}
-body.j-diurno,body.j-vregular{--wine:#AE2C2C;--wine2:#8F2323;--gold:#D46A63;--gold2:#AE2C2C;--navy:#2E2828;--bg:#FBF5F5;--lockbg:#F6EEED}
-body.dark,body.dark.j-diurno,body.dark.j-vregular{--wine:#E0605A;--wine2:#C94A44;--gold:#E58E88;--gold2:#E0605A;--navy:#0F0B0B;
+body.j-diurno,body.j-vregular{--wine:#AE2C2C;--wine-fondo:#AE2C2C;--wine2:#8F2323;--gold:#D46A63;--gold2:#AE2C2C;--navy:#2E2828;--bg:#FBF5F5;--lockbg:#F6EEED}
+body.dark,body.dark.j-diurno,body.dark.j-vregular{--wine:#EC8A84;--wine-fondo:#B83A34;--wine2:#C94A44;--gold:#E58E88;--gold2:#EC8A84;--navy:#0F0B0B;
   --cream:#3A2524;--bg:#171213;--card:#221C1D;--ink:#F3ECEC;--muted:#B3A8A8;--cb:#3A2F2F;--cb2:#4A3D3D;--lockbg:#1E1819;
   --u2-tinte:#3A2524;--u2-sombra:0 10px 28px -18px rgba(0,0,0,.7)}
 
@@ -742,9 +758,9 @@ body{font-family:'Nunito',system-ui,sans-serif;background:var(--bg);padding-bott
   border:0;border-radius:14px;background:none;color:var(--muted);font:inherit;font-size:12px;font-weight:700;white-space:nowrap;box-shadow:none}
 .brandbar .tabbar .tab .ti{width:56px;height:32px;border-radius:999px;display:flex;align-items:center;justify-content:center;transition:background-color .2s,color .2s}
 .brandbar .tabbar .tab.active{color:var(--wine);font-weight:800;border:0}
-.brandbar .tabbar .tab.active .ti{background:var(--wine);color:#fff}
+.brandbar .tabbar .tab.active .ti{background:var(--wine-fondo);color:#fff}
 body.dark .brandbar .tabbar{background:var(--card);border:0}
-#a11yFab{bottom:calc(104px + env(safe-area-inset-bottom))!important;width:46px!important;height:46px!important;font-size:20px!important;background:var(--wine)!important}
+#a11yFab{bottom:calc(104px + env(safe-area-inset-bottom))!important;width:46px!important;height:46px!important;font-size:20px!important;background:var(--wine-fondo)!important}
 
 /* ── Computador: navegación arriba, como pastillas ── */
 @media (min-width:900px){
@@ -754,7 +770,7 @@ body.dark .brandbar .tabbar{background:var(--card);border:0}
   .brandbar .tabbar{position:static;display:flex;gap:6px;padding:0;background:none;box-shadow:none;border-radius:0}
   .brandbar .tabbar .tab{flex-direction:row;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font-size:15px;font-weight:800}
   .brandbar .tabbar .tab .ti{width:auto;height:auto;background:none!important}
-  .brandbar .tabbar .tab.active{background:var(--wine);color:#fff}
+  .brandbar .tabbar .tab.active{background:var(--wine-fondo);color:#fff}
   .brandbar .tabbar .tab.active .ti{color:#fff}
   body.dark .brandbar .tabbar{background:none}
   #a11yFab{bottom:24px!important}
@@ -800,7 +816,7 @@ body.dark .brandbar .tabbar{background:var(--card);border:0}
 .i2-suave{background:var(--card);border-radius:28px;padding:18px;box-shadow:var(--u2-sombra);display:flex;flex-direction:column;gap:12px}
 .i2-suave p{margin:0;font-size:15px;color:var(--muted);line-height:1.5}
 .i2-suave b{color:var(--ink)}
-.i2-btn2{align-self:flex-start;height:44px;padding:0 18px;border:0;border-radius:999px;background:var(--wine);color:#fff;font:inherit;font-size:14px;font-weight:800;cursor:pointer}
+.i2-btn2{align-self:flex-start;height:44px;padding:0 18px;border:0;border-radius:999px;background:var(--wine-fondo);color:#fff;font:inherit;font-size:14px;font-weight:800;cursor:pointer}
 .i2-av{background:var(--card);border-radius:28px;padding:18px;box-shadow:var(--u2-sombra);display:flex;flex-direction:column;gap:12px}
 .i2-avh{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
 .i2-avh h2{margin:0;font-size:19px;font-weight:800;color:var(--ink)}
@@ -813,7 +829,7 @@ body.dark .brandbar .tabbar{background:var(--card);border:0}
 .i2-seg i{display:block;height:9px;border-radius:999px;background:var(--cb);overflow:hidden}
 .i2-seg i.ok{background:var(--ink)}
 .i2-seg i.par{background:var(--u2-tinte)}
-.i2-seg i.par b{display:block;height:100%;background:var(--wine)}
+.i2-seg i.par b{display:block;height:100%;background:var(--wine-fondo)}
 .i2-mural .mh{margin-top:0}
 
 /* ── Bienvenida y cambio de jornada ── */
@@ -889,7 +905,7 @@ body.dark{--u2-ok:#16301F;--u2-okb:#2C5A3A;--u2-okt:#8FD3A6;--u2-no:#3A1F1C;--u2
 .hortbl td.cell .cn{color:var(--wine)!important;font-weight:700!important}
 .hortbl td.cell .cs{color:var(--ink)!important}
 .hortbl td.cell .cp{color:var(--muted)!important}
-.hortbl td.cell .selck{background:var(--wine)!important;color:#fff!important;border-radius:999px!important}
+.hortbl td.cell .selck{background:var(--wine-fondo)!important;color:#fff!important;border-radius:999px!important}
 
 /* ── Notas: sin recuadros largos, tarjetas limpias ── */
 #pru .inscbox{background:none!important;border:0!important;padding:0!important;margin:0 0 12px!important;box-shadow:none!important}
@@ -943,9 +959,9 @@ body.dark{--u2-ok:#16301F;--u2-okb:#2C5A3A;--u2-okt:#8FD3A6;--u2-no:#3A1F1C;--u2
 .ynav{gap:6px!important;justify-content:flex-start!important}
 .ynav button{min-height:36px;padding:0 14px!important;border:0!important;border-radius:999px!important;background:var(--card)!important;color:var(--ink)!important;
   box-shadow:var(--u2-sombra);font-family:inherit!important;font-size:13px!important;font-weight:800!important}
-.ynav button.on{background:var(--wine)!important;color:#fff!important}
+.ynav button.on{background:var(--wine-fondo)!important;color:#fff!important}
 .yrbtn{border:0!important;border-radius:999px!important;background:var(--u2-tinte)!important;color:var(--wine)!important;text-transform:none!important;letter-spacing:0!important;font-size:12px!important}
-.yrbtn.on{background:var(--wine)!important;color:#fff!important}
+.yrbtn.on{background:var(--wine-fondo)!important;color:#fff!important}
 .lvl-eyebrow{text-transform:none!important;letter-spacing:0!important;color:var(--muted)!important;font-size:12px!important;font-weight:700!important}
 .lvl-num{color:var(--ink)!important;font-size:18px!important;font-weight:800!important;font-family:inherit!important}
 .tile{background:var(--card)!important;border:1.5px solid var(--cb)!important;border-radius:18px!important;box-shadow:0 6px 16px -12px rgba(46,40,40,.35);padding:12px 12px 12px 18px!important}
@@ -1009,7 +1025,7 @@ body.reduce-motion *,body.reduce-motion *::before,body.reduce-motion *::after{an
 .av-num b{font-size:34px;font-weight:900;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
 .av-num span{font-size:15px;font-weight:700;color:var(--muted)}
 .av-barra{display:block;height:10px;border-radius:999px;background:var(--u2-tinte);overflow:hidden}
-.av-barra i{display:block;height:100%;border-radius:999px;background:var(--wine);transform-origin:left center;animation:u2rail .8s cubic-bezier(.2,.7,.2,1) both}
+.av-barra i{display:block;height:100%;border-radius:999px;background:var(--wine-fondo);transform-origin:left center;animation:u2rail .8s cubic-bezier(.2,.7,.2,1) both}
 .av-det{margin:0;font-size:13px;color:var(--muted)}
 .i2-avc .av-barra{grid-column:1 / -1;height:6px}
 
@@ -1019,7 +1035,7 @@ body.reduce-motion *,body.reduce-motion *::before,body.reduce-motion *::after{an
   box-shadow:var(--u2-sombra);font:inherit;font-size:13px;font-weight:800;cursor:pointer}
 .mv-req::before{content:"";flex:0 0 auto;width:32px;height:20px;border-radius:999px;transition:background .2s;
   background:radial-gradient(circle at 10px 50%,#fff 7px,transparent 7.5px),var(--cb2)}
-.mv-req[aria-checked="true"]::before{background:radial-gradient(circle at 22px 50%,#fff 7px,transparent 7.5px),var(--wine)}
+.mv-req[aria-checked="true"]::before{background:radial-gradient(circle at 22px 50%,#fff 7px,transparent 7.5px),var(--wine-fondo)}
 
 /* Malla compacta: solo el nombre; el estado va por color e ícono */
 #malla .cycle{margin:2px 0 6px!important}
@@ -1111,7 +1127,7 @@ body.reduce-motion .guia summary::after{transition:none}
 .mv-b-txt b{font-size:14px;color:var(--ink)}
 .mv-pt{display:inline-block;width:9px;height:9px;border-radius:999px;margin-right:6px;vertical-align:0}
 .mv-pt.req{background:#4A7BD1}.mv-pt.des{background:#E0A526}
-.mv-b-cerrar{flex:0 0 auto;min-height:40px;padding:0 14px;border:0;border-radius:999px;background:var(--wine);color:#fff;font:inherit;font-size:13px;font-weight:800;cursor:pointer}
+.mv-b-cerrar{flex:0 0 auto;min-height:40px;padding:0 14px;border:0;border-radius:999px;background:var(--wine-fondo);color:#fff;font:inherit;font-size:13px;font-weight:800;cursor:pointer}
 .mv-confeti{position:fixed;inset:0;z-index:90;pointer-events:none}
 body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition:none}
 
@@ -1133,9 +1149,9 @@ body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition
 .pr-nota{margin:0;font-size:12px;color:var(--muted);line-height:1.45}
 
 </style>
-<link rel="stylesheet" href="estudiar/estudiar.css?v=7e90d70f4807">
-<link rel="stylesheet" href="respaldo/respaldo.css?v=1433a5a01eee">
-<link rel="stylesheet" href="envivo/envivo.css?v=a61a2dfbfc5d">
+<link rel="stylesheet" href="estudiar/estudiar.css?v=9bab9e6c31e7">
+<link rel="stylesheet" href="respaldo/respaldo.css?v=bf82b5fb950c">
+<link rel="stylesheet" href="envivo/envivo.css?v=62d76a19738c">
 <div id="jornadaOverlay" class="jov">
   <div class="jov-card">
     <img class="jov-logo" id="jovLogo" alt="UApp">
@@ -1158,6 +1174,7 @@ body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition
     <p class="jov-foot">Podrás cambiar de jornada cuando quieras desde la barra superior.</p>
   </div>
 </div>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
 <div class="brandbar">
   <div class="brandlogo" id="brandLogo"><img src="logo-ccee.png?v=34e6871984b1" alt="Centro de Estudiantes Derecho"></div>
   <div class="brandtxt"><b id="brandName">UApp</b><span>Centro de Estudiantes · Derecho · UA Temuco</span></div>
@@ -1179,6 +1196,7 @@ body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition
 </div>
 
 
+<main id="contenido" tabindex="-1">
 <section id="mural"><div class="wrap">
   <div class="i2-grid">
   <div class="i2-col1">
@@ -1188,7 +1206,7 @@ body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition
   </div>
   <div class="i2-col2">
   <div class="i2-mural">
-  <div class="mh serif">Mural</div>
+  <h2 class="mh serif">Mural</h2>
   <div class="msub">Avisos y fechas importantes del momento.</div>
   <div id="muralList"></div>
   </div>
@@ -1204,7 +1222,7 @@ body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition
     <div id="promedioBox"></div>
     <div id="cierreBox" style="display:none" aria-live="polite"></div>
     <div class="mallaSwitch">
-      <button type="button" class="mSwBtn" id="mallaToggle" aria-label="Cambiar de malla"></button><button type="button" class="mv-req" id="verReq" role="switch" aria-checked="false">Prerrequisitos</button><button type="button" class="mSwBtn" id="mallaPdf" title="Descargar tu malla con tu avance">Descargar PDF</button>
+      <button type="button" class="mSwBtn" id="mallaToggle"></button><button type="button" class="mv-req" id="verReq" role="switch" aria-checked="false">Prerrequisitos</button><button type="button" class="mSwBtn" id="mallaPdf" title="Descargar tu malla con tu avance">Descargar PDF</button>
     </div>
     <p class="mallaNote" id="mallaNote"></p>
     <p class="cycle">Toca un ramo para marcarlo; mantenlo presionado para ver con qué ramos se conecta.</p>
@@ -1218,16 +1236,14 @@ body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition
     <div class="ynav" id="ynav" role="group" aria-label="Ir a un año de la carrera"></div>
     <div id="years" class="board"></div>
     <div class="bkrow">
-      <button class="bkbtn" id="bkExp">Respaldar mi avance</button>
-      <button class="bkbtn" id="bkImp">Restaurar respaldo</button>
+      <button type="button" class="bkbtn" id="bkIr">Respaldar o pasar a otro teléfono</button>
     </div>
     <div class="areas">
       <span><i class="adot" style="background:var(--civil)"></i>Derecho Civil</span>
       <span><i class="adot" style="background:var(--proc)"></i>Derecho Procesal</span>
       <span><i class="adot" style="background:var(--penal)"></i>Derecho Penal</span>
     </div>
-    <p class="bknote">Tu avance se guarda solo en este dispositivo. Respáldalo para no perderlo si cambias de teléfono o limpias el navegador.</p>
-    <input type="file" id="bkFile" accept="application/json,.json" style="display:none">
+    <p class="bknote">Tu avance se guarda solo en este teléfono. Para no perderlo si cambias de teléfono o limpias el navegador, descárgalo en Más › Respaldo de tus datos.</p>
     <button class="resetbtn" id="reset">Reiniciar todo mi progreso</button>
   </div>
 </section>
@@ -1251,11 +1267,12 @@ body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition
 </section>
 <section id="estudio" style="display:none"><div class="wrap">
   <div class="seg2" role="group" aria-label="Pruebas y notas"><button type="button" class="seg2-b" data-ir="pru" aria-pressed="false">Fechas</button><button type="button" class="seg2-b" data-ir="calc" aria-pressed="false">Calculadora</button><button type="button" class="seg2-b on" data-ir="estudio" aria-pressed="true">Estudiar</button></div>
-  <div id="estudioApp" aria-live="polite"></div>
+  <div id="estudioApp"></div>
+  <div id="estudioAviso" class="sr-solo" role="status" aria-live="polite"></div>
 </div></section>
 
 <section id="hor" style="display:none"><div class="wrap">
-  <div class="mh serif">Horario del trimestre</div><div class="msub">3er trimestre 2026.</div>
+  <h1 class="mh serif">Horario del trimestre</h1><div class="msub">3er trimestre 2026.</div>
   <div class="mallaSwitch horBtns">
     <button type="button" class="mSwBtn" id="toAllHor">Todos los horarios</button> <button type="button" class="mSwBtn" id="toPlan">Planificador de carga</button> <button type="button" class="mSwBtn pdfBtn" id="dlHor" title="Generar un PDF con tu horario" aria-label="Generar un PDF con tu horario">PDF</button><button type="button" class="mSwBtn" id="icsHor" title="Agregar tus clases al calendario del teléfono">Al calendario</button>
   </div>
@@ -1270,7 +1287,7 @@ body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition
 
 <section id="plan" style="display:none"><div class="wrap">
   <button type="button" class="volver" id="planVolver">← Volver a Horarios</button>
-  <div class="mh serif">Planificador de carga</div>
+  <h1 class="mh serif">Planificador de carga</h1>
   <div class="msub">Cruza tu avance con la oferta del trimestre y propone qué tomar, sin choques de horario.</div>
   <div class="discrow">
     <div class="disc" style="margin:0;flex:1">⚠️ Propuesta <b>referencial</b>, no es una inscripción oficial. Confirma siempre con tu malla y con Registro Curricular antes de inscribir.</div>
@@ -1284,7 +1301,7 @@ body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition
 
 <section id="pru" style="display:none"><div class="wrap">
   <div class="seg2" role="group" aria-label="Pruebas y notas"><button type="button" class="seg2-b on" data-ir="pru" aria-pressed="true">Fechas</button><button type="button" class="seg2-b" data-ir="calc" aria-pressed="false">Calculadora</button><button type="button" class="seg2-b" data-ir="estudio" aria-pressed="false">Estudiar</button></div>
-  <div class="mh serif">Calendario de pruebas</div>
+  <h1 class="mh serif">Calendario de pruebas</h1>
   <div class="msub">3er trimestre 2026 · solemnes y exámenes finales.</div>
   <div class="mallaSwitch horBtns" style="margin:10px 0 4px">
     <button type="button" class="mSwBtn" id="toAllPru">Todas las pruebas</button>
@@ -1298,7 +1315,7 @@ body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition
 </div></section>
 
 <section id="info" style="display:none"><div class="wrap">
-  <div class="mh serif">Más</div>
+  <h1 class="mh serif">Más</h1>
   <div class="msub">Ayuda, contactos y preferencias.</div>
 
   <button type="button" class="infoDona" id="abrirDona"><span class="infoDona-i" aria-hidden="true">💬</span><span><b>Pregúntale a Dona</b><small>Fechas, reglamento y trámites. Responde al instante.</small></span></button>
@@ -1393,7 +1410,7 @@ body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition
 </div></section>
 
 <section id="solic" style="display:none"><div class="wrap">
-  <div class="mh serif">Solicitudes</div>
+  <h1 class="mh serif">Solicitudes</h1>
   <div class="msub">¿Necesitas hacer una petición, consulta o presentar un caso al Centro de Estudiantes? Este es el canal.</div>
   <div class="solbox">
     <div class="soltitle serif">📨 Formulario de solicitudes</div>
@@ -1402,13 +1419,18 @@ body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition
   </div>
   <p class="note">También puedes escribirnos por Instagram <b>@ccee.derechouatco</b> o al correo <b>cceedereua@gmail.com</b>.</p>
 </div></section>
+</main>
 
 <div id="legalModal" class="legal-ov" style="display:none">
-  <div class="legal-box">
-    <button class="legal-x" id="legalX" aria-label="Cerrar">✕</button>
-    <h3 class="serif">Privacidad</h3>
-    <p>UApp es una herramienta gratuita creada por el Centro de Estudiantes de Derecho Vespertino TECH. Tu avance, notas y ramos inscritos se guardan <b>únicamente en este dispositivo</b> (en el navegador): no se envían a ningún servidor ni los vemos nosotros, y no recopilamos datos personales. Los formularios externos (reportes y solicitudes) son de Microsoft y se rigen por sus propias políticas.</p><p>Las preguntas que escribes al asistente <b>Dona Tech</b> se registran de forma <b>anónima</b> —solo el texto de la pregunta, sin tu identidad, sesión ni dispositivo— con el único fin de mejorar las respuestas. No son visibles para quienes administran la aplicación, se revisan periódicamente y se eliminan pasado el tiempo necesario. Por eso te pedimos <b>no escribir datos personales</b> en el asistente.</p><p>En el <b>modo en vivo</b> solo se envía la alternativa que eliges, junto a un código al azar de tu teléfono: nunca tu nombre. Las salas se cierran al día siguiente. Los <b>reportes de error</b> de las tarjetas llegan al CCEE sin tu nombre, y un <b>desafío</b> lleva tu resultado en el enlace, no tu nombre. El <b>respaldo</b> es un archivo que queda en tu teléfono: UApp no lo recibe y no incluye tu RUT.</p>
-    <h3 class="serif">Términos de uso</h3>
+  <div class="legal-box" role="dialog" aria-modal="true" aria-labelledby="legalTit">
+    <button type="button" class="legal-x" id="legalX" aria-label="Cerrar Términos y Privacidad">✕</button>
+    <h2 class="serif" id="legalTit">Privacidad</h2>
+    <p>UApp es una herramienta gratuita creada por el Centro de Estudiantes de Derecho Vespertino TECH. Tu avance, notas, ramos inscritos, progreso en Estudiar y RUT se guardan <b>únicamente en este teléfono</b> (en el navegador): no se envían a nuestra base de datos ni los vemos nosotros. Tu RUT sale del teléfono solo si abres la <b>solicitud de toma de carga</b>: va dentro del formulario de la Carrera. Ese formulario y el de reportes son de Microsoft y se rigen por sus propias políticas.</p>
+    <p>Para saber cuánto se usa la app, UApp anota sin tu nombre ni RUT: una <b>visita</b> por día y teléfono (con tu jornada y si la app está instalada) y qué secciones y acciones se usan. Además, Cloudflare Web Analytics cuenta las visitas sin cookies.</p>
+    <p>Las preguntas que escribes al asistente <b>Dona Tech</b> y los <b>reportes de error</b> de las tarjetas se guardan sin tu identidad (solo el texto y tu jornada) para mejorar las respuestas y el contenido. Los lee la directiva del CCEE que administra la app. Por eso te pedimos <b>no escribir datos personales</b> en el asistente ni en los reportes.</p>
+    <p>En el <b>modo en vivo</b> solo se envía la alternativa que eliges, junto a un código al azar de tu teléfono: nunca tu nombre. Las salas se borran al día siguiente. Un <b>desafío</b> lleva tu resultado en el enlace, no tu nombre. El <b>respaldo</b> es un archivo que queda en tu teléfono: UApp no lo recibe y no incluye tu RUT.</p>
+    <p>Dónde están los datos: avisos, evaluaciones, visitas, preguntas y salas en vivo se guardan en <b>Supabase</b>, con servidores en São Paulo (Brasil). La app se publica en GitHub Pages a través de Cloudflare, usa letras de Google Fonts y descarga dos bibliotecas desde jsDelivr: como en cualquier sitio web, esos servicios reciben la dirección IP de tu conexión al cargar la página.</p>
+    <h2 class="serif">Términos de uso</h2>
     <p>UApp es una <b>herramienta de apoyo referencial</b> hecha por estudiantes; no es un sistema oficial de la Universidad. La información (fechas, horarios, calendario, oferta de ramos y reglamento) puede cambiar: confirma siempre con las fuentes oficiales (Registro Curricular y la Dirección de Carrera) antes de tomar decisiones. El uso de la app es de tu responsabilidad.</p>
   </div>
 </div>
@@ -1417,66 +1439,66 @@ body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition
   <div class="fn serif">Derecho · Universidad Autónoma de Chile</div>
   <a class="fbk" href="https://forms.cloud.microsoft/r/VysiXNfr1a" target="_blank" rel="noopener noreferrer">💬 Reportar un problema o sugerencia</a>
   <p class="sm">Una herramienta del <b>Centro de Estudiantes de Derecho Vespertino TECH</b> · UA Temuco</p>
-  <p class="sm" style="margin-top:8px"><a href="javascript:void(0)" id="openLegal">Términos y Privacidad</a></p>
+  <p class="sm" style="margin-top:8px"><button type="button" id="openLegal" class="lnk-legal">Términos y Privacidad</button></p>
 </footer>
 
 <button id="chatFab" aria-label="Abrir preguntas frecuentes">💬</button>
-<div id="chatPanel" class="chatpanel" style="display:none">
+<div id="chatPanel" class="chatpanel" style="display:none" role="dialog" aria-modal="true" aria-labelledby="chatTit" aria-describedby="chatSub">
   <div class="chathead">
-    <div class="chatname serif">Dona <span class="ia">Tech</span></div>
-    <div class="chatsub">Asistente de preguntas frecuentes</div>
-    <button id="chatClose" aria-label="Cerrar">✕</button>
+    <h2 class="chatname serif" id="chatTit">Dona <span class="ia">Tech</span></h2>
+    <div class="chatsub" id="chatSub">Asistente de preguntas frecuentes</div>
+    <button type="button" id="chatClose" aria-label="Cerrar Dona">✕</button>
   </div>
-  <div id="chatMsgs" class="chatmsgs"></div>
-  <div id="chatChips" class="chatchips"></div>
+  <div id="chatMsgs" class="chatmsgs" role="log" aria-live="polite" aria-label="Conversación con Dona"></div>
+  <div id="chatChips" class="chatchips" role="group" aria-label="Temas sugeridos"></div>
   <div class="chatinput">
-    <input id="chatIn" type="text" placeholder="Escribe tu pregunta…" autocomplete="off">
-    <button id="chatSend" aria-label="Enviar">➤</button>
+    <input id="chatIn" type="text" placeholder="Escribe tu pregunta…" autocomplete="off" aria-label="Tu pregunta para Dona">
+    <button type="button" id="chatSend" aria-label="Enviar pregunta">➤</button>
   </div>
 </div>
 
 <button id="a11yFab" aria-label="Accesibilidad"><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="3.7" r="1.7" fill="#fff" stroke="none"/><path d="M12 6.5v6.5M5.5 9h13M12 13l-3 7.3M12 13l3 7.3"/></svg></button>
 <button id="ttsFab" aria-label="Escuchar esta sección" style="display:none">🔊</button>
 <div id="a11yPanel" class="a11y-ov" style="display:none">
-  <div class="a11y-box">
-    <button class="a11y-x" id="a11yX" aria-label="Cerrar">✕</button>
-    <div class="a11y-title serif">Accesibilidad</div>
+  <div class="a11y-box" role="dialog" aria-modal="true" aria-labelledby="a11yTit">
+    <button type="button" class="a11y-x" id="a11yX" aria-label="Cerrar accesibilidad">✕</button>
+    <h2 class="a11y-title serif" id="a11yTit">Accesibilidad</h2>
     <div class="a11y-grp">
-      <div class="a11y-lab">Tema</div>
-      <div class="a11y-seg" id="segTheme">
-        <button data-v="light">Claro</button>
-        <button data-v="dark">Oscuro</button>
-        <button data-v="auto">Automático</button>
+      <div class="a11y-lab" id="labTema">Tema</div>
+      <div class="a11y-seg" id="segTheme" role="group" aria-labelledby="labTema">
+        <button type="button" data-v="light" aria-pressed="false">Claro</button>
+        <button type="button" data-v="dark" aria-pressed="false">Oscuro</button>
+        <button type="button" data-v="auto" aria-pressed="false">Automático</button>
       </div>
     </div>
     <div class="a11y-grp">
-      <div class="a11y-lab">Tamaño de letra</div>
-      <div class="a11y-seg" id="segFont">
-        <button data-v="0.9">A−</button>
-        <button data-v="1">A</button>
-        <button data-v="1.15">A+</button>
-        <button data-v="1.3">A++</button>
+      <div class="a11y-lab" id="labLetra">Tamaño de letra</div>
+      <div class="a11y-seg" id="segFont" role="group" aria-labelledby="labLetra">
+        <button type="button" data-v="0.9" aria-pressed="false">A−<span class="sr-solo"> (letra pequeña)</span></button>
+        <button type="button" data-v="1" aria-pressed="false">A<span class="sr-solo"> (letra normal)</span></button>
+        <button type="button" data-v="1.15" aria-pressed="false">A+<span class="sr-solo"> (letra grande)</span></button>
+        <button type="button" data-v="1.3" aria-pressed="false">A++<span class="sr-solo"> (letra muy grande)</span></button>
       </div>
     </div>
     <div class="a11y-grp a11y-row">
-      <div><div class="a11y-lab" style="margin-bottom:2px">Reducir animaciones</div><div class="a11y-hint">Menos movimiento en la app</div></div>
-      <button class="a11y-tog" id="togMotion" role="switch" aria-checked="false"><span></span></button>
+      <div><div class="a11y-lab" style="margin-bottom:2px" id="labMotion">Reducir animaciones</div><div class="a11y-hint" id="labMotionH">Menos movimiento en la app</div></div>
+      <button type="button" class="a11y-tog" id="togMotion" role="switch" aria-checked="false" aria-labelledby="labMotion" aria-describedby="labMotionH"><span aria-hidden="true"></span></button>
     </div>
     <div class="a11y-grp a11y-row">
-      <div><div class="a11y-lab" style="margin-bottom:2px">Leer en voz alta</div><div class="a11y-hint">Botón 🔊 que lee la sección en pantalla</div></div>
-      <button class="a11y-tog" id="togTTS" role="switch" aria-checked="false"><span></span></button>
+      <div><div class="a11y-lab" style="margin-bottom:2px" id="labTTS">Leer en voz alta</div><div class="a11y-hint" id="labTTSH">Botón 🔊 que lee la sección en pantalla</div></div>
+      <button type="button" class="a11y-tog" id="togTTS" role="switch" aria-checked="false" aria-labelledby="labTTS" aria-describedby="labTTSH"><span aria-hidden="true"></span></button>
     </div>
     <div class="a11y-grp a11y-row">
-      <div><div class="a11y-lab" style="margin-bottom:2px">Modo daltónico</div><div class="a11y-hint">Colores distinguibles (azul y naranjo)</div></div>
-      <button class="a11y-tog" id="togCB" role="switch" aria-checked="false"><span></span></button>
+      <div><div class="a11y-lab" style="margin-bottom:2px" id="labCB">Modo daltónico</div><div class="a11y-hint" id="labCBH">Colores distinguibles (azul y naranjo)</div></div>
+      <button type="button" class="a11y-tog" id="togCB" role="switch" aria-checked="false" aria-labelledby="labCB" aria-describedby="labCBH"><span aria-hidden="true"></span></button>
     </div>
     <div class="a11y-grp a11y-row">
-      <div><div class="a11y-lab" style="margin-bottom:2px">Lectura fácil</div><div class="a11y-hint">Más espacio entre letras y líneas</div></div>
-      <button class="a11y-tog" id="togEasy" role="switch" aria-checked="false"><span></span></button>
+      <div><div class="a11y-lab" style="margin-bottom:2px" id="labEasy">Lectura fácil</div><div class="a11y-hint" id="labEasyH">Más espacio entre letras y líneas</div></div>
+      <button type="button" class="a11y-tog" id="togEasy" role="switch" aria-checked="false" aria-labelledby="labEasy" aria-describedby="labEasyH"><span aria-hidden="true"></span></button>
     </div>
     <div class="a11y-grp a11y-row">
-      <div><div class="a11y-lab" style="margin-bottom:2px">Alto contraste</div><div class="a11y-hint">Texto y bordes más marcados</div></div>
-      <button class="a11y-tog" id="togHC" role="switch" aria-checked="false"><span></span></button>
+      <div><div class="a11y-lab" style="margin-bottom:2px" id="labHC">Alto contraste</div><div class="a11y-hint" id="labHCH">Texto y bordes más marcados</div></div>
+      <button type="button" class="a11y-tog" id="togHC" role="switch" aria-checked="false" aria-labelledby="labHC" aria-describedby="labHCH"><span aria-hidden="true"></span></button>
     </div>
   </div>
 </div>
@@ -1526,10 +1548,10 @@ body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition
 </div>
 
 <button type="button" id="miniPill">🗓️ Ver mi horario</button>
-<div id="miniHor" aria-hidden="true">
+<div id="miniHor" role="complementary" aria-label="Miniatura de tu horario">
   <div class="mhh"><span id="miniTit">Tu horario</span><button type="button" id="miniX" aria-label="Ocultar miniatura">✕</button></div>
-  <div id="miniGrid"></div>
-  <div class="mhf" id="miniPie"></div>
+  <div id="miniGrid" aria-hidden="true"></div>
+  <button type="button" class="mhf" id="miniPie"></button>
 </div>
 
 <div id="allCalcModal" class="a11y-ov" style="display:none">
@@ -1807,6 +1829,36 @@ document.querySelectorAll("[data-ir]").forEach(b=>b.addEventListener("click",()=
 /* La rueda del mouse desplaza la barra de pestañas horizontalmente (computadores) */
 (function(){var tb=document.querySelector(".tabbar");if(!tb)return;tb.addEventListener("wheel",function(e){if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){tb.scrollLeft+=e.deltaY;e.preventDefault();}},{passive:false});})();
 /* Escape de texto externo o del usuario antes de inyectarlo en HTML (anti-XSS) */
+/* v2.8.1 · ventanas accesibles (Accesibilidad, Términos y Privacidad, Dona): al abrir, el foco entra a la ventana;
+   Tab no sale de ella; Esc la cierra; al cerrar, el foco vuelve al botón que la abrió */
+var uappDialogo=(function(){
+  var abiertos=[];
+  var SEL='a[href],button:not([disabled]),input:not([disabled]):not([type="hidden"]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+  function visible(el,tope){ for(var e=el;e&&e!==tope;e=e.parentNode){ if(e.hidden||(e.style&&e.style.display==="none")) return false; } return true; }
+  function enfocables(caja){ return [].slice.call(caja.querySelectorAll(SEL)).filter(function(e){ return visible(e,caja); }); }
+  function abierto(ov){ return !!ov&&document.body.contains(ov)&&ov.style.display!=="none"; }
+  function abrir(ov,caja,cerrar,foco){
+    abiertos=abiertos.filter(function(d){ return d.ov!==ov&&abierto(d.ov); });
+    abiertos.push({ov:ov,caja:caja||ov,cerrar:cerrar,previo:document.activeElement});
+    setTimeout(function(){ if(!abierto(ov)) return; var f=foco||enfocables(caja||ov)[0]; if(f) try{ f.focus(); }catch(e){} },30);
+  }
+  function cerrado(ov){
+    var d=null; abiertos=abiertos.filter(function(x){ if(x.ov===ov){ d=x; return false; } return true; });
+    if(d&&d.previo&&d.previo!==document.body&&document.body.contains(d.previo)) try{ d.previo.focus(); }catch(e){}
+  }
+  document.addEventListener("keydown",function(e){
+    abiertos=abiertos.filter(function(x){ return abierto(x.ov); });
+    var d=abiertos[abiertos.length-1]; if(!d) return;
+    if(e.key==="Escape"){ e.preventDefault(); e.stopPropagation(); d.cerrar(); return; }
+    if(e.key!=="Tab") return;
+    var f=enfocables(d.caja); if(!f.length){ e.preventDefault(); return; }
+    var a=f[0], z=f[f.length-1], act=document.activeElement;
+    if(!d.caja.contains(act)){ e.preventDefault(); (e.shiftKey?z:a).focus(); }
+    else if(e.shiftKey&&act===a){ e.preventDefault(); z.focus(); }
+    else if(!e.shiftKey&&act===z){ e.preventDefault(); a.focus(); }
+  },true);
+  return {abrir:abrir,cerrado:cerrado};
+})();
 function escHtml(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");}
 
 /* Horarios Otoño 2026 · 2º trimestre (por nivel y sección) */
@@ -1815,7 +1867,7 @@ const DIAS={L:"Lunes",M:"Martes",X:"Miércoles",J:"Jueves",V:"Viernes",S:"Sábad
 /* ================= Documentos imprimibles (PDF vía diálogo del sistema) =================
    Genera un documento limpio en un iframe oculto y abre el diálogo de impresión:
    ahí el estudiante elige "Guardar como PDF" o imprime directo. Sin dependencias. */
-function _e(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function _e(s){return escHtml(s);}   /* v2.8.1: también comillas, porque se usa dentro de atributos */
 function _jLabel(){var j=null;try{j=localStorage.getItem("jornada3_v1");}catch(e){}
   return j==="diurno"?"Jornada Diurna":j==="vregular"?"Jornada Vespertina Regular":"Jornada Vespertina TECH";}
 function _fGen(){try{return new Date().toLocaleString("es-CL",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});}catch(e){return new Date().toISOString().slice(0,16).replace("T"," ");}}
@@ -2429,7 +2481,8 @@ function _textoVerificacion(){
         : (V.solic.length ? "OK, con coincidencia horaria dentro del 50% (art.7)"
                           : "OK, sin observaciones");
   var T=_tercerasGuardadas().filter(function(x){ return det.some(function(r){return r.id===x;}); });
-  return "Validado por UApp - "+est+
+  /* v2.8.1 · «Autodeclarado»: UApp revisa con lo que el estudiante marcó en su malla, no con su ficha oficial */
+  return "Autodeclarado en UApp - "+est+
          " | "+det.length+" ramos, "+V.sct+" SCT"+
          (T.length?" | 3a oportunidad declarada":"")+
          " | Respaldo PDF adjunto";
@@ -2494,7 +2547,8 @@ function _guardaRut(v){ try{ v=String(v||"").replace(/[^0-9kK]/g,""); if(v)local
 function solicitudVigente(){
   if(!SOLICITUD.activo)return false;
   try{
-    var hoy=new Date().toISOString().slice(0,10);
+    /* fecha del teléfono (hora de Chile), no la de Greenwich: con toISOString el último día se cerraba a las 21:00 */
+    var d=new Date(), hoy=d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2);
     if(SOLICITUD.desde&&hoy<SOLICITUD.desde)return false;
     if(SOLICITUD.hasta&&hoy>SOLICITUD.hasta)return false;
   }catch(e){}
@@ -2721,7 +2775,7 @@ function buildTable(data,key,sel){
   h+='</tr></thead><tbody>';
   for(let i=firstRow;i<=lastRow;i++){
     h+=`<tr><td class="th-h tm2">${BL[i][0]}<br>${BL[i][1]}</td>`;
-    Object.keys(DIAS).forEach(d=>{const c=grid[d][i];if(c&&c.cont)return;if(c){const id=sel?((c.sid!=null)?c.sid:OFER[c.ramo]):undefined;const selc=sel&&id!=null;const on=selc&&insc[id]===key;h+=`<td rowspan="${c.span}" class="cell${selc?' selc':''}${on?' selon':''}"${selc?` data-id="${id}" data-key="${key}" tabindex="0" role="button" aria-pressed="${on?'true':'false'}" aria-label="${c.ramo}. ${DIAS[d]} de ${BL[i][0]} a ${BL[i+c.span-1][1]}. ${on?'Seleccionado':'Tocar para seleccionar'}"`:''}>${on?'<span class="selck">✓</span>':''}<span class="cr">${c.ramo}</span>${c.nrc?`<span class="cn">NRC ${c.nrc}${c.mod?" · "+c.mod:""}</span>`:(c.mod?`<span class="cn">${c.mod}</span>`:"")}${c.sala&&c.sala!=="—"?`<span class="cs">${c.sala}</span>`:""}${c.profe&&c.profe!=="—"?`<span class="cp">${c.profe}</span>`:""}</td>`;}else h+="<td></td>";});
+    Object.keys(DIAS).forEach(d=>{const c=grid[d][i];if(c&&c.cont)return;if(c){const id=sel?((c.sid!=null)?c.sid:OFER[c.ramo]):undefined;const selc=sel&&id!=null;const on=selc&&insc[id]===key;h+=`<td rowspan="${c.span}" class="cell${selc?' selc':''}${on?' selon':''}"${selc?` data-id="${id}" data-key="${key}" tabindex="0" role="button" aria-pressed="${on?'true':'false'}" aria-label="${escHtml([c.ramo,c.nrc?('NRC '+c.nrc+(c.mod?' · '+c.mod:'')):(c.mod||''),(c.sala&&c.sala!=='—')?c.sala:'',(c.profe&&c.profe!=='—')?c.profe:''].filter(Boolean).join('. '))}. ${DIAS[d]} de ${BL[i][0]} a ${BL[i+c.span-1][1]}. ${on?'Seleccionado':'Tocar para seleccionar'}"`:''}>${on?'<span class="selck">✓</span> ':''}<span class="cr">${c.ramo}</span>${c.nrc?` <span class="cn">NRC ${c.nrc}${c.mod?" · "+c.mod:""}</span>`:(c.mod?` <span class="cn">${c.mod}</span>`:"")}${c.sala&&c.sala!=="—"?` <span class="cs">${c.sala}</span>`:""}${c.profe&&c.profe!=="—"?` <span class="cp">${c.profe}</span>`:""}</td>`;}else h+="<td></td>";});
     h+="</tr>";
   }
   return h+"</tbody></table></div>";
@@ -3007,8 +3061,8 @@ function pintaSolicitud(){
     '<li><b>Envía la solicitud</b>: el formulario se abre con tus '+det.length+' ramo(s) ya marcados.</li>'+
     '<li><b>Adjunta el PDF</b> en el formulario y envía.</li></ol>'+
     _bloqueTerceras(det)+
-    '<label class="sb-rut" for="inpRut">Tu RUT <span>(sin puntos ni guión, queda solo en este dispositivo)</span></label>'+
-    '<input id="inpRut" class="sb-in" type="text" inputmode="numeric" maxlength="10" placeholder="163175371" value="'+escHtml(_rutGuardado())+'">'+
+    '<label class="sb-rut" for="inpRut">Tu RUT <span>(sin puntos ni guión; se guarda en este teléfono y solo sale de él dentro del formulario de la Carrera, al enviar)</span></label>'+
+    '<input id="inpRut" class="sb-in" type="text" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="Ej.: 111111111" value="'+escHtml(_rutGuardado())+'">'+
     '<button type="button" class="mSwBtn sb-btn" id="btnSolic">📤 Enviar solicitud</button>'+
     '<div class="sb-n">Revisa que tu avance en <b>Avance Curricular</b> esté al día antes de enviar: el documento lo declara tal como lo marcaste.</div>'+
     '</div>';
@@ -3765,7 +3819,9 @@ const AVISOS=[
 /* Conexión a Supabase (llave pública) para leer avisos en vivo */
 const SB_URL="https://pohrbljeamhfkcjxikct.supabase.co";
 const SB_KEY="sb_publishable_XVNXhyYjebrrs0R0oKgLZw_9tBbDazZ";
-let sbc=null; try{ sbc=window.supabase.createClient(SB_URL,SB_KEY); }catch(e){}
+/* v2.8.1 · la app pública siempre consulta como anónima: no guarda ni lee sesiones. Antes compartía el almacenamiento
+   del panel (mismo dominio) y en el teléfono de un editor la app usaba su sesión de editor sin que se notara */
+let sbc=null; try{ sbc=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false,storageKey:"uapp-publica"}}); }catch(e){}
 
 /* ¿Estamos en el ambiente de prueba (carpeta /prueba…)? Si es así:
    no se registran visitas, interacciones ni consultas (para no contaminar
@@ -3810,7 +3866,7 @@ function logInteraccion(seccion,accion){
   try{
     if(ES_PRUEBA) return;
     if(!sbc) return;
-    var HOY=new Date().toISOString().slice(0,10);
+    var d0=new Date(), HOY=d0.getFullYear()+"-"+("0"+(d0.getMonth()+1)).slice(-2)+"-"+("0"+d0.getDate()).slice(-2);   /* día en Chile */
     var KEY="visita_v1";
     var ult=null; try{ ult=localStorage.getItem(KEY); }catch(e){}
     if(ult===HOY) return;                 /* ya se contó hoy en este dispositivo */
@@ -4013,36 +4069,22 @@ document.getElementById("mallaToggle").onclick=()=>showMalla(curMalla==="noajust
   var b2=document.getElementById("dlPru");if(b2)b2.onclick=function(){docPruebas();};
   var b3=document.getElementById("dlPlan");if(b3)b3.onclick=function(){docRespaldo();};})();
 
-/* ===== Respaldo de avance + legales ===== */
-function exportData(){
-  try{
-    const data={}; for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);data[k]=localStorage.getItem(k);}
-    const blob=new Blob([JSON.stringify({app:"UApp",fecha:new Date().toISOString(),data:data},null,2)],{type:"application/json"});
-    const url=URL.createObjectURL(blob), a=document.createElement("a");
-    a.href=url; a.download="uapp-respaldo-"+new Date().toISOString().slice(0,10)+".json"; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-  }catch(e){ alert("No pude generar el respaldo."); }
-}
-function importData(file){
-  const r=new FileReader();
-  r.onload=function(){
-    try{
-      const obj=JSON.parse(r.result), d=(obj&&obj.data)?obj.data:obj;
-      if(!d||typeof d!=="object") throw 0;
-      if(!confirm("Esto reemplazará tu avance actual con el del respaldo. ¿Continuar?")) return;
-      Object.keys(d).forEach(function(k){ localStorage.setItem(k,d[k]); });
-      alert("¡Avance restaurado! La app se recargará."); location.reload();
-    }catch(e){ alert("No pude leer el archivo. Asegúrate de que sea un respaldo de UApp (.json)."); }
-  };
-  r.readAsText(file);
-}
+/* ===== Respaldo de avance + legales =====
+   v2.8.1 · el respaldo antiguo de Avance copiaba TODO lo guardado (también el RUT y la sesión del panel) y al
+   restaurar aceptaba cualquier clave. Se quitó: el botón lleva a Más › Respaldo, que copia solo los datos de estudio
+   y revisa cada valor antes de cargarlo (respaldo/respaldo.js). */
 (function(){
-  var e=document.getElementById("bkExp"); if(e) e.onclick=exportData;
-  var im=document.getElementById("bkImp"), f=document.getElementById("bkFile");
-  if(im&&f){ im.onclick=function(){ f.click(); }; f.onchange=function(){ if(f.files[0]) importData(f.files[0]); f.value=""; }; }
+  var bi=document.getElementById("bkIr");
+  if(bi) bi.onclick=function(){
+    var t=document.querySelector('.tab[data-tab="info"]'); if(t) t.click();
+    setTimeout(function(){ var r=document.getElementById("respaldoBox"); if(!r) return; try{ r.scrollIntoView({block:"start"}); }catch(e){}
+      var b=r.querySelector("button"); if(b) try{ b.focus({preventScroll:true}); }catch(e){} },80);
+  };
   var ol=document.getElementById("openLegal"), lm=document.getElementById("legalModal"), lx=document.getElementById("legalX");
-  if(ol&&lm) ol.onclick=function(){ lm.style.display="flex"; };
-  if(lx&&lm) lx.onclick=function(){ lm.style.display="none"; };
-  if(lm) lm.onclick=function(ev){ if(ev.target===lm) lm.style.display="none"; };
+  function cerrarLegal(){ lm.style.display="none"; uappDialogo.cerrado(lm); }
+  if(ol&&lm) ol.onclick=function(){ lm.style.display="flex"; uappDialogo.abrir(lm,lm.querySelector(".legal-box"),cerrarLegal); };
+  if(lx&&lm) lx.onclick=cerrarLegal;
+  if(lm) lm.onclick=function(ev){ if(ev.target===lm) cerrarLegal(); };
 })();
 
 /* ===== Chatbox VenIA — banco de preguntas frecuentes ===== */
@@ -4200,17 +4242,25 @@ function importData(file){
       else { addMsg("No encontré una respuesta exacta 🙈. Prueba tocando un tema aquí abajo, o escríbenos al Instagram <b>@ccee.derechouatco</b> o al correo <b>cceedereua@gmail.com</b>.",'bot'); }
     },300);}
   function openChat(){panel.style.display='flex';fab.style.display='none';if(!greeted){greeted=true;addMsg("¡Hola! 👋 Soy <b>Dona</b>, el asistente de la carrera de Derecho. Pregúntame sobre fechas, inscripción de ramos, reglamento, apoyo, servicios o contactos. Toca un tema o escribe tu duda.<br><span class=\"cnota\">Guardamos las preguntas de forma anónima para mejorar las respuestas. No escribas datos personales.</span>",'bot');showCats();}setTimeout(()=>inp.focus(),100);}
-  function closeChat(){panel.style.display='none';fab.style.display='flex';}
-  fab.onclick=openChat; closeb.onclick=closeChat;
+  function closeChat(){panel.style.display='none';fab.style.display='flex';uappDialogo.cerrado(panel);}
+  fab.onclick=function(){ openChat(); uappDialogo.abrir(panel,panel,closeChat,inp); }; closeb.onclick=closeChat;
   sendb.onclick=()=>ask(inp.value);
   inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();ask(inp.value);}});
 })();
 </script>
 <script>
 if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA)){
-  var __refreshing=false;
+  /* v2.8.1 · ya no se recarga sola: en la primera visita el service worker toma el control sin recargar (antes la
+     página se cargaba dos veces), y cuando llega una versión nueva se avisa con un botón, para no cortar un
+     simulacro o una sala en vivo a la mitad */
+  var __habiaSW=!!navigator.serviceWorker.controller;
   navigator.serviceWorker.addEventListener('controllerchange',function(){
-    if(__refreshing)return;__refreshing=true;window.location.reload();
+    if(!__habiaSW){ __habiaSW=true; return; }
+    if(document.getElementById('nuevaVersion')) return;
+    var d=document.createElement('div'); d.id='nuevaVersion'; d.setAttribute('role','status');
+    d.innerHTML='<span>Hay una versión nueva de UApp.</span><button type="button">Actualizar</button>';
+    d.querySelector('button').onclick=function(){ window.location.reload(); };
+    document.body.appendChild(d);
   });
   window.addEventListener('load',function(){
     navigator.serviceWorker.register('./sw.js').then(function(reg){
@@ -4247,9 +4297,10 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
   var KEYA="uapp_a11y_v1";
   var prefs={theme:"light",font:"1",motion:false,tts:false,cb:false,easy:false,hc:false};
   try{var s=JSON.parse(localStorage.getItem(KEYA));if(s)prefs=Object.assign(prefs,s);}catch(e){}
+  if(["0.9","1","1.15","1.3"].indexOf(String(prefs.font))<0)prefs.font="1"; if(["light","dark","auto"].indexOf(prefs.theme)<0)prefs.theme="light";   /* v2.8.1: solo valores conocidos */
   var mq=window.matchMedia('(prefers-color-scheme: dark)');
-  function applyTheme(){var dark=prefs.theme==="dark"||(prefs.theme==="auto"&&mq.matches);document.body.classList.toggle("dark",dark);}
-  function applyFont(){document.body.style.zoom=prefs.font;}
+  function applyTheme(){var dark=prefs.theme==="dark"||(prefs.theme==="auto"&&mq.matches);document.body.classList.toggle("dark",dark);try{document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute("content",dark?"#171213":"#FBF5F5");});}catch(e){}}
+  function applyFont(){document.body.style.zoom=prefs.font;document.body.classList.toggle("letra-grande",+prefs.font>=1.15);}   /* v2.8.1: con letra grande en teléfonos angostos, Estudiar pasa a una columna */
   function applyMotion(){document.body.classList.toggle("reduce-motion",!!prefs.motion);}
   function applyExtra(){
     document.body.classList.toggle("cb",!!prefs.cb);
@@ -4261,8 +4312,8 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
   function save(){try{localStorage.setItem(KEYA,JSON.stringify(prefs));}catch(e){}}
   var TOGS=[['togMotion','motion'],['togTTS','tts'],['togCB','cb'],['togEasy','easy'],['togHC','hc']];
   function mark(){
-    var t=document.querySelectorAll('#segTheme button');for(var i=0;i<t.length;i++)t[i].classList.toggle('on',t[i].dataset.v===prefs.theme);
-    var f=document.querySelectorAll('#segFont button');for(var j=0;j<f.length;j++)f[j].classList.toggle('on',f[j].dataset.v===String(prefs.font));
+    var t=document.querySelectorAll('#segTheme button');for(var i=0;i<t.length;i++){var ti=t[i].dataset.v===prefs.theme;t[i].classList.toggle('on',ti);t[i].setAttribute('aria-pressed',ti?'true':'false');}
+    var f=document.querySelectorAll('#segFont button');for(var j=0;j<f.length;j++){var fj=f[j].dataset.v===String(prefs.font);f[j].classList.toggle('on',fj);f[j].setAttribute('aria-pressed',fj?'true':'false');}
     for(var m=0;m<TOGS.length;m++){var el=document.getElementById(TOGS[m][0]);if(el){el.classList.toggle('on',!!prefs[TOGS[m][1]]);el.setAttribute('aria-checked',prefs[TOGS[m][1]]?'true':'false');}}
   }
   /* --- Lector en voz alta (voz del dispositivo, en español) --- */
@@ -4287,9 +4338,10 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
   }
   applyTheme();applyFont();applyMotion();applyExtra();
   var fab=document.getElementById('a11yFab'),panel=document.getElementById('a11yPanel'),x=document.getElementById('a11yX');
-  if(fab&&panel)fab.onclick=function(){mark();panel.style.display='flex';};
-  if(x&&panel)x.onclick=function(){panel.style.display='none';};
-  if(panel)panel.onclick=function(e){if(e.target===panel)panel.style.display='none';};
+  function cerrarPanel(){panel.style.display='none';uappDialogo.cerrado(panel);}
+  if(fab&&panel)fab.onclick=function(){mark();panel.style.display='flex';uappDialogo.abrir(panel,panel.querySelector('.a11y-box'),cerrarPanel);};
+  if(x&&panel)x.onclick=cerrarPanel;
+  if(panel)panel.onclick=function(e){if(e.target===panel)cerrarPanel();};
   var tb=document.querySelectorAll('#segTheme button');for(var i=0;i<tb.length;i++)tb[i].onclick=function(){prefs.theme=this.dataset.v;applyTheme();mark();save();};
   var fb=document.querySelectorAll('#segFont button');for(var k=0;k<fb.length;k++)fb[k].onclick=function(){prefs.font=this.dataset.v;applyFont();mark();save();};
   for(var g=0;g<TOGS.length;g++)(function(id,key){var el=document.getElementById(id);if(el)el.onclick=function(){prefs[key]=!prefs[key];applyMotion();applyExtra();mark();save();};})(TOGS[g][0],TOGS[g][1]);
@@ -5623,7 +5675,10 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
     var j=jor(); c.textContent=(j==="diurno")?"Diurno":((j==="vregular")?"V. Regular":"TECH");
     c.setAttribute("aria-label","Jornada "+c.textContent+". Cambiar jornada");
   }
-  function todo(){ try{ chip(); pintarInicio(); pintarAvance(); }catch(e){ if(window.console) console.error("Inicio 2.0:",e); } }
+  function todo(){ try{ chip(); pintarInicio(); pintarAvance(); }catch(e){ if(window.console) console.error("Inicio 2.0:",e); } listo(); }
+  /* v2.8.1 · el pie se muestra recién cuando Inicio ya está dibujado: antes saltaba de arriba abajo al cargar (CLS 0,25) */
+  function listo(){ try{ document.body.classList.add("i2-listo"); }catch(e){} }
+  setTimeout(listo,2500);   /* por si algo falla al dibujar Inicio */
 
   function iniciar(){
     function cambiarJornada(){ var b=document.getElementById("jornadaChange"); if(b) b.click(); }
@@ -5681,9 +5736,9 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
 })();
 
 </script>
-<script src="estudiar/estudiar.js?v=d945b2735f76"></script>
-<script src="respaldo/respaldo.js?v=9f2d396f5e3a"></script>
-<script src="envivo/envivo.js?v=18521860b35e"></script>
+<script src="estudiar/estudiar.js?v=b5e0a26e31cb"></script>
+<script src="respaldo/respaldo.js?v=5d9d94704cf9"></script>
+<script src="envivo/envivo.js?v=ef13254c6716"></script>
 <script>
 /* ═══ UApp · funciones tomadas de la revisión de apps similares ═══
    1. Horario de clases al calendario del teléfono (como TUM Campus App)

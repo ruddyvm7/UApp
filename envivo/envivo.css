@@ -14,11 +14,11 @@ html.ev-abierto body{overflow:hidden}
 .ev-lbl{margin:0;font-size:13px;font-weight:800;color:var(--muted)}
 .ev-cod{font:inherit;font-size:30px;font-weight:900;letter-spacing:.3em;text-transform:uppercase;text-align:center;padding:12px;border:2px solid var(--cb);border-radius:18px;background:var(--card);color:var(--ink)}
 .ev-cod:focus{outline:none;border-color:var(--wine)}
-.ev-btn{min-height:52px;border:0;border-radius:18px;background:var(--wine);color:#fff;font:inherit;font-size:16px;font-weight:800;cursor:pointer}
+.ev-btn{min-height:52px;border:0;border-radius:18px;background:var(--wine-fondo);color:#fff;font:inherit;font-size:16px;font-weight:800;cursor:pointer}
 .ev-btn[disabled]{opacity:.6;cursor:default}
 .ev-cant{display:flex;gap:8px;flex-wrap:wrap}
 .ev-c{min-width:56px;min-height:44px;border:1.5px solid var(--cb);border-radius:999px;background:var(--card);color:var(--ink);font:inherit;font-size:15px;font-weight:800;cursor:pointer}
-.ev-c.on{background:var(--wine);border-color:var(--wine);color:#fff}
+.ev-c.on{background:var(--wine-fondo);border-color:var(--wine);color:#fff}
 .ev-codigo{margin:6px 0;font-size:56px;font-weight:900;letter-spacing:.18em;text-align:center;color:var(--wine);font-variant-numeric:tabular-nums}
 .ev-paso{margin:0;font-size:13px;font-weight:800;color:var(--muted)}
 .ev-preg{margin:0;font-size:18px;font-weight:800;line-height:1.4}
@@ -27,7 +27,7 @@ html.ev-abierto body{overflow:hidden}
 .ev-op b{flex:0 0 28px;height:28px;border-radius:999px;background:var(--u2-tinte);color:var(--wine);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800}
 .ev-op[disabled]{cursor:default}
 .ev-op.sel{border-color:var(--wine);background:var(--u2-tinte)}
-.ev-op.sel b{background:var(--wine);color:#fff}
+.ev-op.sel b{background:var(--wine-fondo);color:#fff}
 .ev-op.ok{border-color:var(--u2-okb);background:var(--u2-ok)}
 .ev-op.ok b{background:var(--u2-okt);color:var(--card)}
 .ev-op.mal{border-color:var(--u2-nob);background:var(--u2-no)}

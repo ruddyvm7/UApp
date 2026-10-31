@@ -27,7 +27,10 @@
     return id;
   }
   function estudio(){ return window.__estudio||null; }
-  function pregunta(id){ var E=estudio(), M=E&&E.mazos[P.mazo]; return M?M.preguntas.filter(function(q){ return q.id===id; })[0]||null:null; }
+  function pregunta(id){ var E=estudio(), M=E&&Object.prototype.hasOwnProperty.call(E.mazos,P.mazo)?E.mazos[P.mazo]:null; return M&&Array.isArray(M.preguntas)?M.preguntas.filter(function(q){ return q.id===id; })[0]||null:null; }
+  /* v2.8.1 · lo que llega de la sala se revisa antes de usarlo: número de pregunta dentro de la lista y orden de alternativas */
+  function enRango(i){ return !!P&&Array.isArray(P.preguntas)&&typeof i==="number"&&i>=0&&i<P.preguntas.length; }
+  function ordenDe(i){ return String((P&&P.ordenes&&P.ordenes[i])||"").replace(/[^0-5]/g,"").split("").map(Number); }
   function registrar(a){ try{ if(typeof logInteraccion==="function") logInteraccion("en vivo",a); }catch(e){} }
 
   /* ── panel ── */
@@ -84,7 +87,8 @@
       var bien=0; Object.keys(P.mias).forEach(function(i){ if(P.mias[i].ok) bien++; });
       return '<h2 class="ev-h">Terminó la sala</h2><p class="ev-grande">'+bien+' de '+n+'</p><p class="ev-txt">'+plural(Object.keys(P.mias).length,"pregunta respondida","preguntas respondidas")+'.</p><button type="button" class="ev-btn" data-ev="cerrar" data-foco>Volver a UApp</button>';
     }
-    var i=P.actual, q=pregunta(P.preguntas[i]), orden=P.ordenes[i].split("").map(Number), mia=P.mias[i];
+    if(!enRango(P.actual)) return '<h2 class="ev-h">'+esc(P.ramo)+'</h2><p class="ev-txt ev-espera">Esperando la siguiente pregunta…</p>'+msj(P.error);   /* v2.8.1: sala con un número de pregunta fuera de rango */
+    var i=P.actual, q=pregunta(P.preguntas[i]), orden=ordenDe(i), mia=P.mias[i];
     if(!q) return msj("Esta pregunta no está en tu versión de UApp. Actualiza la app.");
     var h='<p class="ev-paso">Pregunta '+(i+1)+' de '+n+'</p><p class="ev-preg">'+esc(q.q)+'</p>';
     if(P.fase==="pregunta"){
@@ -105,22 +109,23 @@
     rpc("vivo_estado",{p_codigo:cod}).then(function(d){
       var s=Array.isArray(d)?d[0]:d;
       if(!s){ P.codigo=null; P.cargando=false; P.error="No encontramos esa sala. Revisa el código."; ultimo=""; pintar(); return; }
-      var E=estudio(); if(!E||!E.indice[s.mazo]) throw new Error("Esta sala usa un ramo que tu UApp no tiene. Actualiza la app.");
+      var E=estudio(); if(!E||!Object.prototype.hasOwnProperty.call(E.indice,s.mazo)||!Array.isArray(s.preguntas)||!Array.isArray(s.ordenes)) throw new Error("Esta sala usa un ramo que tu UApp no tiene. Actualiza la app.");
       P.mazo=s.mazo; P.ramo=E.mazos[s.mazo].ramo; P.preguntas=s.preguntas; P.ordenes=s.ordenes;
       return E.cargar(s.mazo).then(function(){ P.cargando=false; aplicar(s); registrar("unirse"); andar(); });
     }).catch(function(e){ P.cargando=false; if(!P.preguntas) P.codigo=null; P.error=/sin servidor|fetch|network/i.test(e.message)?"Sin conexión con el servidor. Revisa tu internet.":e.message; ultimo=""; pintar(); });
   }
   function aplicar(s){
     var cambio=(s.actual!==P.actual||s.fase!==P.fase);
-    P.actual=s.actual; P.fase=s.fase; P.respuestas=s.respuestas||0; P.error="";
+    P.actual=s.actual; P.fase=s.fase; P.respuestas=Math.max(0,+s.respuestas||0); P.error="";
     if(cambio) P.conteo=null;
     if(P.fase==="respuesta"&&!P.conteo) traerConteo();
     if(P.fase==="fin") parar();
     pintar();
   }
   function responder(idx){
-    if(!P||P.rol!=="participante"||P.fase!=="pregunta") return;
-    var i=P.actual, q=pregunta(P.preguntas[i]), orden=P.ordenes[i].split("").map(Number);
+    if(!P||P.rol!=="participante"||P.fase!=="pregunta"||!enRango(P.actual)) return;
+    var i=P.actual, q=pregunta(P.preguntas[i]), orden=ordenDe(i);
+    if(!q) return;
     P.mias[i]={idx:idx,ok:orden[idx]===q.ok,enviando:true}; pintar();
     rpc("vivo_responder",{p_codigo:P.codigo,p_participante:yo(),p_pregunta:i,p_opcion:orden[idx]}).then(function(okSrv){
       if(P&&P.mias[i]){ P.mias[i].enviando=false; if(okSrv===false){ delete P.mias[i]; P.error="La pregunta ya se cerró."; } pintar(); }
@@ -130,8 +135,8 @@
     var i=P.actual;
     rpc("vivo_resultados",{p_codigo:P.codigo,p_pregunta:i}).then(function(filas){
       if(!P||P.actual!==i) return;
-      var orden=P.ordenes[i].split("").map(Number), c={};
-      (filas||[]).forEach(function(f){ var idx=orden.indexOf(f.opcion); if(idx>=0) c[idx]=f.n; });
+      var orden=ordenDe(i), c={};
+      (Array.isArray(filas)?filas:[]).forEach(function(f){ var idx=orden.indexOf(+f.opcion); if(idx>=0) c[idx]=Math.max(0,+f.n||0); });
       P.conteo=c; if(P.rol==="anfitrion") P.historial[i]=c; pintar();
     },function(){});
   }
@@ -152,12 +157,12 @@
       '<p class="ev-codigo" aria-label="Código de la sala: '+esc(P.codigo.split("").join(" "))+'">'+esc(P.codigo)+'</p><p class="ev-nota">'+esc(P.ramo)+' · '+plural(n,"pregunta","preguntas")+'</p>'+
       '<button type="button" class="ev-btn" data-ev="mover" data-v="0" data-f="pregunta" data-foco>Empezar</button>'+msj(P.error);
     if(P.fase==="fin"){
-      var filas=P.preguntas.map(function(id,i){ var q=pregunta(id), c=P.historial[i]||{}, orden=P.ordenes[i].split("").map(Number), tot=0, ok=0;
-        orden.forEach(function(real,idx){ tot+=c[idx]||0; if(real===q.ok) ok=c[idx]||0; });
+      var filas=P.preguntas.map(function(id,i){ var q=pregunta(id), c=P.historial[i]||{}, orden=ordenDe(i), tot=0, ok=0;
+        orden.forEach(function(real,idx){ tot+=c[idx]||0; if(q&&real===q.ok) ok=c[idx]||0; });
         return '<li><span>'+esc(q?q.q:id)+'</span><small>'+(tot?Math.round(ok/tot*100)+' % acertó ('+ok+' de '+tot+')':'Sin respuestas')+'</small></li>'; }).join("");
       return '<h2 class="ev-h">Terminó la sala</h2><ol class="ev-resumen">'+filas+'</ol><button type="button" class="ev-btn" data-ev="cerrar" data-foco>Cerrar</button>';
     }
-    var i=P.actual, q=pregunta(P.preguntas[i]), orden=P.ordenes[i].split("").map(Number), ultima=i+1>=n;
+    var i=P.actual, q=pregunta(P.preguntas[i]), orden=ordenDe(i), ultima=i+1>=n;
     var h='<p class="ev-paso">Pregunta '+(i+1)+' de '+n+' · Sala <b>'+esc(P.codigo)+'</b></p><p class="ev-preg">'+esc(q.q)+'</p>';
     if(P.fase==="pregunta"){
       h+=opciones(q,orden,null)+'<p class="ev-cuenta" role="status">'+plural(P.respuestas||0,"respuesta","respuestas")+'</p>'+
@@ -200,7 +205,7 @@
       var s=Array.isArray(d)?d[0]:d; if(!P) return;
       if(!s){ P.fase="fin"; parar(); ultimo=""; pintar(); return; }
       if(P.rol==="participante") aplicar(s);
-      else { P.respuestas=s.respuestas||0; if(P.fase==="respuesta"&&P.actual===s.actual) traerConteo(); pintar(); }
+      else { P.respuestas=Math.max(0,+s.respuestas||0); if(P.fase==="respuesta"&&P.actual===s.actual) traerConteo(); pintar(); }
     },function(){});
   }
 

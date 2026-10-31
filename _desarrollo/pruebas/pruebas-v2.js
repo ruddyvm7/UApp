@@ -99,7 +99,7 @@ async function inicio(url,fecha,ls){ const d=abrir(url,fecha,ls); await sleep(11
   ok('v2.2 · al pasar el mouse, el ramo muestra sus requisitos', !!t0 && /Requiere|Sin requisitos/.test(t0.title||''));
   w=await inicio("https://miuapp.cl/?derechotech",[2026,9,13,19,40],Object.assign({},TECH,{"uapp_req_v1":"1"})); doc=w.document;
   ok('  al volver a abrir la app, se mantiene', doc.getElementById('malla').classList.contains('con-req'));
-  ok('v2.2 · áreas y respaldo sin mayúsculas ni emojis', /Derecho Civil/.test(T(doc.querySelector('#malla .areas'))) && T(doc.getElementById('bkExp'))==='Respaldar mi avance');
+  ok('v2.2 · áreas y respaldo sin mayúsculas ni emojis (v2.8.1: un botón que lleva a Más › Respaldo)', /Derecho Civil/.test(T(doc.querySelector('#malla .areas'))) && T(doc.getElementById('bkIr'))==='Respaldar o pasar a otro teléfono' && !doc.getElementById('bkExp') && !doc.getElementById('bkImp'));
   /* ═══ v2.3 ═══ */
   doc.querySelector('.tab[data-tab="malla"]').click(); await sleep(200);
   const vr3=doc.getElementById('verReq');

@@ -15,9 +15,12 @@ const stub=`<script>(function(){
   window.supabase={createClient:function(){return {from:function(t){return new Q(t);}};}};
 })();<\/script>`;
 const html=base.replace(/<script src="https:\/\/cdn[^>]*supabase[^>]*><\/script>/,stub);
-const dia=n=>{const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+n);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
+/* v2.8.1 · fecha fija (30 de octubre de 2026): antes la prueba dependía del día en que se corría */
+const HOY=new Date(2026,9,30,10,0);
+const dia=n=>{const d=new Date(HOY);d.setHours(0,0,0,0);d.setDate(d.getDate()+n);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
 function abrir(url,tablas,ls){return new JSDOM(html,{runScripts:"dangerously",pretendToBeVisual:true,url,
-  beforeParse(w){ w.__TABLAS=tablas; Object.entries(ls||{}).forEach(([k,v])=>w.localStorage.setItem(k,v));
+  beforeParse(w){ const Re=w.Date,fx=HOY.getTime();class F extends Re{constructor(...a){if(a.length)super(...a);else super(fx);}static now(){return fx;}}F.UTC=Re.UTC;F.parse=Re.parse;w.Date=F;
+    w.__TABLAS=tablas; Object.entries(ls||{}).forEach(([k,v])=>w.localStorage.setItem(k,v));
     w.scrollTo=()=>{};w.confirm=()=>true;w.matchMedia=q=>({matches:false,addEventListener(){},removeEventListener(){},addListener(){},removeListener(){}});}});}
 const T=el=>el?el.textContent.replace(/\s+/g,' '):'';
 const vis=b=>b&&b.style.display!=='none'&&b.textContent.trim().length>0;
@@ -44,7 +47,7 @@ const DIURNO=[
   ok('  Reacción Penal una sola vez, con una línea por sección', lin.length===2 && /^S1 · 08:30 · oral · sala A-52/.test(lin[0]) && /^S2 · 09:30 · escrita · sala A-42/.test(lin[1]));
   ok('  ramos ordenados por su primera hora', T(box).indexOf('Derecho Político')<T(box).indexOf('Teoría de la Reacción Penal'));
   ok('  solo los próximos 7 días (Bienes, en 12 días, no sale)', /Recursos/.test(T(box)) && !/Bienes/.test(T(box)));
-  ok('  nada de otra jornada', !/Mercantil|Sucesorio/.test(T(box)));
+  ok('  nada de otra jornada (las de TECH de la prueba no aparecen; el calendario oficial de Diurno sí puede traer «Mercantil»)', !/TEA SH-4|San Juan/.test(T(box)));
   ok('Guarda una copia para usar sin conexión', JSON.parse(w.localStorage.getItem('evdet_v1_diurno')||'[]').length===5);
   /* ═══ Sin conexión: usa la copia ═══ */
   d=abrir("https://miuapp.cl/?derechodiurno",{evaluaciones:"error",avisos:[]},{"evdet_v1_diurno":JSON.stringify(DIURNO.filter(r=>r.jornada==='diurno'))}); await sleep(1200);

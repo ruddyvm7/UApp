@@ -223,6 +223,8 @@
 
   /* ---------- utilidades ---------- */
   function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  /* v2.8.1 · solo enlaces https: un doc_url con «javascript:» u otro esquema no se convierte en enlace */
+  function urlSegura(u){ try{ const x=new URL(String(u||'')); return x.protocol==='https:'?x.href:''; }catch(e){ return ''; } }
   function show(el, tipo, texto){ el.className = 'msg ' + tipo; el.innerHTML = texto; if (tipo==='ok') setTimeout(()=>{ el.className='msg'; }, 5000); }
   function hide(el){ el.className = 'msg'; }
 
@@ -299,7 +301,7 @@
       return;
     }
     box.style.display='block';
-    box.innerHTML = '<div class="fileok"><span>📎 <a href="'+esc(docUrl)+'" target="_blank" rel="noopener">'+esc(docName)+'</a></span>'
+    box.innerHTML = '<div class="fileok"><span>📎 '+(urlSegura(docUrl)?'<a href="'+esc(urlSegura(docUrl))+'" target="_blank" rel="noopener">'+esc(docName)+'</a>':esc(docName)+' (enlace no válido)')+'</span>'
                   + '<button class="btn sm gray" id="btnQuitarDoc">Quitar</button></div>';
     $('dropZone').style.display='none';
     $('labelBox').style.display='block';
@@ -369,7 +371,7 @@
     $('f_vervig').checked = a.mostrar_vigencia !== false;
     if (a.doc_url){
       docUrl = a.doc_url;
-      docName = decodeURIComponent(String(a.doc_url).split('/').pop().split('?')[0]) || 'documento';
+      try{ docName = decodeURIComponent(String(a.doc_url).split('/').pop().split('?')[0]) || 'documento'; }catch(e){ docName = 'documento'; }
       $('f_doclabel').value = a.doc_label || '';
     } else { docUrl=null; docName=null; $('f_doclabel').value=''; }
     pintarAdjunto();
@@ -413,7 +415,7 @@
         <div class="ax">${esc(a.texto||'')}</div>
         <div class="meta">${esc(a.jornada||'')} · ${esc(a.nivel||'')}${a.autor?' · firma: '+esc(a.autor):''}${a.hasta?(ven?' · venció el ':' · vence ')+esc(a.hasta):''}</div>
         ${a.creado_por?'<div class="meta" style="color:#a09a90">🔒 registrado por '+esc(a.creado_por)+'</div>':''}
-        ${a.doc_url?'<div style="margin-top:5px">📎 <a class="doclink" href="'+esc(a.doc_url)+'" target="_blank" rel="noopener">'+esc(a.doc_label||'Ver documento')+'</a></div>':''}
+        ${urlSegura(a.doc_url)?'<div style="margin-top:5px">📎 <a class="doclink" href="'+esc(urlSegura(a.doc_url))+'" target="_blank" rel="noopener">'+esc(a.doc_label||'Ver documento')+'</a></div>':''}
         <div class="acts">
           <button class="btn sm ghost" data-edit="${esc(a.id)}">✏️ Editar</button>
           <button class="btn sm ${a.publicado?'gray':'gold'}" data-toggle="${esc(a.id)}" data-pub="${a.publicado}">${a.publicado?'Despublicar':'Publicar'}</button>
