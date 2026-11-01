@@ -24,7 +24,7 @@ Las carpetas que empiezan con «_» (como esta) **no se publican** en miuapp.cl,
 | `_desarrollo/envivo.sql` | Tablas y funciones del modo en vivo. Ya ejecutado en Supabase; al final trae la limpieza diaria opcional. |
 | `_desarrollo/permisos-evaluaciones.sql` | Arreglo de permisos de la tabla `evaluaciones`. Ya ejecutado. |
 | `_desarrollo/seguridad-v281.sql` | Ajustes de seguridad de la v2.8.1: funciones de los disparadores y tipos de archivo del depósito `documentos`. |
-| `_desarrollo/seguridad-v282.sql` | Ajustes de la v2.8.2: cada rol de la API queda solo con los permisos que usa, las tablas nuevas ya no reciben permisos de vaciar ni referenciar, las funciones del modo en vivo terminan su ruta de búsqueda en `pg_temp` y los editores pueden borrar archivos del depósito. Se ejecuta una vez en el editor SQL. |
+| `_desarrollo/seguridad-v282.sql` | Ajustes de la v2.8.2: cada rol de la API queda solo con los permisos que usa, las tablas nuevas ya no reciben permisos de vaciar ni referenciar, las funciones del modo en vivo terminan su ruta de búsqueda en `pg_temp` y los editores pueden borrar archivos del depósito. Ya ejecutado (1 de noviembre de 2026). |
 | `_desarrollo/esquema.sql` | La estructura completa de la base de producción (tablas, funciones, políticas, permisos, depósito, tarea diaria), sin datos. Sirve para revisarla y para recrearla desde cero. |
 | `_desarrollo/exportar-esquema.sql` | Consulta que solo lee y devuelve el texto de `esquema.sql`. Después de cambiar algo en Supabase, se ejecuta y se reemplaza el archivo. |
 | `_desarrollo/monitoreo.sh` | Revisa miuapp.cl, sus archivos con versión, Supabase, el certificado y HSTS. |
@@ -110,8 +110,8 @@ al teléfono dentro de una sala, sin nombre.
 
 Proyecto `uapp-produccion`, región `sa-east-1` (São Paulo). La app usa solo la clave pública, siempre como anónima
 (desde la v2.8.1 no guarda ni lee sesiones: el panel tiene la suya); lo que esa clave puede hacer lo deciden los permisos
-(`grant`) y las políticas de cada tabla. Todo está en `_desarrollo/esquema.sql`. Revisado el 31 de octubre de 2026
-(con los ajustes de `seguridad-v282.sql`):
+(`grant`) y las políticas de cada tabla. Todo está en `_desarrollo/esquema.sql`. Revisado el 1 de noviembre de 2026,
+ya con los ajustes de `seguridad-v282.sql`:
 
 | Tabla | La app (anónima) | El panel (editores) |
 |---|---|---|

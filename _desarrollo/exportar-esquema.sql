@@ -58,7 +58,8 @@ funcs as (
   where n.nspname = 'public' and p.prokind = 'f'
 ),
 s_funcs as (
-  select string_agg(rtrim(pg_get_functiondef(f.oid), E'\n') || ';', E'\n\n' order by f.proname) as txt from funcs f
+  -- las funciones creadas pegando texto desde Windows guardan saltos de línea \r\n: se dejan como \n (no cambia nada)
+  select string_agg(rtrim(replace(pg_get_functiondef(f.oid), E'\r', ''), E'\n') || ';', E'\n\n' order by f.proname) as txt from funcs f
 ),
 s_trig as (
   select string_agg(format('drop trigger if exists %I on %s;', tg.tgname, tg.tgrelid::regclass) || E'\n' || pg_get_triggerdef(tg.oid) || ';', E'\n' order by tg.tgrelid::regclass::text collate "C", tg.tgname) as txt

@@ -1,5 +1,6 @@
 -- UApp · Esquema completo de la base de datos de Supabase (proyecto uapp-produccion)
--- Foto de la estructura en producción al 31 de octubre de 2026, ya con los ajustes de seguridad de la v2.8.1.
+-- Foto de la estructura en producción al 1 de noviembre de 2026, ya con los ajustes de seguridad de la v2.8.2
+-- (seguridad-v282.sql ejecutado ese día; la exportación de producción y la de las pruebas dan el mismo texto).
 -- Solo estructura: tablas, llaves, índices, funciones, disparadores, políticas (RLS), permisos, el depósito de
 -- archivos, la tarea diaria y el disparador de eventos. No trae ningún dato (ni avisos, ni consultas, ni editores).
 --
@@ -240,7 +241,7 @@ CREATE OR REPLACE FUNCTION public.vivo_crear(p_mazo text, p_preguntas text[], p_
  RETURNS TABLE(codigo text, clave text)
  LANGUAGE plpgsql
  SECURITY DEFINER
- SET search_path TO 'public'
+ SET search_path TO 'public', 'pg_temp'
 AS $function$
 declare
   v_codigo text;
@@ -278,7 +279,7 @@ CREATE OR REPLACE FUNCTION public.vivo_estado(p_codigo text)
  RETURNS TABLE(mazo text, preguntas text[], ordenes text[], actual integer, fase text, respuestas integer)
  LANGUAGE sql
  STABLE SECURITY DEFINER
- SET search_path TO 'public'
+ SET search_path TO 'public', 'pg_temp'
 AS $function$
   select s.mazo, s.preguntas, s.ordenes, s.actual, s.fase,
          (select count(*)::int from vivo_respuestas r where r.sala = s.id and r.pregunta = s.actual)
@@ -290,7 +291,7 @@ CREATE OR REPLACE FUNCTION public.vivo_mover(p_codigo text, p_clave text, p_actu
  RETURNS boolean
  LANGUAGE plpgsql
  SECURITY DEFINER
- SET search_path TO 'public'
+ SET search_path TO 'public', 'pg_temp'
 AS $function$
 begin
   if p_fase not in ('espera','pregunta','respuesta','fin') then return false; end if;
@@ -304,7 +305,7 @@ CREATE OR REPLACE FUNCTION public.vivo_responder(p_codigo text, p_participante t
  RETURNS boolean
  LANGUAGE plpgsql
  SECURITY DEFINER
- SET search_path TO 'public'
+ SET search_path TO 'public', 'pg_temp'
 AS $function$
 declare
   v_id uuid;
@@ -326,7 +327,7 @@ CREATE OR REPLACE FUNCTION public.vivo_resultados(p_codigo text, p_pregunta inte
  RETURNS TABLE(opcion integer, n integer)
  LANGUAGE sql
  STABLE SECURITY DEFINER
- SET search_path TO 'public'
+ SET search_path TO 'public', 'pg_temp'
 AS $function$
   select r.opcion, count(*)::int
   from vivo_respuestas r join vivo_salas s on s.id = r.sala
@@ -386,18 +387,14 @@ revoke all on table public.interacciones from anon, authenticated;
 revoke all on table public.visitas from anon, authenticated;
 revoke all on table public.vivo_respuestas from anon, authenticated;
 revoke all on table public.vivo_salas from anon, authenticated;
-grant delete, insert, maintain, references, select, trigger, truncate, update on table public.avisos to anon;
-grant delete, insert, maintain, references, select, trigger, truncate, update on table public.avisos to authenticated;
-grant delete, insert, maintain, references, select, trigger, truncate, update on table public.editores to anon;
-grant delete, insert, maintain, references, select, trigger, truncate, update on table public.editores to authenticated;
-grant delete, insert, maintain, references, select, trigger, truncate, update on table public.evaluaciones to authenticated;
-grant insert, maintain, references, trigger, truncate on table public.consultas to anon;
-grant insert, maintain, references, trigger, truncate on table public.interacciones to anon;
-grant insert, maintain, references, trigger, truncate on table public.visitas to anon;
-grant maintain, references, select, trigger, truncate on table public.evaluaciones to anon;
-grant maintain, references, trigger, truncate on table public.consultas to authenticated;
-grant maintain, references, trigger, truncate on table public.interacciones to authenticated;
-grant maintain, references, trigger, truncate on table public.visitas to authenticated;
+grant delete, insert, select, update on table public.avisos to authenticated;
+grant delete, insert, select, update on table public.evaluaciones to authenticated;
+grant insert on table public.consultas to anon;
+grant insert on table public.interacciones to anon;
+grant insert on table public.visitas to anon;
+grant select on table public.avisos to anon;
+grant select on table public.editores to authenticated;
+grant select on table public.evaluaciones to anon;
 
 -- ══ Permisos de las secuencias ══
 revoke all on sequence public.avisos_id_seq from anon, authenticated;
@@ -437,8 +434,6 @@ grant execute on function public.vivo_resultados(p_codigo text, p_pregunta integ
 alter default privileges for role postgres in schema public revoke all on functions from anon, authenticated;
 alter default privileges for role postgres in schema public revoke all on sequences from anon, authenticated;
 alter default privileges for role postgres in schema public revoke all on tables from anon, authenticated;
-alter default privileges for role postgres in schema public grant maintain, references, trigger, truncate on tables to anon;
-alter default privileges for role postgres in schema public grant maintain, references, trigger, truncate on tables to authenticated;
 
 -- ══ Depósito de archivos ══
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
@@ -446,6 +441,14 @@ values ('documentos', 'documentos', true, 20971520, '{application/pdf,applicatio
 on conflict (id) do update set public = excluded.public, file_size_limit = excluded.file_size_limit, allowed_mime_types = excluded.allowed_mime_types;
 
 -- ══ Políticas del depósito ══
+drop policy if exists "Solo editores borran documentos" on storage.objects;
+create policy "Solo editores borran documentos" on storage.objects as permissive for delete to authenticated
+  using (((bucket_id = 'documentos'::text) AND ((auth.jwt() ->> 'email'::text) IN ( SELECT editores.email
+   FROM editores))));
+drop policy if exists "Solo editores listan documentos" on storage.objects;
+create policy "Solo editores listan documentos" on storage.objects as permissive for select to authenticated
+  using (((bucket_id = 'documentos'::text) AND ((auth.jwt() ->> 'email'::text) IN ( SELECT editores.email
+   FROM editores))));
 drop policy if exists "Solo editores suben documentos" on storage.objects;
 create policy "Solo editores suben documentos" on storage.objects as permissive for insert to authenticated
   with check (((bucket_id = 'documentos'::text) AND ((auth.jwt() ->> 'email'::text) IN ( SELECT editores.email
