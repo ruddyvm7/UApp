@@ -11,7 +11,7 @@
    · ya no se precargan íconos que el manifiesto no usa;
    · un archivo con versión se entrega solo si su contenido corresponde a su versión (huella SHA-1).
    Se mantiene: los datos en vivo (Supabase) nunca se guardan en caché. */
-const CACHE = "uapp-v6";
+const CACHE = "uapp-v7";   /* v7 (v2.8.2): la letra Nunito sale del propio sitio; al activarse se borra la caché anterior, con las copias de Google Fonts */
 const RECURSOS = "uapp-recursos";
 const FUERA = /\/(panel-admin\.html|carga-2026\/)/;   /* páginas de la directiva y de la coordinación */
 
@@ -52,6 +52,7 @@ self.addEventListener("install", e => {
   e.waitUntil((async () => {
     const c = await caches.open(CACHE);
     try { await c.add("./manifest.json"); } catch (_) {}
+    try { const f = await fetch("./fuentes/nunito-latin-wght-normal.woff2"); if (sirve(f, false)) await c.put(new URL("./fuentes/nunito-latin-wght-normal.woff2", self.registration.scope).href, f); } catch (_) {}
     /* la app y los archivos con versión que usa, para que funcione sin conexión desde la primera visita */
     try {
       const resp = await fetch("./index.html", { cache: "no-cache" });

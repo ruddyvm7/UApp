@@ -7,8 +7,9 @@ Qué hace, en orden:
   2. Escribe el índice de los mazos (INDICE) dentro de estudiar/estudiar.js: los códigos de
      tarjetas y preguntas, sus temas y la versión de cada mazo. Con eso la app muestra el avance
      sin descargar el contenido.
-  3. Pone al día la versión (?v=…) de cada archivo que index.html carga con versión, según su
-     contenido. Así ningún teléfono mezcla un archivo viejo con uno nuevo.
+  3. Pone al día la versión (?v=…) de cada archivo que index.html y carga-2026/index.html cargan con
+     versión, según su contenido. Así ningún teléfono mezcla un archivo viejo con uno nuevo.
+     (Desde la v2.8.2 las dos páginas comparten datos/tech.js: la malla, los créditos y los horarios.)
 
 Uso (desde la carpeta del repositorio):
   python3 _desarrollo/versionar.py            → revisa y actualiza
@@ -22,7 +23,8 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 MAZOS = RAIZ / "estudiar" / "mazos"
 JS = RAIZ / "estudiar" / "estudiar.js"
-HTML = RAIZ / "index.html"
+# páginas que cargan archivos con versión (?v=…); cada ruta se lee desde la carpeta de su página
+PAGINAS = [RAIZ / "index.html", RAIZ / "carga-2026" / "index.html"]
 INI, FIN = "  var INDICE={", "  /* FIN ÍNDICE */"
 ID_OK = re.compile(r"^[A-Za-z0-9_-]+$")
 # Igual que preguntasDeArticulos() en estudiar.js: una tarjeta que cita un único artículo se vuelve pregunta
@@ -148,24 +150,27 @@ def main():
     bloque = INI + "\n" + ",\n".join(lineas) + "\n  };\n"
     js_nuevo = js[:a] + bloque + js[b:]
 
-    html = HTML.read_text(encoding="utf-8")
-    cambios = []
-    def poner_version(m):
-        ruta = m.group(2)
-        archivo = RAIZ / ruta
-        if not archivo.is_file():
-            problemas.append(f"index.html carga «{ruta}», pero ese archivo no existe")
-            return m.group(0)
-        datos = js_nuevo.encode("utf-8") if archivo == JS else archivo.read_bytes()
-        v = huella(datos)
-        if v != m.group(3): cambios.append(f"{ruta}: {m.group(3)} → {v}")
-        return f"{m.group(1)}{ruta}?v={v}{m.group(4)}"
-    html_nuevo = re.sub(r'((?:src|href)=")([^"?#:]+)\?v=([0-9A-Za-z]+)(")', poner_version, html)
+    cambios, paginas = [], []
+    for pagina in PAGINAS:
+        html = pagina.read_text(encoding="utf-8")
+        nombre = pagina.relative_to(RAIZ).as_posix()
+        def poner_version(m, base=pagina.parent, nombre=nombre):
+            ruta = m.group(2)
+            archivo = (base / ruta).resolve()
+            if not archivo.is_file():
+                problemas.append(f"{nombre} carga «{ruta}», pero ese archivo no existe")
+                return m.group(0)
+            datos = js_nuevo.encode("utf-8") if archivo == JS.resolve() else archivo.read_bytes()
+            v = huella(datos)
+            if v != m.group(3): cambios.append(f"{nombre} → {ruta}: {m.group(3)} → {v}")
+            return f"{m.group(1)}{ruta}?v={v}{m.group(4)}"
+        html_nuevo = re.sub(r'((?:src|href)=")([^"?#:]+)\?v=([0-9A-Za-z]+)(")', poner_version, html)
+        paginas.append((pagina, html, html_nuevo))
     if problemas:
         for p in problemas: print("  ·", p)
         sys.exit(1)
 
-    pendiente = js_nuevo != js or html_nuevo != html
+    pendiente = js_nuevo != js or any(h != hn for _, h, hn in paginas)
     if solo_revisar:
         if pendiente:
             print("Falta actualizar: corre  python3 _desarrollo/versionar.py")
@@ -175,7 +180,8 @@ def main():
         print(f"Todo al día: {len(indice)} mazos, versiones correctas.")
         return
     if js_nuevo != js: JS.write_text(js_nuevo, encoding="utf-8")
-    if html_nuevo != html: HTML.write_text(html_nuevo, encoding="utf-8")
+    for pagina, h, hn in paginas:
+        if hn != h: pagina.write_text(hn, encoding="utf-8")
     tt, tp = sum(c[1] for c in cuentas), sum(c[2] for c in cuentas)
     print(f"Mazos revisados: {len(indice)} ({tt} tarjetas y {tp} preguntas).")
     print("Versiones:", "sin cambios" if not cambios else "")

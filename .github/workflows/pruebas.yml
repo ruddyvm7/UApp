@@ -1,6 +1,7 @@
-# Pruebas automáticas de UApp en cada cambio (v2.8.1).
+# Pruebas automáticas de UApp en cada cambio (v2.8.1; base de datos desde la v2.8.2).
 # Revisa que los mazos y las versiones estén al día y corre todas las pruebas de _desarrollo/pruebas.
-# No usa claves ni datos de Supabase: las pruebas simulan la red.
+# No usa claves ni datos de Supabase: las pruebas de la app simulan la red, y las de la base cargan
+# _desarrollo/esquema.sql en un PostgreSQL 17 vacío (la misma versión de Supabase) y prueban cada rol de la API.
 name: Pruebas
 on:
   push:
@@ -29,3 +30,26 @@ jobs:
         env:
           TZ: America/Santiago
         run: node correr-todas.js
+  base-de-datos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: prueba
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Esquema, permisos, políticas y topes de la base
+        env:
+          PGHOST: localhost
+          PGUSER: postgres
+          PGPASSWORD: prueba
+        run: bash _desarrollo/pruebas/sql/correr.sh

@@ -220,6 +220,8 @@
   let miRol = null, miEmail = null, miNombre = null;
   let docUrl = null, docName = null;      // documento adjunto del aviso en edición
   let editandoId = null;                  // id del aviso que se está editando (null = nuevo)
+  let docOriginal = null;                 // v2.8.2: el adjunto que tenía el aviso al empezar a editarlo
+  let subidoSinGuardar = null;            // v2.8.2: archivo subido en este formulario que todavía no está en ningún aviso
 
   /* ---------- utilidades ---------- */
   function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -227,6 +229,28 @@
   function urlSegura(u){ try{ const x=new URL(String(u||'')); return x.protocol==='https:'?x.href:''; }catch(e){ return ''; } }
   function show(el, tipo, texto){ el.className = 'msg ' + tipo; el.innerHTML = texto; if (tipo==='ok') setTimeout(()=>{ el.className='msg'; }, 5000); }
   function hide(el){ el.className = 'msg'; }
+
+  /* v2.8.2 · los archivos que ya no usa ningún aviso se borran del depósito: al eliminar un aviso, al quitarle o
+     cambiarle el adjunto y al descartar uno recién subido. Solo archivos de este depósito; un enlace externo no se toca.
+     Necesita las políticas de _desarrollo/seguridad-v282.sql; sin ellas el aviso se guarda igual y se avisa */
+  function rutaDeposito(url){
+    try{
+      const u = new URL(String(url||'')), pre = '/storage/v1/object/public/' + BUCKET + '/';
+      if (u.origin !== new URL(SUPABASE_URL).origin || u.pathname.indexOf(pre) !== 0) return null;
+      return decodeURIComponent(u.pathname.slice(pre.length)) || null;
+    }catch(e){ return null; }
+  }
+  async function borrarSiHuerfano(url){
+    const ruta = rutaDeposito(url); if (!ruta) return true;
+    const { data, error } = await supabase.from('avisos').select('id').eq('doc_url', url).limit(1);
+    if (error) return false;
+    if (data && data.length) return true;            /* otro aviso lo sigue usando */
+    const r = await supabase.storage.from(BUCKET).remove([ruta]);
+    /* sin las políticas del depósito, Supabase no da error: responde que no borró nada */
+    return !r.error && Array.isArray(r.data) && r.data.length > 0;
+  }
+  function avisarArchivo(ok){ if (!ok) show($('listMsg'),'err','El aviso quedó guardado, pero el archivo que ya no usa no se borró del depósito: puede que ya no estuviera o que falten los permisos de _desarrollo/seguridad-v282.sql en Supabase.'); }
+  function descartarSubido(){ const u = subidoSinGuardar; subidoSinGuardar = null; if (u) borrarSiHuerfano(u).then(avisarArchivo); }
 
   /* Traduce los errores técnicos a algo entendible */
   function explicar(error){
@@ -287,7 +311,8 @@
     const { error } = await supabase.storage.from(BUCKET).upload(ruta, file, { cacheControl:'3600', upsert:false });
     if (error){ show($('formMsg'),'err','No se pudo subir el documento:\n'+esc(explicar(error))); ev.target.value=''; return; }
     const { data:pub } = supabase.storage.from(BUCKET).getPublicUrl(ruta);
-    docUrl = pub.publicUrl; docName = file.name;
+    descartarSubido();                      /* si antes se había subido otro sin guardar, ese ya no sirve */
+    docUrl = pub.publicUrl; docName = file.name; subidoSinGuardar = docUrl;
     pintarAdjunto();
     hide($('formMsg'));
     ev.target.value='';
@@ -305,7 +330,7 @@
                   + '<button class="btn sm gray" id="btnQuitarDoc">Quitar</button></div>';
     $('dropZone').style.display='none';
     $('labelBox').style.display='block';
-    $('btnQuitarDoc').onclick = () => { docUrl=null; docName=null; $('f_doclabel').value=''; pintarAdjunto(); };
+    $('btnQuitarDoc').onclick = () => { if (docUrl && docUrl === subidoSinGuardar) descartarSubido(); docUrl=null; docName=null; $('f_doclabel').value=''; pintarAdjunto(); };
   }
 
   /* ---------- guardar ---------- */
@@ -336,15 +361,18 @@
     btn.disabled = false;
     if (error){ show($('formMsg'),'err','No se pudo guardar:\n'+esc(explicar(error))); return; }
 
-    const eraEdicion = !!editandoId;
+    const eraEdicion = !!editandoId, anterior = docOriginal;
+    subidoSinGuardar = null;                /* el archivo nuevo ya quedó en el aviso */
     limpiarFormulario();
+    if (eraEdicion && anterior && anterior !== fila.doc_url) borrarSiHuerfano(anterior).then(avisarArchivo);
     show($('formMsg'),'ok', eraEdicion ? '✅ Cambios guardados.' : ('✅ Aviso guardado'+(fila.publicado?' y publicado.':' como borrador.')));
     cargarAvisos();
   };
 
   /* ---------- edición ---------- */
   function limpiarFormulario(){
-    editandoId = null;
+    descartarSubido();                      /* un archivo subido y no guardado no queda dando vueltas */
+    editandoId = null; docOriginal = null;
     $('f_titulo').value=''; $('f_texto').value=''; $('f_hasta').value='';
     $('f_publicado').checked=false; $('f_doclabel').value='';
     $('f_fijado').checked=false; $('f_vervig').checked=true;
@@ -359,7 +387,8 @@
   $('btnCancelar').onclick = () => { limpiarFormulario(); window.scrollTo({top:0,behavior:'smooth'}); };
 
   function editar(a){
-    editandoId = a.id;
+    descartarSubido();
+    editandoId = a.id; docOriginal = a.doc_url || null;
     $('f_titulo').value = a.titulo || '';
     $('f_texto').value  = a.texto || '';
     $('f_nivel').value  = a.nivel || 'normal';
@@ -449,11 +478,13 @@
     cont.querySelectorAll('[data-del]').forEach(b => b.onclick = async () => {
       if (!confirm('¿Eliminar este aviso? No se puede deshacer.')) return;
       b.disabled = true; hide($('listMsg'));
+      const doc = porId[b.dataset.del] && porId[b.dataset.del].doc_url;
       const { error } = await supabase.from('avisos').delete().eq('id', b.dataset.del);
       b.disabled = false;
       if (error){ show($('listMsg'),'err','No se pudo eliminar:\n'+esc(explicar(error))); return; }
-      if (editandoId === b.dataset.del) limpiarFormulario();
+      if (String(editandoId) === String(b.dataset.del)) limpiarFormulario();
       show($('listMsg'),'ok','✅ Aviso eliminado.');
+      if (doc) borrarSiHuerfano(doc).then(avisarArchivo);
       cargarAvisos();
     });
   }

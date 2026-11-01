@@ -23,11 +23,12 @@
 <link rel="icon" type="image/svg+xml" href="./favicon-uapp.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="./favicon-uapp-32.png">
 <title>UApp · Centro de Estudiantes Derecho</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link crossorigin="anonymous" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" crossorigin="anonymous" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+<!-- v2.8.2 · la letra Nunito se sirve desde el propio sitio (fuentes/, licencia OFL): sin Google Fonts, nada frena el
+     primer pintado ni se le avisa a otro servidor cada vez que alguien abre la app. Fraunces, Inter y Plex Mono se quitaron -->
+<link rel="preload" href="fuentes/nunito-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+@font-face{font-family:'Nunito';font-style:normal;font-display:swap;font-weight:200 1000;src:url(fuentes/nunito-latin-wght-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Nunito';font-style:normal;font-display:swap;font-weight:200 1000;src:url(fuentes/nunito-latin-ext-wght-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
 :root{
   --wine:#8b0c0c;--wine2:#6c0909;--gold:#c79a3e;--gold2:#a8821f;--navy:#2c080a;--cream:#f1d9b0;
   --bg:#f6f5f2;--card:#ffffff;--cb:#c7d0de;--cb2:#aeb9cc;
@@ -37,8 +38,8 @@
   --fgbg:#e6effb;--fgtx:#2f6fd0;--spbg:#fbeede;--sptx:#b5701f;--hebg:#ecd9a0;--hetx:#7a5e11;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom)}
-.serif{font-family:"Fraunces",serif}
+body{font-family:'Nunito',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom)}
+.serif{font-family:'Nunito',system-ui,sans-serif}
 .tabbar{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid #e7e4dd;display:flex;gap:4px;padding:0 8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#c9c2b6 transparent;overscroll-behavior-x:contain}
 .tabbar::-webkit-scrollbar{height:4px}
 .tabbar::-webkit-scrollbar-thumb{background:#c9c2b6;border-radius:4px}
@@ -119,7 +120,7 @@ body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--i
 .calcn{background:var(--wine-fondo);color:#fff;border:0;border-radius:11px;padding:14px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.3px}
 .result{background:#fdf8e9;border:1px solid #f0e4bf;border-radius:16px;padding:22px;margin:18px 0;text-align:center}
 .result .lab{color:var(--muted);font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
-.result .big{color:var(--wine);font-family:"Fraunces",serif;font-size:60px;font-weight:800;line-height:1.05;margin:4px 0}
+.result .big{color:var(--wine);font-family:'Nunito',system-ui,sans-serif;font-size:60px;font-weight:800;line-height:1.05;margin:4px 0}
 .result .vt{font-size:18px;font-weight:700;margin:8px 0 6px}
 .result .vd{color:#666;font-size:14.5px;line-height:1.55;max-width:520px;margin:0 auto}
 .sumw{text-align:center;color:#888;font-size:12.5px;margin:2px 0 0}
@@ -127,14 +128,14 @@ body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--i
 .note{background:#fdf8e9;border:1px solid #ecdcaf;border-radius:11px;padding:12px 14px;font-size:12.5px;color:#7c6213;margin:0 auto 14px;line-height:1.5;max-width:600px}
 
 /* módulos */
-.mh{text-align:center;color:var(--wine);font-family:"Fraunces",serif;font-size:28px;font-weight:800;margin:10px 0 4px}
+.mh{text-align:center;color:var(--wine);font-family:'Nunito',system-ui,sans-serif;font-size:28px;font-weight:800;margin:10px 0 4px}
 .msub{text-align:center;color:#666;font-size:14px;margin-bottom:16px}
 .day{color:var(--gold2);font-weight:700;font-size:14px;letter-spacing:.4px;margin:16px 0 8px}
 .slot{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--cb);border-radius:11px;padding:12px 14px;margin-bottom:8px}
 .slot .tm{font-size:13px;font-weight:700;color:var(--wine);min-width:104px}
 .slot .rm{font-size:15px;font-weight:600;flex:1}.slot .sl{font-size:12px;color:#888}
 .test{display:flex;gap:14px;align-items:center;background:#fff;border:1px solid var(--cb);border-radius:11px;padding:12px 14px;margin-bottom:8px}
-.test .dt{text-align:center;min-width:50px}.test .dt b{display:block;font-family:"Fraunces",serif;font-size:22px;color:var(--wine);line-height:1}.test .dt span{font-size:10px;text-transform:uppercase;color:#999}
+.test .dt{text-align:center;min-width:50px}.test .dt b{display:block;font-family:'Nunito',system-ui,sans-serif;font-size:22px;color:var(--wine);line-height:1}.test .dt span{font-size:10px;text-transform:uppercase;color:#999}
 .test .in{flex:1}.test .in b{font-size:15px}.test .in span{display:block;font-size:12px;color:#888}
 .test .ty{font-size:11px;font-weight:700;color:var(--gold2);text-transform:uppercase}
 .icard{background:#fff;border:1px solid var(--cb);border-radius:12px;padding:15px;margin-bottom:11px}
@@ -225,7 +226,7 @@ body.dark .hortbl .cn{color:#d9b871}
 .hortbl .cp{display:block;color:#9a6b72;font-size:9.5px;margin-top:2px;font-style:italic;line-height:1.15}
 footer{background:var(--navy);color:#cdd5e3;text-align:center;padding:26px 18px 30px;margin-top:10px}
 .fbk{display:inline-block;margin:6px 0 14px;background:var(--cream);color:var(--wine);font-weight:700;font-size:14px;padding:11px 22px;border-radius:24px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)}
-footer .fn{font-family:"Fraunces",serif;color:var(--gold2);font-size:24px;font-weight:700}
+footer .fn{font-family:'Nunito',system-ui,sans-serif;color:var(--gold2);font-size:24px;font-weight:700}
 footer p{font-size:13px;margin-top:6px}footer .sm{color:#8794ab;font-size:12px}
 footer a{color:var(--gold2);text-decoration:none}
 footer .motto{font-style:italic;color:var(--gold2);font-size:15px;margin-top:4px;opacity:.95;letter-spacing:.3px}
@@ -234,7 +235,7 @@ footer .motto{font-style:italic;color:var(--gold2);font-size:15px;margin-top:4px
 .cycle{font-size:12.5px}
 .prog{margin:16px 0 12px}
 .progtop{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:7px}
-.progpct{font-family:"Fraunces",serif;font-size:27px;font-weight:800;color:var(--wine);line-height:1}
+.progpct{font-family:'Nunito',system-ui,sans-serif;font-size:27px;font-weight:800;color:var(--wine);line-height:1}
 .progsub{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.6px}
 .progbar{height:11px;background:#ece3d2;border-radius:999px;overflow:hidden}
 .progfill{height:100%;width:0%;background:linear-gradient(90deg,var(--wine),var(--gold,#c79a3e));border-radius:999px;transition:width .7s cubic-bezier(.2,.8,.2,1)}
@@ -245,7 +246,7 @@ body.reduce .progfill{transition:none}
 .ring-track{fill:none;stroke:#ece3d2;stroke-width:9}
 .ring-prog{fill:none;stroke:var(--wine);stroke-width:9;stroke-linecap:round;stroke-dasharray:339.292;stroke-dashoffset:339.292;transition:stroke-dashoffset .7s cubic-bezier(.2,.8,.2,1)}
 .ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.ring-pct{font-family:"Fraunces",serif;font-size:36px;font-weight:800;color:var(--wine);line-height:1}
+.ring-pct{font-family:'Nunito',system-ui,sans-serif;font-size:36px;font-weight:800;color:var(--wine);line-height:1}
 .ring-sub{font-size:10.5px;color:var(--muted);font-weight:700;margin-top:3px;text-transform:uppercase;letter-spacing:.6px}
 .boardhint{text-align:center;color:var(--muted);font-size:12px;font-weight:600;margin:8px 0 0}
 .ynav{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 4px}
@@ -256,7 +257,7 @@ body.reduce .progfill{transition:none}
 .lvl.ystart{border-left:2px dashed #e7d9bf;padding-left:11px}
 .lvl-h{padding:2px 2px 9px}
 .lvl-eyebrow{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--gold2)}
-.lvl-num{font-family:"Fraunces",serif;font-size:17px;font-weight:700;color:var(--ink);line-height:1.15}
+.lvl-num{font-family:'Nunito',system-ui,sans-serif;font-size:17px;font-weight:700;color:var(--ink);line-height:1.15}
 .lvl-tiles{display:flex;flex-direction:column;gap:9px}
 .yrbtn{margin-top:8px;width:100%;background:#fff;border:1.5px solid var(--gold);color:var(--wine);border-radius:9px;padding:6px 8px;font-family:inherit;font-size:10.5px;font-weight:800;letter-spacing:.3px;cursor:pointer;text-transform:uppercase}
 .yrbtn.on{background:var(--wine-fondo);color:#fff;border-color:var(--wine)}
@@ -286,14 +287,14 @@ body.reduce .progfill{transition:none}
 .gz-r{stroke:#cf4a3a}.gz-a{stroke:#e0a23a}.gz-g{stroke:#2f9152}
 .needle{stroke:var(--ink);stroke-width:3.5;stroke-linecap:round;transition:all .6s cubic-bezier(.2,.8,.2,1)}
 .hub{fill:var(--ink)}
-.gtick{font-family:"IBM Plex Mono",monospace;font-size:11px;fill:#9a8a6f;font-weight:600}
+.gtick{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;fill:#9a8a6f;font-weight:600}
 .result{background:#fffdf8;border:1px solid #ece0c6}
 .result .big{font-size:42px;margin:4px 0 0}
 .seg{border-color:#dac9aa}
 .seg button{color:#9a7b3a}
 .tablehead span{color:var(--wine)}
 .erow input{border:1px solid #e2d6bd;background:#fffdf8;border-radius:10px}
-.erow input.c{font-family:"IBM Plex Mono",monospace;font-weight:600}
+.erow input.c{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-weight:600}
 .resetbtn{background:transparent;color:var(--wine);border:1px solid #e3b3ab}
 .inscbox{display:flex;flex-wrap:wrap;gap:7px;margin:2px 0 14px;padding:12px;background:#fffdf8;border:1px solid #ece0c6;border-radius:14px}
 .inscbox .ititle{flex-basis:100%;font-size:12px;font-weight:700;color:var(--wine);margin-bottom:3px}
@@ -315,7 +316,7 @@ body.reduce .progfill{transition:none}
 #miniHor .mgc{height:7px;border-radius:2px;background:var(--soft,#f3f1ec)}
 #miniHor .mgh{font-size:7.6px;font-weight:700;color:var(--muted,#6b6660);text-align:center;line-height:1}
 #miniHor .mhf{margin-top:6px;font-size:9.6px;color:var(--muted,#6b6660);line-height:1.3;cursor:pointer;text-decoration:underline}
-#miniPill{position:fixed;right:10px;bottom:96px;z-index:46;display:none;background:var(--wine-fondo,#8b0c0c);color:#fff;border:0;border-radius:20px;padding:6px 11px;font:700 11px/1 Inter,system-ui,sans-serif;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+#miniPill{position:fixed;right:10px;bottom:96px;z-index:46;display:none;background:var(--wine-fondo,#8b0c0c);color:#fff;border:0;border-radius:20px;padding:6px 11px;font:700 11px/1 'Nunito',system-ui,sans-serif;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.2)}
 #miniPill.on{display:block}
 @media(min-width:820px){#miniHor{width:184px;bottom:104px}}
 #allHorModal .a11y-box{max-width:min(97vw,1120px);border-radius:16px;padding:20px 16px}
@@ -417,7 +418,7 @@ body.dark .hortoast.tt-info{background:#1e2a3a;border-color:#2f4661;color:#9fc0e
 td.cell.selon{background:#eaf6ee !important;outline:2px solid #1f6b3a;outline-offset:-2px}
 .selck{position:absolute;top:2px;right:3px;color:#1f6b3a;font-weight:800;font-size:11px}
 .enote{margin-top:7px;font-size:11.5px;color:#8a6d3a;font-style:italic}
-.ihd{font-family:"Fraunces",serif;font-size:17px;font-weight:700;color:var(--wine);margin:22px 0 10px;padding-bottom:6px;border-bottom:2px solid #ece0c6}
+.ihd{font-family:'Nunito',system-ui,sans-serif;font-size:17px;font-weight:700;color:var(--wine);margin:22px 0 10px;padding-bottom:6px;border-bottom:2px solid #ece0c6}
 .ihd:first-of-type{margin-top:8px}
 .icard{background:#fffdf8;border:1px solid #ece0c6;border-left:4px solid var(--gold);border-radius:12px;padding:13px 15px;margin-bottom:10px}
 .iname{font-size:15px;font-weight:700;color:#2a2118}
@@ -460,7 +461,7 @@ td.cell.selon{background:#eaf6ee !important;outline:2px solid #1f6b3a;outline-of
 .mtop{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
 .mtag{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:3px 9px;border-radius:999px}
 .mcount{font-size:12.5px;font-weight:700;white-space:nowrap}
-.mtitle{font-family:"Fraunces",serif;font-size:17px;font-weight:700;color:#2a2118;margin-bottom:4px;line-height:1.25}
+.mtitle{font-family:'Nunito',system-ui,sans-serif;font-size:17px;font-weight:700;color:#2a2118;margin-bottom:4px;line-height:1.25}
 .mtext{font-size:13.5px;color:#3a3026;line-height:1.5}
 .mtext b{color:var(--wine)}
 .mcta{display:inline-block;margin-top:11px;color:#fff;font-weight:700;font-size:13px;padding:9px 16px;border-radius:999px;text-decoration:none}
@@ -495,7 +496,7 @@ body.dark .volver{color:#e0a0a0}
 /* Foco visible al navegar con teclado */
 :focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:6px}
 /* Lectura fácil (dislexia): tipografía sans + espaciado amplio */
-body.easyread,body.easyread *{font-family:"Inter",Verdana,system-ui,sans-serif !important}
+body.easyread,body.easyread *{font-family:Verdana,system-ui,sans-serif !important}
 body.easyread{letter-spacing:.035em;word-spacing:.12em}
 body.easyread p,body.easyread li,body.easyread td,body.easyread .pcard,body.easyread .note,body.easyread .presum,body.easyread .docbody,body.easyread .pinfo,body.easyread .pexc,body.easyread .msub{line-height:1.8}
 body.easyread a,body.hc a{text-decoration:underline}
@@ -661,7 +662,6 @@ body:not(.i2-listo) footer{visibility:hidden}
 .chatinput input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 #miniHor .mhf{display:block;width:100%;background:none;border:0;padding:0;font-family:inherit;text-align:left;color:var(--muted,#6b6660)}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.7/dist/umd/supabase.js" integrity="sha384-hazsLVND17GNLVdtV19te6qbFT2YuLgl8SamcF+QR5eIOC+W4dGKrUNMxU1jH1zD" crossorigin="anonymous"></script>
 </head>
 <body>
 <style>
@@ -1409,16 +1409,6 @@ body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition
   <button type="button" class="ilink i2-pref" id="prefA11y">♿ Accesibilidad y apariencia: tema claro u oscuro, tamaño de letra</button>
 </div></section>
 
-<section id="solic" style="display:none"><div class="wrap">
-  <h1 class="mh serif">Solicitudes</h1>
-  <div class="msub">¿Necesitas hacer una petición, consulta o presentar un caso al Centro de Estudiantes? Este es el canal.</div>
-  <div class="solbox">
-    <div class="soltitle serif">📨 Formulario de solicitudes</div>
-    <p class="soltext">Envía aquí tus peticiones, consultas o casos al Centro de Estudiantes de Derecho. Lo revisamos y te respondemos lo antes posible.</p>
-    <a class="solbtn" href="https://forms.office.com/r/FXArxG0RTW" target="_blank" rel="noopener">Hacer una solicitud →</a>
-  </div>
-  <p class="note">También puedes escribirnos por Instagram <b>@ccee.derechouatco</b> o al correo <b>cceedereua@gmail.com</b>.</p>
-</div></section>
 </main>
 
 <div id="legalModal" class="legal-ov" style="display:none">
@@ -1429,7 +1419,7 @@ body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition
     <p>Para saber cuánto se usa la app, UApp anota sin tu nombre ni RUT: una <b>visita</b> por día y teléfono (con tu jornada y si la app está instalada) y qué secciones y acciones se usan. Además, Cloudflare Web Analytics cuenta las visitas sin cookies.</p>
     <p>Las preguntas que escribes al asistente <b>Dona Tech</b> y los <b>reportes de error</b> de las tarjetas se guardan sin tu identidad (solo el texto y tu jornada) para mejorar las respuestas y el contenido. Los lee la directiva del CCEE que administra la app. Por eso te pedimos <b>no escribir datos personales</b> en el asistente ni en los reportes.</p>
     <p>En el <b>modo en vivo</b> solo se envía la alternativa que eliges, junto a un código al azar de tu teléfono: nunca tu nombre. Las salas se borran al día siguiente. Un <b>desafío</b> lleva tu resultado en el enlace, no tu nombre. El <b>respaldo</b> es un archivo que queda en tu teléfono: UApp no lo recibe y no incluye tu RUT.</p>
-    <p>Dónde están los datos: avisos, evaluaciones, visitas, preguntas y salas en vivo se guardan en <b>Supabase</b>, con servidores en São Paulo (Brasil). La app se publica en GitHub Pages a través de Cloudflare, usa letras de Google Fonts y descarga dos bibliotecas desde jsDelivr: como en cualquier sitio web, esos servicios reciben la dirección IP de tu conexión al cargar la página.</p>
+    <p>Dónde están los datos: avisos, evaluaciones, visitas, preguntas y salas en vivo se guardan en <b>Supabase</b>, con servidores en São Paulo (Brasil). La app se publica en GitHub Pages a través de Cloudflare y descarga dos bibliotecas desde jsDelivr: como en cualquier sitio web, esos servicios reciben la dirección IP de tu conexión al cargar la página.</p>
     <h2 class="serif">Términos de uso</h2>
     <p>UApp es una <b>herramienta de apoyo referencial</b> hecha por estudiantes; no es un sistema oficial de la Universidad. La información (fechas, horarios, calendario, oferta de ramos y reglamento) puede cambiar: confirma siempre con las fuentes oficiales (Registro Curricular y la Dirección de Carrera) antes de tomar decisiones. El uso de la app es de tu responsabilidad.</p>
   </div>
@@ -1563,6 +1553,10 @@ body.reduce-motion #years.mv-foco .tile,body.reduce-motion .mv-banner{transition
   </div>
 </div>
 
+<!-- v2.8.2 · supabase-js va aquí, después de todo el contenido y antes del primer script: la página se puede pintar
+     mientras se descarga, y los scripts lo siguen encontrando listo, en el mismo orden que antes -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.7/dist/umd/supabase.js" integrity="sha384-hazsLVND17GNLVdtV19te6qbFT2YuLgl8SamcF+QR5eIOC+W4dGKrUNMxU1jH1zD" crossorigin="anonymous"></script>
+<script src="datos/tech.js?v=b2713b001a05"></script>
 <script>
 /* ══════════════════════════════════════════════════════════════
    CALENDARIO DE EVALUACIONES · publicación por jornada
@@ -1628,36 +1622,8 @@ function pruebasVisibles(){
 
 /* Barra de avance curricular (reemplaza al anillo: ocupa menos alto en pantalla) */
 function setProgress(p){var v=Math.max(0,Math.min(100,Number(p)||0));var b=document.getElementById("barFill");if(b)b.style.width=v.toFixed(1)+"%";var w=document.getElementById("progbar");if(w)w.setAttribute("aria-valuenow",Math.round(v));}
-const COURSES=[
- {id:1,n:"Historia del Derecho",t:1,a:"Histórico",p:[]},{id:2,n:"Derecho Político",t:1,a:"Constitucional",p:[]},
- {id:3,n:"Introducción al Derecho",t:1,a:"Fundamentos",p:[]},{id:4,n:"Electivo de Comunicación",t:1,a:"Electivo",p:[],tag:"fg"},
- {id:5,n:"Historia Institucional de Chile",t:2,a:"Histórico",p:[]},{id:6,n:"Historia y Ev. de las Instituciones Civiles",t:2,a:"Civil",p:[]},
- {id:7,n:"Teoría de la Ley y las Personas",t:2,a:"Civil",p:[]},{id:8,n:"Electivo de Comunicación II",t:2,a:"Electivo",p:[],tag:"fg"},
- {id:9,n:"Fundamentos Filosóficos del Derecho",t:3,a:"Histórico",p:[]},{id:10,n:"Introducción a la Economía",t:3,a:"Económico",p:[]},
- {id:11,n:"Teoría Constitucional",t:3,a:"Constitucional",p:[2]},{id:12,n:"Argumentación Jurídica y Debate",t:3,a:"Taller",p:[],tag:"sp"},
- {id:13,n:"Acto Jurídico",t:4,a:"Civil",p:[6]},{id:14,n:"Organización y Atribuciones de los Tribunales",t:4,a:"Procesal",p:[3]},
- {id:15,n:"Teoría del Delito",t:4,a:"Penal",p:[3]},{id:16,n:"Negociación, Ética y Profesional",t:4,a:"Taller",p:[],tag:"sp"},
- {id:17,n:"Teoría del Proceso",t:5,a:"Procesal",p:[]},{id:18,n:"Derecho Constitucional Orgánico",t:5,a:"Constitucional",p:[2]},
- {id:19,n:"Teoría de la Reacción Penal",t:5,a:"Penal",p:[]},{id:20,n:"Electivo de Desarrollo del Pensamiento",t:5,a:"Electivo",p:[],tag:"fg"},
- {id:21,n:"Bienes",t:6,a:"Civil",p:[6,7]},{id:22,n:"Derechos y Garantías Constitucionales",t:6,a:"Constitucional",p:[2,11]},
- {id:23,n:"Derecho Internacional Público",t:6,a:"Constitucional",p:[11]},{id:24,n:"Taller de Integración I (Ev. Ciclo)",t:6,a:"Taller",p:[13,14],tag:"he"},
- {id:25,n:"Teoría de las Obligaciones",t:7,a:"Civil",p:[13]},{id:26,n:"Procedimientos Civiles de Cognición",t:7,a:"Procesal",p:[17]},
- {id:27,n:"Delitos en Particular I",t:7,a:"Penal",p:[19]},{id:28,n:"Fuentes de las Obligaciones",t:8,a:"Civil",p:[13]},
- {id:29,n:"Derecho Individual del Trabajo",t:8,a:"Laboral",p:[22]},{id:30,n:"Delitos en Particular II",t:8,a:"Penal",p:[]},
- {id:31,n:"Electivo de Desarrollo Personal",t:8,a:"Electivo",p:[],tag:"fg"},{id:32,n:"Procedimientos de Ejecución y Cautela",t:9,a:"Procesal",p:[17]},
- {id:33,n:"Derecho Mercantil",t:9,a:"Comercial",p:[13,21]},{id:34,n:"Derecho Colectivo del Trabajo y Seg. Social",t:9,a:"Laboral",p:[]},
- {id:35,n:"Electivo de Responsabilidad Social",t:9,a:"Electivo",p:[],tag:"fg"},{id:36,n:"Derecho de Familia",t:10,a:"Civil",p:[7]},
- {id:37,n:"Responsabilidad Civil",t:10,a:"Civil",p:[25]},{id:38,n:"Derecho Societario",t:10,a:"Comercial",p:[25]},
- {id:39,n:"Taller de Litigación",t:10,a:"Taller",p:[26],tag:"sp"},{id:40,n:"Derecho Sucesorio",t:11,a:"Civil",p:[7,8,13]},
- {id:41,n:"Contratación Mercantil",t:11,a:"Comercial",p:[28]},{id:42,n:"Derecho Administrativo I",t:11,a:"Administrativo",p:[22]},
- {id:43,n:"Derecho Procesal Penal",t:11,a:"Procesal",p:[26]},{id:44,n:"Procedimientos Especiales Orales",t:12,a:"Procesal",p:[17,26]},
- {id:45,n:"Derecho Administrativo II",t:12,a:"Administrativo",p:[22]},{id:46,n:"Derecho Tributario I",t:12,a:"Tributario",p:[]},
- {id:47,n:"Taller de Integración II (Ev. Ciclo)",t:12,a:"Taller",p:[24,37,39],tag:"he"},{id:48,n:"Optativo de Especialidad I",t:12,a:"Electivo",p:[],tag:"opt"},
- {id:49,n:"Reorg. y Liquidación Patrimonial",t:13,a:"Procesal",p:[28,38]},{id:50,n:"Recursos",t:13,a:"Procesal",p:[17,26]},
- {id:51,n:"Seminario de Investigación Jurídica",t:13,a:"Taller",p:{upTo:35},tag:"he"},{id:52,n:"Derecho Tributario II",t:13,a:"Tributario",p:[]},
- {id:53,n:"Optativo de Especialidad II",t:13,a:"Electivo",p:[],tag:"opt"},{id:54,n:"Taller de Integración III (Ev. Ciclo)",t:14,a:"Taller",p:{upTo:53},tag:"he"},
- {id:55,n:"Clínica Jurídica (A+S)",t:14,a:"Taller",p:{upTo:35},tag:"he"}
-];
+/* La malla del Vespertino TECH (COURSES y COURSES_NA), sus créditos (CR_AJUSTADA y CR_NOAJUST), sus horarios
+   (HOR_TECH) y la regla de prerrequisitos (prerrequisitosDe) están en datos/tech.js: la comparte con carga-2026/ */
 const YEARS=[{y:1,t:[1,2,3]},{y:2,t:[4,5,6]},{y:3,t:[7,8,9]},{y:4,t:[10,11,12]},{y:5,t:[13,14]}];
 const byId=Object.fromEntries(COURSES.map(c=>[c.id,c]));
 const KEY="malla_derecho_v4";
@@ -1669,7 +1635,7 @@ function loadInsc(){insc={};try{const v=JSON.parse(localStorage.getItem(INSC_KEY
 loadInsc();
 function saveInsc(){try{localStorage.setItem(INSC_KEY,JSON.stringify(insc));}catch(e){}}
 function keySec(k){const m=/s(\d)/.exec(k||"");return m?+m[1]:0;}
-function prereqIds(c){if(c.p&&c.p.upTo)return COURSES.filter(x=>x.t<=byId[c.p.upTo].t&&x.id!==c.id).map(x=>x.id);return c.p||[];}
+function prereqIds(c){return prerrequisitosDe(c,COURSES);}
 function isUnlocked(c){return prereqIds(c).every(id=>state[id]==="ok");}
 function statusOf(c){const s=state[c.id];if(s==="ok")return"ok";if(s==="no")return"no";return isUnlocked(c)?"open":"lock";}
 function cycle(c){const s=statusOf(c);if(s==="lock")return;if(s==="open")state[c.id]="ok";else if(s==="ok")state[c.id]="no";else delete state[c.id];save();render();}
@@ -1723,42 +1689,9 @@ function render(){
 }
 
 /* ===== Malla NO AJUSTADA (Plan 2017 · Res. 135/2017) — módulo aislado ===== */
-const COURSES_NA=[
- {id:1,n:"Historia del Derecho",t:1,a:"Histórico",p:[]}, {id:2,n:"Historia y Ev. de las Instituciones Civiles",t:1,a:"Civil",p:[]},
- {id:3,n:"Derecho Político",t:1,a:"Constitucional",p:[]}, {id:4,n:"Introducción a la Economía",t:1,a:"Económico",p:[]},
- {id:5,n:"Introducción al Derecho",t:2,a:"Fundamentos",p:[]}, {id:6,n:"Electivo de Comunicación",t:2,a:"Electivo",p:[],tag:"fg"},
- {id:7,n:"Historia Institucional de Chile",t:2,a:"Histórico",p:[]}, {id:8,n:"Fundamentos Filosóficos del Derecho",t:2,a:"Histórico",p:[]},
- {id:9,n:"Teoría de la Ley y las Personas",t:3,a:"Civil",p:[5]}, {id:10,n:"Teoría Constitucional",t:3,a:"Constitucional",p:[3]},
- {id:11,n:"Argumentación Jurídica y Debate",t:3,a:"Taller",p:[],tag:"sp"}, {id:12,n:"Electivo de Comunicación",t:3,a:"Electivo",p:[],tag:"fg"},
- {id:13,n:"Acto Jurídico",t:4,a:"Civil",p:[2,9]}, {id:14,n:"Organización y Atribuciones de los Tribunales",t:4,a:"Procesal",p:[9]},
- {id:15,n:"Derecho Constitucional Orgánico",t:4,a:"Constitucional",p:[10]}, {id:16,n:"Teoría del Delito",t:4,a:"Penal",p:[9]},
- {id:17,n:"Negociación y Ética Profesional",t:5,a:"Taller",p:[],tag:"sp"}, {id:18,n:"Electivo de Desarrollo del Pensamiento",t:5,a:"Electivo",p:[],tag:"fg"},
- {id:19,n:"Bienes",t:5,a:"Civil",p:[13]}, {id:20,n:"Teoría del Proceso",t:5,a:"Procesal",p:[14]},
- {id:21,n:"Derechos y Garantías Constitucionales (Ev. Ciclo)",t:6,a:"Constitucional",p:[13,14,15],tag:"he"}, {id:22,n:"Derecho Internacional Público",t:6,a:"Constitucional",p:[13,15]},
- {id:23,n:"Teoría de la Reacción Penal",t:6,a:"Penal",p:[16]}, {id:24,n:"Electivo de Desarrollo Personal",t:6,a:"Electivo",p:[],tag:"fg"},
- {id:25,n:"Teoría de las Obligaciones",t:7,a:"Civil",p:[19,21]}, {id:26,n:"Procedimientos Civiles de Cognición",t:7,a:"Procesal",p:[20,21]},
- {id:27,n:"Derecho Individual del Trabajo",t:7,a:"Laboral",p:[19,21]}, {id:28,n:"Delitos en Particular I",t:7,a:"Penal",p:[23]},
- {id:29,n:"Redacción Forense",t:8,a:"Taller",p:[19,20],tag:"sp"}, {id:30,n:"Electivo de Ética",t:8,a:"Electivo",p:[],tag:"fg"},
- {id:31,n:"Fuentes de las Obligaciones",t:8,a:"Civil",p:[25]}, {id:32,n:"Procedimientos de Ejecución y Cautela",t:8,a:"Procesal",p:[26]},
- {id:33,n:"Derecho Económico",t:9,a:"Económico",p:[4,21]}, {id:34,n:"Derecho Colectivo del Trabajo y Seg. Social",t:9,a:"Laboral",p:[27]},
- {id:35,n:"Delitos en Particular II",t:9,a:"Penal",p:[28]}, {id:36,n:"Derecho de Familia",t:10,a:"Civil",p:[31]},
- {id:37,n:"Responsabilidad Civil",t:10,a:"Civil",p:[31]}, {id:38,n:"Introducción al Derecho Comercial",t:10,a:"Comercial",p:[25]},
- {id:39,n:"Derecho Administrativo I",t:10,a:"Administrativo",p:[21]}, {id:40,n:"Derecho Procesal Penal",t:11,a:"Procesal",p:[32,35]},
- {id:41,n:"Solución Alternativa de Conflictos",t:11,a:"Taller",p:[17],tag:"sp"}, {id:42,n:"Derecho Sucesorio",t:11,a:"Civil",p:[36]},
- {id:43,n:"Procedimientos Especiales Orales (Ev. Ciclo)",t:12,a:"Procesal",p:[36,37,40,41],tag:"he"}, {id:44,n:"Derecho de Sociedades",t:11,a:"Comercial",p:[31,38]},
- {id:45,n:"Derecho Administrativo II",t:12,a:"Administrativo",p:[39]}, {id:46,n:"Taller de Litigación",t:12,a:"Taller",p:[40],tag:"sp"},
- {id:47,n:"Electivo de Responsabilidad Social",t:12,a:"Electivo",p:[],tag:"fg"}, {id:48,n:"Recursos",t:13,a:"Procesal",p:[43]},
- {id:49,n:"Metodología de la Investigación Jurídica",t:13,a:"Taller",p:[43]}, {id:50,n:"Contratación Mercantil",t:13,a:"Comercial",p:[43,44]},
- {id:51,n:"Derecho Tributario I",t:13,a:"Tributario",p:[33,43]}, {id:52,n:"Clínica Jurídica (A+S)",t:13,a:"Taller",p:[42,43],tag:"he"},
- {id:53,n:"Optativo de Especialidad I",t:14,a:"Electivo",p:[42,43],tag:"opt"}, {id:54,n:"Optativo de Especialidad II",t:14,a:"Electivo",p:[43],tag:"opt"},
- {id:55,n:"Seminario de Tesis",t:14,a:"Taller",p:[49],tag:"he"}, {id:56,n:"Reorganización y Liquidación Patrimonial",t:14,a:"Procesal",p:[43,50]},
- {id:57,n:"Derecho Tributario II",t:14,a:"Tributario",p:[51]}, {id:58,n:"Taller de Litigación Avanzada (Ev. Ciclo)",t:14,a:"Taller",p:[43,46],tag:"he"}
-];
 const YEARS_NA=[{y:1,t:[1,2,3]},{y:2,t:[4,5,6]},{y:3,t:[7,8,9]},{y:4,t:[10,11,12]},{y:5,t:[13,14]}];
 const byId_NA=Object.fromEntries(COURSES_NA.map(c=>[c.id,c]));
-/* ===== Créditos SCT-Chile (Res.165/2022 ajustada · Res.135/2017 no ajustada). Datos internos: NO se muestran en ficha; los usa el Planificador para el tope de carga. ===== */
-const CR_AJUSTADA={1:5,2:5,3:7,4:3,5:5,6:5,7:6,8:3,9:6,10:5,11:6,12:4,13:6,14:6,15:6,16:3,17:6,18:6,19:6,20:3,21:6,22:5,23:4,24:3,25:6,26:6,27:7,28:6,29:5,30:5,31:3,32:6,33:5,34:5,35:3,36:6,37:6,38:5,39:3,40:6,41:4,42:5,43:5,44:4,45:5,46:4,47:5,48:2,49:5,50:5,51:7,52:4,53:2,54:30,55:7};
-const CR_NOAJUST={1:5,2:5,3:5,4:5,5:7,6:3,7:5,8:6,9:6,10:6,11:4,12:3,13:6,14:6,15:6,16:6,17:3,18:3,19:6,20:6,21:5,22:4,23:6,24:3,25:6,26:6,27:5,28:7,29:3,30:3,31:7,32:6,33:5,34:5,35:7,36:6,37:6,38:5,39:5,40:5,41:3,42:6,43:6,44:5,45:5,46:5,47:3,48:5,49:7,50:5,51:6,52:7,53:4,54:4,55:7,56:5,57:6,58:4};
+/* Créditos SCT-Chile (CR_AJUSTADA y CR_NOAJUST): en datos/tech.js */
 function creditsOf(id){ return (curMalla==="noajustada"?CR_NOAJUST[id]:CR_AJUSTADA[id])||0; }
 const KEY_NA="malla_noajustada_v1";
 let stateNA={};try{const s=localStorage.getItem(KEY_NA);if(s)stateNA=JSON.parse(s);}catch(e){}
@@ -1816,8 +1749,8 @@ function showMalla(sel){
 
 document.getElementById("reset").onclick=()=>{if(confirm("¿Reiniciar todo tu progreso?")){if(curMalla==="noajustada"){stateNA={};saveNA();renderNA();}else{state={};save();render();}}};
 
-const SECS=["mural","malla","calc","estudio","hor","plan","pru","info","solic"];
-function go(tab){if(tab==="solic")tab="info";/* el formulario del Centro ahora está en Info */
+const SECS=["mural","malla","calc","estudio","hor","plan","pru","info"];
+function go(tab){if(tab==="solic")tab="info";/* el formulario del Centro está en Info (v2.8.2: se quitó la sección vieja, oculta) */
   var _hl=(tab==="plan")?"hor":(tab==="calc"||tab==="estudio")?"pru":tab;/* Fechas y Simulador comparten la pestaña «Pruebas y notas» *//* el Planificador se abre desde Horarios: esa pestaña queda marcada */
   if(typeof logInteraccion==="function")logInteraccion(tab==="plan"?"planificador":tab,"ver seccion");
   document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===_hl));SECS.forEach(s=>document.getElementById(s).style.display=s===tab?"":"none");if(tab==="plan")planPropose();if(tab==="hor")renderHorView(horMode);else if(typeof renderMiniHor==="function")renderMiniHor();if(tab==="pru")renderPru(pruMode);if(tab==="calc"&&window.__renderCalc)window.__renderCalc();if(tab==="mural")renderMural();
@@ -2012,7 +1945,7 @@ function descargarPDF(titulo,css,interno,htmlCompleto){
       doc.open(); doc.write(htmlCompleto); doc.close();
 
       velo=document.createElement("div");
-      velo.style.cssText="position:fixed;inset:0;z-index:9999;background:rgba(20,16,14,.88);display:flex;align-items:center;justify-content:center;color:#fff;font:600 15px/1.6 Inter,system-ui,sans-serif;text-align:center;padding:24px";
+      velo.style.cssText="position:fixed;inset:0;z-index:9999;background:rgba(20,16,14,.88);display:flex;align-items:center;justify-content:center;color:#fff;font:600 15px/1.6 'Nunito',system-ui,sans-serif;text-align:center;padding:24px";
       velo.innerHTML="<div>📄<br>Generando tu PDF…<br><span style='font-weight:400;font-size:13px;opacity:.85'>Se descargará en unos segundos</span></div>";
       document.body.appendChild(velo);
 
@@ -2725,23 +2658,6 @@ function docRespaldo(){
   if(typeof logInteraccion==="function")logInteraccion("planificador","descargar respaldo");
 }
 const BL_TECH=[["19:10","19:50"],["19:50","20:30"],["20:40","21:20"],["21:20","22:00"],["22:10","22:50"]];
-const HOR_TECH={
- n3s1:{l:"1er año (Nivel 3) · Sección 1",s:[["L","19:10","21:20","Argumentación Jurídica y Debate","TEA SH-32","Roa Rioseco Jorge",12,"11409","Presencial"],["M","19:10","20:30","Introducción a la Economía","TEA SH-32","Brito Valdebenito Cristian",10,"11418","Presencial"],["M","20:40","22:00","Introducción a la Economía","TEA SH-32","Brito Valdebenito Cristian",10,"11419","Presencial"],["X","19:10","22:00","Teoría Constitucional","TEA SH-32","Espinoza Soto Sahady",11,"11424","Presencial"],["J","19:10","21:20","Fundamentos Filosóficos del Derecho","—","Reinoso Elgueda Jorge",9,"11416","Online"],["J","21:20","22:00","Fundamentos Filosóficos del Derecho","—","Reinoso Elgueda Jorge",9,"11417","Online"],["V","19:10","20:30","Teoría Constitucional","—","Espinoza Soto Sahady",11,"11425","Online"]]},
- n3s2:{l:"1er año (Nivel 3) · Sección 2",s:[["L","19:10","20:30","Introducción a la Economía","TEA SH-33","Brito Valdebenito Cristian",10,"11420","Presencial"],["L","20:40","22:00","Introducción a la Economía","TEA SH-33","Brito Valdebenito Cristian",10,"11421","Presencial"],["M","19:10","21:20","Teoría Constitucional","TEA SH-33","Arévalo Waddington Sergio",11,"11426","Presencial"],["X","19:10","19:50","Teoría Constitucional","TEA SH-33","Arévalo Waddington Sergio",11,"11426","Presencial"],["X","19:50","21:20","Teoría Constitucional","TEA SH-33","Arévalo Waddington Sergio",11,"11427","Presencial"],["J","19:10","21:20","Fundamentos Filosóficos del Derecho","—","Reinoso Mendez Jorge",9,"11412","Online"],["J","21:20","22:00","Fundamentos Filosóficos del Derecho","—","Reinoso Mendez Jorge",9,"11413","Online"],["V","19:10","21:20","Argumentación Jurídica y Debate","—","Roa Rioseco Jorge",12,"11410","Online"]]},
- n3s3:{l:"1er año (Nivel 3) · Sección 3",s:[["L","19:10","21:20","Fundamentos Filosóficos del Derecho","TEA SH-34","Reinoso Mendez Jorge",9,"11414","Presencial"],["L","21:20","22:00","Fundamentos Filosóficos del Derecho","TEA SH-34","Reinoso Mendez Jorge",9,"11415","Presencial"],["M","19:10","21:20","Argumentación Jurídica y Debate","TEA SH-34","Roa Rioseco Jorge",12,"11411","Presencial"],["X","20:40","22:00","Argumentación Jurídica y Debate","TEA SH-34","Larraguibel Aravena Cristian",12,"11408","Presencial"],["J","19:10","20:30","Introducción a la Economía","—","Brito Valdebenito Cristian",10,"11422","Online"],["J","20:40","22:00","Introducción a la Economía","—","Brito Valdebenito Cristian",10,"11423","Online"],["V","19:10","19:50","Argumentación Jurídica y Debate","—","Larraguibel Aravena Cristian",12,"11408","Online"]]},
- n5alt:{l:"2º año (Nivel 5) · Alterna",s:[["L","19:10","20:30","Teoría del Proceso","TEC SH-23","Nuñez Mendez Felipe Alejandro",17,"12220","Presencial"],["X","19:10","20:30","Teoría del Proceso","TEE SH-51","Nuñez Mendez Felipe Alejandro",17,"12220","Presencial"],["V","19:10","20:30","Teoría del Proceso","—","Nuñez Mendez Felipe Alejandro",17,"12220","Online"]]},
- n6s1:{l:"2º año (Nivel 6) · Sección 1",s:[["L","19:10","20:30","Derechos y Garantías Constitucionales","TEA SH-41","Espinoza Soto Sahady",22,"11434","Presencial"],["L","20:40","22:00","Derechos y Garantías Constitucionales","TEA SH-41","Espinoza Soto Sahady",22,"11435","Presencial"],["M","19:10","21:20","Derecho Internacional Público","TEA SH-41","Vallejos Roa Liz",23,"11432","Presencial"],["X","19:10","20:30","Taller de Integración I (Ev. Ciclo)","TEA SH-41","Game Musante Francisca",24,"11438","Presencial"],["X","20:40","22:00","Bienes","TEA SH-41","Castro Saavedra Juan",21,"11430","Presencial"],["J","19:10","20:30","Bienes","—","Castro Saavedra Juan",21,"11430","Online"],["J","20:40","22:00","Bienes","—","Castro Saavedra Juan",21,"11431","Online"],["V","19:10","22:00","Taller de Integración I (Ev. Ciclo)","—","Game Musante Francisca",24,"11438","Online"]]},
- n6s2:{l:"2º año (Nivel 6) · Sección 2",s:[["L","19:10","22:00","Taller de Integración I (Ev. Ciclo)","TEA SH-42","Rodriguez Cañete Paula",24,"11439","Presencial"],["M","19:10","20:30","Bienes","TEA SH-42","Neculmán Muñoz Marcelo",21,"11428","Presencial"],["M","20:40","22:00","Taller de Integración I (Ev. Ciclo)","TEA SH-42","Rodriguez Cañete Paula",24,"11439","Presencial"],["X","19:10","21:20","Derecho Internacional Público","TEA SH-42","Vallejos Roa Liz",23,"11433","Presencial"],["J","19:10","20:30","Derechos y Garantías Constitucionales","—","Espinoza Soto Sahady",22,"11436","Online"],["J","20:40","22:00","Derechos y Garantías Constitucionales","—","Espinoza Soto Sahady",22,"11437","Online"],["V","19:10","19:50","Bienes","—","Neculmán Muñoz Marcelo",21,"11428","Online"],["V","19:50","22:00","Bienes","—","Neculmán Muñoz Marcelo",21,"11429","Online"]]},
- n6pna:{l:"2º año (Nivel 6) · Plan No Ajustado",s:[["X","19:10","21:20","Electivo de Desarrollo Personal","VIRTUAL","—",24,"11388","Sin clases"]]},
- n9s1:{l:"3er año (Nivel 9) · Sección 1",s:[["L","19:10","20:30","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-43","Gutiérrez Sepúlveda Genoveva",34,"11440","Presencial"],["L","20:40","22:00","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-43","Gutiérrez Sepúlveda Genoveva",34,"11441","Presencial"],["M","19:10","21:20","Procedimientos de Ejecución y Cautela","TEA SH-43","Celedón Baeza Andrés",32,"11448","Presencial"],["X","19:10","20:30","Derecho Mercantil","TEA SH-43","Jean Paul Thiers Thiers",33,"11446","Presencial"],["X","20:40","22:00","Derecho Mercantil","TEA SH-43","Jean Paul Thiers Thiers",33,"11447","Presencial"],["J","19:10","21:20","Procedimientos de Ejecución y Cautela","—","Celedón Baeza Andrés",32,"11449","Online"],["V","19:10","20:30","Electivo de Responsabilidad Social","VIRTUAL","—",35,"11452","Sin clases"],["V","20:40","21:20","Electivo de Responsabilidad Social","VIRTUAL","—",35,"11453","Sin clases"]]},
- n9s2:{l:"3er año (Nivel 9) · Sección 2",s:[["L","19:10","20:30","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-44","Sáez Paredes Fernando",34,"11442","Presencial"],["L","20:40","22:00","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-44","Sáez Paredes Fernando",34,"11443","Presencial"],["M","19:10","21:20","Procedimientos de Ejecución y Cautela","TEA SH-44","Osorio Ulloa Reinaldo",32,"11450","Presencial"],["J","19:10","21:20","Procedimientos de Ejecución y Cautela","—","Osorio Ulloa Reinaldo",32,"11451","Online"]]},
- n9pna:{l:"3er año (Nivel 9) · Plan No Ajustado",s:[["L","19:10","20:30","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-43","Gutiérrez Sepúlveda Genoveva",34,"11440","Presencial"],["L","20:40","22:00","Derecho Colectivo del Trabajo y Seg. Social","TEA SH-43","Gutiérrez Sepúlveda Genoveva",34,"11441","Presencial"],["M","19:10","21:20","Procedimientos de Ejecución y Cautela","TEA SH-44","Osorio Ulloa Reinaldo",32,"11450","Presencial"],["X","19:10","20:30","Derecho Económico","TEA SH-44","Maturana Ortiz Felipe",33,"11444","Presencial"],["X","20:40","22:00","Derecho Económico","TEA SH-44","Maturana Ortiz Felipe",33,"11445","Presencial"],["J","19:10","21:20","Procedimientos de Ejecución y Cautela","—","Osorio Ulloa Reinaldo",32,"11451","Online"],["V","19:10","21:20","Electivo de Ética","VIRTUAL","—",30,"11392","Sin clases"]]},
- n12s1:{l:"4º año (Nivel 12) · Plan Ajustado",s:[["L","19:10","20:30","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45,"11454","Presencial"],["L","20:40","21:20","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45,"11455","Presencial"],["M","19:10","21:20","Procedimientos Especiales Orales","TEA SH-45","Alarcón Iturriaga Orlando",44,"11461","Presencial"],["M","21:20","22:00","Optativo de Especialidad I","TEA SH-45","Neculman Muñoz Marcelo",48,"11460","Presencial"],["X","19:10","22:00","Taller de Integración II (Ev. Ciclo)","TEA SH-45","Molina Pezoa Marcia",47,"11463","Presencial"],["J","19:10","20:30","Derecho Tributario I","—","Maturana Lanza Carlos",46,"11458","Online"],["J","20:40","21:20","Derecho Tributario I","—","Maturana Lanza Carlos",46,"11459","Online"],["J","21:20","22:50","Optativo de Especialidad I","—","Neculman Muñoz Marcelo",48,"11460","Online"],["V","19:10","20:30","Taller de Integración II (Ev. Ciclo)","—","Molina Pezoa Marcia",47,"11463","Online"],["V","20:40","22:00","Procedimientos Especiales Orales","—","Alarcón Iturriaga Orlando",44,"11462","Online"]]},
- n12pna:{l:"4º año (Nivel 12) · Plan No Ajustado",s:[["L","19:10","20:30","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45,"11454","Presencial"],["L","20:40","21:20","Derecho Administrativo II","TEA SH-45","Contreras Eddinger Roberto",45,"11455","Presencial"],["M","19:10","21:20","Procedimientos Especiales Orales (Ev. Ciclo)","TEA SH-45","Alarcón Iturriaga Orlando",43,"11461","Presencial"],["X","19:10","20:30","Derecho Sucesorio","TEC SH-21","San Juan Torres Marco",42,"11456","Presencial"],["X","20:40","22:00","Derecho Sucesorio","TEC SH-21","San Juan Torres Marco",42,"11457","Presencial"],["J","19:10","20:30","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11464","Online"],["J","20:40","21:20","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11465","Online"],["V","19:10","19:50","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11465","Online"],["V","19:50","20:30","Taller de Litigación","—","Alarcón Iturriaga Orlando",46,"11466","Online"],["V","20:40","22:00","Procedimientos Especiales Orales (Ev. Ciclo)","—","Alarcón Iturriaga Orlando",43,"11462","Online"]]},
- n15s1:{l:"5º año (Niveles 14-15) · Plan Ajustado",note:"El Taller de Integración III se cursa a lo largo de dos trimestres (14 y 15).",s:[["L","19:10","22:00","Taller de Integración III (Ev. Ciclo)","TEC SH-21","Castro Saavedra Juan",54,"12412","Presencial"],["M","19:10","22:00","Taller de Integración III (Ev. Ciclo)","TEC SH-21","Castro Saavedra Juan",54,"12412","Presencial"],["V","19:10","22:00","Taller de Integración III (Ev. Ciclo)","VIRTUAL","Castro Saavedra Juan",54,"12412","Online"]]},
- n15pna:{l:"5º año (Niveles 14-15) · Plan No Ajustado",s:[["L","19:10","20:30","Taller de Litigación Avanzada (Ev. Ciclo)","TEC SH-22","Contreras Sierra Klaus Evelyn",58,"11475","Presencial"],["L","20:40","22:00","Taller de Litigación Avanzada (Ev. Ciclo)","TEC SH-22","Contreras Sierra Klaus Evelyn",58,"11476","Presencial"],["M","19:10","21:20","Seminario de Tesis","SALA VIRTUAL","Leon Silva Glorimar",55,"11471","Online"],["X","19:10","20:30","Optativo de Especialidad II","TEC SH-22","Celedón Baeza Andrés",54,"11469","Presencial"],["X","20:40","22:00","Optativo de Especialidad II","TEC SH-22","Celedón Baeza Andrés",54,"11470","Presencial"],["J","19:10","21:20","Derecho Tributario II","—","Roxana Obreque Espinoza",57,"11467","Online"],["J","21:20","22:00","Derecho Tributario II","—","Roxana Obreque Espinoza",57,"11468","Online"],["V","19:10","19:50","Derecho Tributario II","—","Roxana Obreque Espinoza",57,"11468","Online"],["V","19:50","22:00","Seminario de Tesis","SALA VIRTUAL","Leon Silva Glorimar",55,"11473","Online"]]},
- n15tes:{l:"5º año (Niveles 14-15) · Solo Seminario de Tesis",s:[["L","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","El Fakih Rodriguez Fatima",55,"11850","Online"],["L","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","El Fakih Rodriguez Fatima",55,"11851","Online"],["M","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","Oñate Henriquez Jaime",55,"11852","Online"],["M","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","Oñate Henriquez Jaime",55,"11853","Online"],["X","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","Fernandez Miguez Sheila",55,"11854","Online"],["X","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","Fernandez Miguez Sheila",55,"11855","Online"],["J","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","Ojeda Zavala Nicolas",55,"11856","Online"],["J","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","Ojeda Zavala Nicolas",55,"11857","Online"],["V","19:10","20:30","Seminario de Tesis","SALA VIRTUAL","Lopez Hernandez Hernan",55,"11858","Online"],["V","20:40","21:20","Seminario de Tesis","SALA VIRTUAL","Lopez Hernandez Hernan",55,"11859","Online"]]}
-};
 
 
 
@@ -3793,28 +3709,13 @@ renderPru("mine");
 
 renderHorView("fit");
 
-/* ===== Mural de avisos (editar esta lista para publicar/quitar avisos) ===== */
+/* ===== Avisos locales: solo se usan si no hay conexión con Supabase (los del panel no se pudieron leer) =====
+   v2.8.2: se quitaron los que ya habían vencido (julio a septiembre). Un aviso con «hasta» deja de verse solo */
 const AVISOS=[
-  {tipo:"Evaluaciones", nivel:"importante",
-   titulo:"Calendario de evaluaciones · 6 al 10 de julio",
-   texto:"La universidad publicó <b>fechas, docentes, horario, modalidad y salas</b> de las próximas pruebas (jornada TECH):<br><br><b>Lun 6 jul</b><br>· Introducción al Derecho — Carlos Manque · 19:10 · Escrita · Sala E-24<br>· Historia Institucional de Chile (S2) — Mauricio Silva Kachele · 19:10 · Escrita · Sala A-33<br>· Procedimientos Civiles de Cognición — Felipe Núñez · 17:30 · Oral · Sala C-24<br><br><b>Mar 7 jul</b><br>· Historia Institucional de Chile (S1) — Mauricio Silva Kachele · 19:10 · Escrita · Sala A-32<br>· Derecho Administrativo I — Roberto Contreras · 20:40 · Escrita · Sala A-45<br><br><b>Mié 8 jul</b><br>· Teoría de la Reacción Penal (S1) — Evelyn Contreras · 19:10 · Escrita · Sala por confirmar<br>· Reorganización y Liquidación Patrimonial — Gonzalo Meza · 19:10 · Oral · Sala A-44<br><br><b>Jue 9 jul</b><br>· Historia Institucional de Chile (S3) — Jorge Reinoso Méndez · 19:10 · Oral · Sala A-43<br>· Teoría de la Reacción Penal (S2) — Camila Fernández · 19:10 · Escrita · Sala A-44<br><br><b>Vie 10 jul</b><br>· Historia del Derecho — Mauricio Silva Kachele · 19:10 · Escrita · Sala A-43<br><br><span style='opacity:.72'>Ante cualquier cambio, revisa la información oficial en Teams.</span>",
-   hasta:"2026-07-10"},
   {tipo:"Encuesta", nivel:"importante",
    titulo:"Encuesta de Evaluación de la Docencia",
    texto:"Muy pronto estará disponible. <b>Atento/a:</b> es importante responderla, porque si no la completas podrías quedar con <b>bloqueo para la toma de carga</b> de asignaturas del próximo período.",
-   badge:"🔜 Próximamente"},
-  {tipo:"Centro de Estudiantes", nivel:"evento",
-   titulo:"Asamblea del Centro de Estudiantes",
-   texto:"📅 <b>Hoy · 18:30 hrs</b> · 📍 <b>Sala C38</b>. Te esperamos.",
-   hasta:"2026-06-24"},
-  {tipo:"Receso", nivel:"info",
-   titulo:"Semana de receso",
-   texto:"Se viene la semana de receso del trimestre: <b>13 al 17 de julio</b>. ¡Aprovecha para descansar y ponerte al día!",
-   hasta:"2026-07-13"},
-  {tipo:"Inscripción", nivel:"info",
-   titulo:"Inscripción de ramos · 3er trimestre",
-   texto:"La inscripción de asignaturas del 3er trimestre es el <b>4 de septiembre</b>. Aprovecha de revisar tu Avance y el Planificador para llegar listo.",
-   hasta:"2026-09-04"}
+   badge:"🔜 Próximamente"}
 ];
 /* Conexión a Supabase (llave pública) para leer avisos en vivo */
 const SB_URL="https://pohrbljeamhfkcjxikct.supabase.co";
@@ -3836,7 +3737,7 @@ if(ES_PRUEBA){
     document.addEventListener("DOMContentLoaded",function(){
       var b=document.createElement("div");
       b.textContent="🧪 Ambiente de prueba";
-      b.style.cssText="position:fixed;left:10px;bottom:10px;z-index:9999;background:#8b0c0c;color:#fff;font:600 11px/1 Inter,system-ui,sans-serif;padding:6px 10px;border-radius:20px;opacity:.92;pointer-events:none";
+      b.style.cssText="position:fixed;left:10px;bottom:10px;z-index:9999;background:#8b0c0c;color:#fff;font:600 11px/1 'Nunito',system-ui,sans-serif;padding:6px 10px;border-radius:20px;opacity:.92;pointer-events:none";
       document.body.appendChild(b);
     });
   }catch(e){}
@@ -4319,7 +4220,7 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
   /* --- Lector en voz alta (voz del dispositivo, en español) --- */
   var ttsOn=false;
   function ttsHalt(){try{if(window.speechSynthesis)window.speechSynthesis.cancel();}catch(e){}ttsOn=false;var tf=document.getElementById('ttsFab');if(tf){tf.classList.remove('speaking');tf.textContent='🔊';tf.setAttribute('aria-label','Escuchar esta sección');}}
-  function seccionActiva(){var ids=(typeof SECS!=='undefined')?SECS:['mural','malla','calc','hor','plan','pru','info','solic'];for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.style.display!=='none')return el;}return null;}
+  function seccionActiva(){var ids=(typeof SECS!=='undefined')?SECS:['mural','malla','calc','estudio','hor','plan','pru','info'];for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.style.display!=='none')return el;}return null;}
   function ttsGo(){
     if(!('speechSynthesis' in window)||typeof SpeechSynthesisUtterance==='undefined'){alert('Este dispositivo no permite la lectura en voz alta.');return;}
     if(ttsOn){ttsHalt();return;}
@@ -4450,7 +4351,7 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
   var KEY_SEM="malla_sem_diurno_v1", stateSEM={};
   function loadSEM(){stateSEM={};try{var s=localStorage.getItem(KEY_SEM);if(s)stateSEM=JSON.parse(s);}catch(e){}}
   function saveSEM(){try{localStorage.setItem(KEY_SEM,JSON.stringify(stateSEM));}catch(e){}}
-  function preIdsSEM(c){if(c.p&&c.p.upTo)return COURSES_SEM.filter(function(x){return x.t<=byId_SEM[c.p.upTo].t&&x.id!==c.id;}).map(function(x){return x.id;});return c.p||[];}
+  function preIdsSEM(c){return prerrequisitosDe(c,COURSES_SEM);}
   function isUnlockedSEM(c){return preIdsSEM(c).every(function(id){return stateSEM[id]==="ok";});}
   function statusOfSEM(c){var s=stateSEM[c.id];if(s==="ok")return"ok";if(s==="no")return"no";return isUnlockedSEM(c)?"open":"lock";}
   function cycleSEM(c){var s=statusOfSEM(c);if(s==="lock")return;if(s==="open")stateSEM[c.id]="ok";else if(s==="ok")stateSEM[c.id]="no";else delete stateSEM[c.id];saveSEM();renderSEM();}
@@ -4975,24 +4876,6 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
   function show(){var o=document.getElementById("jornadaOverlay");if(o)o.style.display="flex";}
   function hide(){var o=document.getElementById("jornadaOverlay");if(o)o.style.display="none";}
 
-  /* --- Solicitudes: en Diurno el canal es la Dirección de Carrera --- */
-  var solicOrig=null;
-  function swapSolic(toCarrera){
-    var sec=document.getElementById("solic"); if(!sec)return;
-    var sub=sec.querySelector(".msub"), tit=sec.querySelector(".soltitle"), txt=sec.querySelector(".soltext"), btn=sec.querySelector(".solbtn"), note=sec.querySelector(".note");
-    if(!solicOrig)solicOrig={sub:sub.innerHTML,tit:tit.innerHTML,txt:txt.innerHTML,btn:btn.innerHTML,href:btn.getAttribute("href"),note:note.innerHTML};
-    if(toCarrera){
-      sub.innerHTML="¿Necesitas hacer una petición o consulta? En la Jornada Diurna tu canal directo es la <b>Dirección de Carrera</b>.";
-      tit.innerHTML="📨 Solicitudes a la Dirección de Carrera";
-      txt.innerHTML="Envía aquí tus peticiones, consultas o casos. Serán recibidos y gestionados directamente por la <b>Dirección de Carrera de Derecho</b>, que centraliza los requerimientos de la jornada.";
-      btn.innerHTML="Enviar solicitud a la carrera →";
-      btn.setAttribute("href","javascript:void(0)");
-      note.innerHTML="Canal gestionado por la Dirección de Carrera. <i>(Prototipo: el formulario oficial se conectará en la implementación.)</i>";
-    }else{
-      sub.innerHTML=solicOrig.sub;tit.innerHTML=solicOrig.tit;txt.innerHTML=solicOrig.txt;btn.innerHTML=solicOrig.btn;btn.setAttribute("href",solicOrig.href);note.innerHTML=solicOrig.note;
-    }
-  }
-
   /* --- Placeholder "pendiente de publicar" en secciones aún sin datos de la jornada --- */
   function pendIdsFor(j){
     if(j==="tech")return [];
@@ -5080,19 +4963,6 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
       var sel="ajustada"; try{sel=localStorage.getItem(keyMallaSem(j))||"ajustada";}catch(e){}
       if(tgl)tgl.onclick=function(){showMallaSem(j,curMallaSem==="noajustada"?"ajustada":"noajustada");};
       showMallaSem(j,sel);
-    }
-    swapSolic(j!=="tech");
-    /* Solicitudes: por ahora solo en Vespertino TECH. En Diurno y V.Regular la ruta
-       del trámite aún no está definida con la Carrera, así que la pestaña no se
-       muestra en la versión pública para no ofrecer un canal que no existe. */
-    var tabSolic=document.querySelector('.tab[data-tab="solic"]');
-    if(tabSolic){
-      var verSolic=(j==="tech");
-      tabSolic.style.display=verSolic?"":"none";
-      var secSolic=document.getElementById("solic");
-      if(!verSolic && secSolic && secSolic.style.display!=="none" && typeof go==="function"){
-        go("mural");
-      }
     }
     centrarTabs();
     if(j==="tech"&&window.__snapTech)window.__mallaSnap=window.__snapTech;
@@ -5932,12 +5802,8 @@ if('serviceWorker' in navigator && !(typeof ES_PRUEBA!=="undefined"&&ES_PRUEBA))
   function sinMovimiento(){ return document.body.classList.contains("reduce-motion")||(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches); }
 
   /* ═════════ 1 · Prerrequisitos al mantener presionado ═════════ */
-  /* misma regla que la malla: {upTo:id} = todos los ramos hasta el nivel de ese ramo */
-  function prerreqs(c,C){
-    if(c.p&&c.p.upTo){ var tope=C.filter(function(x){ return x.id===c.p.upTo; })[0], t=tope?tope.t:0;
-      return C.filter(function(x){ return x.t<=t&&x.id!==c.id; }).map(function(x){ return x.id; }); }
-    return Array.isArray(c.p)?c.p:[];
-  }
+  /* misma regla que la malla (prerrequisitosDe, en datos/tech.js) */
+  function prerreqs(c,C){ return prerrequisitosDe(c,C); }
   var foco=null, suprimir=false, timer=null, x0=0, y0=0;
   function banner(){
     var b=document.getElementById("mvBanner");

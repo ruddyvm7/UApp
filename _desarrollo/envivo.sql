@@ -5,6 +5,7 @@
 -- Se ejecuta una vez en el editor SQL de Supabase. Volver a ejecutarlo no borra nada.
 -- v2.8.1 (revisión técnica): tope de salas nuevas por minuto, códigos de pregunta y órdenes revisados, tope de
 -- respuestas por pregunta y resultados visibles recién cuando quien dirige muestra la respuesta.
+-- v2.8.2: la ruta de búsqueda de las funciones termina en pg_temp (seguridad-v282.sql lo aplica en producción).
 
 create table if not exists public.vivo_salas (
   id uuid primary key default gen_random_uuid(),
@@ -35,7 +36,7 @@ revoke all on public.vivo_salas, public.vivo_respuestas from anon, authenticated
 -- Crear una sala: devuelve el código para el curso y la clave secreta de quien dirige.
 create or replace function public.vivo_crear(p_mazo text, p_preguntas text[], p_ordenes text[])
 returns table(codigo text, clave text)
-language plpgsql security definer set search_path = public as $$
+language plpgsql security definer set search_path = public, pg_temp as $$
 declare
   v_codigo text;
   v_clave text;
@@ -71,7 +72,7 @@ end $$;
 -- Estado público de una sala (sin la clave): ramo, preguntas, pregunta en curso y cuántos respondieron.
 create or replace function public.vivo_estado(p_codigo text)
 returns table(mazo text, preguntas text[], ordenes text[], actual int, fase text, respuestas int)
-language sql security definer set search_path = public stable as $$
+language sql security definer set search_path = public, pg_temp stable as $$
   select s.mazo, s.preguntas, s.ordenes, s.actual, s.fase,
          (select count(*)::int from vivo_respuestas r where r.sala = s.id and r.pregunta = s.actual)
   from vivo_salas s
@@ -81,7 +82,7 @@ $$;
 -- Avanzar la sala: solo quien tiene la clave.
 create or replace function public.vivo_mover(p_codigo text, p_clave text, p_actual int, p_fase text)
 returns boolean
-language plpgsql security definer set search_path = public as $$
+language plpgsql security definer set search_path = public, pg_temp as $$
 begin
   if p_fase not in ('espera','pregunta','respuesta','fin') then return false; end if;
   update vivo_salas set actual = p_actual, fase = p_fase, actualizada = now()
@@ -94,7 +95,7 @@ end $$;
 -- v2.8.1: a lo más 500 teléfonos distintos por pregunta (un curso cabe holgado; un script que inventa códigos, no).
 create or replace function public.vivo_responder(p_codigo text, p_participante text, p_pregunta int, p_opcion int)
 returns boolean
-language plpgsql security definer set search_path = public as $$
+language plpgsql security definer set search_path = public, pg_temp as $$
 declare
   v_id uuid;
 begin
@@ -115,7 +116,7 @@ end $$;
 -- (o en preguntas ya pasadas, o al terminar), para que nadie vea hacia dónde va el curso mientras responde.
 create or replace function public.vivo_resultados(p_codigo text, p_pregunta int)
 returns table(opcion int, n int)
-language sql security definer set search_path = public stable as $$
+language sql security definer set search_path = public, pg_temp stable as $$
   select r.opcion, count(*)::int
   from vivo_respuestas r join vivo_salas s on s.id = r.sala
   where s.codigo = upper(p_codigo) and r.pregunta = p_pregunta and s.creada > now() - interval '1 day'
